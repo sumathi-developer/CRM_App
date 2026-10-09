@@ -14,7 +14,7 @@ export class AppController {
       message: '🚀 Welcome to NestJS Enterprise CRM Backend API',
       status: 'operational',
       version: '1.0.0',
-      database: 'SQLite (Prisma ORM)',
+      database: 'PostgreSQL (Prisma ORM)',
       documentation: {
         swaggerUI: 'http://localhost:3000/docs',
         swaggerApiUI: 'http://localhost:3000/api/docs',
