@@ -1,3 +1,56 @@
-node_modules/
-dist/
+# Compiled output & dependencies
+/dist
+/node_modules
+
+# TypeScript cache
+*.tsbuildinfo
+tsconfig.build.tsbuildinfo
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Test coverage & vitest
+/coverage
+/.nyc_output
+.vitest/
+
+# Environment files
 .env
+.env.*
+!.env.example
+
+# Database & SQLite files
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# Uploads & temporary files
+uploads/
+storage/
+temp/
+tmp/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
