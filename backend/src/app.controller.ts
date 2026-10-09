@@ -37,6 +37,7 @@ export class AppController {
         'Dashboard & Reports (/dashboard, /reports)',
         'Files (/files)',
         'Settings (/settings)',
+        'Calendar (/calendar)',
       ],
       quickStart: {
         loginEndpoint: 'POST /auth/login',
