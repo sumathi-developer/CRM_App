@@ -1,0 +1,359 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                   String              @id @default(uuid())
+  email                String              @unique
+  passwordHash         String
+  name                 String
+  phone                String?
+  avatar               String?
+  status               String              @default("ACTIVE") // ACTIVE, INACTIVE, SUSPENDED
+  roleId               String?
+  role                 Role?               @relation(fields: [roleId], references: [id], onDelete: SetNull)
+  organizationId       String?
+  organization         Organization?       @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  refreshToken         String?
+  resetPasswordToken   String?
+  resetPasswordExpires DateTime?
+  createdAt            DateTime            @default(now())
+  updatedAt            DateTime            @updatedAt
+
+  contacts             Contact[]           @relation("ContactOwner")
+  leads                Lead[]              @relation("LeadOwner")
+  deals                Deal[]              @relation("DealOwner")
+  activitiesAssigned   Activity[]          @relation("AssignedActivities")
+  activitiesCreated    Activity[]          @relation("CreatedActivities")
+  tasksAssigned        Task[]              @relation("AssignedTasks")
+  tasksCreated         Task[]              @relation("CreatedTasks")
+  notes                Note[]
+  notifications        Notification[]
+  filesUploaded        FileRecord[]
+  profileSettings      UserProfileSetting?
+}
+
+model Role {
+  id          String           @id @default(uuid())
+  name        String           @unique
+  description String?
+  isSystem    Boolean          @default(false)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  users       User[]
+  permissions RolePermission[]
+}
+
+model Permission {
+  id          String           @id @default(uuid())
+  name        String           @unique
+  action      String           // CREATE, READ, UPDATE, DELETE, MANAGE
+  resource    String           // USERS, CONTACTS, LEADS, DEALS, etc.
+  description String?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  roles       RolePermission[]
+}
+
+model RolePermission {
+  id           String     @id @default(uuid())
+  roleId       String
+  permissionId String
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, permissionId])
+}
+
+model Organization {
+  id          String               @id @default(uuid())
+  name        String
+  domain      String?
+  industry    String?
+  website     String?
+  phone       String?
+  address     String?
+  city        String?
+  country     String?
+  status      String               @default("ACTIVE") // ACTIVE, INACTIVE
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+
+  users       User[]
+  contacts    Contact[]
+  deals       Deal[]
+  invites     OrganizationInvite[]
+}
+
+model OrganizationInvite {
+  id             String       @id @default(uuid())
+  email          String
+  roleId         String?
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  token          String       @unique
+  expiresAt      DateTime
+  status         String       @default("PENDING") // PENDING, ACCEPTED, EXPIRED
+  createdAt      DateTime     @default(now())
+}
+
+model Pipeline {
+  id          String          @id @default(uuid())
+  name        String
+  description String?
+  isDefault   Boolean         @default(false)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  stages      PipelineStage[]
+  deals       Deal[]
+}
+
+model PipelineStage {
+  id             String   @id @default(uuid())
+  pipelineId     String
+  pipeline       Pipeline @relation(fields: [pipelineId], references: [id], onDelete: Cascade)
+  name           String
+  order          Int
+  winProbability Int      @default(10)
+  color          String?  @default("#3b82f6")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  deals          Deal[]
+}
+
+model Contact {
+  id             String           @id @default(uuid())
+  firstName      String
+  lastName       String
+  email          String           @unique
+  phone          String?
+  jobTitle       String?
+  department     String?
+  stage          String           @default("LEAD") // LEAD, OPPORTUNITY, CUSTOMER, CHURNED
+  organizationId String?
+  organization   Organization?    @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  ownerId        String?
+  owner          User?            @relation("ContactOwner", fields: [ownerId], references: [id], onDelete: SetNull)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  deals          Deal[]
+  activities     Activity[]
+  tasks          Task[]
+  notes          Note[]
+  attachments    FileAttachment[]
+}
+
+model Lead {
+  id                 String           @id @default(uuid())
+  title              String
+  firstName          String
+  lastName           String
+  email              String
+  phone              String?
+  companyName        String?
+  status             String           @default("NEW") // NEW, CONTACTED, QUALIFIED, UNQUALIFIED, CONVERTED
+  source             String           @default("WEBSITE") // WEBSITE, REFERRAL, COLD_OUTREACH, ADVERTISING, EVENT, OTHER
+  leadScore          Int              @default(0)
+  estimatedValue     Float?           @default(0.0)
+  ownerId            String?
+  owner              User?            @relation("LeadOwner", fields: [ownerId], references: [id], onDelete: SetNull)
+  convertedContactId String?
+  convertedDealId    String?
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+
+  activities         Activity[]
+  tasks              Task[]
+  notes              Note[]
+  attachments        FileAttachment[]
+}
+
+model Deal {
+  id                String           @id @default(uuid())
+  title             String
+  value             Float            @default(0.0)
+  currency          String           @default("USD")
+  stageId           String?
+  stage             PipelineStage?   @relation(fields: [stageId], references: [id], onDelete: SetNull)
+  pipelineId        String?
+  pipeline          Pipeline?        @relation(fields: [pipelineId], references: [id], onDelete: SetNull)
+  status            String           @default("OPEN") // OPEN, WON, LOST
+  probability       Int              @default(20)
+  expectedCloseDate DateTime?
+  closedAt          DateTime?
+  organizationId    String?
+  organization      Organization?    @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  contactId         String?
+  contact           Contact?         @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  ownerId           String?
+  owner             User?            @relation("DealOwner", fields: [ownerId], references: [id], onDelete: SetNull)
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+
+  products          DealProduct[]
+  activities        Activity[]
+  tasks             Task[]
+  notes             Note[]
+  attachments       FileAttachment[]
+}
+
+model Product {
+  id            String        @id @default(uuid())
+  name          String
+  sku           String        @unique
+  description   String?
+  price         Float         @default(0.0)
+  currency      String        @default("USD")
+  isActive      Boolean       @default(true)
+  stockQuantity Int           @default(0)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  deals         DealProduct[]
+}
+
+model DealProduct {
+  id        String   @id @default(uuid())
+  dealId    String
+  deal      Deal     @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  quantity  Int      @default(1)
+  unitPrice Float
+  createdAt DateTime @default(now())
+
+  @@unique([dealId, productId])
+}
+
+model Activity {
+  id           String    @id @default(uuid())
+  type         String    // CALL, EMAIL, MEETING, WHATSAPP, FOLLOW_UP
+  subject      String
+  description  String?
+  scheduledAt  DateTime?
+  completedAt  DateTime?
+  status       String    @default("PENDING") // PENDING, COMPLETED, CANCELLED
+  priority     String    @default("MEDIUM") // LOW, MEDIUM, HIGH, URGENT
+  contactId    String?
+  contact      Contact?  @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  leadId       String?
+  lead         Lead?     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  dealId       String?
+  deal         Deal?     @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  assignedToId String?
+  assignedTo   User?     @relation("AssignedActivities", fields: [assignedToId], references: [id], onDelete: SetNull)
+  createdById  String?
+  createdBy    User?     @relation("CreatedActivities", fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Task {
+  id           String    @id @default(uuid())
+  title        String
+  description  String?
+  dueDate      DateTime?
+  completedAt  DateTime?
+  status       String    @default("PENDING") // PENDING, IN_PROGRESS, COMPLETED, CANCELLED
+  priority     String    @default("MEDIUM") // LOW, MEDIUM, HIGH, URGENT
+  contactId    String?
+  contact      Contact?  @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  leadId       String?
+  lead         Lead?     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  dealId       String?
+  deal         Deal?     @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  assignedToId String?
+  assignedTo   User?     @relation("AssignedTasks", fields: [assignedToId], references: [id], onDelete: SetNull)
+  createdById  String?
+  createdBy    User?     @relation("CreatedTasks", fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Note {
+  id        String   @id @default(uuid())
+  title     String?
+  content   String
+  contactId String?
+  contact   Contact? @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  leadId    String?
+  lead      Lead?    @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  dealId    String?
+  deal      Deal?    @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  authorId  String?
+  author    User?    @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Notification {
+  id        String    @id @default(uuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  message   String
+  type      String    @default("INFO") // INFO, SUCCESS, WARNING, ALERT
+  isRead    Boolean   @default(false)
+  link      String?
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+}
+
+model FileRecord {
+  id           String           @id @default(uuid())
+  originalName String
+  fileName     String
+  mimeType     String
+  size         Int
+  path         String
+  uploadedById String?
+  uploadedBy   User?            @relation(fields: [uploadedById], references: [id], onDelete: SetNull)
+  attachments  FileAttachment[]
+  createdAt    DateTime         @default(now())
+}
+
+model FileAttachment {
+  id         String     @id @default(uuid())
+  fileId     String
+  file       FileRecord @relation(fields: [fileId], references: [id], onDelete: Cascade)
+  entityType String     // CONTACT, LEAD, DEAL, ORGANIZATION
+  entityId   String
+  contactId  String?
+  contact    Contact?   @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  leadId     String?
+  lead       Lead?      @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  dealId     String?
+  deal       Deal?      @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  createdAt  DateTime   @default(now())
+}
+
+model Setting {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  value     String
+  category  String   @default("GENERAL") // GENERAL, SECURITY, EMAIL, CRM
+  isPublic  Boolean  @default(false)
+  updatedAt DateTime @updatedAt
+}
+
+model UserProfileSetting {
+  id                 String   @id @default(uuid())
+  userId             String   @unique
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  theme              String   @default("dark")
+  emailNotifications Boolean  @default(true)
+  pushNotifications  Boolean  @default(true)
+  language           String   @default("en")
+  timezone           String   @default("UTC")
+  updatedAt          DateTime @updatedAt
+}
