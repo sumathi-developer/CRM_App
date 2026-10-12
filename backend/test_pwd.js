@@ -3,8 +3,8 @@ const prisma = new PrismaClient();
 
 async function run() {
   try {
-    const count = await prisma.user.count();
-    console.log('RESULT: Connected successfully! User count:', count);
+    const orgs = await prisma.organization.findMany();
+    console.log('RESULT: Connected successfully! Organizations:', orgs.length);
   } catch (err) {
     console.error('RESULT: Failed to connect:', err.message);
   } finally {
