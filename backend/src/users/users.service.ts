@@ -86,8 +86,8 @@ export class UsersService {
         passwordHash,
         phone: dto.phone,
         status: dto.status || 'ACTIVE',
-        roleId: dto.roleId,
-        organizationId: dto.organizationId,
+        roleId: dto.roleId?.trim() || undefined,
+        organizationId: dto.organizationId?.trim() || undefined,
         profileSettings: {
           create: {
             theme: 'dark',

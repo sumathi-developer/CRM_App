@@ -50,9 +50,35 @@ export class AuthService {
       throw new ConflictException('Email already in use');
     }
 
-    // Default role assignment if roleId is not provided
-    let roleId = registerDto.roleId;
-    if (!roleId) {
+    // Sanitize and validate organizationId
+    let organizationId: string | undefined = undefined;
+    if (registerDto.organizationId && registerDto.organizationId.trim() !== '') {
+      const trimmedOrgId = registerDto.organizationId.trim();
+      const org = await this.prisma.organization.findUnique({
+        where: { id: trimmedOrgId },
+      });
+      if (!org) {
+        throw new BadRequestException(
+          `Organization with ID '${registerDto.organizationId}' does not exist. Omit organizationId if registering without an organization.`,
+        );
+      }
+      organizationId = org.id;
+    }
+
+    // Role assignment: validate if provided, otherwise default to SALES_REP
+    let roleId: string | undefined = undefined;
+    if (registerDto.roleId && registerDto.roleId.trim() !== '') {
+      const trimmedRoleId = registerDto.roleId.trim();
+      const role = await this.prisma.role.findUnique({
+        where: { id: trimmedRoleId },
+      });
+      if (!role) {
+        throw new BadRequestException(
+          `Role with ID '${registerDto.roleId}' does not exist. Omit roleId to default to SALES_REP.`,
+        );
+      }
+      roleId = role.id;
+    } else {
       const defaultRole = await this.prisma.role.findFirst({
         where: { name: 'SALES_REP' },
       });
@@ -69,7 +95,7 @@ export class AuthService {
         name: registerDto.name,
         passwordHash,
         phone: registerDto.phone,
-        organizationId: registerDto.organizationId,
+        organizationId,
         roleId,
         status: 'ACTIVE',
         profileSettings: {

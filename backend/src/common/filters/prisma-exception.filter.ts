@@ -34,7 +34,10 @@ export class PrismaExceptionFilter implements ExceptionFilter {
       }
       case 'P2003': {
         status = HttpStatus.BAD_REQUEST;
-        message = 'Foreign key constraint violated';
+        const fieldName = (exception.meta?.field_name as string) || (exception.meta?.target as string);
+        message = fieldName
+          ? `Foreign key constraint violated on field: ${fieldName}`
+          : 'Foreign key constraint violated';
         break;
       }
       case 'P2000': {
@@ -48,7 +51,7 @@ export class PrismaExceptionFilter implements ExceptionFilter {
     }
 
     this.logger.error(
-      `${request.method} ${request.url} - Code: ${exception.code} - Message: ${message}`,
+      `${request.method} ${request.url} - Code: ${exception.code} - Message: ${message}${exception.meta ? ` - Meta: ${JSON.stringify(exception.meta)}` : ''}`,
     );
 
     response.status(status).json({
