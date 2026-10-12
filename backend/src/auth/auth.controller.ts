@@ -6,6 +6,7 @@ import {
   UseGuards,
   HttpCode,
   HttpStatus,
+  BadRequestException,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
@@ -53,17 +54,20 @@ export class AuthController {
     return this.authService.logout(userId);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth('JWT-auth')
+  @Public()
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Refresh JWT access token using refresh token' })
   @ApiResponse({ status: 200, description: 'New JWT tokens generated' })
   async refresh(
-    @CurrentUser('id') userId: string,
     @Body() dto: RefreshTokenDto,
+    @CurrentUser('id') userId?: string,
   ) {
-    return this.authService.refreshTokens(userId, dto.refreshToken);
+    const rawToken = dto.refreshToken || dto.token;
+    if (!rawToken || rawToken.trim() === '') {
+      throw new BadRequestException('Refresh token is required. Pass "refreshToken" or "token" in request body.');
+    }
+    return this.authService.refreshTokens(userId, rawToken.trim());
   }
 
   @Public()

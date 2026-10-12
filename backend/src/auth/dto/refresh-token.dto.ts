@@ -1,9 +1,14 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { ApiPropertyOptional } from '@nestjs/swagger';
+import { IsOptional, IsString } from 'class-validator';
 
 export class RefreshTokenDto {
-  @ApiProperty({ example: 'jwt-refresh-token-string', description: 'Refresh token' })
+  @ApiPropertyOptional({ example: 'jwt-refresh-token-string', description: 'Refresh token' })
+  @IsOptional()
   @IsString()
-  @IsNotEmpty({ message: 'Refresh token is required' })
-  refreshToken: string;
+  refreshToken?: string;
+
+  @ApiPropertyOptional({ example: 'jwt-refresh-token-string', description: 'Alternative alias for refreshToken' })
+  @IsOptional()
+  @IsString()
+  token?: string;
 }

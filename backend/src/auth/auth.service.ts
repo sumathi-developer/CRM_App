@@ -151,9 +151,22 @@ export class AuthService {
     return { message: 'Successfully logged out' };
   }
 
-  async refreshTokens(userId: string, refreshToken: string) {
+  async refreshTokens(userId: string | undefined, refreshToken: string) {
+    let targetUserId = userId;
+
+    if (!targetUserId) {
+      try {
+        const payload = await this.jwtService.verifyAsync(refreshToken, {
+          secret: this.configService.get<string>('jwt.refreshSecret') || 'crm-refresh-token-secret-key-2026',
+        });
+        targetUserId = payload.sub;
+      } catch {
+        throw new UnauthorizedException('Invalid or expired refresh token');
+      }
+    }
+
     const user = await this.prisma.user.findUnique({
-      where: { id: userId },
+      where: { id: targetUserId },
       include: { role: true },
     });
 
