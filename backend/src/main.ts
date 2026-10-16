@@ -48,6 +48,7 @@ async function bootstrap() {
     .addTag('Dashboard & Reports', 'Business analytics, revenue stats, and sales reports')
     .addTag('Files', 'Attachment and file upload management')
     .addTag('Settings', 'System and user preference settings')
+    .addTag('Lead Generation', 'Module 05: Lead capture, lead sources, web forms, landing pages, scoring, qualification, routing, and analytics')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
