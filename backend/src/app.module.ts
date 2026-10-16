@@ -27,6 +27,7 @@ import { ReportsModule } from './reports/reports.module';
 import { FilesModule } from './files/files.module';
 import { SettingsModule } from './settings/settings.module';
 import { CalendarModule } from './calendar/calendar.module';
+import { WorkspacesModule } from './workspaces/workspaces.module';
 import { AppController } from './app.controller';
 
 @Module({
@@ -54,6 +55,7 @@ import { AppController } from './app.controller';
     FilesModule,
     SettingsModule,
     CalendarModule,
+    WorkspacesModule,
   ],
   providers: [
     {

@@ -37,6 +37,10 @@ model User {
   notifications        Notification[]
   filesUploaded        FileRecord[]
   profileSettings      UserProfileSetting?
+  activeWorkspaceId    String?
+  activeWorkspace      Workspace?          @relation("ActiveWorkspace", fields: [activeWorkspaceId], references: [id], onDelete: SetNull)
+  workspacesOwned      Workspace[]         @relation("WorkspaceOwner")
+  workspaceMembers     WorkspaceMember[]
 }
 
 model Role {
@@ -357,4 +361,90 @@ model UserProfileSetting {
   language           String   @default("en")
   timezone           String   @default("UTC")
   updatedAt          DateTime @updatedAt
+}
+
+model Workspace {
+  id          String            @id @default(uuid())
+  name        String
+  slug        String            @unique
+  description String?
+  avatar      String?
+  website     String?
+  timezone    String            @default("UTC")
+  currency    String            @default("USD")
+  status      String            @default("ACTIVE") // ACTIVE, INACTIVE, ARCHIVED
+  plan        String            @default("FREE")   // FREE, PRO, ENTERPRISE
+  ownerId     String
+  owner       User              @relation("WorkspaceOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  members     WorkspaceMember[]
+  invites     WorkspaceInvite[]
+  roles       WorkspaceRole[]
+  setting     WorkspaceSetting?
+  activeUsers User[]            @relation("ActiveWorkspace")
+}
+
+model WorkspaceRole {
+  id          String            @id @default(uuid())
+  workspaceId String
+  workspace   Workspace         @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  name        String
+  description String?
+  isSystem    Boolean           @default(false)
+  permissions Json              @default("[]")
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  members     WorkspaceMember[]
+  invites     WorkspaceInvite[]
+
+  @@unique([workspaceId, name])
+}
+
+model WorkspaceSetting {
+  id           String    @id @default(uuid())
+  workspaceId  String    @unique
+  workspace    Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  general      Json      @default("{}")
+  branding     Json      @default("{\"logoUrl\": null, \"faviconUrl\": null, \"primaryColor\": \"#3b82f6\", \"accentColor\": \"#10b981\"}")
+  localization Json      @default("{\"timezone\": \"UTC\", \"currency\": \"USD\", \"language\": \"en\", \"dateFormat\": \"YYYY-MM-DD\", \"timeFormat\": \"24h\"}")
+  preferences  Json      @default("{\"emailNotifications\": true, \"autoAssignLeads\": false, \"weeklyDigest\": true}")
+  security     Json      @default("{\"enforceTwoFactor\": false, \"sessionTimeoutMinutes\": 1440, \"allowedEmailDomains\": [], \"ipAllowlist\": []}")
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model WorkspaceMember {
+  id            String         @id @default(uuid())
+  workspaceId   String
+  workspace     Workspace      @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  userId        String
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  roleId        String?
+  workspaceRole WorkspaceRole? @relation(fields: [roleId], references: [id], onDelete: SetNull)
+  role          String         @default("MEMBER") // OWNER, ADMIN, MEMBER, VIEWER
+  status        String         @default("ACTIVE") // ACTIVE, INACTIVE, SUSPENDED
+  joinedAt      DateTime       @default(now())
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  @@unique([workspaceId, userId])
+}
+
+model WorkspaceInvite {
+  id            String         @id @default(uuid())
+  workspaceId   String
+  workspace     Workspace      @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  email         String
+  roleId        String?
+  workspaceRole WorkspaceRole? @relation(fields: [roleId], references: [id], onDelete: SetNull)
+  role          String         @default("MEMBER") // ADMIN, MEMBER, VIEWER
+  token         String         @unique
+  invitedById   String?
+  expiresAt     DateTime
+  status        String         @default("PENDING") // PENDING, ACCEPTED, CANCELLED, EXPIRED
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
 }
