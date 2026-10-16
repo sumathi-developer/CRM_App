@@ -21,7 +21,11 @@ describe('AppController (e2e)', () => {
     return request(app.getHttpServer())
       .get('/')
       .expect(200)
-      .expect('Hello World!');
+      .expect((res) => {
+        if (!res.body.success || res.body.data?.status !== 'operational') {
+          throw new Error('Unexpected root API response');
+        }
+      });
   });
 
   afterEach(async () => {

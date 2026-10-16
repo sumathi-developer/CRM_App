@@ -22,14 +22,165 @@ import { UpdateLocalizationSettingsDto } from './dto/update-localization-setting
 import { UpdatePreferencesSettingsDto } from './dto/update-preferences-settings.dto';
 import { UpdateSecuritySettingsDto } from './dto/update-security-settings.dto';
 import { createPaginatedResponse } from '../common/utils/response.util';
-import {
-  WorkspaceEntity,
-  WorkspaceMemberEntity,
-  WorkspaceInviteEntity,
-  WorkspaceRoleEntity,
-  WorkspaceSettingEntity,
-  WorkspaceMetricsEntity,
-} from './entities/workspace.entity';
+export interface WorkspaceEntity {
+  id: string;
+  name: string;
+  slug: string;
+  description?: string | null;
+  avatar?: string | null;
+  website?: string | null;
+  timezone: string;
+  currency: string;
+  status: 'ACTIVE' | 'INACTIVE' | 'ARCHIVED' | string;
+  plan: 'FREE' | 'PRO' | 'ENTERPRISE' | string;
+  ownerId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  owner?: {
+    id: string;
+    name: string;
+    email: string;
+    avatar?: string | null;
+  };
+  _count?: {
+    members?: number;
+    invites?: number;
+    roles?: number;
+  };
+}
+
+export interface WorkspaceMemberEntity {
+  id: string;
+  workspaceId: string;
+  userId: string;
+  roleId?: string | null;
+  role: 'OWNER' | 'ADMIN' | 'MEMBER' | 'VIEWER' | string;
+  status: 'ACTIVE' | 'INACTIVE' | 'SUSPENDED' | string;
+  joinedAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
+  user?: {
+    id: string;
+    name: string;
+    email: string;
+    avatar?: string | null;
+    status: string;
+  };
+  workspaceRole?: {
+    id: string;
+    name: string;
+    permissions: string[];
+  } | null;
+}
+
+export interface WorkspaceInviteEntity {
+  id: string;
+  workspaceId: string;
+  email: string;
+  roleId?: string | null;
+  role: string;
+  token: string;
+  invitedById?: string | null;
+  expiresAt: Date;
+  status: 'PENDING' | 'ACCEPTED' | 'CANCELLED' | 'EXPIRED' | string;
+  createdAt: Date;
+  updatedAt: Date;
+  invitedBy?: {
+    id: string;
+    name: string;
+    email: string;
+  } | null;
+}
+
+export interface WorkspaceRoleEntity {
+  id: string;
+  workspaceId: string;
+  name: string;
+  description?: string | null;
+  isSystem: boolean;
+  permissions: string[];
+  createdAt: Date;
+  updatedAt: Date;
+  _count?: {
+    members?: number;
+  };
+}
+
+export interface WorkspaceGeneralSettings {
+  companyName?: string;
+  defaultLanguage?: string;
+  industry?: string;
+  supportEmail?: string;
+}
+
+export interface WorkspaceBrandingSettings {
+  logoUrl?: string | null;
+  faviconUrl?: string | null;
+  primaryColor?: string;
+  accentColor?: string;
+  companyPortalUrl?: string | null;
+}
+
+export interface WorkspaceLocalizationSettings {
+  timezone: string;
+  currency: string;
+  language: string;
+  dateFormat: string;
+  timeFormat: string;
+}
+
+export interface WorkspacePreferencesSettings {
+  emailNotifications: boolean;
+  autoAssignLeads: boolean;
+  defaultPipelineId?: string | null;
+  weeklyDigest: boolean;
+}
+
+export interface WorkspaceSecuritySettings {
+  enforceTwoFactor: boolean;
+  sessionTimeoutMinutes: number;
+  allowedEmailDomains: string[];
+  ipAllowlist: string[];
+}
+
+export interface WorkspaceSettingEntity {
+  id: string;
+  workspaceId: string;
+  general: WorkspaceGeneralSettings;
+  branding: WorkspaceBrandingSettings;
+  localization: WorkspaceLocalizationSettings;
+  preferences: WorkspacePreferencesSettings;
+  security: WorkspaceSecuritySettings;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface WorkspaceMetricsEntity {
+  workspaceId: string;
+  workspaceName: string;
+  totalMembers: number;
+  totalContacts: number;
+  totalDeals: number;
+  totalWonRevenue: number;
+  openPipelineValue: number;
+  pendingTasksCount: number;
+  activeLeadsCount: number;
+  recentActivities: Array<{
+    id: string;
+    type: string;
+    subject: string;
+    status: string;
+    priority: string;
+    scheduledAt?: Date | null;
+  }>;
+}
+
+export interface WorkspaceContext {
+  workspace: WorkspaceEntity;
+  member: WorkspaceMemberEntity;
+  roleName: string;
+  permissions: string[];
+}
 
 @Injectable()
 export class WorkspacesService {
@@ -45,6 +196,22 @@ export class WorkspacesService {
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/(^-|-$)+/g, '');
     return baseSlug || 'workspace';
+  }
+
+  /**
+   * Safely parse permissions array from string, array, or object.
+   */
+  private parsePermissions(permissions: any): string[] {
+    if (Array.isArray(permissions)) return permissions;
+    if (typeof permissions === 'string') {
+      try {
+        const parsed = JSON.parse(permissions);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
+    }
+    return [];
   }
 
   /**
@@ -765,30 +932,30 @@ export class WorkspacesService {
       Promise.resolve(memberIds.length),
       this.prisma.contact.count({
         where: {
-          OR: [{ workspaceId: id }, { ownerId: { in: memberIds } }],
+          ownerId: { in: memberIds },
         },
       }),
       this.prisma.deal.findMany({
         where: {
-          OR: [{ workspaceId: id }, { ownerId: { in: memberIds } }],
+          OR: [{ team: { workspaceId: id } }, { ownerId: { in: memberIds } }],
         },
         select: { id: true, value: true, status: true },
       }),
       this.prisma.task.count({
         where: {
           status: { not: 'COMPLETED' },
-          OR: [{ workspaceId: id }, { assignedToId: { in: memberIds } }],
+          OR: [{ assignedToId: { in: memberIds } }, { createdById: { in: memberIds } }],
         },
       }),
       this.prisma.lead.count({
         where: {
           status: { in: ['NEW', 'CONTACTED', 'QUALIFIED'] },
-          OR: [{ workspaceId: id }, { ownerId: { in: memberIds } }],
+          OR: [{ team: { workspaceId: id } }, { ownerId: { in: memberIds } }],
         },
       }),
       this.prisma.activity.findMany({
         where: {
-          OR: [{ workspaceId: id }, { assignedToId: { in: memberIds } }],
+          OR: [{ team: { workspaceId: id } }, { assignedToId: { in: memberIds } }],
         },
         take: 5,
         orderBy: { createdAt: 'desc' },
@@ -1180,10 +1347,10 @@ export class WorkspacesService {
     );
 
     // If activeWorkspaceId was this workspace, reset it
-    await this.prisma.user.updateMany({
-      where: { id: member.userId, activeWorkspaceId: workspaceId },
-      data: { activeWorkspaceId: null },
-    });
+    const activeWs = await this.getUserActiveWorkspaceId(member.userId);
+    if (activeWs === workspaceId) {
+      await this.setUserActiveWorkspaceId(member.userId, null);
+    }
 
     return {
       message: 'Member removed from workspace successfully',
@@ -1514,9 +1681,7 @@ export class WorkspacesService {
       name: r.name,
       description: r.description,
       isSystem: Boolean(r.isSystem),
-      permissions: Array.isArray(r.permissions)
-        ? r.permissions
-        : JSON.parse(r.permissions || '[]'),
+      permissions: this.parsePermissions(r.permissions),
       createdAt: r.createdAt,
       updatedAt: r.updatedAt,
       _count: {
@@ -1529,8 +1694,6 @@ export class WorkspacesService {
    * Get a single workspace role by ID or Name.
    */
   async getRole(workspaceId: string, roleIdOrName: string): Promise<WorkspaceRoleEntity> {
-    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(roleIdOrName);
-
     const sql = `
       SELECT 
         "wr"."id",
@@ -1543,7 +1706,7 @@ export class WorkspacesService {
         "wr"."updatedAt",
         (SELECT COUNT(*)::int FROM "WorkspaceMember" "wm" WHERE "wm"."roleId" = "wr"."id") AS "memberCount"
       FROM "WorkspaceRole" "wr"
-      WHERE "wr"."workspaceId" = $1 AND (${isUuid ? '"wr"."id" = $2' : '"wr"."name" = $2'})
+      WHERE "wr"."workspaceId" = $1 AND ("wr"."id" = $2 OR "wr"."name" = $2)
       LIMIT 1
     `;
 
@@ -1559,9 +1722,7 @@ export class WorkspacesService {
       name: r.name,
       description: r.description,
       isSystem: Boolean(r.isSystem),
-      permissions: Array.isArray(r.permissions)
-        ? r.permissions
-        : JSON.parse(r.permissions || '[]'),
+      permissions: this.parsePermissions(r.permissions),
       createdAt: r.createdAt,
       updatedAt: r.updatedAt,
       _count: {
@@ -1618,9 +1779,7 @@ export class WorkspacesService {
       name: r.name,
       description: r.description,
       isSystem: false,
-      permissions: Array.isArray(r.permissions)
-        ? r.permissions
-        : JSON.parse(r.permissions || '[]'),
+      permissions: this.parsePermissions(r.permissions),
       createdAt: r.createdAt,
       updatedAt: r.updatedAt,
       _count: { members: 0 },
@@ -1646,7 +1805,7 @@ export class WorkspacesService {
         `SELECT "id" FROM "WorkspaceRole" WHERE "workspaceId" = $1 AND LOWER("name") = LOWER($2) AND "id" != $3 LIMIT 1`,
         workspaceId,
         dto.name.trim(),
-        roleId,
+        existing.id,
       );
       if (duplicate.length > 0) {
         throw new ConflictException(`Role name '${dto.name}' is already in use`);
@@ -1670,11 +1829,11 @@ export class WorkspacesService {
       dto.description !== undefined ? dto.description : null,
       dto.permissions ? JSON.stringify(dto.permissions) : null,
       now,
-      roleId,
+      existing.id,
       workspaceId,
     );
 
-    return this.getRole(workspaceId, roleId);
+    return this.getRole(workspaceId, existing.id);
   }
 
   /**
@@ -1695,13 +1854,13 @@ export class WorkspacesService {
 
     await this.prisma.$queryRawUnsafe(
       `DELETE FROM "WorkspaceRole" WHERE "id" = $1 AND "workspaceId" = $2`,
-      roleId,
+      role.id,
       workspaceId,
     );
 
     return {
       message: `Role '${role.name}' deleted successfully`,
-      roleId,
+      roleId: role.id,
     };
   }
 

@@ -38,6 +38,8 @@ export class AppController {
         'Files (/files)',
         'Settings (/settings)',
         'Calendar (/calendar)',
+        'Workspaces (/workspaces)',
+        'Teams (/teams)',
       ],
       quickStart: {
         loginEndpoint: 'POST /auth/login',

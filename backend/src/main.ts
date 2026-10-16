@@ -48,7 +48,9 @@ async function bootstrap() {
     .addTag('Dashboard & Reports', 'Business analytics, revenue stats, and sales reports')
     .addTag('Files', 'Attachment and file upload management')
     .addTag('Settings', 'System and user preference settings')
-    .addTag('Lead Generation', 'Module 05: Lead capture, lead sources, web forms, landing pages, scoring, qualification, routing, and analytics')
+    .addTag('Calendar', 'Calendar events, meetings, and schedule overview')
+    .addTag('Workspaces', 'Multi-tenant workspace isolation, members, invitations, roles, and settings')
+    .addTag('Teams', 'Team management, members, activities, and performance metrics')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
