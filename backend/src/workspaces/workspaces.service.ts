@@ -184,7 +184,7 @@ export interface WorkspaceContext {
 
 @Injectable()
 export class WorkspacesService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   /**
    * Helper to format a name into a clean, URL-safe slug.
@@ -224,14 +224,14 @@ export class WorkspacesService {
     while (true) {
       const existing = (excludeId
         ? await this.prisma.$queryRawUnsafe(
-            `SELECT "id" FROM "Workspace" WHERE "slug" = $1 AND "id" != $2 LIMIT 1`,
-            candidate,
-            excludeId,
-          )
+          `SELECT "id" FROM "Workspace" WHERE "slug" = $1 AND "id" != $2 LIMIT 1`,
+          candidate,
+          excludeId,
+        )
         : await this.prisma.$queryRawUnsafe(
-            `SELECT "id" FROM "Workspace" WHERE "slug" = $1 LIMIT 1`,
-            candidate,
-          )) as any[];
+          `SELECT "id" FROM "Workspace" WHERE "slug" = $1 LIMIT 1`,
+          candidate,
+        )) as any[];
 
       if (!existing || existing.length === 0) {
         return candidate;
@@ -946,7 +946,7 @@ export class WorkspacesService {
           status: { not: 'COMPLETED' },
           OR: [{ assignedToId: { in: memberIds } }, { createdById: { in: memberIds } }],
         },
-      }),
+      }), x
       this.prisma.lead.count({
         where: {
           status: { in: ['NEW', 'CONTACTED', 'QUALIFIED'] },
