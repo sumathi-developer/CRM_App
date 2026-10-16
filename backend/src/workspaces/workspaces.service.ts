@@ -946,7 +946,7 @@ export class WorkspacesService {
           status: { not: 'COMPLETED' },
           OR: [{ assignedToId: { in: memberIds } }, { createdById: { in: memberIds } }],
         },
-      }), x
+      }),
       this.prisma.lead.count({
         where: {
           status: { in: ['NEW', 'CONTACTED', 'QUALIFIED'] },
