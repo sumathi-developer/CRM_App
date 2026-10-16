@@ -41,6 +41,8 @@ model User {
   activeWorkspace      Workspace?          @relation("ActiveWorkspace", fields: [activeWorkspaceId], references: [id], onDelete: SetNull)
   workspacesOwned      Workspace[]         @relation("WorkspaceOwner")
   workspaceMembers     WorkspaceMember[]
+  teamsLed             Team[]              @relation("TeamOwner")
+  teamMemberships      TeamMember[]
 }
 
 model Role {
@@ -95,6 +97,7 @@ model Organization {
   contacts    Contact[]
   deals       Deal[]
   invites     OrganizationInvite[]
+  teams       Team[]
 }
 
 model OrganizationInvite {
@@ -172,6 +175,8 @@ model Lead {
   estimatedValue     Float?           @default(0.0)
   ownerId            String?
   owner              User?            @relation("LeadOwner", fields: [ownerId], references: [id], onDelete: SetNull)
+  teamId             String?
+  team               Team?            @relation(fields: [teamId], references: [id], onDelete: SetNull)
   convertedContactId String?
   convertedDealId    String?
   workspaceId        String?
@@ -215,6 +220,8 @@ model Deal {
   contact           Contact?         @relation(fields: [contactId], references: [id], onDelete: SetNull)
   ownerId           String?
   owner             User?            @relation("DealOwner", fields: [ownerId], references: [id], onDelete: SetNull)
+  teamId            String?
+  team              Team?            @relation(fields: [teamId], references: [id], onDelete: SetNull)
   createdAt         DateTime         @default(now())
   updatedAt         DateTime         @updatedAt
 
@@ -272,6 +279,8 @@ model Activity {
   assignedTo   User?     @relation("AssignedActivities", fields: [assignedToId], references: [id], onDelete: SetNull)
   createdById  String?
   createdBy    User?     @relation("CreatedActivities", fields: [createdById], references: [id], onDelete: SetNull)
+  teamId       String?
+  team         Team?     @relation(fields: [teamId], references: [id], onDelete: SetNull)
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 }
@@ -294,6 +303,8 @@ model Task {
   assignedTo   User?     @relation("AssignedTasks", fields: [assignedToId], references: [id], onDelete: SetNull)
   createdById  String?
   createdBy    User?     @relation("CreatedTasks", fields: [createdById], references: [id], onDelete: SetNull)
+  teamId       String?
+  team         Team?     @relation(fields: [teamId], references: [id], onDelete: SetNull)
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 }
@@ -397,6 +408,7 @@ model Workspace {
   roles       WorkspaceRole[]
   setting     WorkspaceSetting?
   activeUsers User[]            @relation("ActiveWorkspace")
+  teams       Team[]
 }
 
 model WorkspaceRole {
@@ -460,122 +472,4 @@ model WorkspaceInvite {
   status        String         @default("PENDING") // PENDING, ACCEPTED, CANCELLED, EXPIRED
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
-}
-
-model LeadSource {
-  id          String           @id @default(uuid())
-  name        String
-  code        String           @unique
-  type        String           @default("WEBSITE") // WEBSITE, LANDING_PAGE, CAMPAIGN, SOCIAL_MEDIA, EMAIL, REFERRAL, MANUAL, PAID_SEARCH, EVENT, OTHER
-  description String?
-  status      String           @default("ACTIVE") // ACTIVE, INACTIVE
-  cost        Float?           @default(0.0)
-  utmSource   String?
-  utmMedium   String?
-  utmCampaign String?
-  isSystem    Boolean          @default(false)
-  metadata    Json?            @default("{}")
-  workspaceId String?
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
-
-  leads       Lead[]
-  submissions FormSubmission[]
-  webForms    WebForm[]
-}
-
-model WebForm {
-  id               String           @id @default(uuid())
-  name             String
-  slug             String           @unique
-  title            String
-  description      String?
-  status           String           @default("DRAFT") // DRAFT, PUBLISHED, ARCHIVED
-  formType         String           @default("WEB_FORM") // WEB_FORM, LANDING_PAGE, POPUP, EMBEDDED
-  fields           Json             @default("[]")
-  styling          Json             @default("{}")
-  settings         Json             @default("{}")
-  defaultSourceId  String?
-  defaultSource    LeadSource?      @relation(fields: [defaultSourceId], references: [id], onDelete: SetNull)
-  defaultOwnerId   String?
-  campaignName     String?
-  viewsCount       Int              @default(0)
-  submissionsCount Int              @default(0)
-  conversionRate   Float            @default(0.0)
-  isPublished      Boolean          @default(false)
-  publishedAt      DateTime?
-  workspaceId      String?
-  createdAt        DateTime         @default(now())
-  updatedAt        DateTime         @updatedAt
-
-  leads            Lead[]
-  submissions      FormSubmission[]
-}
-
-model FormSubmission {
-  id           String      @id @default(uuid())
-  formId       String
-  form         WebForm     @relation(fields: [formId], references: [id], onDelete: Cascade)
-  leadId       String?
-  lead         Lead?       @relation(fields: [leadId], references: [id], onDelete: SetNull)
-  leadSourceId String?
-  leadSource   LeadSource? @relation(fields: [leadSourceId], references: [id], onDelete: SetNull)
-  payload      Json        @default("{}")
-  status       String      @default("PROCESSED") // PROCESSED, PENDING, SPAM, DUPLICATE, FAILED
-  ipAddress    String?
-  userAgent    String?
-  referer      String?
-  spamScore    Float       @default(0.0)
-  isSpam       Boolean     @default(false)
-  errorMessage String?
-  submittedAt  DateTime    @default(now())
-  workspaceId  String?
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
-}
-
-model LeadScoringRule {
-  id             String   @id @default(uuid())
-  name           String
-  description    String?
-  category       String   @default("DEMOGRAPHIC") // DEMOGRAPHIC, FIRMOGRAPHIC, BEHAVIORAL, SOURCE
-  conditionField String
-  operator       String   @default("EQUALS") // EQUALS, NOT_EQUALS, CONTAINS, NOT_CONTAINS, GREATER_THAN, LESS_THAN, IN, NOT_EMPTY, REGEX
-  conditionValue String
-  scoreChange    Int      @default(0)
-  isActive       Boolean  @default(true)
-  priority       Int      @default(0)
-  workspaceId    String?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-}
-
-model LeadQualificationRule {
-  id          String   @id @default(uuid())
-  name        String
-  description String?
-  targetStatus String  @default("QUALIFIED") // QUALIFIED, UNQUALIFIED, CONTACTED, REVIEW_REQUIRED
-  minScore    Int?
-  conditions  Json     @default("[]")
-  autoQualify Boolean  @default(false)
-  isActive    Boolean  @default(true)
-  priority    Int      @default(0)
-  workspaceId String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
-model LeadAssignmentRule {
-  id                 String   @id @default(uuid())
-  name               String
-  description        String?
-  routingStrategy    String   @default("ROUND_ROBIN") // ROUND_ROBIN, SPECIFIC_USER, LOAD_BALANCED, SOURCE_BASED
-  targetUserIds      Json     @default("[]")
-  lastAssignedUserId String?
-  conditions         Json     @default("[]")
-  isActive           Boolean  @default(true)
-  priority           Int      @default(0)
-  workspaceId        String?
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
 }
