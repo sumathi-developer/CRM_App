@@ -179,6 +179,18 @@ model Lead {
   team               Team?            @relation(fields: [teamId], references: [id], onDelete: SetNull)
   convertedContactId String?
   convertedDealId    String?
+  workspaceId        String?
+  leadSourceId       String?
+  leadSource         LeadSource?      @relation(fields: [leadSourceId], references: [id], onDelete: SetNull)
+  webFormId          String?
+  webForm            WebForm?         @relation(fields: [webFormId], references: [id], onDelete: SetNull)
+  campaign           String?
+  medium             String?
+  channel            String?          // WEBSITE, LANDING_PAGE, SOCIAL_MEDIA, CAMPAIGN, EMAIL, REFERRAL, MANUAL
+  attribution        Json?            @default("{}")
+  qualificationNotes String?
+  routedToId         String?
+  scoringBreakdown   Json?            @default("[]")
   createdAt          DateTime         @default(now())
   updatedAt          DateTime         @updatedAt
 
@@ -186,6 +198,7 @@ model Lead {
   tasks              Task[]
   notes              Note[]
   attachments        FileAttachment[]
+  formSubmissions    FormSubmission[]
 }
 
 model Deal {
@@ -459,43 +472,4 @@ model WorkspaceInvite {
   status        String         @default("PENDING") // PENDING, ACCEPTED, CANCELLED, EXPIRED
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
-}
-
-model Team {
-  id             String        @id @default(uuid())
-  name           String
-  slug           String?
-  description    String?
-  avatar         String?
-  color          String?       @default("#3b82f6")
-  status         String        @default("ACTIVE") // ACTIVE, INACTIVE, ARCHIVED
-  targetRevenue  Float?        @default(0.0)
-  ownerId        String
-  owner          User          @relation("TeamOwner", fields: [ownerId], references: [id], onDelete: Restrict)
-  workspaceId    String?
-  workspace      Workspace?    @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
-  organizationId String?
-  organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
-
-  members        TeamMember[]
-  leads          Lead[]
-  deals          Deal[]
-  activities     Activity[]
-  tasks          Task[]
-}
-
-model TeamMember {
-  id        String   @id @default(uuid())
-  teamId    String
-  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  role      String   @default("MEMBER") // LEADER, MEMBER
-  joinedAt  DateTime @default(now())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@unique([teamId, userId])
 }
