@@ -18,7 +18,8 @@ export class AppController {
       documentation: {
         swaggerUI: 'http://localhost:3000/docs',
         swaggerApiUI: 'http://localhost:3000/api/docs',
-        openApiJson: 'http://localhost:3000/api/docs-json',
+        swaggerShort: 'http://localhost:3000/swagger',
+        openApiJson: 'http://localhost:3000/docs-json',
       },
       modules: [
         'Auth (/auth)',
@@ -40,6 +41,7 @@ export class AppController {
         'Calendar (/calendar)',
         'Workspaces (/workspaces)',
         'Teams (/teams)',
+        'Lead Generation (/lead-generation)',
       ],
       quickStart: {
         loginEndpoint: 'POST /auth/login',

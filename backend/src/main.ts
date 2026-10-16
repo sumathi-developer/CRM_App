@@ -51,16 +51,28 @@ async function bootstrap() {
     .addTag('Calendar', 'Calendar events, meetings, and schedule overview')
     .addTag('Workspaces', 'Multi-tenant workspace isolation, members, invitations, roles, and settings')
     .addTag('Teams', 'Team management, members, activities, and performance metrics')
+    .addTag('Lead Generation', 'Lead capture, lead sources, web forms, landing pages, scoring, qualification, routing, and analytics')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api/docs', app, document);
-  SwaggerModule.setup('docs', app, document);
+  const swaggerCustomOptions = {
+    swaggerOptions: {
+      persistAuthorization: true,
+      docExpansion: 'none',
+      filter: true,
+      showRequestDuration: true,
+    },
+    customSiteTitle: 'CRM Backend REST API Documentation',
+  };
+
+  SwaggerModule.setup('docs', app, document, swaggerCustomOptions);
+  SwaggerModule.setup('api/docs', app, document, swaggerCustomOptions);
+  SwaggerModule.setup('swagger', app, document, swaggerCustomOptions);
 
   const port = process.env.PORT || 3000;
   await app.listen(port);
   console.log(`🚀 CRM Backend Server running at: http://localhost:${port}`);
-  console.log(`📚 Swagger Documentation available at: http://localhost:${port}/docs and http://localhost:${port}/api/docs`);
+  console.log(`📚 Swagger Documentation available at: http://localhost:${port}/docs, http://localhost:${port}/api/docs, and http://localhost:${port}/swagger`);
 }
 
 bootstrap();

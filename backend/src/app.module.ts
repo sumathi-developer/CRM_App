@@ -28,6 +28,8 @@ import { FilesModule } from './files/files.module';
 import { SettingsModule } from './settings/settings.module';
 import { CalendarModule } from './calendar/calendar.module';
 import { WorkspacesModule } from './workspaces/workspaces.module';
+import { TeamsModule } from './teams/teams.module';
+import { LeadGenerationModule } from './lead-generation/lead-generation.module';
 import { AppController } from './app.controller';
 
 @Module({
@@ -56,6 +58,8 @@ import { AppController } from './app.controller';
     SettingsModule,
     CalendarModule,
     WorkspacesModule,
+    TeamsModule,
+    LeadGenerationModule,
   ],
   providers: [
     {
