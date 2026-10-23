@@ -30,6 +30,7 @@ import { CalendarModule } from './calendar/calendar.module';
 import { WorkspacesModule } from './workspaces/workspaces.module';
 import { TeamsModule } from './teams/teams.module';
 import { LeadGenerationModule } from './lead-generation/lead-generation.module';
+import { CommunicationsModule } from './communications/communications.module';
 import { AppController } from './app.controller';
 
 @Module({
@@ -60,6 +61,7 @@ import { AppController } from './app.controller';
     WorkspacesModule,
     TeamsModule,
     LeadGenerationModule,
+    CommunicationsModule,
   ],
   providers: [
     {

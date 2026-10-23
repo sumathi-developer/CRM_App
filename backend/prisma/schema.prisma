@@ -43,6 +43,10 @@ model User {
   workspaceMembers     WorkspaceMember[]
   teamsLed             Team[]              @relation("TeamOwner")
   teamMemberships      TeamMember[]
+  sentEmails           EmailMessage[]      @relation("EmailSender")
+  emailTemplates       EmailTemplate[]
+  communicationComments CommunicationComment[]
+  emailIntegrations    EmailIntegration[]
 }
 
 model Role {
@@ -98,6 +102,7 @@ model Organization {
   deals       Deal[]
   invites     OrganizationInvite[]
   teams       Team[]
+  emails      EmailMessage[]
 }
 
 model OrganizationInvite {
@@ -159,6 +164,8 @@ model Contact {
   tasks          Task[]
   notes          Note[]
   attachments    FileAttachment[]
+  emails         EmailMessage[]
+  communicationComments CommunicationComment[]
 }
 
 model Lead {
@@ -199,6 +206,8 @@ model Lead {
   notes              Note[]
   attachments        FileAttachment[]
   formSubmissions    FormSubmission[]
+  emails             EmailMessage[]
+  communicationComments CommunicationComment[]
 }
 
 model Deal {
@@ -230,6 +239,8 @@ model Deal {
   tasks             Task[]
   notes             Note[]
   attachments       FileAttachment[]
+  emails            EmailMessage[]
+  communicationComments CommunicationComment[]
 }
 
 model Product {
@@ -409,6 +420,9 @@ model Workspace {
   setting     WorkspaceSetting?
   activeUsers User[]            @relation("ActiveWorkspace")
   teams       Team[]
+  emails      EmailMessage[]
+  emailTemplates EmailTemplate[]
+  emailIntegrations EmailIntegration[]
 }
 
 model WorkspaceRole {
@@ -630,4 +644,166 @@ model LeadAssignmentRule {
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
 }
+
+// ==========================================
+// Module 13: Communications & Email Models
+// ==========================================
+
+model EmailMessage {
+  id                String                 @id @default(uuid())
+  messageId         String?                @unique
+  threadId          String?
+  inReplyToId       String?
+  folder            String                 @default("INBOX") // INBOX, SENT, DRAFTS, TRASH, ARCHIVE, SPAM
+  direction         String                 @default("OUTBOUND") // INBOUND, OUTBOUND
+  status            String                 @default("DRAFT") // DRAFT, QUEUED, SENT, DELIVERED, OPENED, CLICKED, BOUNCED, FAILED, RECEIVED
+  sender            String
+  senderName        String?
+  senderUserId      String?
+  senderUser        User?                  @relation("EmailSender", fields: [senderUserId], references: [id], onDelete: SetNull)
+  recipients        Json                   // Array of recipient strings or objects
+  cc                Json                   @default("[]")
+  bcc               Json                   @default("[]")
+  replyTo           String?
+  subject           String
+  body              String
+  bodyText          String?
+  snippet           String?
+  isRead            Boolean                @default(false)
+  readAt            DateTime?
+  isStarred         Boolean                @default(false)
+  isArchived        Boolean                @default(false)
+  isDraft           Boolean                @default(false)
+  sentAt            DateTime?
+  receivedAt        DateTime?
+  scheduledAt       DateTime?
+  provider          String?                @default("SYSTEM") // SMTP, SENDGRID, RESEND, GMAIL, OUTLOOK, SYSTEM
+  providerMessageId String?
+  providerMetadata  Json?                  @default("{}")
+  errorMessage      String?
+  openCount         Int                    @default(0)
+  clickCount        Int                    @default(0)
+
+  contactId         String?
+  contact           Contact?               @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  leadId            String?
+  lead              Lead?                  @relation(fields: [leadId], references: [id], onDelete: SetNull)
+  dealId            String?
+  deal              Deal?                  @relation(fields: [dealId], references: [id], onDelete: SetNull)
+  organizationId    String?
+  organization      Organization?          @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  workspaceId       String?
+  workspace         Workspace?             @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
+
+  attachments       EmailAttachment[]
+  comments          CommunicationComment[]
+
+  createdAt         DateTime               @default(now())
+  updatedAt         DateTime               @updatedAt
+
+  @@index([threadId])
+  @@index([folder])
+  @@index([status])
+  @@index([direction])
+  @@index([contactId])
+  @@index([leadId])
+  @@index([dealId])
+  @@index([organizationId])
+  @@index([workspaceId])
+  @@index([senderUserId])
+}
+
+model EmailAttachment {
+  id           String       @id @default(uuid())
+  emailId      String
+  email        EmailMessage @relation(fields: [emailId], references: [id], onDelete: Cascade)
+  filename     String
+  contentType  String       @default("application/octet-stream")
+  size         Int          @default(0)
+  path         String?
+  url          String?
+  fileRecordId String?
+  createdAt    DateTime     @default(now())
+
+  @@index([emailId])
+}
+
+model EmailTemplate {
+  id          String     @id @default(uuid())
+  name        String
+  description String?
+  category    String     @default("GENERAL") // SALES, MARKETING, FOLLOW_UP, ONBOARDING, SUPPORT, GENERAL
+  subject     String
+  bodyHtml    String
+  bodyText    String?
+  variables   Json       @default("[]") // Array of variable tokens e.g. ["contact.firstName", "deal.title"]
+  isShared    Boolean    @default(true)
+  createdById String?
+  createdBy   User?      @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  workspaceId String?
+  workspace   Workspace? @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([category])
+  @@index([workspaceId])
+  @@index([createdById])
+}
+
+model CommunicationComment {
+  id             String        @id @default(uuid())
+  emailId        String?
+  email          EmailMessage? @relation(fields: [emailId], references: [id], onDelete: Cascade)
+  threadId       String?
+  contactId      String?
+  contact        Contact?      @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  leadId         String?
+  lead           Lead?         @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  dealId         String?
+  deal           Deal?         @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  organizationId String?
+  workspaceId    String?
+  authorId       String?
+  author         User?         @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  content        String
+  mentions       Json          @default("[]") // [{ "userId": "...", "name": "...", "email": "..." }]
+  isInternal     Boolean       @default(true) // Always internal, never sent to external email recipients
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([emailId])
+  @@index([threadId])
+  @@index([contactId])
+  @@index([leadId])
+  @@index([dealId])
+  @@index([authorId])
+  @@index([workspaceId])
+}
+
+model EmailIntegration {
+  id                String     @id @default(uuid())
+  provider          String     // SMTP, SENDGRID, RESEND, GMAIL, OUTLOOK, SYSTEM
+  name              String     // e.g. "Primary SMTP", "SendGrid Outbound"
+  fromEmail         String
+  fromName          String?
+  host              String?
+  port              Int?
+  secure            Boolean    @default(true)
+  username          String?
+  encryptedPassword String?    // Stored securely, NEVER exposed in responses/DTOs
+  encryptedApiKey   String?    // Stored securely, NEVER exposed in responses/DTOs
+  isDefault         Boolean    @default(false)
+  isActive          Boolean    @default(true)
+  workspaceId       String?
+  workspace         Workspace? @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
+  createdById       String?
+  createdBy         User?      @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  settings          Json?      @default("{}")
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+
+  @@index([workspaceId])
+  @@index([provider])
+}
+
 
