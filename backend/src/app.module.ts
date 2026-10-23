@@ -31,6 +31,7 @@ import { WorkspacesModule } from './workspaces/workspaces.module';
 import { TeamsModule } from './teams/teams.module';
 import { LeadGenerationModule } from './lead-generation/lead-generation.module';
 import { CommunicationsModule } from './communications/communications.module';
+import { SearchModule } from './search/search.module';
 import { AppController } from './app.controller';
 
 @Module({
@@ -62,6 +63,7 @@ import { AppController } from './app.controller';
     TeamsModule,
     LeadGenerationModule,
     CommunicationsModule,
+    SearchModule,
   ],
   providers: [
     {

@@ -47,6 +47,7 @@ model User {
   emailTemplates       EmailTemplate[]
   communicationComments CommunicationComment[]
   emailIntegrations    EmailIntegration[]
+  searchHistory        SearchHistory[]
 }
 
 model Role {
@@ -804,6 +805,24 @@ model EmailIntegration {
 
   @@index([workspaceId])
   @@index([provider])
+}
+
+// ==========================================
+// Module 16: Global Search History Model
+// ==========================================
+
+model SearchHistory {
+  id           String   @id @default(uuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  query        String
+  entityType   String   @default("ALL") // ALL, LEADS, CONTACTS, COMPANIES, DEALS, ACTIVITIES, DOCUMENTS, NOTES, USERS
+  resultsCount Int      @default(0)
+  workspaceId  String?
+  createdAt    DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@index([workspaceId])
 }
 
 
