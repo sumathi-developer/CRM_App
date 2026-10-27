@@ -10,6 +10,7 @@ import './styles/profile.css';
 import './styles/workspace.css';
 import './styles/users.css';
 import './styles/teams.css';
+import './styles/roles.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

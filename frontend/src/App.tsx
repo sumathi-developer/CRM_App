@@ -28,6 +28,10 @@ import { EditTeamPage } from './pages/teams/EditTeamPage';
 import { TeamMembersPage } from './pages/teams/TeamMembersPage';
 import { TeamActivitiesPage } from './pages/teams/TeamActivitiesPage';
 import { TeamPerformancePage } from './pages/teams/TeamPerformancePage';
+import { RolesListPage } from './pages/roles/RolesListPage';
+import { CreateRolePage } from './pages/roles/CreateRolePage';
+import { RoleDetailsPage } from './pages/roles/RoleDetailsPage';
+import { EditRolePage } from './pages/roles/EditRolePage';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 export function App() {
@@ -80,6 +84,10 @@ export function App() {
         <Route path="/teams/:id/members" element={<TeamMembersPage />} />
         <Route path="/teams/:id/activities" element={<TeamActivitiesPage />} />
         <Route path="/teams/:id/performance" element={<TeamPerformancePage />} />
+        <Route path="/roles" element={<RolesListPage />} />
+        <Route path="/roles/create" element={<CreateRolePage />} />
+        <Route path="/roles/:id" element={<RoleDetailsPage />} />
+        <Route path="/roles/:id/edit" element={<EditRolePage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/change-password" element={<ChangePasswordPage />} />
         <Route path="/sessions" element={<SessionManagementPage />} />

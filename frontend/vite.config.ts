@@ -22,6 +22,7 @@ export default defineConfig({
       '/settings': apiProxyConfig,
       '/workspaces': apiProxyConfig,
       '/roles': apiProxyConfig,
+      '/permissions': apiProxyConfig,
       '/teams': apiProxyConfig,
     },
   },

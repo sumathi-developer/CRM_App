@@ -13,6 +13,7 @@ import {
   ShieldIcon,
   BriefcaseIcon,
   ChevronDownIcon,
+  LockIcon,
 } from './Icons';
 
 export const Navbar: React.FC = () => {
@@ -40,6 +41,7 @@ export const Navbar: React.FC = () => {
     { label: 'Workspace', path: '/workspaces', icon: <BriefcaseIcon size={16} /> },
     { label: 'Users', path: '/users', icon: <UsersIcon size={16} /> },
     { label: 'Teams', path: '/teams', icon: <ShieldIcon size={16} /> },
+    { label: 'Roles', path: '/roles', icon: <LockIcon size={16} /> },
     { label: 'Profile', path: '/profile', icon: <UserIcon size={16} /> },
     { label: 'Security', path: '/change-password', icon: <KeyRoundIcon size={16} /> },
     { label: 'Sessions', path: '/sessions', icon: <MonitorIcon size={16} /> },
@@ -90,6 +92,8 @@ export const Navbar: React.FC = () => {
                   ? location.pathname.startsWith('/users')
                   : item.path === '/teams'
                   ? location.pathname.startsWith('/teams')
+                  : item.path === '/roles'
+                  ? location.pathname.startsWith('/roles')
                   : location.pathname === item.path;
 
               return (
