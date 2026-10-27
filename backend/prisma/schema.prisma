@@ -960,4 +960,32 @@ model TagAssignment {
   @@index([workspaceId])
 }
 
+// ==========================================
+// Module 25: Audit Logs Models
+// ==========================================
+
+model AuditLog {
+  id          String   @id @default(uuid())
+  action      String   // CREATE, UPDATE, DELETE, LOGIN, LOGOUT, EXPORT, IMPORT, STATUS_CHANGE, ASSIGN, RESTORE
+  entityType  String   // LEAD, CONTACT, COMPANY, DEAL, ACTIVITY, TASK, NOTE, DOCUMENT, USER, ROLE, WORKSPACE, TAG, CUSTOM_FIELD, SETTING, SYSTEM
+  entityId    String?
+  entityName  String?
+  userId      String?
+  userEmail   String?
+  userName    String?
+  workspaceId String?
+  details     Json?    @default("{}")
+  ipAddress   String?
+  userAgent   String?
+  status      String   @default("SUCCESS") // SUCCESS, FAILURE, WARNING
+  createdAt   DateTime @default(now())
+
+  @@index([workspaceId])
+  @@index([userId])
+  @@index([entityType, entityId])
+  @@index([action])
+  @@index([status])
+  @@index([createdAt])
+}
+
 
