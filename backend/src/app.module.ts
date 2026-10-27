@@ -36,6 +36,7 @@ import { AnalyticsModule } from './analytics/analytics.module';
 import { CustomFieldsModule } from './custom-fields/custom-fields.module';
 import { TagsModule } from './tags/tags.module';
 import { AuditLogsModule } from './audit-logs/audit-logs.module';
+import { HelpSupportModule } from './help-support/help-support.module';
 import { AppController } from './app.controller';
 
 @Module({
@@ -72,6 +73,7 @@ import { AppController } from './app.controller';
     CustomFieldsModule,
     TagsModule,
     AuditLogsModule,
+    HelpSupportModule,
   ],
   providers: [
     {

@@ -988,4 +988,193 @@ model AuditLog {
   @@index([createdAt])
 }
 
+// ==========================================
+// Module 28: Help & Support Models
+// ==========================================
+
+model HelpCategory {
+  id          String        @id @default(uuid())
+  name        String
+  slug        String
+  description String?
+  icon        String?       @default("help-circle")
+  order       Int           @default(0)
+  isPublished Boolean       @default(true)
+  workspaceId String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  articles    HelpArticle[]
+
+  @@unique([workspaceId, slug])
+  @@index([workspaceId])
+  @@index([isPublished])
+}
+
+model HelpArticle {
+  id                String       @id @default(uuid())
+  categoryId        String
+  category          HelpCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  title             String
+  slug              String
+  summary           String?
+  content           String
+  isPublished       Boolean      @default(true)
+  viewsCount        Int          @default(0)
+  helpfulCount      Int          @default(0)
+  notHelpfulCount   Int          @default(0)
+  tags              Json?        @default("[]")
+  relatedArticleIds Json?        @default("[]")
+  order             Int          @default(0)
+  authorId          String?
+  workspaceId       String?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+
+  @@unique([categoryId, slug])
+  @@index([categoryId])
+  @@index([workspaceId])
+  @@index([isPublished])
+}
+
+model DocCategory {
+  id          String    @id @default(uuid())
+  name        String
+  slug        String
+  description String?
+  order       Int       @default(0)
+  version     String    @default("1.0.0")
+  status      String    @default("PUBLISHED") // DRAFT, PUBLISHED, ARCHIVED
+  workspaceId String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  pages       DocPage[]
+
+  @@unique([workspaceId, slug])
+  @@index([workspaceId])
+  @@index([status])
+}
+
+model DocPage {
+  id          String      @id @default(uuid())
+  categoryId  String
+  category    DocCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  title       String
+  slug        String
+  content     String
+  version     String      @default("1.0.0")
+  status      String      @default("PUBLISHED") // DRAFT, PUBLISHED, ARCHIVED
+  order       Int         @default(0)
+  authorId    String?
+  workspaceId String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@unique([categoryId, slug])
+  @@index([categoryId])
+  @@index([workspaceId])
+  @@index([status])
+}
+
+model FaqItem {
+  id          String   @id @default(uuid())
+  question    String
+  answer      String
+  category    String   @default("GENERAL") // GENERAL, BILLING, CRM, ACCOUNT, INTEGRATIONS
+  order       Int      @default(0)
+  isPublished Boolean  @default(true)
+  viewsCount  Int      @default(0)
+  workspaceId String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([workspaceId])
+  @@index([category])
+  @@index([isPublished])
+}
+
+model SupportTicket {
+  id           String                 @id @default(uuid())
+  ticketNumber String                 @unique
+  subject      String
+  description  String
+  category     String                 @default("TECHNICAL") // BILLING, TECHNICAL, GENERAL, FEATURE_REQUEST, BUG, ACCOUNT
+  priority     String                 @default("MEDIUM") // LOW, MEDIUM, HIGH, URGENT
+  status       String                 @default("OPEN") // OPEN, IN_PROGRESS, WAITING_FOR_USER, RESOLVED, CLOSED
+  attachments  Json?                  @default("[]")
+  userId       String
+  userEmail    String?
+  userName     String?
+  assignedToId String?
+  workspaceId  String?
+  resolvedAt   DateTime?
+  closedAt     DateTime?
+  createdAt    DateTime               @default(now())
+  updatedAt    DateTime               @updatedAt
+
+  messages     SupportTicketMessage[]
+  history      SupportTicketHistory[]
+
+  @@index([workspaceId])
+  @@index([userId])
+  @@index([assignedToId])
+  @@index([status])
+  @@index([priority])
+  @@index([createdAt])
+}
+
+model SupportTicketMessage {
+  id             String        @id @default(uuid())
+  ticketId       String
+  ticket         SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  senderId       String?
+  senderName     String?
+  senderRole     String?       // USER, SUPPORT, ADMIN
+  message        String
+  attachments    Json?         @default("[]")
+  isInternalNote Boolean       @default(false)
+  createdAt      DateTime      @default(now())
+
+  @@index([ticketId])
+  @@index([createdAt])
+}
+
+model SupportTicketHistory {
+  id            String        @id @default(uuid())
+  ticketId      String
+  ticket        SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  changedById   String?
+  changedByName String?
+  action        String        // CREATED, STATUS_CHANGED, ASSIGNED, PRIORITY_CHANGED, MESSAGE_ADDED, NOTE_ADDED
+  details       Json?         @default("{}")
+  isInternal    Boolean       @default(false)
+  createdAt     DateTime      @default(now())
+
+  @@index([ticketId])
+  @@index([createdAt])
+}
+
+model UserFeedback {
+  id          String   @id @default(uuid())
+  type        String   @default("GENERAL") // BUG_REPORT, FEATURE_REQUEST, GENERAL, IMPROVEMENT, PRAISE
+  rating      Int?     // 1 to 5
+  description String
+  module      String?  // LEADS, DEALS, CONTACTS, REPORTS, SETTINGS, CUSTOM_FIELDS, TAGS, GENERAL
+  pageUrl     String?
+  status      String   @default("NEW") // NEW, UNDER_REVIEW, PLANNED, IN_PROGRESS, RESOLVED, DECLINED
+  userId      String?
+  userEmail   String?
+  userName    String?
+  workspaceId String?
+  adminNotes  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([workspaceId])
+  @@index([type])
+  @@index([status])
+  @@index([createdAt])
+}
+
 
