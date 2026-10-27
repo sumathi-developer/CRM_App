@@ -8,6 +8,7 @@ import './styles/index.css';
 import './styles/auth.css';
 import './styles/profile.css';
 import './styles/workspace.css';
+import './styles/users.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
