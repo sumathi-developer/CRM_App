@@ -11,6 +11,7 @@ import './styles/workspace.css';
 import './styles/users.css';
 import './styles/teams.css';
 import './styles/roles.css';
+import './styles/custom-fields.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

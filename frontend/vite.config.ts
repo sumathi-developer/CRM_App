@@ -24,6 +24,7 @@ export default defineConfig({
       '/roles': apiProxyConfig,
       '/permissions': apiProxyConfig,
       '/teams': apiProxyConfig,
+      '/custom-fields': apiProxyConfig,
     },
   },
 });

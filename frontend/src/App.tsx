@@ -32,6 +32,10 @@ import { RolesListPage } from './pages/roles/RolesListPage';
 import { CreateRolePage } from './pages/roles/CreateRolePage';
 import { RoleDetailsPage } from './pages/roles/RoleDetailsPage';
 import { EditRolePage } from './pages/roles/EditRolePage';
+import { CustomFieldsListPage } from './pages/custom-fields/CustomFieldsListPage';
+import { CreateCustomFieldPage } from './pages/custom-fields/CreateCustomFieldPage';
+import { CustomFieldDetailsPage } from './pages/custom-fields/CustomFieldDetailsPage';
+import { EditCustomFieldPage } from './pages/custom-fields/EditCustomFieldPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 export function App() {
@@ -88,6 +92,10 @@ export function App() {
         <Route path="/roles/create" element={<CreateRolePage />} />
         <Route path="/roles/:id" element={<RoleDetailsPage />} />
         <Route path="/roles/:id/edit" element={<EditRolePage />} />
+        <Route path="/custom-fields" element={<CustomFieldsListPage />} />
+        <Route path="/custom-fields/create" element={<CreateCustomFieldPage />} />
+        <Route path="/custom-fields/:id" element={<CustomFieldDetailsPage />} />
+        <Route path="/custom-fields/:id/edit" element={<EditCustomFieldPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/change-password" element={<ChangePasswordPage />} />
         <Route path="/sessions" element={<SessionManagementPage />} />
