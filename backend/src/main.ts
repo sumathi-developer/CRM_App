@@ -54,6 +54,7 @@ async function bootstrap() {
     .addTag('Lead Generation', 'Lead capture, lead sources, web forms, landing pages, scoring, qualification, routing, and analytics')
     .addTag('Custom Fields', 'Module 23: Dynamic custom fields, layout, validation, options management, entity integration, and safe type migration')
     .addTag('Tags', 'Module 24: Reusable tagging system for Leads, Contacts, Companies, Deals, Activities, and Documents with workspace isolation and usage statistics')
+    .addTag('Audit Logs', 'Module 25: Comprehensive audit trail, entity change history, compliance export, and data governance')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

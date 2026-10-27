@@ -1,0 +1,17 @@
+export enum AuditEntityType {
+  LEAD = 'LEAD',
+  CONTACT = 'CONTACT',
+  COMPANY = 'COMPANY',
+  DEAL = 'DEAL',
+  ACTIVITY = 'ACTIVITY',
+  TASK = 'TASK',
+  NOTE = 'NOTE',
+  DOCUMENT = 'DOCUMENT',
+  USER = 'USER',
+  ROLE = 'ROLE',
+  WORKSPACE = 'WORKSPACE',
+  TAG = 'TAG',
+  CUSTOM_FIELD = 'CUSTOM_FIELD',
+  SETTING = 'SETTING',
+  SYSTEM = 'SYSTEM',
+}
