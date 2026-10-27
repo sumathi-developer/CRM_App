@@ -14,8 +14,30 @@ export default defineConfig({
       '/users': {
         target: 'http://localhost:3000',
         changeOrigin: true,
+        bypass: (req) => {
+          if (req.headers.accept?.includes('text/html')) {
+            return '/index.html';
+          }
+        },
       },
       '/settings': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+      },
+      '/workspaces': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+        bypass: (req) => {
+          if (req.headers.accept?.includes('text/html')) {
+            return '/index.html';
+          }
+        },
+      },
+      '/roles': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+      },
+      '/organizations': {
         target: 'http://localhost:3000',
         changeOrigin: true,
       },
