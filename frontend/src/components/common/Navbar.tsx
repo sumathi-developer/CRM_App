@@ -39,6 +39,7 @@ export const Navbar: React.FC = () => {
   const navLinks = [
     { label: 'Workspace', path: '/workspaces', icon: <BriefcaseIcon size={16} /> },
     { label: 'Users', path: '/users', icon: <UsersIcon size={16} /> },
+    { label: 'Teams', path: '/teams', icon: <ShieldIcon size={16} /> },
     { label: 'Profile', path: '/profile', icon: <UserIcon size={16} /> },
     { label: 'Security', path: '/change-password', icon: <KeyRoundIcon size={16} /> },
     { label: 'Sessions', path: '/sessions', icon: <MonitorIcon size={16} /> },
@@ -87,6 +88,8 @@ export const Navbar: React.FC = () => {
                   ? location.pathname.startsWith('/workspaces')
                   : item.path === '/users'
                   ? location.pathname.startsWith('/users')
+                  : item.path === '/teams'
+                  ? location.pathname.startsWith('/teams')
                   : location.pathname === item.path;
 
               return (

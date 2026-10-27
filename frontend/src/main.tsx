@@ -9,6 +9,7 @@ import './styles/auth.css';
 import './styles/profile.css';
 import './styles/workspace.css';
 import './styles/users.css';
+import './styles/teams.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

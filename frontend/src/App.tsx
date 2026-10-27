@@ -21,6 +21,13 @@ import { UserDetailsPage } from './pages/users/UserDetailsPage';
 import { EditUserPage } from './pages/users/EditUserPage';
 import { UserActivitiesPage } from './pages/users/UserActivitiesPage';
 import { UserPerformancePage } from './pages/users/UserPerformancePage';
+import { TeamsListPage } from './pages/teams/TeamsListPage';
+import { CreateTeamPage } from './pages/teams/CreateTeamPage';
+import { TeamDetailsPage } from './pages/teams/TeamDetailsPage';
+import { EditTeamPage } from './pages/teams/EditTeamPage';
+import { TeamMembersPage } from './pages/teams/TeamMembersPage';
+import { TeamActivitiesPage } from './pages/teams/TeamActivitiesPage';
+import { TeamPerformancePage } from './pages/teams/TeamPerformancePage';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 export function App() {
@@ -66,6 +73,13 @@ export function App() {
         <Route path="/users/:id/edit" element={<EditUserPage />} />
         <Route path="/users/:id/activities" element={<UserActivitiesPage />} />
         <Route path="/users/:id/performance" element={<UserPerformancePage />} />
+        <Route path="/teams" element={<TeamsListPage />} />
+        <Route path="/teams/create" element={<CreateTeamPage />} />
+        <Route path="/teams/:id" element={<TeamDetailsPage />} />
+        <Route path="/teams/:id/edit" element={<EditTeamPage />} />
+        <Route path="/teams/:id/members" element={<TeamMembersPage />} />
+        <Route path="/teams/:id/activities" element={<TeamActivitiesPage />} />
+        <Route path="/teams/:id/performance" element={<TeamPerformancePage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/change-password" element={<ChangePasswordPage />} />
         <Route path="/sessions" element={<SessionManagementPage />} />
