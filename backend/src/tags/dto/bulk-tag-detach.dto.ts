@@ -1,0 +1,32 @@
+import { ApiProperty } from '@nestjs/swagger';
+import { IsArray, IsEnum, IsUUID, ArrayNotEmpty } from 'class-validator';
+import { TagEntityType } from '../enums/tag-entity-type.enum';
+
+export class BulkTagDetachDto {
+  @ApiProperty({
+    description: 'Target CRM entity type (LEAD, CONTACT, COMPANY, DEAL, ACTIVITY, DOCUMENT)',
+    enum: TagEntityType,
+  })
+  @IsEnum(TagEntityType)
+  entityType: TagEntityType;
+
+  @ApiProperty({
+    description: 'Array of entity UUIDs to remove tags from',
+    example: ['123e4567-e89b-12d3-a456-426614174000'],
+    type: [String],
+  })
+  @IsArray()
+  @ArrayNotEmpty({ message: 'entityIds must contain at least one entity UUID' })
+  @IsUUID('4', { each: true })
+  entityIds: string[];
+
+  @ApiProperty({
+    description: 'Array of tag UUIDs to remove from all specified entities',
+    example: ['234e5678-e89b-12d3-a456-426614174000'],
+    type: [String],
+  })
+  @IsArray()
+  @ArrayNotEmpty({ message: 'tagIds must contain at least one tag UUID' })
+  @IsUUID('4', { each: true })
+  tagIds: string[];
+}

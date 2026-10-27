@@ -825,4 +825,139 @@ model SearchHistory {
   @@index([workspaceId])
 }
 
+// ==========================================
+// Module 23: Custom Fields Models
+// ==========================================
+
+model CustomField {
+  id              String                   @id @default(uuid())
+  name            String
+  key             String
+  entityType      String                   // LEAD, CONTACT, COMPANY, DEAL, ACTIVITY
+  fieldType       String                   // TEXT, LONG_TEXT, NUMBER, CURRENCY, PERCENTAGE, DATE, DATETIME, CHECKBOX, DROPDOWN, MULTI_SELECT, RADIO, URL, EMAIL, PHONE, USER_SELECTOR
+  description     String?
+  placeholder     String?
+  helpText        String?
+  defaultValue    Json?
+  isRequired      Boolean                  @default(false)
+  isUnique        Boolean                  @default(false)
+  isVisible       Boolean                  @default(true)
+  isSearchable    Boolean                  @default(true)
+  isFilterable    Boolean                  @default(true)
+  isEditable      Boolean                  @default(true)
+  order           Int                      @default(0)
+  section         String                   @default("General Information")
+  gridWidth       Int                      @default(12) // 1 to 12 columns
+  validationRules Json?                    @default("{}")
+  readRoles       Json?                    @default("[]")
+  editRoles       Json?                    @default("[]")
+  workspaceId     String?
+  isActive        Boolean                  @default(true)
+  isArchived      Boolean                  @default(false)
+  createdAt       DateTime                 @default(now())
+  updatedAt       DateTime                 @updatedAt
+
+  options         CustomFieldOption[]
+  values          CustomFieldValue[]
+  typeHistories   CustomFieldTypeHistory[]
+
+  @@index([entityType, key])
+  @@index([entityType, workspaceId])
+  @@index([workspaceId])
+}
+
+model CustomFieldOption {
+  id        String      @id @default(uuid())
+  fieldId   String
+  field     CustomField @relation(fields: [fieldId], references: [id], onDelete: Cascade)
+  label     String
+  value     String
+  color     String?
+  order     Int         @default(0)
+  isDefault Boolean     @default(false)
+  isActive  Boolean     @default(true)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  @@unique([fieldId, value])
+  @@index([fieldId])
+}
+
+model CustomFieldValue {
+  id           String      @id @default(uuid())
+  fieldId      String
+  field        CustomField @relation(fields: [fieldId], references: [id], onDelete: Cascade)
+  entityType   String      // LEAD, CONTACT, COMPANY, DEAL, ACTIVITY
+  entityId     String      // Lead, Contact, Organization, Deal, or Activity UUID
+  value        Json        // Canonical JSON representation
+  textValue    String?
+  numberValue  Float?
+  dateValue    DateTime?
+  booleanValue Boolean?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  @@unique([fieldId, entityId])
+  @@index([entityType, entityId])
+  @@index([fieldId])
+  @@index([textValue])
+  @@index([numberValue])
+  @@index([dateValue])
+}
+
+model CustomFieldTypeHistory {
+  id             String      @id @default(uuid())
+  fieldId        String
+  field          CustomField @relation(fields: [fieldId], references: [id], onDelete: Cascade)
+  previousType   String
+  newType        String
+  convertedCount Int         @default(0)
+  failedCount    Int         @default(0)
+  details        Json?       @default("{}")
+  changedById    String?
+  createdAt      DateTime    @default(now())
+
+  @@index([fieldId])
+}
+
+// ==========================================
+// Module 24: Tags Models
+// ==========================================
+
+model Tag {
+  id          String          @id @default(uuid())
+  name        String
+  color       String?         @default("#3b82f6")
+  description String?
+  status      String          @default("ACTIVE") // ACTIVE, INACTIVE, ARCHIVED
+  isProtected Boolean         @default(false)
+  workspaceId String?
+  createdById String?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  assignments TagAssignment[]
+
+  @@unique([workspaceId, name])
+  @@index([workspaceId])
+  @@index([status])
+  @@index([name])
+}
+
+model TagAssignment {
+  id           String   @id @default(uuid())
+  tagId        String
+  tag          Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  entityType   String   // LEAD, CONTACT, COMPANY, DEAL, ACTIVITY, DOCUMENT
+  entityId     String
+  workspaceId  String?
+  assignedById String?
+  createdAt    DateTime @default(now())
+
+  @@unique([tagId, entityType, entityId])
+  @@index([entityType, entityId])
+  @@index([tagId])
+  @@index([workspaceId])
+}
+
 

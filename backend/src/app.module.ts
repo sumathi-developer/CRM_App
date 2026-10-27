@@ -33,6 +33,8 @@ import { LeadGenerationModule } from './lead-generation/lead-generation.module';
 import { CommunicationsModule } from './communications/communications.module';
 import { SearchModule } from './search/search.module';
 import { AnalyticsModule } from './analytics/analytics.module';
+import { CustomFieldsModule } from './custom-fields/custom-fields.module';
+import { TagsModule } from './tags/tags.module';
 import { AppController } from './app.controller';
 
 @Module({
@@ -66,6 +68,8 @@ import { AppController } from './app.controller';
     CommunicationsModule,
     SearchModule,
     AnalyticsModule,
+    CustomFieldsModule,
+    TagsModule,
   ],
   providers: [
     {
