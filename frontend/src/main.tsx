@@ -13,6 +13,7 @@ import './styles/teams.css';
 import './styles/roles.css';
 import './styles/custom-fields.css';
 import './styles/tags.css';
+import './styles/lead-generation.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

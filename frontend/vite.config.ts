@@ -26,6 +26,7 @@ export default defineConfig({
       '/teams': apiProxyConfig,
       '/custom-fields': apiProxyConfig,
       '/tags': apiProxyConfig,
+      '/lead-generation': apiProxyConfig,
     },
   },
 });

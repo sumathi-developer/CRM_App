@@ -40,6 +40,21 @@ import { TagsListPage } from './pages/tags/TagsListPage';
 import { CreateTagPage } from './pages/tags/CreateTagPage';
 import { EditTagPage } from './pages/tags/EditTagPage';
 import { TagUsagePage } from './pages/tags/TagUsagePage';
+import { LeadGenOverviewPage } from './pages/lead-generation/LeadGenOverviewPage';
+import { SourcesListPage } from './pages/lead-generation/SourcesListPage';
+import { SourceFormPage } from './pages/lead-generation/SourceFormPage';
+import { SourceDetailsPage } from './pages/lead-generation/SourceDetailsPage';
+import { WebFormsListPage } from './pages/lead-generation/WebFormsListPage';
+import { FormBuilderPage } from './pages/lead-generation/FormBuilderPage';
+import { CaptureFormsPage } from './pages/lead-generation/CaptureFormsPage';
+import { ManualCapturePage } from './pages/lead-generation/ManualCapturePage';
+import { ChannelLeadsPage } from './pages/lead-generation/ChannelLeadsPage';
+import { ScoringPage } from './pages/lead-generation/ScoringPage';
+import { QualificationPage } from './pages/lead-generation/QualificationPage';
+import { RoutingPage } from './pages/lead-generation/RoutingPage';
+import { AssignmentRulesPage } from './pages/lead-generation/AssignmentRulesPage';
+import { LeadGenAnalyticsPage } from './pages/lead-generation/LeadGenAnalyticsPage';
+import { SourceAnalyticsPage } from './pages/lead-generation/SourceAnalyticsPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 export function App() {
@@ -105,6 +120,26 @@ export function App() {
         <Route path="/tags/usage" element={<TagUsagePage />} />
         <Route path="/tags/:id/edit" element={<EditTagPage />} />
         <Route path="/tags/:id/usage" element={<TagUsagePage />} />
+
+        {/* Lead Generation Module Routes */}
+        <Route path="/lead-generation" element={<LeadGenOverviewPage />} />
+        <Route path="/lead-generation/sources" element={<SourcesListPage />} />
+        <Route path="/lead-generation/sources/create" element={<SourceFormPage />} />
+        <Route path="/lead-generation/sources/:id/edit" element={<SourceFormPage />} />
+        <Route path="/lead-generation/sources/:id" element={<SourceDetailsPage />} />
+        <Route path="/lead-generation/forms" element={<WebFormsListPage />} />
+        <Route path="/lead-generation/forms/create" element={<FormBuilderPage />} />
+        <Route path="/lead-generation/forms/:id/edit" element={<FormBuilderPage />} />
+        <Route path="/lead-generation/capture-forms" element={<CaptureFormsPage />} />
+        <Route path="/lead-generation/manual-capture" element={<ManualCapturePage />} />
+        <Route path="/lead-generation/leads/:channel" element={<ChannelLeadsPage />} />
+        <Route path="/lead-generation/scoring" element={<ScoringPage />} />
+        <Route path="/lead-generation/qualification" element={<QualificationPage />} />
+        <Route path="/lead-generation/routing" element={<RoutingPage />} />
+        <Route path="/lead-generation/assignment-rules" element={<AssignmentRulesPage />} />
+        <Route path="/lead-generation/analytics" element={<LeadGenAnalyticsPage />} />
+        <Route path="/lead-generation/analytics/sources" element={<SourceAnalyticsPage />} />
+
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/change-password" element={<ChangePasswordPage />} />
         <Route path="/sessions" element={<SessionManagementPage />} />

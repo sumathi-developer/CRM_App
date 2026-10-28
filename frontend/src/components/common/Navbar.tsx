@@ -16,6 +16,7 @@ import {
   LockIcon,
   SlidersIcon,
   TagIcon,
+  TargetIcon,
 } from './Icons';
 
 export const Navbar: React.FC = () => {
@@ -46,6 +47,7 @@ export const Navbar: React.FC = () => {
     { label: 'Roles', path: '/roles', icon: <LockIcon size={16} /> },
     { label: 'Fields', path: '/custom-fields', icon: <SlidersIcon size={16} /> },
     { label: 'Tags', path: '/tags', icon: <TagIcon size={16} /> },
+    { label: 'Lead Gen', path: '/lead-generation', icon: <TargetIcon size={16} /> },
     { label: 'Profile', path: '/profile', icon: <UserIcon size={16} /> },
     { label: 'Security', path: '/change-password', icon: <KeyRoundIcon size={16} /> },
     { label: 'Sessions', path: '/sessions', icon: <MonitorIcon size={16} /> },
@@ -102,6 +104,8 @@ export const Navbar: React.FC = () => {
                   ? location.pathname.startsWith('/custom-fields')
                   : item.path === '/tags'
                   ? location.pathname.startsWith('/tags')
+                  : item.path === '/lead-generation'
+                  ? location.pathname.startsWith('/lead-generation')
                   : location.pathname === item.path;
 
               return (
