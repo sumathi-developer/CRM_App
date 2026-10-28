@@ -36,6 +36,10 @@ import { CustomFieldsListPage } from './pages/custom-fields/CustomFieldsListPage
 import { CreateCustomFieldPage } from './pages/custom-fields/CreateCustomFieldPage';
 import { CustomFieldDetailsPage } from './pages/custom-fields/CustomFieldDetailsPage';
 import { EditCustomFieldPage } from './pages/custom-fields/EditCustomFieldPage';
+import { TagsListPage } from './pages/tags/TagsListPage';
+import { CreateTagPage } from './pages/tags/CreateTagPage';
+import { EditTagPage } from './pages/tags/EditTagPage';
+import { TagUsagePage } from './pages/tags/TagUsagePage';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 export function App() {
@@ -96,6 +100,11 @@ export function App() {
         <Route path="/custom-fields/create" element={<CreateCustomFieldPage />} />
         <Route path="/custom-fields/:id" element={<CustomFieldDetailsPage />} />
         <Route path="/custom-fields/:id/edit" element={<EditCustomFieldPage />} />
+        <Route path="/tags" element={<TagsListPage />} />
+        <Route path="/tags/create" element={<CreateTagPage />} />
+        <Route path="/tags/usage" element={<TagUsagePage />} />
+        <Route path="/tags/:id/edit" element={<EditTagPage />} />
+        <Route path="/tags/:id/usage" element={<TagUsagePage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/change-password" element={<ChangePasswordPage />} />
         <Route path="/sessions" element={<SessionManagementPage />} />

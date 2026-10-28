@@ -245,6 +245,13 @@ export const ChevronDownIcon: React.FC<IconProps> = ({ size = 18, strokeWidth = 
   </svg>
 );
 
+export const ChevronRightIcon: React.FC<IconProps> = ({ size = 18, strokeWidth = 2, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="m9 18 6-6-6-6" />
+  </svg>
+);
+
+
 export const GlobeIcon: React.FC<IconProps> = ({ size = 18, strokeWidth = 2, ...props }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" {...props}>
     <circle cx="12" cy="12" r="10" />
@@ -363,6 +370,22 @@ export const UserMinusIcon: React.FC<IconProps> = ({ size = 18, strokeWidth = 2,
     <line x1="22" x2="16" y1="11" y2="11" />
   </svg>
 );
+
+export const TagIcon: React.FC<IconProps> = ({ size = 18, strokeWidth = 2, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2Z" />
+    <path d="M7 7h.01" />
+  </svg>
+);
+
+export const BarChart2Icon: React.FC<IconProps> = ({ size = 18, strokeWidth = 2, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <line x1="18" x2="18" y1="20" y2="10" />
+    <line x1="12" x2="12" y1="20" y2="4" />
+    <line x1="6" x2="6" y1="20" y2="14" />
+  </svg>
+);
+
 
 
 

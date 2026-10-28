@@ -12,6 +12,7 @@ import './styles/users.css';
 import './styles/teams.css';
 import './styles/roles.css';
 import './styles/custom-fields.css';
+import './styles/tags.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

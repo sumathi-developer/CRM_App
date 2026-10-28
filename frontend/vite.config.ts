@@ -25,6 +25,7 @@ export default defineConfig({
       '/permissions': apiProxyConfig,
       '/teams': apiProxyConfig,
       '/custom-fields': apiProxyConfig,
+      '/tags': apiProxyConfig,
     },
   },
 });
