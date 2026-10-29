@@ -131,6 +131,26 @@ const CRM_MODULES: ModuleNavConfig[] = [
     ],
   },
   {
+    id: 'deals',
+    label: 'Deals',
+    icon: <BriefcaseIcon size={18} />,
+    basePath: '/deals',
+    subItems: [
+      { label: 'All Deals', path: '/deals' },
+      { label: 'My Deals', path: '/deals/my' },
+      { label: 'Deal List', path: '/deals/list' },
+      { label: 'Deal Board', path: '/deals/board' },
+      { label: 'Deal Table', path: '/deals/table' },
+      { label: 'Create Deal', path: '/deals/create' },
+      { label: 'Won Deals', path: '/deals/won' },
+      { label: 'Lost Deals', path: '/deals/lost' },
+      { label: 'Deal Activities', path: '/deals/activities' },
+      { label: 'Deal Notes', path: '/deals/notes' },
+      { label: 'Deal Documents', path: '/deals/documents' },
+      { label: 'Deal Settings', path: '/deals/settings' },
+    ],
+  },
+  {
     id: 'lead-generation',
     label: 'Lead Generation',
     icon: <TargetIcon size={18} />,
@@ -208,6 +228,7 @@ export const Navbar: React.FC = () => {
     if (path.startsWith('/leads')) return 'leads';
     if (path.startsWith('/contacts')) return 'contacts';
     if (path.startsWith('/pipelines')) return 'pipelines';
+    if (path.startsWith('/deals')) return 'deals';
     if (path.startsWith('/lead-generation')) return 'lead-generation';
     if (path.startsWith('/custom-fields')) return 'custom-fields';
     if (path.startsWith('/tags')) return 'tags';
@@ -383,6 +404,9 @@ export const Navbar: React.FC = () => {
                       const isSubActive =
                         sub.path === '/workspaces' ||
                         sub.path === '/leads' ||
+                        sub.path === '/contacts' ||
+                        sub.path === '/pipelines' ||
+                        sub.path === '/deals' ||
                         sub.path === '/lead-generation' ||
                         sub.path === '/users' ||
                         sub.path === '/teams' ||

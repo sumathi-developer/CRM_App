@@ -91,6 +91,16 @@ import {
   StageProbabilityPage,
   PipelineSettingsPage,
 } from './pages/pipelines';
+import {
+  DealsExplorerPage,
+  CreateDealPage,
+  EditDealPage,
+  DealDetailsPage,
+  DealActivitiesPage,
+  DealNotesPage,
+  DealDocumentsPage,
+  DealSettingsPage,
+} from './pages/deals';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 export function App() {
@@ -239,6 +249,25 @@ export function App() {
         <Route path="/pipelines/:id/stages" element={<StageManagementPage />} />
         <Route path="/pipelines/:id/stage-management" element={<StageManagementPage />} />
         <Route path="/pipelines/:id/probability" element={<StageProbabilityPage />} />
+
+        {/* Deals Module Routes */}
+        <Route path="/deals" element={<DealsExplorerPage scope="all" />} />
+        <Route path="/deals/my" element={<DealsExplorerPage scope="my" />} />
+        <Route path="/deals/list" element={<DealsExplorerPage scope="all" forcedView="list" />} />
+        <Route path="/deals/board" element={<DealsExplorerPage scope="all" forcedView="board" />} />
+        <Route path="/deals/table" element={<DealsExplorerPage scope="all" forcedView="table" />} />
+        <Route path="/deals/won" element={<DealsExplorerPage scope="won" />} />
+        <Route path="/deals/lost" element={<DealsExplorerPage scope="lost" />} />
+        <Route path="/deals/create" element={<CreateDealPage />} />
+        <Route path="/deals/activities" element={<DealActivitiesPage />} />
+        <Route path="/deals/notes" element={<DealNotesPage />} />
+        <Route path="/deals/documents" element={<DealDocumentsPage />} />
+        <Route path="/deals/settings" element={<DealSettingsPage />} />
+        <Route path="/deals/:id" element={<DealDetailsPage />} />
+        <Route path="/deals/:id/edit" element={<EditDealPage />} />
+        <Route path="/deals/:id/activities" element={<DealActivitiesPage />} />
+        <Route path="/deals/:id/notes" element={<DealNotesPage />} />
+        <Route path="/deals/:id/documents" element={<DealDocumentsPage />} />
 
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/change-password" element={<ChangePasswordPage />} />
