@@ -5,6 +5,7 @@ import { useWorkspace } from '../../context/useWorkspace';
 import { Logo } from '../auth/Logo';
 import { WorkspaceSwitcher } from '../workspace/WorkspaceSwitcher';
 import {
+  ActivityIcon,
   UserIcon,
   UsersIcon,
   LogOutIcon,
@@ -151,6 +152,24 @@ const CRM_MODULES: ModuleNavConfig[] = [
     ],
   },
   {
+    id: 'activities',
+    label: 'Activities',
+    icon: <ActivityIcon size={18} />,
+    basePath: '/activities',
+    subItems: [
+      { label: 'All Activities', path: '/activities' },
+      { label: 'My Activities', path: '/activities/my' },
+      { label: 'Tasks', path: '/activities/tasks' },
+      { label: 'Calls', path: '/activities/calls' },
+      { label: 'Meetings', path: '/activities/meetings' },
+      { label: 'Follow-ups', path: '/activities/follow-ups' },
+      { label: 'Emails', path: '/activities/emails' },
+      { label: 'Completed Activities', path: '/activities/completed' },
+      { label: 'Overdue Activities', path: '/activities/overdue' },
+      { label: 'Create Activity', path: '/activities/create' },
+    ],
+  },
+  {
     id: 'lead-generation',
     label: 'Lead Generation',
     icon: <TargetIcon size={18} />,
@@ -229,6 +248,7 @@ export const Navbar: React.FC = () => {
     if (path.startsWith('/contacts')) return 'contacts';
     if (path.startsWith('/pipelines')) return 'pipelines';
     if (path.startsWith('/deals')) return 'deals';
+    if (path.startsWith('/activities')) return 'activities';
     if (path.startsWith('/lead-generation')) return 'lead-generation';
     if (path.startsWith('/custom-fields')) return 'custom-fields';
     if (path.startsWith('/tags')) return 'tags';
@@ -407,6 +427,7 @@ export const Navbar: React.FC = () => {
                         sub.path === '/contacts' ||
                         sub.path === '/pipelines' ||
                         sub.path === '/deals' ||
+                        sub.path === '/activities' ||
                         sub.path === '/lead-generation' ||
                         sub.path === '/users' ||
                         sub.path === '/teams' ||

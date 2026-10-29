@@ -101,6 +101,12 @@ import {
   DealDocumentsPage,
   DealSettingsPage,
 } from './pages/deals';
+import {
+  ActivitiesExplorerPage,
+  CreateActivityPage,
+  EditActivityPage,
+  ActivityDetailsPage,
+} from './pages/activities';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 export function App() {
@@ -268,6 +274,20 @@ export function App() {
         <Route path="/deals/:id/activities" element={<DealActivitiesPage />} />
         <Route path="/deals/:id/notes" element={<DealNotesPage />} />
         <Route path="/deals/:id/documents" element={<DealDocumentsPage />} />
+
+        {/* Activities Module Routes */}
+        <Route path="/activities" element={<ActivitiesExplorerPage scope="all" />} />
+        <Route path="/activities/my" element={<ActivitiesExplorerPage scope="my" />} />
+        <Route path="/activities/tasks" element={<ActivitiesExplorerPage scope="tasks" />} />
+        <Route path="/activities/calls" element={<ActivitiesExplorerPage scope="calls" />} />
+        <Route path="/activities/meetings" element={<ActivitiesExplorerPage scope="meetings" />} />
+        <Route path="/activities/follow-ups" element={<ActivitiesExplorerPage scope="follow-ups" />} />
+        <Route path="/activities/emails" element={<ActivitiesExplorerPage scope="emails" />} />
+        <Route path="/activities/completed" element={<ActivitiesExplorerPage scope="completed" />} />
+        <Route path="/activities/overdue" element={<ActivitiesExplorerPage scope="overdue" />} />
+        <Route path="/activities/create" element={<CreateActivityPage />} />
+        <Route path="/activities/:id" element={<ActivityDetailsPage />} />
+        <Route path="/activities/:id/edit" element={<EditActivityPage />} />
 
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/change-password" element={<ChangePasswordPage />} />
