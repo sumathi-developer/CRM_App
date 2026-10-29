@@ -1,3 +1,5 @@
+
+
 import type {
   ActivityPriority,
   ActivityStatus,
@@ -7,8 +9,6 @@ import type {
   PaginationMeta,
   SortDirection,
 } from './lead.types';
-import type { ContactOrganization } from './contact.types';
-import type { UserOption } from '../pages/lead-generation/leadGenHooks';
 import type {
   CreatePipelineDealPayload,
   DealQueryParams,
@@ -24,7 +24,6 @@ export type {
   ActivityPriority,
   ActivityStatus,
   ActivityType,
-  ContactOrganization as DealOrganizationOption,
   CreatePipelineDealPayload as CreateDealPayload,
   DealQueryParams,
   DealStatus,
@@ -36,8 +35,20 @@ export type {
   PipelineStage,
   SortDirection,
   UpdatePipelineDealPayload as UpdateDealPayload,
-  UserOption as DealUserOption,
 };
+
+export interface DealOrganizationOption {
+  id: string;
+  name: string;
+  industry?: string | null;
+  website?: string | null;
+}
+
+export interface DealUserOption {
+  id: string;
+  name: string;
+  email: string;
+}
 
 export type DealViewMode = 'table' | 'list' | 'board';
 

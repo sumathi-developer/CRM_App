@@ -152,12 +152,15 @@ export const DealsExplorerPage: React.FC<DealsExplorerPageProps> = ({
     [activePipeline],
   );
 
+  const currentUserId = user?.id;
+  const activePipelineId = activePipeline?.id;
+
   const loadDeals = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     try {
       const effectiveOwnerId =
-        scope === 'my' && user?.id ? user.id : ownerFilter || undefined;
+        scope === 'my' && currentUserId ? currentUserId : ownerFilter || undefined;
       const effectiveStatus =
         scope === 'won'
           ? 'WON'
@@ -173,7 +176,7 @@ export const DealsExplorerPage: React.FC<DealsExplorerPageProps> = ({
         search: search.trim() || undefined,
         pipelineId:
           viewMode === 'board'
-            ? activePipeline?.id || pipelineFilter || undefined
+            ? activePipelineId || pipelineFilter || undefined
             : pipelineFilter || undefined,
         stageId: stageFilter || undefined,
         status: effectiveStatus,
@@ -191,14 +194,14 @@ export const DealsExplorerPage: React.FC<DealsExplorerPageProps> = ({
     }
   }, [
     scope,
-    user?.id,
+    currentUserId,
     ownerFilter,
     statusFilter,
     viewMode,
     settings.pageSize,
     page,
     search,
-    activePipeline?.id,
+    activePipelineId,
     pipelineFilter,
     stageFilter,
   ]);
@@ -298,11 +301,11 @@ export const DealsExplorerPage: React.FC<DealsExplorerPageProps> = ({
 
   const hasActiveFilters = Boolean(
     search ||
-      pipelineFilter ||
-      stageFilter ||
-      (scope !== 'won' && scope !== 'lost' && statusFilter) ||
-      ownerFilter ||
-      organizationFilter,
+    pipelineFilter ||
+    stageFilter ||
+    (scope !== 'won' && scope !== 'lost' && statusFilter) ||
+    ownerFilter ||
+    organizationFilter,
   );
 
   const handleResetFilters = () => {
@@ -643,10 +646,9 @@ export const DealsExplorerPage: React.FC<DealsExplorerPageProps> = ({
           onDeleteDeal={(deal) => setDeletingDeal(deal)}
           onOpenCreateDeal={(stId) =>
             navigate(
-              `/deals/create${
-                activePipeline
-                  ? `?pipelineId=${activePipeline.id}${stId ? `&stageId=${stId}` : ''}`
-                  : ''
+              `/deals/create${activePipeline
+                ? `?pipelineId=${activePipeline.id}${stId ? `&stageId=${stId}` : ''}`
+                : ''
               }`,
             )
           }
