@@ -422,3 +422,4 @@ export const SAMPLE_CONTACTS_JSON = JSON.stringify(
   null,
   2,
 );
+

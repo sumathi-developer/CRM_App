@@ -94,6 +94,24 @@ const CRM_MODULES: ModuleNavConfig[] = [
     ],
   },
   {
+    id: 'contacts',
+    label: 'Contacts',
+    icon: <UsersIcon size={18} />,
+    basePath: '/contacts',
+    subItems: [
+      { label: 'All Contacts', path: '/contacts' },
+      { label: 'My Contacts', path: '/contacts/my' },
+      { label: 'Contact List', path: '/contacts/list' },
+      { label: 'Contact Table', path: '/contacts/table' },
+      { label: 'Create Contact', path: '/contacts/create' },
+      { label: 'Contact Activities', path: '/contacts/activities' },
+      { label: 'Contact Notes', path: '/contacts/notes' },
+      { label: 'Contact Documents', path: '/contacts/documents' },
+      { label: 'Contact Import', path: '/contacts/import' },
+      { label: 'Contact Export', path: '/contacts/export' },
+    ],
+  },
+  {
     id: 'lead-generation',
     label: 'Lead Generation',
     icon: <TargetIcon size={18} />,
@@ -169,6 +187,7 @@ export const Navbar: React.FC = () => {
     if (path.startsWith('/users') || path.startsWith('/teams')) return 'users-teams';
     if (path.startsWith('/roles')) return 'roles';
     if (path.startsWith('/leads')) return 'leads';
+    if (path.startsWith('/contacts')) return 'contacts';
     if (path.startsWith('/lead-generation')) return 'lead-generation';
     if (path.startsWith('/custom-fields')) return 'custom-fields';
     if (path.startsWith('/tags')) return 'tags';

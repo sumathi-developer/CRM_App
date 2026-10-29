@@ -215,3 +215,4 @@ export interface UpdateContactNotePayload {
   title?: string;
   content?: string;
 }
+

@@ -71,6 +71,17 @@ import {
   LeadConversionPage,
   LeadSettingsPage,
 } from './pages/leads';
+import {
+  ContactsExplorerPage,
+  CreateContactPage,
+  EditContactPage,
+  ContactDetailsPage,
+  ContactActivitiesPage,
+  ContactNotesPage,
+  ContactDocumentsPage,
+  ContactImportPage,
+  ContactExportPage,
+} from './pages/contacts';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 export function App() {
@@ -182,6 +193,23 @@ export function App() {
         <Route path="/leads/:id/notes" element={<LeadNotesPage />} />
         <Route path="/leads/:id/documents" element={<LeadDocumentsPage />} />
         <Route path="/leads/:id/convert" element={<LeadConversionPage />} />
+
+        {/* Contacts Module Routes */}
+        <Route path="/contacts" element={<ContactsExplorerPage />} />
+        <Route path="/contacts/my" element={<ContactsExplorerPage />} />
+        <Route path="/contacts/list" element={<ContactsExplorerPage />} />
+        <Route path="/contacts/table" element={<ContactsExplorerPage />} />
+        <Route path="/contacts/create" element={<CreateContactPage />} />
+        <Route path="/contacts/activities" element={<ContactActivitiesPage />} />
+        <Route path="/contacts/notes" element={<ContactNotesPage />} />
+        <Route path="/contacts/documents" element={<ContactDocumentsPage />} />
+        <Route path="/contacts/import" element={<ContactImportPage />} />
+        <Route path="/contacts/export" element={<ContactExportPage />} />
+        <Route path="/contacts/:id" element={<ContactDetailsPage />} />
+        <Route path="/contacts/:id/edit" element={<EditContactPage />} />
+        <Route path="/contacts/:id/activities" element={<ContactActivitiesPage />} />
+        <Route path="/contacts/:id/notes" element={<ContactNotesPage />} />
+        <Route path="/contacts/:id/documents" element={<ContactDocumentsPage />} />
 
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/change-password" element={<ChangePasswordPage />} />

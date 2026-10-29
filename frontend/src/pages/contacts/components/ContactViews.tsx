@@ -7,7 +7,7 @@ import type {
   ConvertContactResponse,
   PipelineOption,
 } from '../../../types/contact.types';
-import { DataTable, type ColumnDef } from '../../../components/common/DataTable';
+import { DataTable, type Column } from '../../lead-generation/components/DataTable';
 import { EmptyState } from '../../../components/common/EmptyState';
 import { LoadingIndicator } from '../../../components/auth/LoadingIndicator';
 import { Badge } from '../../lead-generation/components/Cards';
@@ -131,7 +131,7 @@ export const ContactCard: React.FC<ContactCardProps> = ({
             />
           )}
           <div className="ld-avatar" aria-hidden="true">
-            {getInitials(contact.firstName, contact.lastName, fullName)}
+            {getInitials(fullName)}
           </div>
           <div className="ld-card-titles">
             <Link to={`/contacts/${contact.id}`} className="ld-card-title-link">
@@ -300,7 +300,7 @@ export const ContactsTableView: React.FC<ContactsSharedViewProps> = ({
 }) => {
   const allSelected = contacts.length > 0 && contacts.every((c) => selectedIds.includes(c.id));
 
-  const columns: ColumnDef<Contact>[] = [
+  const columns: Column<Contact>[] = [
     {
       key: 'select',
       header: (
@@ -312,7 +312,6 @@ export const ContactsTableView: React.FC<ContactsSharedViewProps> = ({
           aria-label="Select all contacts on page"
         />
       ),
-      width: '42px',
       render: (contact) => (
         <input
           type="checkbox"
@@ -329,7 +328,7 @@ export const ContactsTableView: React.FC<ContactsSharedViewProps> = ({
       render: (contact) => (
         <div className="ld-table-lead-cell">
           <div className="ld-avatar ld-avatar-sm" aria-hidden="true">
-            {getInitials(contact.firstName, contact.lastName, contactFullName(contact))}
+            {getInitials(contactFullName(contact))}
           </div>
           <div className="lg-cell-stack">
             <Link to={`/contacts/${contact.id}`} className="lg-table-link">
@@ -462,18 +461,16 @@ export const ContactsTableView: React.FC<ContactsSharedViewProps> = ({
   ];
 
   return (
-    <div className="lg-card lg-table-card">
-      <DataTable
-        columns={columns}
-        data={contacts}
-        keyExtractor={(row) => row.id}
-        isLoading={isLoading}
-        loadingMessage="Loading contacts..."
-        emptyTitle="No contacts match the current filters"
-        emptyDescription="Adjust your search, stage, or organization filters, or create a new contact."
-        emptyAction={emptyAction}
-      />
-    </div>
+    <DataTable
+      columns={columns}
+      rows={contacts}
+      rowKey={(row) => row.id}
+      isLoading={isLoading}
+      loadingMessage="Loading contacts..."
+      emptyTitle="No contacts match the current filters"
+      emptyDescription="Adjust your search, stage, or organization filters, or create a new contact."
+      emptyAction={emptyAction}
+    />
   );
 };
 
@@ -589,7 +586,7 @@ export const ContactQuickDrawer: React.FC<ContactQuickDrawerProps> = ({
         <header className="ld-drawer-header">
           <div className="ld-drawer-title-row">
             <div className="ld-avatar">
-              {getInitials(contact.firstName, contact.lastName, fullName)}
+              {getInitials(fullName)}
             </div>
             <div>
               <h3 className="ld-drawer-title">{fullName}</h3>
@@ -828,7 +825,7 @@ export const ConvertContactModal: React.FC<ConvertContactModalProps> = ({
       onClose={onClose}
       onSubmit={handleSubmit}
       submitLabel="Confirm & Convert to Customer"
-      isSubmitting={isSubmitting}
+      isSaving={isSubmitting}
     >
       {error && <div className="lg-inline-alert">{error}</div>}
 

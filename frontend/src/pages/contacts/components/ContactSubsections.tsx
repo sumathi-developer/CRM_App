@@ -26,7 +26,6 @@ import {
   priorityTone,
 } from '../../leads/leadConstants';
 import {
-  ActivityIcon,
   CalendarIcon,
   CheckCircleIcon,
   ClockIcon,
@@ -438,7 +437,7 @@ export const ContactActivitiesSection: React.FC<ContactActivitiesSectionProps> =
         onClose={() => setIsModalOpen(false)}
         onSubmit={handleSaveActivity}
         submitLabel={editingActivity ? 'Update Activity' : 'Save Activity'}
-        isSubmitting={isSaving}
+        isSaving={isSaving}
       >
         {formError && <div className="lg-inline-alert">{formError}</div>}
 
@@ -556,7 +555,7 @@ export const ContactActivitiesSection: React.FC<ContactActivitiesSectionProps> =
         isOpen={Boolean(activityToDelete)}
         title="Delete Activity"
         message={`Are you sure you want to delete the activity "${activityToDelete?.subject}"?`}
-        confirmText="Delete Activity"
+        confirmLabel="Delete Activity"
         onConfirm={handleConfirmDelete}
         onClose={() => setActivityToDelete(null)}
         isLoading={isDeleting}
@@ -790,7 +789,7 @@ export const ContactNotesSection: React.FC<ContactNotesSectionProps> = ({
         onClose={() => setEditingNote(null)}
         onSubmit={handleUpdateNote}
         submitLabel="Save Changes"
-        isSubmitting={isUpdating}
+        isSaving={isUpdating}
       >
         <div className="ld-form-stack">
           <Field label="Note Title" htmlFor="edit-contact-note-title">
@@ -817,7 +816,7 @@ export const ContactNotesSection: React.FC<ContactNotesSectionProps> = ({
         isOpen={Boolean(noteToDelete)}
         title="Delete Note"
         message={`Are you sure you want to permanently delete "${noteToDelete?.title || 'this note'}"?`}
-        confirmText="Delete Note"
+        confirmLabel="Delete Note"
         onConfirm={handleConfirmDelete}
         onClose={() => setNoteToDelete(null)}
         isLoading={isDeleting}
@@ -1058,7 +1057,7 @@ export const ContactDocumentsSection: React.FC<ContactDocumentsSectionProps> = (
         isOpen={Boolean(fileToDelete)}
         title="Delete Document"
         message={`Are you sure you want to permanently delete "${fileToDelete?.originalName}" from the CRM?`}
-        confirmText="Delete Document"
+        confirmLabel="Delete Document"
         onConfirm={handleConfirmDeleteFile}
         onClose={() => setFileToDelete(null)}
         isLoading={isDeleting}
