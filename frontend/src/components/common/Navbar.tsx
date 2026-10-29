@@ -70,6 +70,30 @@ const CRM_MODULES: ModuleNavConfig[] = [
     ],
   },
   {
+    id: 'leads',
+    label: 'Leads',
+    icon: <TargetIcon size={18} />,
+    basePath: '/leads',
+    subItems: [
+      { label: 'All Leads', path: '/leads' },
+      { label: 'My Leads', path: '/leads/my' },
+      { label: 'Lead List', path: '/leads/list' },
+      { label: 'Lead Board', path: '/leads/board' },
+      { label: 'Lead Table', path: '/leads/table' },
+      { label: 'Create Lead', path: '/leads/create' },
+      { label: 'Lead Assignment', path: '/leads/assignment' },
+      { label: 'Lead Qualification', path: '/leads/qualification' },
+      { label: 'Lead Scoring', path: '/leads/scoring' },
+      { label: 'Lead Activities', path: '/leads/activities' },
+      { label: 'Lead Notes', path: '/leads/notes' },
+      { label: 'Lead Documents', path: '/leads/documents' },
+      { label: 'Lead Import', path: '/leads/import' },
+      { label: 'Lead Export', path: '/leads/export' },
+      { label: 'Lead Conversion', path: '/leads/conversion' },
+      { label: 'Lead Settings', path: '/leads/settings' },
+    ],
+  },
+  {
     id: 'lead-generation',
     label: 'Lead Generation',
     icon: <TargetIcon size={18} />,
@@ -144,6 +168,7 @@ export const Navbar: React.FC = () => {
     if (path.startsWith('/workspaces')) return 'workspaces';
     if (path.startsWith('/users') || path.startsWith('/teams')) return 'users-teams';
     if (path.startsWith('/roles')) return 'roles';
+    if (path.startsWith('/leads')) return 'leads';
     if (path.startsWith('/lead-generation')) return 'lead-generation';
     if (path.startsWith('/custom-fields')) return 'custom-fields';
     if (path.startsWith('/tags')) return 'tags';
@@ -318,6 +343,7 @@ export const Navbar: React.FC = () => {
                     {module.subItems.map((sub) => {
                       const isSubActive =
                         sub.path === '/workspaces' ||
+                        sub.path === '/leads' ||
                         sub.path === '/lead-generation' ||
                         sub.path === '/users' ||
                         sub.path === '/teams' ||

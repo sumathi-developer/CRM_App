@@ -55,6 +55,22 @@ import { RoutingPage } from './pages/lead-generation/RoutingPage';
 import { AssignmentRulesPage } from './pages/lead-generation/AssignmentRulesPage';
 import { LeadGenAnalyticsPage } from './pages/lead-generation/LeadGenAnalyticsPage';
 import { SourceAnalyticsPage } from './pages/lead-generation/SourceAnalyticsPage';
+import {
+  LeadsExplorerPage,
+  CreateLeadPage,
+  EditLeadPage,
+  LeadDetailsPage,
+  LeadAssignmentPage,
+  LeadQualificationPage,
+  LeadScoringPage,
+  LeadActivitiesPage,
+  LeadNotesPage,
+  LeadDocumentsPage,
+  LeadImportPage,
+  LeadExportPage,
+  LeadConversionPage,
+  LeadSettingsPage,
+} from './pages/leads';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 export function App() {
@@ -139,6 +155,33 @@ export function App() {
         <Route path="/lead-generation/assignment-rules" element={<AssignmentRulesPage />} />
         <Route path="/lead-generation/analytics" element={<LeadGenAnalyticsPage />} />
         <Route path="/lead-generation/analytics/sources" element={<SourceAnalyticsPage />} />
+
+        {/* Leads Module Routes */}
+        <Route path="/leads" element={<LeadsExplorerPage />} />
+        <Route path="/leads/my" element={<LeadsExplorerPage />} />
+        <Route path="/leads/list" element={<LeadsExplorerPage />} />
+        <Route path="/leads/board" element={<LeadsExplorerPage />} />
+        <Route path="/leads/table" element={<LeadsExplorerPage />} />
+        <Route path="/leads/create" element={<CreateLeadPage />} />
+        <Route path="/leads/assignment" element={<LeadAssignmentPage />} />
+        <Route path="/leads/qualification" element={<LeadQualificationPage />} />
+        <Route path="/leads/scoring" element={<LeadScoringPage />} />
+        <Route path="/leads/activities" element={<LeadActivitiesPage />} />
+        <Route path="/leads/notes" element={<LeadNotesPage />} />
+        <Route path="/leads/documents" element={<LeadDocumentsPage />} />
+        <Route path="/leads/import" element={<LeadImportPage />} />
+        <Route path="/leads/export" element={<LeadExportPage />} />
+        <Route path="/leads/conversion" element={<LeadConversionPage />} />
+        <Route path="/leads/settings" element={<LeadSettingsPage />} />
+        <Route path="/leads/:id" element={<LeadDetailsPage />} />
+        <Route path="/leads/:id/edit" element={<EditLeadPage />} />
+        <Route path="/leads/:id/assignment" element={<LeadAssignmentPage />} />
+        <Route path="/leads/:id/qualification" element={<LeadQualificationPage />} />
+        <Route path="/leads/:id/scoring" element={<LeadScoringPage />} />
+        <Route path="/leads/:id/activities" element={<LeadActivitiesPage />} />
+        <Route path="/leads/:id/notes" element={<LeadNotesPage />} />
+        <Route path="/leads/:id/documents" element={<LeadDocumentsPage />} />
+        <Route path="/leads/:id/convert" element={<LeadConversionPage />} />
 
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/change-password" element={<ChangePasswordPage />} />
