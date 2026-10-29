@@ -82,14 +82,21 @@
   padding: 0;
 }
 
-html, body {
+html {
   height: 100%;
+  scrollbar-gutter: stable;
+  overflow-x: hidden;
+}
+
+body {
+  min-height: 100%;
   font-family: var(--font-sans);
   background-color: var(--bg-primary);
   color: var(--text-main);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 #root {

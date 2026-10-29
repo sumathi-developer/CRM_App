@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useWorkspace } from '../../context/useWorkspace';
@@ -7,17 +7,127 @@ import { WorkspaceSwitcher } from '../workspace/WorkspaceSwitcher';
 import {
   UserIcon,
   UsersIcon,
-  KeyRoundIcon,
-  MonitorIcon,
   LogOutIcon,
   ShieldIcon,
   BriefcaseIcon,
   ChevronDownIcon,
+  ChevronRightIcon,
   LockIcon,
   SlidersIcon,
   TagIcon,
   TargetIcon,
+  MenuIcon,
+  XIcon,
 } from './Icons';
+
+interface SubNavOption {
+  label: string;
+  path: string;
+}
+
+interface ModuleNavConfig {
+  id: string;
+  label: string;
+  icon: React.ReactNode;
+  basePath: string;
+  subItems: SubNavOption[];
+}
+
+const CRM_MODULES: ModuleNavConfig[] = [
+  {
+    id: 'workspaces',
+    label: 'Workspaces',
+    icon: <BriefcaseIcon size={18} />,
+    basePath: '/workspaces',
+    subItems: [
+      { label: 'Overview', path: '/workspaces' },
+      { label: 'Switch Workspace', path: '/workspaces/switcher' },
+      { label: 'Workspace Members', path: '/workspaces/members' },
+      { label: 'Workspace Roles', path: '/workspaces/roles' },
+      { label: 'Workspace Settings', path: '/workspaces/settings' },
+    ],
+  },
+  {
+    id: 'users-teams',
+    label: 'Users & Teams',
+    icon: <UsersIcon size={18} />,
+    basePath: '/users',
+    subItems: [
+      { label: 'All Users', path: '/users' },
+      { label: 'Invite User', path: '/users/invite' },
+      { label: 'All Teams', path: '/teams' },
+      { label: 'Create Team', path: '/teams/create' },
+    ],
+  },
+  {
+    id: 'roles',
+    label: 'Roles & RBAC',
+    icon: <LockIcon size={18} />,
+    basePath: '/roles',
+    subItems: [
+      { label: 'All Roles', path: '/roles' },
+      { label: 'Create Role', path: '/roles/create' },
+    ],
+  },
+  {
+    id: 'lead-generation',
+    label: 'Lead Generation',
+    icon: <TargetIcon size={18} />,
+    basePath: '/lead-generation',
+    subItems: [
+      { label: 'Overview', path: '/lead-generation' },
+      { label: 'Lead Sources', path: '/lead-generation/sources' },
+      { label: 'Web Forms', path: '/lead-generation/forms' },
+      { label: 'Form Builder', path: '/lead-generation/forms/create' },
+      { label: 'Capture Forms', path: '/lead-generation/capture-forms' },
+      { label: 'Manual Capture', path: '/lead-generation/manual-capture' },
+      { label: 'Landing Page Leads', path: '/lead-generation/leads/landing-page' },
+      { label: 'Campaign Leads', path: '/lead-generation/leads/campaign' },
+      { label: 'Social Media Leads', path: '/lead-generation/leads/social' },
+      { label: 'Website Leads', path: '/lead-generation/leads/website' },
+      { label: 'Email Leads', path: '/lead-generation/leads/email' },
+      { label: 'Referral Leads', path: '/lead-generation/leads/referral' },
+      { label: 'Lead Scoring', path: '/lead-generation/scoring' },
+      { label: 'Lead Qualification', path: '/lead-generation/qualification' },
+      { label: 'Lead Routing', path: '/lead-generation/routing' },
+      { label: 'Assignment Rules', path: '/lead-generation/assignment-rules' },
+      { label: 'Generation Analytics', path: '/lead-generation/analytics' },
+      { label: 'Source Analytics', path: '/lead-generation/analytics/sources' },
+    ],
+  },
+  {
+    id: 'custom-fields',
+    label: 'Custom Fields',
+    icon: <SlidersIcon size={18} />,
+    basePath: '/custom-fields',
+    subItems: [
+      { label: 'All Fields', path: '/custom-fields' },
+      { label: 'Create Custom Field', path: '/custom-fields/create' },
+    ],
+  },
+  {
+    id: 'tags',
+    label: 'Tags',
+    icon: <TagIcon size={18} />,
+    basePath: '/tags',
+    subItems: [
+      { label: 'All Tags', path: '/tags' },
+      { label: 'Create Tag', path: '/tags/create' },
+      { label: 'Tag Usage', path: '/tags/usage' },
+    ],
+  },
+  {
+    id: 'account',
+    label: 'Account & Security',
+    icon: <UserIcon size={18} />,
+    basePath: '/profile',
+    subItems: [
+      { label: 'Profile Settings', path: '/profile' },
+      { label: 'Change Password', path: '/change-password' },
+      { label: 'Active Sessions', path: '/sessions' },
+    ],
+  },
+];
 
 export const Navbar: React.FC = () => {
   const { user, logout } = useAuth();
@@ -27,6 +137,46 @@ export const Navbar: React.FC = () => {
 
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [isSwitcherOpen, setIsSwitcherOpen] = useState(false);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+
+  // Determine active module based on current path
+  const getActiveModuleId = (path: string): string => {
+    if (path.startsWith('/workspaces')) return 'workspaces';
+    if (path.startsWith('/users') || path.startsWith('/teams')) return 'users-teams';
+    if (path.startsWith('/roles')) return 'roles';
+    if (path.startsWith('/lead-generation')) return 'lead-generation';
+    if (path.startsWith('/custom-fields')) return 'custom-fields';
+    if (path.startsWith('/tags')) return 'tags';
+    if (path === '/profile' || path === '/change-password' || path === '/sessions') return 'account';
+    return '';
+  };
+
+  const currentModuleId = getActiveModuleId(location.pathname);
+
+  // Open modules state
+  const [openModules, setOpenModules] = useState<Record<string, boolean>>(() => {
+    const initialId = getActiveModuleId(location.pathname);
+    return initialId ? { [initialId]: true } : { workspaces: true };
+  });
+
+  // Automatically keep current module open on route change
+  useEffect(() => {
+    if (currentModuleId) {
+      setOpenModules((prev) => ({
+        ...prev,
+        [currentModuleId]: true,
+      }));
+    }
+    // Close mobile drawer on route change
+    setIsMobileSidebarOpen(false);
+  }, [location.pathname, currentModuleId]);
+
+  const toggleModule = (moduleId: string) => {
+    setOpenModules((prev) => ({
+      ...prev,
+      [moduleId]: !prev[moduleId],
+    }));
+  };
 
   const handleLogout = async () => {
     try {
@@ -40,19 +190,6 @@ export const Navbar: React.FC = () => {
     }
   };
 
-  const navLinks = [
-    { label: 'Workspace', path: '/workspaces', icon: <BriefcaseIcon size={16} /> },
-    { label: 'Users', path: '/users', icon: <UsersIcon size={16} /> },
-    { label: 'Teams', path: '/teams', icon: <ShieldIcon size={16} /> },
-    { label: 'Roles', path: '/roles', icon: <LockIcon size={16} /> },
-    { label: 'Fields', path: '/custom-fields', icon: <SlidersIcon size={16} /> },
-    { label: 'Tags', path: '/tags', icon: <TagIcon size={16} /> },
-    { label: 'Lead Gen', path: '/lead-generation', icon: <TargetIcon size={16} /> },
-    { label: 'Profile', path: '/profile', icon: <UserIcon size={16} /> },
-    { label: 'Security', path: '/change-password', icon: <KeyRoundIcon size={16} /> },
-    { label: 'Sessions', path: '/sessions', icon: <MonitorIcon size={16} /> },
-  ];
-
   const getInitials = (name?: string) => {
     if (!name) return 'U';
     return name
@@ -65,9 +202,22 @@ export const Navbar: React.FC = () => {
 
   return (
     <>
+      {/* 1. TOP NAVBAR (Clean, fixed, uncrowded header) */}
       <header className="app-top-navbar" id="app-navbar">
         <div className="navbar-container">
           <div className="navbar-brand-section">
+            {/* Sidebar toggle button (for mobile or toggle) */}
+            <button
+              type="button"
+              className="navbar-sidebar-toggle-btn"
+              onClick={() => setIsMobileSidebarOpen((prev) => !prev)}
+              title="Toggle Navigation Menu"
+              aria-label="Toggle Navigation Menu"
+              id="navbar-sidebar-toggle-btn"
+            >
+              {isMobileSidebarOpen ? <XIcon size={20} /> : <MenuIcon size={20} />}
+            </button>
+
             <Logo size="small" linkTo="/workspaces" showTagline={false} />
 
             {/* Active Workspace Selector Pill in Navbar */}
@@ -88,39 +238,6 @@ export const Navbar: React.FC = () => {
               <ChevronDownIcon size={14} className="ws-pill-chevron" />
             </button>
           </div>
-
-          <nav className="navbar-links" aria-label="Main Navigation">
-            {navLinks.map((item) => {
-              const isActive =
-                item.path === '/workspaces'
-                  ? location.pathname.startsWith('/workspaces')
-                  : item.path === '/users'
-                  ? location.pathname.startsWith('/users')
-                  : item.path === '/teams'
-                  ? location.pathname.startsWith('/teams')
-                  : item.path === '/roles'
-                  ? location.pathname.startsWith('/roles')
-                  : item.path === '/custom-fields'
-                  ? location.pathname.startsWith('/custom-fields')
-                  : item.path === '/tags'
-                  ? location.pathname.startsWith('/tags')
-                  : item.path === '/lead-generation'
-                  ? location.pathname.startsWith('/lead-generation')
-                  : location.pathname === item.path;
-
-              return (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`nav-item-link ${isActive ? 'is-active' : ''}`}
-                  id={`nav-link-${item.label.toLowerCase()}`}
-                >
-                  {item.icon}
-                  <span>{item.label}</span>
-                </Link>
-              );
-            })}
-          </nav>
 
           <div className="navbar-user-section">
             <div className="user-profile-badge" title={user?.email || 'User'}>
@@ -157,6 +274,87 @@ export const Navbar: React.FC = () => {
           </div>
         </div>
       </header>
+
+      {/* 2. LEFT VERTICAL SIDEBAR WITH MODULE DROPDOWNS */}
+      <aside
+        className={`app-sidebar ${isMobileSidebarOpen ? 'is-mobile-open' : ''}`}
+        id="app-sidebar"
+        aria-label="Sidebar Navigation"
+      >
+        <div className="sidebar-header-label">
+          <span>CRM Modules</span>
+        </div>
+
+        <nav className="sidebar-modules-list" aria-label="Modules Accordion">
+          {CRM_MODULES.map((module) => {
+            const isOpen = Boolean(openModules[module.id]);
+            const isModuleActive = currentModuleId === module.id;
+
+            return (
+              <div
+                key={module.id}
+                className={`sidebar-module-card ${isModuleActive ? 'is-active-module' : ''} ${isOpen ? 'is-open' : ''}`}
+              >
+                {/* Module Header / Dropdown Trigger */}
+                <button
+                  type="button"
+                  className="sidebar-module-trigger"
+                  onClick={() => toggleModule(module.id)}
+                  aria-expanded={isOpen}
+                  id={`sidebar-module-${module.id}`}
+                >
+                  <div className="module-trigger-main">
+                    <span className="module-trigger-icon">{module.icon}</span>
+                    <span className="module-trigger-title">{module.label}</span>
+                  </div>
+                  <span className="module-trigger-chevron">
+                    {isOpen ? <ChevronDownIcon size={14} /> : <ChevronRightIcon size={14} />}
+                  </span>
+                </button>
+
+                {/* Subheadings Dropdown Menu */}
+                {isOpen && (
+                  <div className="sidebar-module-dropdown">
+                    {module.subItems.map((sub) => {
+                      const isSubActive =
+                        sub.path === '/workspaces' ||
+                        sub.path === '/lead-generation' ||
+                        sub.path === '/users' ||
+                        sub.path === '/teams' ||
+                        sub.path === '/roles' ||
+                        sub.path === '/custom-fields' ||
+                        sub.path === '/tags'
+                          ? location.pathname === sub.path
+                          : location.pathname.startsWith(sub.path);
+
+                      return (
+                        <Link
+                          key={sub.path}
+                          to={sub.path}
+                          className={`sidebar-subitem-link ${isSubActive ? 'is-active' : ''}`}
+                          id={`sidebar-link-${sub.label.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
+                        >
+                          <span className="subitem-dot" aria-hidden="true" />
+                          <span className="subitem-label">{sub.label}</span>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </nav>
+      </aside>
+
+      {/* Mobile Backdrop for sidebar drawer */}
+      {isMobileSidebarOpen && (
+        <div
+          className="sidebar-mobile-backdrop"
+          onClick={() => setIsMobileSidebarOpen(false)}
+          aria-hidden="true"
+        />
+      )}
 
       {/* Global Workspace Switcher Modal */}
       <WorkspaceSwitcher
