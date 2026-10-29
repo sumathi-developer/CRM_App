@@ -71,3 +71,4 @@ export const CreateLeadPage: React.FC = () => {
     </LeadsLayout>
   );
 };
+

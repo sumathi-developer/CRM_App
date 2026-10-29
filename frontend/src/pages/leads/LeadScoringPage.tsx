@@ -8,7 +8,7 @@ import { Field } from '../lead-generation/components/FormParts';
 import { PrimaryButton } from '../../components/auth/PrimaryButton';
 import { LoadingIndicator } from '../../components/auth/LoadingIndicator';
 import { EmptyState } from '../../components/common/EmptyState';
-import { formatCurrency, humanize } from '../lead-generation/leadGenConstants';
+import { humanize } from '../lead-generation/leadGenConstants';
 import { getScoreTier, leadFullName, statusTone } from './leadConstants';
 import { LeadsLayout } from './components/LeadsLayout';
 import { LeadScoreDisplay } from './components/LeadCard';

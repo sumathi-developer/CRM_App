@@ -345,3 +345,4 @@ export const LeadForm: React.FC<LeadFormProps> = ({
     </form>
   );
 };
+

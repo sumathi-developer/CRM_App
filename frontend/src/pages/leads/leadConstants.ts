@@ -454,3 +454,4 @@ export function triggerFileDownload(filename: string, content: string, mimeType 
   document.body.removeChild(link);
   URL.revokeObjectURL(url);
 }
+

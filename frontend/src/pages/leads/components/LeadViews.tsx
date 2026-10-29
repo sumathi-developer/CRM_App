@@ -455,3 +455,4 @@ export const LeadsBoardView: React.FC<SharedLeadViewProps> = ({
     </div>
   );
 };
+

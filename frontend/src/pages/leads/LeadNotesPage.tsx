@@ -121,3 +121,4 @@ export const LeadNotesPage: React.FC = () => {
     </LeadsLayout>
   );
 };
+

@@ -121,3 +121,4 @@ export const LeadDocumentsPage: React.FC = () => {
     </LeadsLayout>
   );
 };
+

@@ -127,3 +127,4 @@ export const LeadActivitiesPage: React.FC = () => {
     </LeadsLayout>
   );
 };
+

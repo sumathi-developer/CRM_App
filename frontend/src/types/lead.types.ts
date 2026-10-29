@@ -290,3 +290,4 @@ export interface LeadModuleSettings {
   autoScoreOnCreate: boolean;
   autoRouteOnCreate: boolean;
 }
+
