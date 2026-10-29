@@ -82,6 +82,15 @@ import {
   ContactImportPage,
   ContactExportPage,
 } from './pages/contacts';
+import {
+  PipelineOverviewPage,
+  PipelineSelectorPage,
+  CreatePipelinePage,
+  EditPipelinePage,
+  StageManagementPage,
+  StageProbabilityPage,
+  PipelineSettingsPage,
+} from './pages/pipelines';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 export function App() {
@@ -210,6 +219,26 @@ export function App() {
         <Route path="/contacts/:id/activities" element={<ContactActivitiesPage />} />
         <Route path="/contacts/:id/notes" element={<ContactNotesPage />} />
         <Route path="/contacts/:id/documents" element={<ContactDocumentsPage />} />
+
+        {/* Sales Pipeline Module Routes */}
+        <Route path="/pipelines" element={<PipelineOverviewPage />} />
+        <Route path="/pipelines/board" element={<PipelineOverviewPage />} />
+        <Route path="/pipelines/list" element={<PipelineOverviewPage />} />
+        <Route path="/pipelines/table" element={<PipelineOverviewPage />} />
+        <Route path="/pipelines/selector" element={<PipelineSelectorPage />} />
+        <Route path="/pipelines/stages" element={<StageManagementPage />} />
+        <Route path="/pipelines/create" element={<CreatePipelinePage />} />
+        <Route path="/pipelines/stage-management" element={<StageManagementPage />} />
+        <Route path="/pipelines/probability" element={<StageProbabilityPage />} />
+        <Route path="/pipelines/settings" element={<PipelineSettingsPage />} />
+        <Route path="/pipelines/:id" element={<PipelineOverviewPage />} />
+        <Route path="/pipelines/:id/board" element={<PipelineOverviewPage />} />
+        <Route path="/pipelines/:id/list" element={<PipelineOverviewPage />} />
+        <Route path="/pipelines/:id/table" element={<PipelineOverviewPage />} />
+        <Route path="/pipelines/:id/edit" element={<EditPipelinePage />} />
+        <Route path="/pipelines/:id/stages" element={<StageManagementPage />} />
+        <Route path="/pipelines/:id/stage-management" element={<StageManagementPage />} />
+        <Route path="/pipelines/:id/probability" element={<StageProbabilityPage />} />
 
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/change-password" element={<ChangePasswordPage />} />

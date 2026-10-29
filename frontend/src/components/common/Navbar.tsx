@@ -16,6 +16,7 @@ import {
   SlidersIcon,
   TagIcon,
   TargetIcon,
+  TrendingUpIcon,
   MenuIcon,
   XIcon,
 } from './Icons';
@@ -112,6 +113,24 @@ const CRM_MODULES: ModuleNavConfig[] = [
     ],
   },
   {
+    id: 'pipelines',
+    label: 'Sales Pipeline',
+    icon: <TrendingUpIcon size={18} />,
+    basePath: '/pipelines',
+    subItems: [
+      { label: 'Pipeline Overview', path: '/pipelines' },
+      { label: 'Pipeline Board', path: '/pipelines/board' },
+      { label: 'Pipeline List', path: '/pipelines/list' },
+      { label: 'Pipeline Table', path: '/pipelines/table' },
+      { label: 'Pipeline Selector', path: '/pipelines/selector' },
+      { label: 'Pipeline Stages', path: '/pipelines/stages' },
+      { label: 'Create Pipeline', path: '/pipelines/create' },
+      { label: 'Stage Management', path: '/pipelines/stage-management' },
+      { label: 'Stage Probability', path: '/pipelines/probability' },
+      { label: 'Pipeline Settings', path: '/pipelines/settings' },
+    ],
+  },
+  {
     id: 'lead-generation',
     label: 'Lead Generation',
     icon: <TargetIcon size={18} />,
@@ -188,6 +207,7 @@ export const Navbar: React.FC = () => {
     if (path.startsWith('/roles')) return 'roles';
     if (path.startsWith('/leads')) return 'leads';
     if (path.startsWith('/contacts')) return 'contacts';
+    if (path.startsWith('/pipelines')) return 'pipelines';
     if (path.startsWith('/lead-generation')) return 'lead-generation';
     if (path.startsWith('/custom-fields')) return 'custom-fields';
     if (path.startsWith('/tags')) return 'tags';
