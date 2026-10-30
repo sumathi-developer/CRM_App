@@ -115,6 +115,15 @@ import {
   MeetingSchedulingPage,
   CalendarRemindersPage,
 } from './pages/calendar';
+import {
+  CommunicationCenterPage,
+  EmailsExplorerPage,
+  ComposeEmailPage,
+  EmailDetailsPage,
+  InternalCommentsPage,
+  CommunicationHistoryPage,
+  EmailTemplatesPage,
+} from './pages/communications';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 export function App() {
@@ -308,6 +317,19 @@ export function App() {
         <Route path="/calendar/reminders" element={<CalendarRemindersPage />} />
         <Route path="/calendar/events/:id" element={<EventDetailsPage />} />
         <Route path="/calendar/events/:id/edit" element={<EditEventPage />} />
+
+        {/* Communications Module Routes */}
+        <Route path="/communications" element={<CommunicationCenterPage />} />
+        <Route path="/communications/center" element={<CommunicationCenterPage />} />
+        <Route path="/communications/emails" element={<EmailsExplorerPage forcedFolder="ALL" />} />
+        <Route path="/communications/inbox" element={<EmailsExplorerPage forcedFolder="INBOX" />} />
+        <Route path="/communications/sent" element={<EmailsExplorerPage forcedFolder="SENT" />} />
+        <Route path="/communications/compose" element={<ComposeEmailPage />} />
+        <Route path="/communications/emails/:id" element={<EmailDetailsPage />} />
+        <Route path="/communications/comments" element={<InternalCommentsPage mode="comments" />} />
+        <Route path="/communications/mentions" element={<InternalCommentsPage mode="mentions" />} />
+        <Route path="/communications/history" element={<CommunicationHistoryPage />} />
+        <Route path="/communications/templates" element={<EmailTemplatesPage />} />
 
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/change-password" element={<ChangePasswordPage />} />

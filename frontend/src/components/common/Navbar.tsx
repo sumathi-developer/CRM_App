@@ -186,6 +186,23 @@ const CRM_MODULES: ModuleNavConfig[] = [
     ],
   },
   {
+    id: 'communications',
+    label: 'Communications',
+    icon: <ActivityIcon size={18} />,
+    basePath: '/communications',
+    subItems: [
+      { label: 'Communication Center', path: '/communications' },
+      { label: 'Emails', path: '/communications/emails' },
+      { label: 'Email Inbox', path: '/communications/inbox' },
+      { label: 'Sent Emails', path: '/communications/sent' },
+      { label: 'Compose Email', path: '/communications/compose' },
+      { label: 'Internal Comments', path: '/communications/comments' },
+      { label: 'Mentions', path: '/communications/mentions' },
+      { label: 'Communication History', path: '/communications/history' },
+      { label: 'Templates', path: '/communications/templates' },
+    ],
+  },
+  {
     id: 'lead-generation',
     label: 'Lead Generation',
     icon: <TargetIcon size={18} />,
@@ -266,6 +283,7 @@ export const Navbar: React.FC = () => {
     if (path.startsWith('/deals')) return 'deals';
     if (path.startsWith('/activities')) return 'activities';
     if (path.startsWith('/calendar')) return 'calendar';
+    if (path.startsWith('/communications')) return 'communications';
     if (path.startsWith('/lead-generation')) return 'lead-generation';
     if (path.startsWith('/custom-fields')) return 'custom-fields';
     if (path.startsWith('/tags')) return 'tags';
@@ -446,6 +464,8 @@ export const Navbar: React.FC = () => {
                         sub.path === '/deals' ||
                         sub.path === '/activities' ||
                         sub.path === '/calendar' ||
+                        sub.path === '/communications' ||
+                        sub.path === '/communications/emails' ||
                         sub.path === '/lead-generation' ||
                         sub.path === '/users' ||
                         sub.path === '/teams' ||
