@@ -323,6 +323,20 @@ const CRM_MODULES: ModuleNavConfig[] = [
     ],
   },
   {
+    id: 'audit-logs',
+    label: 'Audit Logs',
+    icon: <ShieldIcon size={18} />,
+    basePath: '/audit-logs',
+    subItems: [
+      { label: 'All Activity Logs', path: '/audit-logs/all' },
+      { label: 'User Activity', path: '/audit-logs/user-activity' },
+      { label: 'Record Changes', path: '/audit-logs/record-changes' },
+      { label: 'Permission Changes', path: '/audit-logs/permission-changes' },
+      { label: 'Login History', path: '/audit-logs/login-history' },
+      { label: 'System Events', path: '/audit-logs/system-events' },
+    ],
+  },
+  {
     id: 'account',
     label: 'Account & Security',
     icon: <UserIcon size={18} />,
@@ -364,6 +378,7 @@ export const Navbar: React.FC = () => {
     if (path.startsWith('/custom-fields')) return 'custom-fields';
     if (path.startsWith('/tags')) return 'tags';
     if (path.startsWith('/settings')) return 'settings';
+    if (path.startsWith('/audit-logs')) return 'audit-logs';
     if (path === '/profile' || path === '/change-password' || path === '/sessions') return 'account';
     return '';
   };
@@ -534,7 +549,8 @@ export const Navbar: React.FC = () => {
                   <div className="sidebar-module-dropdown">
                     {module.subItems.map((sub) => {
                       const isSubActive =
-                        sub.path === '/settings' ||
+                        (sub.path === '/audit-logs/all' && location.pathname === '/audit-logs') ||
+                        (sub.path === '/settings' ||
                         sub.path === '/dashboard' ||
                         sub.path === '/analytics' ||
                         sub.path === '/search' ||
@@ -554,7 +570,7 @@ export const Navbar: React.FC = () => {
                         sub.path === '/custom-fields' ||
                         sub.path === '/tags'
                           ? location.pathname === sub.path
-                          : location.pathname.startsWith(sub.path);
+                          : location.pathname.startsWith(sub.path));
 
                       return (
                         <Link

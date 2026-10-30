@@ -128,6 +128,7 @@ import { GlobalSearchPage } from './pages/search';
 import { DashboardExplorerPage } from './pages/dashboard';
 import { AnalyticsExplorerPage } from './pages/analytics';
 import { SettingsExplorerPage } from './pages/settings';
+import { AuditLogsExplorerPage } from './pages/audit-logs';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 export function App() {
@@ -384,6 +385,15 @@ export function App() {
         <Route path="/settings/email" element={<SettingsExplorerPage screen="email" />} />
         <Route path="/settings/integrations" element={<SettingsExplorerPage screen="integrations" />} />
         <Route path="/settings/security" element={<SettingsExplorerPage screen="security" />} />
+
+        {/* Audit Logs Module Routes */}
+        <Route path="/audit-logs" element={<AuditLogsExplorerPage screen="all" />} />
+        <Route path="/audit-logs/all" element={<AuditLogsExplorerPage screen="all" />} />
+        <Route path="/audit-logs/user-activity" element={<AuditLogsExplorerPage screen="user-activity" />} />
+        <Route path="/audit-logs/record-changes" element={<AuditLogsExplorerPage screen="record-changes" />} />
+        <Route path="/audit-logs/permission-changes" element={<AuditLogsExplorerPage screen="permission-changes" />} />
+        <Route path="/audit-logs/login-history" element={<AuditLogsExplorerPage screen="login-history" />} />
+        <Route path="/audit-logs/system-events" element={<AuditLogsExplorerPage screen="system-events" />} />
 
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/change-password" element={<ChangePasswordPage />} />
