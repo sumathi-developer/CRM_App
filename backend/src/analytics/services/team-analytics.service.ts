@@ -32,8 +32,8 @@ export class TeamAnalyticsService {
       const teams = await this.db.team.findMany({
         where: teamWhere,
         include: {
-          leader: { select: { id: true, name: true, email: true } },
-          members: { select: { id: true } },
+          owner: { select: { id: true, name: true, email: true } },
+          members: { select: { id: true, userId: true } },
           deals: {
             where: { createdAt: { gte: startDate, lte: endDate } },
             select: { id: true, value: true, status: true },
@@ -61,8 +61,10 @@ export class TeamAnalyticsService {
         return {
           teamId: team.id,
           teamName: team.name,
-          leaderName: team.leader?.name,
-          memberCount: (team.members?.length || 0) + (team.leaderId ? 1 : 0),
+          leaderName: team.owner?.name,
+          memberCount:
+            (team.members?.length || 0) +
+            (!team.members?.some((m: any) => m.userId === team.ownerId) && team.ownerId ? 1 : 0),
           leadsCount: team.leads?.length || 0,
           dealsCount: deals.length,
           dealsWon: wonDeals.length,
