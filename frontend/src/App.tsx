@@ -127,6 +127,7 @@ import {
 import { GlobalSearchPage } from './pages/search';
 import { DashboardExplorerPage } from './pages/dashboard';
 import { AnalyticsExplorerPage } from './pages/analytics';
+import { SettingsExplorerPage } from './pages/settings';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 export function App() {
@@ -366,6 +367,23 @@ export function App() {
         <Route path="/analytics/activities" element={<AnalyticsExplorerPage screen="activities" />} />
         <Route path="/analytics/teams" element={<AnalyticsExplorerPage screen="teams" />} />
         <Route path="/analytics/performance" element={<AnalyticsExplorerPage screen="performance" />} />
+
+        {/* Settings Module Routes */}
+        <Route path="/settings" element={<SettingsExplorerPage screen="account" />} />
+        <Route path="/settings/account" element={<SettingsExplorerPage screen="account" />} />
+        <Route path="/settings/profile" element={<SettingsExplorerPage screen="profile" />} />
+        <Route path="/settings/workspace" element={<SettingsExplorerPage screen="workspace" />} />
+        <Route path="/settings/general" element={<SettingsExplorerPage screen="general" />} />
+        <Route path="/settings/leads" element={<SettingsExplorerPage screen="leads" />} />
+        <Route path="/settings/contacts" element={<SettingsExplorerPage screen="contacts" />} />
+        <Route path="/settings/companies" element={<SettingsExplorerPage screen="companies" />} />
+        <Route path="/settings/deals" element={<SettingsExplorerPage screen="deals" />} />
+        <Route path="/settings/pipelines" element={<SettingsExplorerPage screen="pipelines" />} />
+        <Route path="/settings/activities" element={<SettingsExplorerPage screen="activities" />} />
+        <Route path="/settings/notifications" element={<SettingsExplorerPage screen="notifications" />} />
+        <Route path="/settings/email" element={<SettingsExplorerPage screen="email" />} />
+        <Route path="/settings/integrations" element={<SettingsExplorerPage screen="integrations" />} />
+        <Route path="/settings/security" element={<SettingsExplorerPage screen="security" />} />
 
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/change-password" element={<ChangePasswordPage />} />

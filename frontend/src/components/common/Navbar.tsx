@@ -16,6 +16,7 @@ import {
   ChevronRightIcon,
   LockIcon,
   SearchIcon,
+  SettingsIcon,
   SlidersIcon,
   TagIcon,
   TargetIcon,
@@ -300,6 +301,28 @@ const CRM_MODULES: ModuleNavConfig[] = [
     ],
   },
   {
+    id: 'settings',
+    label: 'Settings',
+    icon: <SettingsIcon size={18} />,
+    basePath: '/settings',
+    subItems: [
+      { label: 'Account Settings', path: '/settings/account' },
+      { label: 'Profile Settings', path: '/settings/profile' },
+      { label: 'Workspace Settings', path: '/settings/workspace' },
+      { label: 'General Settings', path: '/settings/general' },
+      { label: 'Lead Settings', path: '/settings/leads' },
+      { label: 'Contact Settings', path: '/settings/contacts' },
+      { label: 'Company Settings', path: '/settings/companies' },
+      { label: 'Deal Settings', path: '/settings/deals' },
+      { label: 'Pipeline Settings', path: '/settings/pipelines' },
+      { label: 'Activity Settings', path: '/settings/activities' },
+      { label: 'Notification Settings', path: '/settings/notifications' },
+      { label: 'Email Settings', path: '/settings/email' },
+      { label: 'Integration Settings', path: '/settings/integrations' },
+      { label: 'Security Settings', path: '/settings/security' },
+    ],
+  },
+  {
     id: 'account',
     label: 'Account & Security',
     icon: <UserIcon size={18} />,
@@ -340,6 +363,7 @@ export const Navbar: React.FC = () => {
     if (path.startsWith('/lead-generation')) return 'lead-generation';
     if (path.startsWith('/custom-fields')) return 'custom-fields';
     if (path.startsWith('/tags')) return 'tags';
+    if (path.startsWith('/settings')) return 'settings';
     if (path === '/profile' || path === '/change-password' || path === '/sessions') return 'account';
     return '';
   };
@@ -510,6 +534,7 @@ export const Navbar: React.FC = () => {
                   <div className="sidebar-module-dropdown">
                     {module.subItems.map((sub) => {
                       const isSubActive =
+                        sub.path === '/settings' ||
                         sub.path === '/dashboard' ||
                         sub.path === '/analytics' ||
                         sub.path === '/search' ||
