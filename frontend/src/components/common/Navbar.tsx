@@ -203,21 +203,6 @@ const CRM_MODULES: ModuleNavConfig[] = [
     ],
   },
   {
-    id: 'documents',
-    label: 'Documents',
-    icon: <BriefcaseIcon size={18} />,
-    basePath: '/documents',
-    subItems: [
-      { label: 'All Documents', path: '/documents' },
-      { label: 'Recent Documents', path: '/documents/recent' },
-      { label: 'Shared Documents', path: '/documents/shared' },
-      { label: 'Upload Document', path: '/documents/upload' },
-      { label: 'Document Preview', path: '/documents/preview' },
-      { label: 'Document Editor', path: '/documents/editor' },
-      { label: 'Document Sharing', path: '/documents/sharing' },
-    ],
-  },
-  {
     id: 'lead-generation',
     label: 'Lead Generation',
     icon: <TargetIcon size={18} />,
@@ -299,7 +284,6 @@ export const Navbar: React.FC = () => {
     if (path.startsWith('/activities')) return 'activities';
     if (path.startsWith('/calendar')) return 'calendar';
     if (path.startsWith('/communications')) return 'communications';
-    if (path.startsWith('/documents')) return 'documents';
     if (path.startsWith('/lead-generation')) return 'lead-generation';
     if (path.startsWith('/custom-fields')) return 'custom-fields';
     if (path.startsWith('/tags')) return 'tags';
@@ -482,7 +466,6 @@ export const Navbar: React.FC = () => {
                         sub.path === '/calendar' ||
                         sub.path === '/communications' ||
                         sub.path === '/communications/emails' ||
-                        sub.path === '/documents' ||
                         sub.path === '/lead-generation' ||
                         sub.path === '/users' ||
                         sub.path === '/teams' ||

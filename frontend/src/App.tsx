@@ -124,14 +124,6 @@ import {
   CommunicationHistoryPage,
   EmailTemplatesPage,
 } from './pages/communications';
-import {
-  DocumentsExplorerPage,
-  UploadDocumentPage,
-  DocumentDetailsPage,
-  DocumentPreviewPage,
-  DocumentEditorPage,
-  DocumentSharingPage,
-} from './pages/documents';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 export function App() {
@@ -338,19 +330,6 @@ export function App() {
         <Route path="/communications/mentions" element={<InternalCommentsPage mode="mentions" />} />
         <Route path="/communications/history" element={<CommunicationHistoryPage />} />
         <Route path="/communications/templates" element={<EmailTemplatesPage />} />
-
-        {/* Documents Module Routes */}
-        <Route path="/documents" element={<DocumentsExplorerPage scope="all" />} />
-        <Route path="/documents/recent" element={<DocumentsExplorerPage scope="recent" />} />
-        <Route path="/documents/shared" element={<DocumentsExplorerPage scope="shared" />} />
-        <Route path="/documents/upload" element={<UploadDocumentPage />} />
-        <Route path="/documents/preview" element={<DocumentPreviewPage />} />
-        <Route path="/documents/editor" element={<DocumentEditorPage />} />
-        <Route path="/documents/sharing" element={<DocumentSharingPage />} />
-        <Route path="/documents/:id" element={<DocumentDetailsPage />} />
-        <Route path="/documents/:id/preview" element={<DocumentPreviewPage />} />
-        <Route path="/documents/:id/edit" element={<DocumentEditorPage />} />
-        <Route path="/documents/:id/sharing" element={<DocumentSharingPage />} />
 
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/change-password" element={<ChangePasswordPage />} />
