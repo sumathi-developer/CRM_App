@@ -53,6 +53,23 @@ const CRM_MODULES: ModuleNavConfig[] = [
     ],
   },
   {
+    id: 'analytics',
+    label: 'Analytics',
+    icon: <TrendingUpIcon size={18} />,
+    basePath: '/analytics',
+    subItems: [
+      { label: 'Sales Analytics', path: '/analytics/sales' },
+      { label: 'Lead Analytics', path: '/analytics/leads' },
+      { label: 'Lead Source Analytics', path: '/analytics/lead-sources' },
+      { label: 'Pipeline Analytics', path: '/analytics/pipeline' },
+      { label: 'Revenue Analytics', path: '/analytics/revenue' },
+      { label: 'Conversion Analytics', path: '/analytics/conversion' },
+      { label: 'Activity Analytics', path: '/analytics/activities' },
+      { label: 'Team Analytics', path: '/analytics/teams' },
+      { label: 'Performance Analytics', path: '/analytics/performance' },
+    ],
+  },
+  {
     id: 'search',
     label: 'Global Search',
     icon: <SearchIcon size={18} />,
@@ -308,6 +325,7 @@ export const Navbar: React.FC = () => {
   // Determine active module based on current path
   const getActiveModuleId = (path: string): string => {
     if (path.startsWith('/dashboard')) return 'dashboard';
+    if (path.startsWith('/analytics')) return 'analytics';
     if (path.startsWith('/search')) return 'search';
     if (path.startsWith('/workspaces')) return 'workspaces';
     if (path.startsWith('/users') || path.startsWith('/teams')) return 'users-teams';
@@ -493,6 +511,7 @@ export const Navbar: React.FC = () => {
                     {module.subItems.map((sub) => {
                       const isSubActive =
                         sub.path === '/dashboard' ||
+                        sub.path === '/analytics' ||
                         sub.path === '/search' ||
                         sub.path === '/workspaces' ||
                         sub.path === '/leads' ||

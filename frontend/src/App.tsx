@@ -126,6 +126,7 @@ import {
 } from './pages/communications';
 import { GlobalSearchPage } from './pages/search';
 import { DashboardExplorerPage } from './pages/dashboard';
+import { AnalyticsExplorerPage } from './pages/analytics';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 export function App() {
@@ -353,6 +354,18 @@ export function App() {
         <Route path="/dashboard/teams" element={<DashboardExplorerPage screen="teams" />} />
         <Route path="/dashboard/team-performance" element={<DashboardExplorerPage screen="teams" />} />
         <Route path="/dashboard/custom" element={<DashboardExplorerPage screen="custom" />} />
+
+        {/* Analytics Module Routes */}
+        <Route path="/analytics" element={<AnalyticsExplorerPage screen="sales" />} />
+        <Route path="/analytics/sales" element={<AnalyticsExplorerPage screen="sales" />} />
+        <Route path="/analytics/leads" element={<AnalyticsExplorerPage screen="leads" />} />
+        <Route path="/analytics/lead-sources" element={<AnalyticsExplorerPage screen="lead-sources" />} />
+        <Route path="/analytics/pipeline" element={<AnalyticsExplorerPage screen="pipeline" />} />
+        <Route path="/analytics/revenue" element={<AnalyticsExplorerPage screen="revenue" />} />
+        <Route path="/analytics/conversion" element={<AnalyticsExplorerPage screen="conversion" />} />
+        <Route path="/analytics/activities" element={<AnalyticsExplorerPage screen="activities" />} />
+        <Route path="/analytics/teams" element={<AnalyticsExplorerPage screen="teams" />} />
+        <Route path="/analytics/performance" element={<AnalyticsExplorerPage screen="performance" />} />
 
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/change-password" element={<ChangePasswordPage />} />
