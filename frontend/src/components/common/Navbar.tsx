@@ -14,6 +14,7 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
   LockIcon,
+  SearchIcon,
   SlidersIcon,
   TagIcon,
   TargetIcon,
@@ -36,6 +37,23 @@ interface ModuleNavConfig {
 }
 
 const CRM_MODULES: ModuleNavConfig[] = [
+  {
+    id: 'search',
+    label: 'Global Search',
+    icon: <SearchIcon size={18} />,
+    basePath: '/search',
+    subItems: [
+      { label: 'Search All', path: '/search' },
+      { label: 'Leads', path: '/search/leads' },
+      { label: 'Contacts', path: '/search/contacts' },
+      { label: 'Companies', path: '/search/companies' },
+      { label: 'Deals', path: '/search/deals' },
+      { label: 'Activities', path: '/search/activities' },
+      { label: 'Documents', path: '/search/documents' },
+      { label: 'Notes', path: '/search/notes' },
+      { label: 'Users', path: '/search/users' },
+    ],
+  },
   {
     id: 'workspaces',
     label: 'Workspaces',
@@ -274,6 +292,7 @@ export const Navbar: React.FC = () => {
 
   // Determine active module based on current path
   const getActiveModuleId = (path: string): string => {
+    if (path.startsWith('/search')) return 'search';
     if (path.startsWith('/workspaces')) return 'workspaces';
     if (path.startsWith('/users') || path.startsWith('/teams')) return 'users-teams';
     if (path.startsWith('/roles')) return 'roles';
@@ -457,6 +476,7 @@ export const Navbar: React.FC = () => {
                   <div className="sidebar-module-dropdown">
                     {module.subItems.map((sub) => {
                       const isSubActive =
+                        sub.path === '/search' ||
                         sub.path === '/workspaces' ||
                         sub.path === '/leads' ||
                         sub.path === '/contacts' ||

@@ -124,6 +124,7 @@ import {
   CommunicationHistoryPage,
   EmailTemplatesPage,
 } from './pages/communications';
+import { GlobalSearchPage } from './pages/search';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 export function App() {
@@ -330,6 +331,17 @@ export function App() {
         <Route path="/communications/mentions" element={<InternalCommentsPage mode="mentions" />} />
         <Route path="/communications/history" element={<CommunicationHistoryPage />} />
         <Route path="/communications/templates" element={<EmailTemplatesPage />} />
+
+        {/* Global Search Module Routes */}
+        <Route path="/search" element={<GlobalSearchPage scope="all" />} />
+        <Route path="/search/leads" element={<GlobalSearchPage scope="leads" />} />
+        <Route path="/search/contacts" element={<GlobalSearchPage scope="contacts" />} />
+        <Route path="/search/companies" element={<GlobalSearchPage scope="companies" />} />
+        <Route path="/search/deals" element={<GlobalSearchPage scope="deals" />} />
+        <Route path="/search/activities" element={<GlobalSearchPage scope="activities" />} />
+        <Route path="/search/documents" element={<GlobalSearchPage scope="documents" />} />
+        <Route path="/search/notes" element={<GlobalSearchPage scope="notes" />} />
+        <Route path="/search/users" element={<GlobalSearchPage scope="users" />} />
 
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/change-password" element={<ChangePasswordPage />} />
