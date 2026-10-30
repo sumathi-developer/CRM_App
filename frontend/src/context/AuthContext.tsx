@@ -39,12 +39,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const currentUser = await authService.getMe();
       setUser(currentUser);
-    } catch (err) {
+    } catch (err: any) {
       console.warn('Initial session check failed:', err);
-      // If token is invalid and refresh failed, clear user
-      if (!api.getAccessToken()) {
-        setUser(null);
+      // If token is invalid (401, 404, or unresolvable session), clear user and invalid tokens
+      if (err?.statusCode === 401 || err?.statusCode === 404) {
+        api.clearTokens();
       }
+      setUser(null);
     } finally {
       setIsLoading(false);
     }

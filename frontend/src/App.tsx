@@ -55,6 +55,81 @@ import { RoutingPage } from './pages/lead-generation/RoutingPage';
 import { AssignmentRulesPage } from './pages/lead-generation/AssignmentRulesPage';
 import { LeadGenAnalyticsPage } from './pages/lead-generation/LeadGenAnalyticsPage';
 import { SourceAnalyticsPage } from './pages/lead-generation/SourceAnalyticsPage';
+import {
+  LeadsExplorerPage,
+  CreateLeadPage,
+  EditLeadPage,
+  LeadDetailsPage,
+  LeadAssignmentPage,
+  LeadQualificationPage,
+  LeadScoringPage,
+  LeadActivitiesPage,
+  LeadNotesPage,
+  LeadDocumentsPage,
+  LeadImportPage,
+  LeadExportPage,
+  LeadConversionPage,
+  LeadSettingsPage,
+} from './pages/leads';
+import {
+  ContactsExplorerPage,
+  CreateContactPage,
+  EditContactPage,
+  ContactDetailsPage,
+  ContactActivitiesPage,
+  ContactNotesPage,
+  ContactDocumentsPage,
+  ContactImportPage,
+  ContactExportPage,
+} from './pages/contacts';
+import {
+  PipelineOverviewPage,
+  PipelineSelectorPage,
+  CreatePipelinePage,
+  EditPipelinePage,
+  StageManagementPage,
+  StageProbabilityPage,
+  PipelineSettingsPage,
+} from './pages/pipelines';
+import {
+  DealsExplorerPage,
+  CreateDealPage,
+  EditDealPage,
+  DealDetailsPage,
+  DealActivitiesPage,
+  DealNotesPage,
+  DealDocumentsPage,
+  DealSettingsPage,
+} from './pages/deals';
+import {
+  ActivitiesExplorerPage,
+  CreateActivityPage,
+  EditActivityPage,
+  ActivityDetailsPage,
+} from './pages/activities';
+import {
+  CalendarExplorerPage,
+  CreateEventPage,
+  EditEventPage,
+  EventDetailsPage,
+  MeetingSchedulingPage,
+  CalendarRemindersPage,
+} from './pages/calendar';
+import {
+  CommunicationCenterPage,
+  EmailsExplorerPage,
+  ComposeEmailPage,
+  EmailDetailsPage,
+  InternalCommentsPage,
+  CommunicationHistoryPage,
+  EmailTemplatesPage,
+} from './pages/communications';
+import { GlobalSearchPage } from './pages/search';
+import { DashboardExplorerPage } from './pages/dashboard';
+import { AnalyticsExplorerPage } from './pages/analytics';
+import { SettingsExplorerPage } from './pages/settings';
+import { AuditLogsExplorerPage } from './pages/audit-logs';
+import { HelpSupportExplorerPage } from './pages/help-support';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 export function App() {
@@ -139,6 +214,197 @@ export function App() {
         <Route path="/lead-generation/assignment-rules" element={<AssignmentRulesPage />} />
         <Route path="/lead-generation/analytics" element={<LeadGenAnalyticsPage />} />
         <Route path="/lead-generation/analytics/sources" element={<SourceAnalyticsPage />} />
+
+        {/* Leads Module Routes */}
+        <Route path="/leads" element={<LeadsExplorerPage />} />
+        <Route path="/leads/my" element={<LeadsExplorerPage />} />
+        <Route path="/leads/list" element={<LeadsExplorerPage />} />
+        <Route path="/leads/board" element={<LeadsExplorerPage />} />
+        <Route path="/leads/table" element={<LeadsExplorerPage />} />
+        <Route path="/leads/create" element={<CreateLeadPage />} />
+        <Route path="/leads/assignment" element={<LeadAssignmentPage />} />
+        <Route path="/leads/qualification" element={<LeadQualificationPage />} />
+        <Route path="/leads/scoring" element={<LeadScoringPage />} />
+        <Route path="/leads/activities" element={<LeadActivitiesPage />} />
+        <Route path="/leads/notes" element={<LeadNotesPage />} />
+        <Route path="/leads/documents" element={<LeadDocumentsPage />} />
+        <Route path="/leads/import" element={<LeadImportPage />} />
+        <Route path="/leads/export" element={<LeadExportPage />} />
+        <Route path="/leads/conversion" element={<LeadConversionPage />} />
+        <Route path="/leads/settings" element={<LeadSettingsPage />} />
+        <Route path="/leads/:id" element={<LeadDetailsPage />} />
+        <Route path="/leads/:id/edit" element={<EditLeadPage />} />
+        <Route path="/leads/:id/assignment" element={<LeadAssignmentPage />} />
+        <Route path="/leads/:id/qualification" element={<LeadQualificationPage />} />
+        <Route path="/leads/:id/scoring" element={<LeadScoringPage />} />
+        <Route path="/leads/:id/activities" element={<LeadActivitiesPage />} />
+        <Route path="/leads/:id/notes" element={<LeadNotesPage />} />
+        <Route path="/leads/:id/documents" element={<LeadDocumentsPage />} />
+        <Route path="/leads/:id/convert" element={<LeadConversionPage />} />
+
+        {/* Contacts Module Routes */}
+        <Route path="/contacts" element={<ContactsExplorerPage />} />
+        <Route path="/contacts/my" element={<ContactsExplorerPage />} />
+        <Route path="/contacts/list" element={<ContactsExplorerPage />} />
+        <Route path="/contacts/table" element={<ContactsExplorerPage />} />
+        <Route path="/contacts/create" element={<CreateContactPage />} />
+        <Route path="/contacts/activities" element={<ContactActivitiesPage />} />
+        <Route path="/contacts/notes" element={<ContactNotesPage />} />
+        <Route path="/contacts/documents" element={<ContactDocumentsPage />} />
+        <Route path="/contacts/import" element={<ContactImportPage />} />
+        <Route path="/contacts/export" element={<ContactExportPage />} />
+        <Route path="/contacts/:id" element={<ContactDetailsPage />} />
+        <Route path="/contacts/:id/edit" element={<EditContactPage />} />
+        <Route path="/contacts/:id/activities" element={<ContactActivitiesPage />} />
+        <Route path="/contacts/:id/notes" element={<ContactNotesPage />} />
+        <Route path="/contacts/:id/documents" element={<ContactDocumentsPage />} />
+
+        {/* Sales Pipeline Module Routes */}
+        <Route path="/pipelines" element={<PipelineOverviewPage />} />
+        <Route path="/pipelines/board" element={<PipelineOverviewPage />} />
+        <Route path="/pipelines/list" element={<PipelineOverviewPage />} />
+        <Route path="/pipelines/table" element={<PipelineOverviewPage />} />
+        <Route path="/pipelines/selector" element={<PipelineSelectorPage />} />
+        <Route path="/pipelines/stages" element={<StageManagementPage />} />
+        <Route path="/pipelines/create" element={<CreatePipelinePage />} />
+        <Route path="/pipelines/stage-management" element={<StageManagementPage />} />
+        <Route path="/pipelines/probability" element={<StageProbabilityPage />} />
+        <Route path="/pipelines/settings" element={<PipelineSettingsPage />} />
+        <Route path="/pipelines/:id" element={<PipelineOverviewPage />} />
+        <Route path="/pipelines/:id/board" element={<PipelineOverviewPage />} />
+        <Route path="/pipelines/:id/list" element={<PipelineOverviewPage />} />
+        <Route path="/pipelines/:id/table" element={<PipelineOverviewPage />} />
+        <Route path="/pipelines/:id/edit" element={<EditPipelinePage />} />
+        <Route path="/pipelines/:id/stages" element={<StageManagementPage />} />
+        <Route path="/pipelines/:id/stage-management" element={<StageManagementPage />} />
+        <Route path="/pipelines/:id/probability" element={<StageProbabilityPage />} />
+
+        {/* Deals Module Routes */}
+        <Route path="/deals" element={<DealsExplorerPage scope="all" />} />
+        <Route path="/deals/my" element={<DealsExplorerPage scope="my" />} />
+        <Route path="/deals/list" element={<DealsExplorerPage scope="all" forcedView="list" />} />
+        <Route path="/deals/board" element={<DealsExplorerPage scope="all" forcedView="board" />} />
+        <Route path="/deals/table" element={<DealsExplorerPage scope="all" forcedView="table" />} />
+        <Route path="/deals/won" element={<DealsExplorerPage scope="won" />} />
+        <Route path="/deals/lost" element={<DealsExplorerPage scope="lost" />} />
+        <Route path="/deals/create" element={<CreateDealPage />} />
+        <Route path="/deals/activities" element={<DealActivitiesPage />} />
+        <Route path="/deals/notes" element={<DealNotesPage />} />
+        <Route path="/deals/documents" element={<DealDocumentsPage />} />
+        <Route path="/deals/settings" element={<DealSettingsPage />} />
+        <Route path="/deals/:id" element={<DealDetailsPage />} />
+        <Route path="/deals/:id/edit" element={<EditDealPage />} />
+        <Route path="/deals/:id/activities" element={<DealActivitiesPage />} />
+        <Route path="/deals/:id/notes" element={<DealNotesPage />} />
+        <Route path="/deals/:id/documents" element={<DealDocumentsPage />} />
+
+        {/* Activities Module Routes */}
+        <Route path="/activities" element={<ActivitiesExplorerPage scope="all" />} />
+        <Route path="/activities/my" element={<ActivitiesExplorerPage scope="my" />} />
+        <Route path="/activities/tasks" element={<ActivitiesExplorerPage scope="tasks" />} />
+        <Route path="/activities/calls" element={<ActivitiesExplorerPage scope="calls" />} />
+        <Route path="/activities/meetings" element={<ActivitiesExplorerPage scope="meetings" />} />
+        <Route path="/activities/follow-ups" element={<ActivitiesExplorerPage scope="follow-ups" />} />
+        <Route path="/activities/emails" element={<ActivitiesExplorerPage scope="emails" />} />
+        <Route path="/activities/completed" element={<ActivitiesExplorerPage scope="completed" />} />
+        <Route path="/activities/overdue" element={<ActivitiesExplorerPage scope="overdue" />} />
+        <Route path="/activities/create" element={<CreateActivityPage />} />
+        <Route path="/activities/:id" element={<ActivityDetailsPage />} />
+        <Route path="/activities/:id/edit" element={<EditActivityPage />} />
+
+        {/* Calendar Module Routes */}
+        <Route path="/calendar" element={<CalendarExplorerPage />} />
+        <Route path="/calendar/day" element={<CalendarExplorerPage forcedView="day" />} />
+        <Route path="/calendar/week" element={<CalendarExplorerPage forcedView="week" />} />
+        <Route path="/calendar/month" element={<CalendarExplorerPage forcedView="month" />} />
+        <Route path="/calendar/schedule" element={<CalendarExplorerPage forcedView="schedule" />} />
+        <Route path="/calendar/create" element={<CreateEventPage />} />
+        <Route path="/calendar/meeting-scheduling" element={<MeetingSchedulingPage />} />
+        <Route path="/calendar/reminders" element={<CalendarRemindersPage />} />
+        <Route path="/calendar/events/:id" element={<EventDetailsPage />} />
+        <Route path="/calendar/events/:id/edit" element={<EditEventPage />} />
+
+        {/* Communications Module Routes */}
+        <Route path="/communications" element={<CommunicationCenterPage />} />
+        <Route path="/communications/center" element={<CommunicationCenterPage />} />
+        <Route path="/communications/emails" element={<EmailsExplorerPage forcedFolder="ALL" />} />
+        <Route path="/communications/inbox" element={<EmailsExplorerPage forcedFolder="INBOX" />} />
+        <Route path="/communications/sent" element={<EmailsExplorerPage forcedFolder="SENT" />} />
+        <Route path="/communications/compose" element={<ComposeEmailPage />} />
+        <Route path="/communications/emails/:id" element={<EmailDetailsPage />} />
+        <Route path="/communications/comments" element={<InternalCommentsPage mode="comments" />} />
+        <Route path="/communications/mentions" element={<InternalCommentsPage mode="mentions" />} />
+        <Route path="/communications/history" element={<CommunicationHistoryPage />} />
+        <Route path="/communications/templates" element={<EmailTemplatesPage />} />
+
+        {/* Global Search Module Routes */}
+        <Route path="/search" element={<GlobalSearchPage scope="all" />} />
+        <Route path="/search/leads" element={<GlobalSearchPage scope="leads" />} />
+        <Route path="/search/contacts" element={<GlobalSearchPage scope="contacts" />} />
+        <Route path="/search/companies" element={<GlobalSearchPage scope="companies" />} />
+        <Route path="/search/deals" element={<GlobalSearchPage scope="deals" />} />
+        <Route path="/search/activities" element={<GlobalSearchPage scope="activities" />} />
+        <Route path="/search/documents" element={<GlobalSearchPage scope="documents" />} />
+        <Route path="/search/notes" element={<GlobalSearchPage scope="notes" />} />
+        <Route path="/search/users" element={<GlobalSearchPage scope="users" />} />
+
+        {/* Dashboard Module Routes */}
+        <Route path="/dashboard" element={<DashboardExplorerPage screen="overview" />} />
+        <Route path="/dashboard/overview" element={<DashboardExplorerPage screen="overview" />} />
+        <Route path="/dashboard/sales" element={<DashboardExplorerPage screen="sales" />} />
+        <Route path="/dashboard/leads" element={<DashboardExplorerPage screen="leads" />} />
+        <Route path="/dashboard/revenue" element={<DashboardExplorerPage screen="revenue" />} />
+        <Route path="/dashboard/teams" element={<DashboardExplorerPage screen="teams" />} />
+        <Route path="/dashboard/team-performance" element={<DashboardExplorerPage screen="teams" />} />
+        <Route path="/dashboard/custom" element={<DashboardExplorerPage screen="custom" />} />
+
+        {/* Analytics Module Routes */}
+        <Route path="/analytics" element={<AnalyticsExplorerPage screen="sales" />} />
+        <Route path="/analytics/sales" element={<AnalyticsExplorerPage screen="sales" />} />
+        <Route path="/analytics/leads" element={<AnalyticsExplorerPage screen="leads" />} />
+        <Route path="/analytics/lead-sources" element={<AnalyticsExplorerPage screen="lead-sources" />} />
+        <Route path="/analytics/pipeline" element={<AnalyticsExplorerPage screen="pipeline" />} />
+        <Route path="/analytics/revenue" element={<AnalyticsExplorerPage screen="revenue" />} />
+        <Route path="/analytics/conversion" element={<AnalyticsExplorerPage screen="conversion" />} />
+        <Route path="/analytics/activities" element={<AnalyticsExplorerPage screen="activities" />} />
+        <Route path="/analytics/teams" element={<AnalyticsExplorerPage screen="teams" />} />
+        <Route path="/analytics/performance" element={<AnalyticsExplorerPage screen="performance" />} />
+
+        {/* Settings Module Routes */}
+        <Route path="/settings" element={<SettingsExplorerPage screen="account" />} />
+        <Route path="/settings/account" element={<SettingsExplorerPage screen="account" />} />
+        <Route path="/settings/profile" element={<SettingsExplorerPage screen="profile" />} />
+        <Route path="/settings/workspace" element={<SettingsExplorerPage screen="workspace" />} />
+        <Route path="/settings/general" element={<SettingsExplorerPage screen="general" />} />
+        <Route path="/settings/leads" element={<SettingsExplorerPage screen="leads" />} />
+        <Route path="/settings/contacts" element={<SettingsExplorerPage screen="contacts" />} />
+        <Route path="/settings/companies" element={<SettingsExplorerPage screen="companies" />} />
+        <Route path="/settings/deals" element={<SettingsExplorerPage screen="deals" />} />
+        <Route path="/settings/pipelines" element={<SettingsExplorerPage screen="pipelines" />} />
+        <Route path="/settings/activities" element={<SettingsExplorerPage screen="activities" />} />
+        <Route path="/settings/notifications" element={<SettingsExplorerPage screen="notifications" />} />
+        <Route path="/settings/email" element={<SettingsExplorerPage screen="email" />} />
+        <Route path="/settings/integrations" element={<SettingsExplorerPage screen="integrations" />} />
+        <Route path="/settings/security" element={<SettingsExplorerPage screen="security" />} />
+
+        {/* Audit Logs Module Routes */}
+        <Route path="/audit-logs" element={<AuditLogsExplorerPage screen="all" />} />
+        <Route path="/audit-logs/all" element={<AuditLogsExplorerPage screen="all" />} />
+        <Route path="/audit-logs/user-activity" element={<AuditLogsExplorerPage screen="user-activity" />} />
+        <Route path="/audit-logs/record-changes" element={<AuditLogsExplorerPage screen="record-changes" />} />
+        <Route path="/audit-logs/permission-changes" element={<AuditLogsExplorerPage screen="permission-changes" />} />
+        <Route path="/audit-logs/login-history" element={<AuditLogsExplorerPage screen="login-history" />} />
+        <Route path="/audit-logs/system-events" element={<AuditLogsExplorerPage screen="system-events" />} />
+
+        {/* Help & Support Module Routes */}
+        <Route path="/help" element={<HelpSupportExplorerPage screen="center" />} />
+        <Route path="/help/center" element={<HelpSupportExplorerPage screen="center" />} />
+        <Route path="/help/docs" element={<HelpSupportExplorerPage screen="documentation" />} />
+        <Route path="/help/documentation" element={<HelpSupportExplorerPage screen="documentation" />} />
+        <Route path="/help/faqs" element={<HelpSupportExplorerPage screen="faqs" />} />
+        <Route path="/help/support" element={<HelpSupportExplorerPage screen="support" />} />
+        <Route path="/help/contact" element={<HelpSupportExplorerPage screen="support" />} />
+        <Route path="/help/feedback" element={<HelpSupportExplorerPage screen="feedback" />} />
 
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/change-password" element={<ChangePasswordPage />} />

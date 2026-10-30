@@ -5,6 +5,8 @@ import { useWorkspace } from '../../context/useWorkspace';
 import { Logo } from '../auth/Logo';
 import { WorkspaceSwitcher } from '../workspace/WorkspaceSwitcher';
 import {
+  ActivityIcon,
+  BarChart2Icon,
   UserIcon,
   UsersIcon,
   LogOutIcon,
@@ -13,9 +15,13 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
   LockIcon,
+  SearchIcon,
+  SettingsIcon,
   SlidersIcon,
   TagIcon,
   TargetIcon,
+  TrendingUpIcon,
+  LifeBuoyIcon,
   MenuIcon,
   XIcon,
 } from './Icons';
@@ -34,6 +40,54 @@ interface ModuleNavConfig {
 }
 
 const CRM_MODULES: ModuleNavConfig[] = [
+  {
+    id: 'dashboard',
+    label: 'Dashboard',
+    icon: <BarChart2Icon size={18} />,
+    basePath: '/dashboard',
+    subItems: [
+      { label: 'Overview Dashboard', path: '/dashboard' },
+      { label: 'Sales Dashboard', path: '/dashboard/sales' },
+      { label: 'Lead Dashboard', path: '/dashboard/leads' },
+      { label: 'Revenue Dashboard', path: '/dashboard/revenue' },
+      { label: 'Team Performance', path: '/dashboard/teams' },
+      { label: 'Custom Dashboard', path: '/dashboard/custom' },
+    ],
+  },
+  {
+    id: 'analytics',
+    label: 'Analytics',
+    icon: <TrendingUpIcon size={18} />,
+    basePath: '/analytics',
+    subItems: [
+      { label: 'Sales Analytics', path: '/analytics/sales' },
+      { label: 'Lead Analytics', path: '/analytics/leads' },
+      { label: 'Lead Source Analytics', path: '/analytics/lead-sources' },
+      { label: 'Pipeline Analytics', path: '/analytics/pipeline' },
+      { label: 'Revenue Analytics', path: '/analytics/revenue' },
+      { label: 'Conversion Analytics', path: '/analytics/conversion' },
+      { label: 'Activity Analytics', path: '/analytics/activities' },
+      { label: 'Team Analytics', path: '/analytics/teams' },
+      { label: 'Performance Analytics', path: '/analytics/performance' },
+    ],
+  },
+  {
+    id: 'search',
+    label: 'Global Search',
+    icon: <SearchIcon size={18} />,
+    basePath: '/search',
+    subItems: [
+      { label: 'Search All', path: '/search' },
+      { label: 'Leads', path: '/search/leads' },
+      { label: 'Contacts', path: '/search/contacts' },
+      { label: 'Companies', path: '/search/companies' },
+      { label: 'Deals', path: '/search/deals' },
+      { label: 'Activities', path: '/search/activities' },
+      { label: 'Documents', path: '/search/documents' },
+      { label: 'Notes', path: '/search/notes' },
+      { label: 'Users', path: '/search/users' },
+    ],
+  },
   {
     id: 'workspaces',
     label: 'Workspaces',
@@ -67,6 +121,137 @@ const CRM_MODULES: ModuleNavConfig[] = [
     subItems: [
       { label: 'All Roles', path: '/roles' },
       { label: 'Create Role', path: '/roles/create' },
+    ],
+  },
+  {
+    id: 'leads',
+    label: 'Leads',
+    icon: <TargetIcon size={18} />,
+    basePath: '/leads',
+    subItems: [
+      { label: 'All Leads', path: '/leads' },
+      { label: 'My Leads', path: '/leads/my' },
+      { label: 'Lead List', path: '/leads/list' },
+      { label: 'Lead Board', path: '/leads/board' },
+      { label: 'Lead Table', path: '/leads/table' },
+      { label: 'Create Lead', path: '/leads/create' },
+      { label: 'Lead Assignment', path: '/leads/assignment' },
+      { label: 'Lead Qualification', path: '/leads/qualification' },
+      { label: 'Lead Scoring', path: '/leads/scoring' },
+      { label: 'Lead Activities', path: '/leads/activities' },
+      { label: 'Lead Notes', path: '/leads/notes' },
+      { label: 'Lead Documents', path: '/leads/documents' },
+      { label: 'Lead Import', path: '/leads/import' },
+      { label: 'Lead Export', path: '/leads/export' },
+      { label: 'Lead Conversion', path: '/leads/conversion' },
+      { label: 'Lead Settings', path: '/leads/settings' },
+    ],
+  },
+  {
+    id: 'contacts',
+    label: 'Contacts',
+    icon: <UsersIcon size={18} />,
+    basePath: '/contacts',
+    subItems: [
+      { label: 'All Contacts', path: '/contacts' },
+      { label: 'My Contacts', path: '/contacts/my' },
+      { label: 'Contact List', path: '/contacts/list' },
+      { label: 'Contact Table', path: '/contacts/table' },
+      { label: 'Create Contact', path: '/contacts/create' },
+      { label: 'Contact Activities', path: '/contacts/activities' },
+      { label: 'Contact Notes', path: '/contacts/notes' },
+      { label: 'Contact Documents', path: '/contacts/documents' },
+      { label: 'Contact Import', path: '/contacts/import' },
+      { label: 'Contact Export', path: '/contacts/export' },
+    ],
+  },
+  {
+    id: 'pipelines',
+    label: 'Sales Pipeline',
+    icon: <TrendingUpIcon size={18} />,
+    basePath: '/pipelines',
+    subItems: [
+      { label: 'Pipeline Overview', path: '/pipelines' },
+      { label: 'Pipeline Board', path: '/pipelines/board' },
+      { label: 'Pipeline List', path: '/pipelines/list' },
+      { label: 'Pipeline Table', path: '/pipelines/table' },
+      { label: 'Pipeline Selector', path: '/pipelines/selector' },
+      { label: 'Pipeline Stages', path: '/pipelines/stages' },
+      { label: 'Create Pipeline', path: '/pipelines/create' },
+      { label: 'Stage Management', path: '/pipelines/stage-management' },
+      { label: 'Stage Probability', path: '/pipelines/probability' },
+      { label: 'Pipeline Settings', path: '/pipelines/settings' },
+    ],
+  },
+  {
+    id: 'deals',
+    label: 'Deals',
+    icon: <BriefcaseIcon size={18} />,
+    basePath: '/deals',
+    subItems: [
+      { label: 'All Deals', path: '/deals' },
+      { label: 'My Deals', path: '/deals/my' },
+      { label: 'Deal List', path: '/deals/list' },
+      { label: 'Deal Board', path: '/deals/board' },
+      { label: 'Deal Table', path: '/deals/table' },
+      { label: 'Create Deal', path: '/deals/create' },
+      { label: 'Won Deals', path: '/deals/won' },
+      { label: 'Lost Deals', path: '/deals/lost' },
+      { label: 'Deal Activities', path: '/deals/activities' },
+      { label: 'Deal Notes', path: '/deals/notes' },
+      { label: 'Deal Documents', path: '/deals/documents' },
+      { label: 'Deal Settings', path: '/deals/settings' },
+    ],
+  },
+  {
+    id: 'activities',
+    label: 'Activities',
+    icon: <ActivityIcon size={18} />,
+    basePath: '/activities',
+    subItems: [
+      { label: 'All Activities', path: '/activities' },
+      { label: 'My Activities', path: '/activities/my' },
+      { label: 'Tasks', path: '/activities/tasks' },
+      { label: 'Calls', path: '/activities/calls' },
+      { label: 'Meetings', path: '/activities/meetings' },
+      { label: 'Follow-ups', path: '/activities/follow-ups' },
+      { label: 'Emails', path: '/activities/emails' },
+      { label: 'Completed Activities', path: '/activities/completed' },
+      { label: 'Overdue Activities', path: '/activities/overdue' },
+      { label: 'Create Activity', path: '/activities/create' },
+    ],
+  },
+  {
+    id: 'calendar',
+    label: 'Calendar',
+    icon: <ActivityIcon size={18} />,
+    basePath: '/calendar',
+    subItems: [
+      { label: 'Calendar', path: '/calendar' },
+      { label: 'Day View', path: '/calendar/day' },
+      { label: 'Week View', path: '/calendar/week' },
+      { label: 'Month View', path: '/calendar/month' },
+      { label: 'Schedule View', path: '/calendar/schedule' },
+      { label: 'Create Event', path: '/calendar/create' },
+      { label: 'Meeting Scheduling', path: '/calendar/meeting-scheduling' },
+      { label: 'Reminders', path: '/calendar/reminders' },
+    ],
+  },
+  {
+    id: 'communications',
+    label: 'Communications',
+    icon: <ActivityIcon size={18} />,
+    basePath: '/communications',
+    subItems: [
+      { label: 'Communication Center', path: '/communications' },
+      { label: 'Emails', path: '/communications/emails' },
+      { label: 'Email Inbox', path: '/communications/inbox' },
+      { label: 'Sent Emails', path: '/communications/sent' },
+      { label: 'Compose Email', path: '/communications/compose' },
+      { label: 'Internal Comments', path: '/communications/comments' },
+      { label: 'Mentions', path: '/communications/mentions' },
+      { label: 'Communication History', path: '/communications/history' },
+      { label: 'Templates', path: '/communications/templates' },
     ],
   },
   {
@@ -117,6 +302,55 @@ const CRM_MODULES: ModuleNavConfig[] = [
     ],
   },
   {
+    id: 'settings',
+    label: 'Settings',
+    icon: <SettingsIcon size={18} />,
+    basePath: '/settings',
+    subItems: [
+      { label: 'Account Settings', path: '/settings/account' },
+      { label: 'Profile Settings', path: '/settings/profile' },
+      { label: 'Workspace Settings', path: '/settings/workspace' },
+      { label: 'General Settings', path: '/settings/general' },
+      { label: 'Lead Settings', path: '/settings/leads' },
+      { label: 'Contact Settings', path: '/settings/contacts' },
+      { label: 'Company Settings', path: '/settings/companies' },
+      { label: 'Deal Settings', path: '/settings/deals' },
+      { label: 'Pipeline Settings', path: '/settings/pipelines' },
+      { label: 'Activity Settings', path: '/settings/activities' },
+      { label: 'Notification Settings', path: '/settings/notifications' },
+      { label: 'Email Settings', path: '/settings/email' },
+      { label: 'Integration Settings', path: '/settings/integrations' },
+      { label: 'Security Settings', path: '/settings/security' },
+    ],
+  },
+  {
+    id: 'audit-logs',
+    label: 'Audit Logs',
+    icon: <ShieldIcon size={18} />,
+    basePath: '/audit-logs',
+    subItems: [
+      { label: 'All Activity Logs', path: '/audit-logs/all' },
+      { label: 'User Activity', path: '/audit-logs/user-activity' },
+      { label: 'Record Changes', path: '/audit-logs/record-changes' },
+      { label: 'Permission Changes', path: '/audit-logs/permission-changes' },
+      { label: 'Login History', path: '/audit-logs/login-history' },
+      { label: 'System Events', path: '/audit-logs/system-events' },
+    ],
+  },
+  {
+    id: 'help-support',
+    label: 'Help & Support',
+    icon: <LifeBuoyIcon size={18} />,
+    basePath: '/help',
+    subItems: [
+      { label: 'Help Center', path: '/help/center' },
+      { label: 'Documentation', path: '/help/docs' },
+      { label: 'FAQs', path: '/help/faqs' },
+      { label: 'Contact Support', path: '/help/support' },
+      { label: 'Feedback & Ideas', path: '/help/feedback' },
+    ],
+  },
+  {
     id: 'account',
     label: 'Account & Security',
     icon: <UserIcon size={18} />,
@@ -141,12 +375,25 @@ export const Navbar: React.FC = () => {
 
   // Determine active module based on current path
   const getActiveModuleId = (path: string): string => {
+    if (path.startsWith('/dashboard')) return 'dashboard';
+    if (path.startsWith('/analytics')) return 'analytics';
+    if (path.startsWith('/search')) return 'search';
     if (path.startsWith('/workspaces')) return 'workspaces';
     if (path.startsWith('/users') || path.startsWith('/teams')) return 'users-teams';
     if (path.startsWith('/roles')) return 'roles';
+    if (path.startsWith('/leads')) return 'leads';
+    if (path.startsWith('/contacts')) return 'contacts';
+    if (path.startsWith('/pipelines')) return 'pipelines';
+    if (path.startsWith('/deals')) return 'deals';
+    if (path.startsWith('/activities')) return 'activities';
+    if (path.startsWith('/calendar')) return 'calendar';
+    if (path.startsWith('/communications')) return 'communications';
     if (path.startsWith('/lead-generation')) return 'lead-generation';
     if (path.startsWith('/custom-fields')) return 'custom-fields';
     if (path.startsWith('/tags')) return 'tags';
+    if (path.startsWith('/settings')) return 'settings';
+    if (path.startsWith('/audit-logs')) return 'audit-logs';
+    if (path.startsWith('/help')) return 'help-support';
     if (path === '/profile' || path === '/change-password' || path === '/sessions') return 'account';
     return '';
   };
@@ -317,7 +564,21 @@ export const Navbar: React.FC = () => {
                   <div className="sidebar-module-dropdown">
                     {module.subItems.map((sub) => {
                       const isSubActive =
+                        (sub.path === '/audit-logs/all' && location.pathname === '/audit-logs') ||
+                        (sub.path === '/help/center' && location.pathname === '/help') ||
+                        (sub.path === '/settings' ||
+                        sub.path === '/dashboard' ||
+                        sub.path === '/analytics' ||
+                        sub.path === '/search' ||
                         sub.path === '/workspaces' ||
+                        sub.path === '/leads' ||
+                        sub.path === '/contacts' ||
+                        sub.path === '/pipelines' ||
+                        sub.path === '/deals' ||
+                        sub.path === '/activities' ||
+                        sub.path === '/calendar' ||
+                        sub.path === '/communications' ||
+                        sub.path === '/communications/emails' ||
                         sub.path === '/lead-generation' ||
                         sub.path === '/users' ||
                         sub.path === '/teams' ||
@@ -325,7 +586,7 @@ export const Navbar: React.FC = () => {
                         sub.path === '/custom-fields' ||
                         sub.path === '/tags'
                           ? location.pathname === sub.path
-                          : location.pathname.startsWith(sub.path);
+                          : location.pathname.startsWith(sub.path));
 
                       return (
                         <Link
