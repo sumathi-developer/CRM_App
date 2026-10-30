@@ -394,6 +394,26 @@ export const MenuIcon: React.FC<IconProps> = ({ size = 18, strokeWidth = 2, ...p
   </svg>
 );
 
+export const HelpCircleIcon: React.FC<IconProps> = ({ size = 18, strokeWidth = 2, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+    <line x1="12" y1="17" x2="12.01" y2="17" />
+  </svg>
+);
+
+export const LifeBuoyIcon: React.FC<IconProps> = ({ size = 18, strokeWidth = 2, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="10" />
+    <circle cx="12" cy="12" r="4" />
+    <line x1="4.93" y1="4.93" x2="9.17" y2="9.17" />
+    <line x1="14.83" y1="9.17" x2="19.07" y2="4.93" />
+    <line x1="14.83" y1="14.83" x2="19.07" y2="19.07" />
+    <line x1="4.93" y1="19.07" x2="9.17" y2="14.83" />
+  </svg>
+);
+
+
 
 
 

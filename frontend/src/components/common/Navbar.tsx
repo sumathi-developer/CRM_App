@@ -21,6 +21,7 @@ import {
   TagIcon,
   TargetIcon,
   TrendingUpIcon,
+  LifeBuoyIcon,
   MenuIcon,
   XIcon,
 } from './Icons';
@@ -337,6 +338,19 @@ const CRM_MODULES: ModuleNavConfig[] = [
     ],
   },
   {
+    id: 'help-support',
+    label: 'Help & Support',
+    icon: <LifeBuoyIcon size={18} />,
+    basePath: '/help',
+    subItems: [
+      { label: 'Help Center', path: '/help/center' },
+      { label: 'Documentation', path: '/help/docs' },
+      { label: 'FAQs', path: '/help/faqs' },
+      { label: 'Contact Support', path: '/help/support' },
+      { label: 'Feedback & Ideas', path: '/help/feedback' },
+    ],
+  },
+  {
     id: 'account',
     label: 'Account & Security',
     icon: <UserIcon size={18} />,
@@ -379,6 +393,7 @@ export const Navbar: React.FC = () => {
     if (path.startsWith('/tags')) return 'tags';
     if (path.startsWith('/settings')) return 'settings';
     if (path.startsWith('/audit-logs')) return 'audit-logs';
+    if (path.startsWith('/help')) return 'help-support';
     if (path === '/profile' || path === '/change-password' || path === '/sessions') return 'account';
     return '';
   };
@@ -550,6 +565,7 @@ export const Navbar: React.FC = () => {
                     {module.subItems.map((sub) => {
                       const isSubActive =
                         (sub.path === '/audit-logs/all' && location.pathname === '/audit-logs') ||
+                        (sub.path === '/help/center' && location.pathname === '/help') ||
                         (sub.path === '/settings' ||
                         sub.path === '/dashboard' ||
                         sub.path === '/analytics' ||

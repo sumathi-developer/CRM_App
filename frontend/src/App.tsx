@@ -129,6 +129,7 @@ import { DashboardExplorerPage } from './pages/dashboard';
 import { AnalyticsExplorerPage } from './pages/analytics';
 import { SettingsExplorerPage } from './pages/settings';
 import { AuditLogsExplorerPage } from './pages/audit-logs';
+import { HelpSupportExplorerPage } from './pages/help-support';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 export function App() {
@@ -394,6 +395,16 @@ export function App() {
         <Route path="/audit-logs/permission-changes" element={<AuditLogsExplorerPage screen="permission-changes" />} />
         <Route path="/audit-logs/login-history" element={<AuditLogsExplorerPage screen="login-history" />} />
         <Route path="/audit-logs/system-events" element={<AuditLogsExplorerPage screen="system-events" />} />
+
+        {/* Help & Support Module Routes */}
+        <Route path="/help" element={<HelpSupportExplorerPage screen="center" />} />
+        <Route path="/help/center" element={<HelpSupportExplorerPage screen="center" />} />
+        <Route path="/help/docs" element={<HelpSupportExplorerPage screen="documentation" />} />
+        <Route path="/help/documentation" element={<HelpSupportExplorerPage screen="documentation" />} />
+        <Route path="/help/faqs" element={<HelpSupportExplorerPage screen="faqs" />} />
+        <Route path="/help/support" element={<HelpSupportExplorerPage screen="support" />} />
+        <Route path="/help/contact" element={<HelpSupportExplorerPage screen="support" />} />
+        <Route path="/help/feedback" element={<HelpSupportExplorerPage screen="feedback" />} />
 
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/change-password" element={<ChangePasswordPage />} />
