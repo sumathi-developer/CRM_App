@@ -1,4 +1,20 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || '';
+const RAW_API_URL = (import.meta.env.VITE_API_URL as string | undefined) || '';
+const API_BASE_URL = RAW_API_URL.replace(/\/+$/, '');
+
+export function getApiBaseUrl(): string {
+  return API_BASE_URL;
+}
+
+function resolveUrl(endpoint: string): string {
+  if (endpoint.startsWith('http://') || endpoint.startsWith('https://')) {
+    return endpoint;
+  }
+  const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  if (!API_BASE_URL) {
+    return cleanEndpoint;
+  }
+  return `${API_BASE_URL}${cleanEndpoint}`;
+}
 
 export class ApiError extends Error {
   statusCode: number;
@@ -51,7 +67,7 @@ class ApiClient {
     options: RequestInit = {},
     isRetry = false
   ): Promise<T> {
-    const url = endpoint.startsWith('http') ? endpoint : `${API_BASE_URL}${endpoint}`;
+    const url = resolveUrl(endpoint);
     const token = this.getAccessToken();
 
     const headers: Record<string, string> = {
@@ -87,7 +103,7 @@ class ApiClient {
           if (!this.isRefreshing) {
             this.isRefreshing = true;
             try {
-              const refreshRes = await fetch(`${API_BASE_URL}/auth/refresh`, {
+              const refreshRes = await fetch(resolveUrl('/auth/refresh'), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ refreshToken }),
