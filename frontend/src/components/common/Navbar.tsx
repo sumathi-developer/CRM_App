@@ -6,6 +6,7 @@ import { Logo } from '../auth/Logo';
 import { WorkspaceSwitcher } from '../workspace/WorkspaceSwitcher';
 import {
   ActivityIcon,
+  BarChart2Icon,
   UserIcon,
   UsersIcon,
   LogOutIcon,
@@ -37,6 +38,20 @@ interface ModuleNavConfig {
 }
 
 const CRM_MODULES: ModuleNavConfig[] = [
+  {
+    id: 'dashboard',
+    label: 'Dashboard',
+    icon: <BarChart2Icon size={18} />,
+    basePath: '/dashboard',
+    subItems: [
+      { label: 'Overview Dashboard', path: '/dashboard' },
+      { label: 'Sales Dashboard', path: '/dashboard/sales' },
+      { label: 'Lead Dashboard', path: '/dashboard/leads' },
+      { label: 'Revenue Dashboard', path: '/dashboard/revenue' },
+      { label: 'Team Performance', path: '/dashboard/teams' },
+      { label: 'Custom Dashboard', path: '/dashboard/custom' },
+    ],
+  },
   {
     id: 'search',
     label: 'Global Search',
@@ -292,6 +307,7 @@ export const Navbar: React.FC = () => {
 
   // Determine active module based on current path
   const getActiveModuleId = (path: string): string => {
+    if (path.startsWith('/dashboard')) return 'dashboard';
     if (path.startsWith('/search')) return 'search';
     if (path.startsWith('/workspaces')) return 'workspaces';
     if (path.startsWith('/users') || path.startsWith('/teams')) return 'users-teams';
@@ -476,6 +492,7 @@ export const Navbar: React.FC = () => {
                   <div className="sidebar-module-dropdown">
                     {module.subItems.map((sub) => {
                       const isSubActive =
+                        sub.path === '/dashboard' ||
                         sub.path === '/search' ||
                         sub.path === '/workspaces' ||
                         sub.path === '/leads' ||

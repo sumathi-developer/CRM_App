@@ -125,6 +125,7 @@ import {
   EmailTemplatesPage,
 } from './pages/communications';
 import { GlobalSearchPage } from './pages/search';
+import { DashboardExplorerPage } from './pages/dashboard';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 export function App() {
@@ -342,6 +343,16 @@ export function App() {
         <Route path="/search/documents" element={<GlobalSearchPage scope="documents" />} />
         <Route path="/search/notes" element={<GlobalSearchPage scope="notes" />} />
         <Route path="/search/users" element={<GlobalSearchPage scope="users" />} />
+
+        {/* Dashboard Module Routes */}
+        <Route path="/dashboard" element={<DashboardExplorerPage screen="overview" />} />
+        <Route path="/dashboard/overview" element={<DashboardExplorerPage screen="overview" />} />
+        <Route path="/dashboard/sales" element={<DashboardExplorerPage screen="sales" />} />
+        <Route path="/dashboard/leads" element={<DashboardExplorerPage screen="leads" />} />
+        <Route path="/dashboard/revenue" element={<DashboardExplorerPage screen="revenue" />} />
+        <Route path="/dashboard/teams" element={<DashboardExplorerPage screen="teams" />} />
+        <Route path="/dashboard/team-performance" element={<DashboardExplorerPage screen="teams" />} />
+        <Route path="/dashboard/custom" element={<DashboardExplorerPage screen="custom" />} />
 
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/change-password" element={<ChangePasswordPage />} />
