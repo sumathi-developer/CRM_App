@@ -107,6 +107,14 @@ import {
   EditActivityPage,
   ActivityDetailsPage,
 } from './pages/activities';
+import {
+  CalendarExplorerPage,
+  CreateEventPage,
+  EditEventPage,
+  EventDetailsPage,
+  MeetingSchedulingPage,
+  CalendarRemindersPage,
+} from './pages/calendar';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 export function App() {
@@ -288,6 +296,18 @@ export function App() {
         <Route path="/activities/create" element={<CreateActivityPage />} />
         <Route path="/activities/:id" element={<ActivityDetailsPage />} />
         <Route path="/activities/:id/edit" element={<EditActivityPage />} />
+
+        {/* Calendar Module Routes */}
+        <Route path="/calendar" element={<CalendarExplorerPage />} />
+        <Route path="/calendar/day" element={<CalendarExplorerPage forcedView="day" />} />
+        <Route path="/calendar/week" element={<CalendarExplorerPage forcedView="week" />} />
+        <Route path="/calendar/month" element={<CalendarExplorerPage forcedView="month" />} />
+        <Route path="/calendar/schedule" element={<CalendarExplorerPage forcedView="schedule" />} />
+        <Route path="/calendar/create" element={<CreateEventPage />} />
+        <Route path="/calendar/meeting-scheduling" element={<MeetingSchedulingPage />} />
+        <Route path="/calendar/reminders" element={<CalendarRemindersPage />} />
+        <Route path="/calendar/events/:id" element={<EventDetailsPage />} />
+        <Route path="/calendar/events/:id/edit" element={<EditEventPage />} />
 
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/change-password" element={<ChangePasswordPage />} />

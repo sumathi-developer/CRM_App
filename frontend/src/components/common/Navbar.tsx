@@ -170,6 +170,22 @@ const CRM_MODULES: ModuleNavConfig[] = [
     ],
   },
   {
+    id: 'calendar',
+    label: 'Calendar',
+    icon: <ActivityIcon size={18} />,
+    basePath: '/calendar',
+    subItems: [
+      { label: 'Calendar', path: '/calendar' },
+      { label: 'Day View', path: '/calendar/day' },
+      { label: 'Week View', path: '/calendar/week' },
+      { label: 'Month View', path: '/calendar/month' },
+      { label: 'Schedule View', path: '/calendar/schedule' },
+      { label: 'Create Event', path: '/calendar/create' },
+      { label: 'Meeting Scheduling', path: '/calendar/meeting-scheduling' },
+      { label: 'Reminders', path: '/calendar/reminders' },
+    ],
+  },
+  {
     id: 'lead-generation',
     label: 'Lead Generation',
     icon: <TargetIcon size={18} />,
@@ -249,6 +265,7 @@ export const Navbar: React.FC = () => {
     if (path.startsWith('/pipelines')) return 'pipelines';
     if (path.startsWith('/deals')) return 'deals';
     if (path.startsWith('/activities')) return 'activities';
+    if (path.startsWith('/calendar')) return 'calendar';
     if (path.startsWith('/lead-generation')) return 'lead-generation';
     if (path.startsWith('/custom-fields')) return 'custom-fields';
     if (path.startsWith('/tags')) return 'tags';
@@ -428,6 +445,7 @@ export const Navbar: React.FC = () => {
                         sub.path === '/pipelines' ||
                         sub.path === '/deals' ||
                         sub.path === '/activities' ||
+                        sub.path === '/calendar' ||
                         sub.path === '/lead-generation' ||
                         sub.path === '/users' ||
                         sub.path === '/teams' ||
