@@ -10,6 +10,7 @@ import {
   UseGuards,
   HttpCode,
   HttpStatus,
+  ForbiddenException,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiParam } from '@nestjs/swagger';
 import { UsersService } from './users.service';
@@ -21,6 +22,7 @@ import { UserQueryDto } from './dto/user-query.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../common/guards/roles.guard';
 import { Roles } from '../common/decorators/roles.decorator';
+import { CurrentUser } from '../common/decorators/current-user.decorator';
 
 @ApiTags('Users')
 @ApiBearerAuth('JWT-auth')
@@ -55,12 +57,36 @@ export class UsersController {
   }
 
   @Patch(':id')
-  @Roles('ADMIN', 'MANAGER')
-  @ApiOperation({ summary: 'Update user information' })
-  @ApiParam({ name: 'id', description: 'User UUID' })
+  @ApiOperation({
+    summary: 'Update user information (Users can update their own details; Admins/Managers can update all users)',
+  })
+  @ApiParam({ name: 'id', description: 'User UUID or "me"' })
   @ApiResponse({ status: 200, description: 'User updated successfully' })
-  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(id, updateUserDto);
+  @ApiResponse({ status: 403, description: 'Forbidden from updating other users or privileged fields' })
+  async update(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+    @CurrentUser() currentUser: any,
+  ) {
+    const targetId = id === 'me' ? currentUser?.id : id;
+    const userRole = currentUser?.role?.name || currentUser?.role;
+    const isPrivileged = userRole === 'ADMIN' || userRole === 'MANAGER';
+    const isSelf = currentUser?.id === targetId;
+
+    if (!isPrivileged && !isSelf) {
+      throw new ForbiddenException(
+        'You do not have permission to update other users. You can only update your own profile.',
+      );
+    }
+
+    // If updating self as a non-privileged user, prevent modifying role, status, or organization
+    if (!isPrivileged && isSelf) {
+      delete updateUserDto.roleId;
+      delete updateUserDto.status;
+      delete updateUserDto.organizationId;
+    }
+
+    return this.usersService.update(targetId, updateUserDto);
   }
 
   @Delete(':id')
