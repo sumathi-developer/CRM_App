@@ -137,8 +137,166 @@ button {
   cursor: pointer;
 }
 
-input, select, textarea {
+/* ==========================================================================
+   GLOBAL FORM CONTROLS & ENTERPRISE DARK THEME
+   Replaces all harsh bright-white controls with sleek, professional dark styling.
+   ========================================================================== */
+
+select,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="url"],
+input[type="number"],
+input[type="search"],
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
+textarea {
   font-family: inherit;
+  background-color: var(--bg-input, #0f172a);
+  color: var(--text-main, #f8fafc);
+  border: 1px solid var(--border-medium, rgba(255, 255, 255, 0.14));
+  border-radius: var(--radius-md, 8px);
+  padding: 9px 14px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color var(--transition-fast, 150ms ease),
+              box-shadow var(--transition-fast, 150ms ease),
+              background-color var(--transition-fast, 150ms ease);
+}
+
+select:hover:not(:disabled),
+input:hover:not(:disabled),
+textarea:hover:not(:disabled) {
+  border-color: rgba(255, 255, 255, 0.28);
+  background-color: rgba(30, 41, 59, 0.8);
+}
+
+select:focus,
+input:focus,
+textarea:focus {
+  border-color: var(--border-focus, #3b82f6);
+  background-color: var(--bg-input-focus, #1e293b);
+  box-shadow: 0 0 0 3px var(--border-glow, rgba(59, 130, 246, 0.3));
+}
+
+select:disabled,
+input:disabled,
+textarea:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: rgba(15, 23, 42, 0.4);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Custom dropdown chevron for all selects */
+select {
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px 16px;
+  padding-right: 38px;
+}
+
+/* Dropdown Options */
+option, optgroup {
+  background-color: #0f172a;
+  color: #f8fafc;
+  padding: 8px 12px;
+}
+
+/* Placeholder styling */
+::placeholder {
+  color: #64748b;
+  opacity: 1;
+}
+
+/* ==========================================================================
+   GLOBAL UTILITY OVERRIDES FOR ENTERPRISE DARK CRM PALETTE
+   Eliminates harsh bright white backgrounds in modals, cards, tables, and filters.
+   ========================================================================== */
+
+/* Overrides for components that use Tailwind-like utility classes */
+.bg-white,
+input.bg-white,
+select.bg-white,
+textarea.bg-white,
+div.bg-white,
+section.bg-white,
+aside.bg-white {
+  background-color: #0f172a !important;
+}
+
+.bg-gray-50,
+.bg-gray-100 {
+  background-color: #1e293b !important;
+}
+
+.bg-gray-200 {
+  background-color: #334155 !important;
+}
+
+.text-gray-900,
+.text-gray-800 {
+  color: #f8fafc !important;
+}
+
+.text-gray-700,
+.text-gray-600 {
+  color: #cbd5e1 !important;
+}
+
+.text-gray-500,
+.text-gray-400 {
+  color: #94a3b8 !important;
+}
+
+.border-gray-200,
+.border-gray-300 {
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.border-gray-100 {
+  border-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Card surfaces with bg-white in Settings, Analytics, Audit Logs, Help & Support */
+.rounded-xl.bg-white,
+.rounded-2xl.bg-white,
+.rounded-lg.bg-white {
+  background-color: rgba(15, 23, 42, 0.85) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: #f8fafc !important;
+}
+
+/* Modals with bg-white */
+[role="dialog"] .bg-white,
+.modal-content.bg-white {
+  background-color: #0f172a !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
+  color: #f8fafc !important;
+}
+
+/* Tables across modules */
+table.bg-white,
+div.bg-white > table,
+tr.bg-white,
+tbody.bg-white {
+  background-color: transparent !important;
+  color: #f8fafc !important;
+}
+
+thead.bg-gray-50 {
+  background-color: rgba(30, 41, 59, 0.7) !important;
+  color: #94a3b8 !important;
 }
 
 /* Global full-page loading screen */
