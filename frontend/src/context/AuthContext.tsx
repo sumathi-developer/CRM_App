@@ -36,6 +36,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return;
     }
 
+    if (!api.isApiConfigured()) {
+      // Backend URL not configured yet (e.g. Render build without VITE_API_URL).
+      // Skip API request to avoid 404 from frontend static host.
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const currentUser = await authService.getMe();
       setUser(currentUser);
@@ -58,9 +65,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(null);
     };
 
+    const handleApiUrlChanged = () => {
+      initAuth();
+    };
+
     window.addEventListener('auth:expired', handleAuthExpired);
+    window.addEventListener('crm:api-url-changed', handleApiUrlChanged);
     return () => {
       window.removeEventListener('auth:expired', handleAuthExpired);
+      window.removeEventListener('crm:api-url-changed', handleApiUrlChanged);
     };
   }, [initAuth]);
 

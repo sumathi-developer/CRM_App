@@ -131,12 +131,15 @@ import { SettingsExplorerPage } from './pages/settings';
 import { AuditLogsExplorerPage } from './pages/audit-logs';
 import { HelpSupportExplorerPage } from './pages/help-support';
 import { NotFoundPage } from './pages/NotFoundPage';
+import { ApiConfigBanner } from './components/common/ApiConfigBanner';
 
 export function App() {
   const { isAuthenticated, isLoading } = useAuth();
 
   return (
-    <Routes>
+    <>
+      <ApiConfigBanner />
+      <Routes>
       {/* Root redirect depending on authentication state */}
       <Route
         path="/"
@@ -414,6 +417,7 @@ export function App() {
       {/* Fallback 404 Route */}
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
+    </>
   );
 }
 

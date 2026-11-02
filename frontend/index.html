@@ -9,6 +9,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <title>Enterprise CRM | Authentication & Workspace Portal</title>
+    <script>
+      (function() {
+        var redirect = sessionStorage.getItem('spa_redirect');
+        if (redirect) {
+          sessionStorage.removeItem('spa_redirect');
+          window.history.replaceState(null, null, redirect);
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

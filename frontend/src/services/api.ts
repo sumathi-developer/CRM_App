@@ -1,19 +1,64 @@
-const RAW_API_URL = (import.meta.env.VITE_API_URL as string | undefined) || '';
-const API_BASE_URL = RAW_API_URL.replace(/\/+$/, '');
-
 export function getApiBaseUrl(): string {
-  return API_BASE_URL;
+  if (typeof window !== 'undefined') {
+    const localOverride = localStorage.getItem('crm_api_base_url');
+    if (localOverride && localOverride.trim()) {
+      return localOverride.trim().replace(/\/+$/, '');
+    }
+    const winOverride = (window as any).__CRM_API_URL__;
+    if (winOverride && typeof winOverride === 'string' && winOverride.trim()) {
+      return winOverride.trim().replace(/\/+$/, '');
+    }
+  }
+
+  const envUrl = (import.meta.env.VITE_API_URL as string | undefined) || '';
+  if (envUrl && envUrl.trim()) {
+    return envUrl.trim().replace(/\/+$/, '');
+  }
+
+  return '';
 }
 
-function resolveUrl(endpoint: string): string {
+export function setApiBaseUrl(url: string | null): void {
+  if (typeof window !== 'undefined') {
+    if (!url || !url.trim()) {
+      localStorage.removeItem('crm_api_base_url');
+    } else {
+      localStorage.setItem('crm_api_base_url', url.trim().replace(/\/+$/, ''));
+    }
+    window.dispatchEvent(new CustomEvent('crm:api-url-changed', { detail: { url } }));
+  }
+}
+
+export function isApiConfigured(): boolean {
+  if (typeof window === 'undefined') return true;
+  const isLocal = ['localhost', '127.0.0.1', '::1', ''].includes(window.location.hostname);
+  if (isLocal) return true; // On localhost, Vite dev server proxies requests
+  return Boolean(getApiBaseUrl());
+}
+
+let hasWarnedMissingUrl = false;
+
+export function resolveUrl(endpoint: string): string {
   if (endpoint.startsWith('http://') || endpoint.startsWith('https://')) {
     return endpoint;
   }
   const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
-  if (!API_BASE_URL) {
+  const baseUrl = getApiBaseUrl();
+  if (!baseUrl) {
+    if (
+      typeof window !== 'undefined' &&
+      !['localhost', '127.0.0.1', '::1', ''].includes(window.location.hostname) &&
+      !hasWarnedMissingUrl
+    ) {
+      hasWarnedMissingUrl = true;
+      console.warn(
+        `[CRM Config] No backend API URL configured. Outgoing request to "${cleanEndpoint}" is directed to the static frontend host and may return 404. ` +
+        `Set VITE_API_URL in Render Static Site -> Environment, or set it via localStorage.setItem('crm_api_base_url', 'https://your-backend.onrender.com').`
+      );
+    }
     return cleanEndpoint;
   }
-  return `${API_BASE_URL}${cleanEndpoint}`;
+  return `${baseUrl}${cleanEndpoint}`;
 }
 
 export class ApiError extends Error {
@@ -153,7 +198,10 @@ class ApiClient {
         let errorMessage = 'An error occurred. Please try again.';
         let validationErrors: string[] | undefined;
 
-        if (data) {
+        if (response.status === 404 && !isApiConfigured()) {
+          errorMessage =
+            'Backend API server not found (404). Backend service URL is not configured. Please set VITE_API_URL in Render Environment settings or connect backend URL.';
+        } else if (data) {
           if (Array.isArray(data.message)) {
             validationErrors = data.message;
             errorMessage = data.message.join(', ');
@@ -215,6 +263,22 @@ class ApiClient {
 
   delete<T = any>(endpoint: string, options?: RequestInit): Promise<T> {
     return this.request<T>(endpoint, { ...options, method: 'DELETE' });
+  }
+
+  getApiBaseUrl(): string {
+    return getApiBaseUrl();
+  }
+
+  setApiBaseUrl(url: string | null): void {
+    setApiBaseUrl(url);
+  }
+
+  isApiConfigured(): boolean {
+    return isApiConfigured();
+  }
+
+  resolveUrl(endpoint: string): string {
+    return resolveUrl(endpoint);
   }
 }
 

@@ -1,4 +1,4 @@
-import { api, ApiError } from './api';
+import { api, ApiError, resolveUrl } from './api';
 import type {
   Lead,
   PaginatedLeads,
@@ -21,7 +21,6 @@ import type {
   LeadModuleSettings,
 } from '../types/lead.types';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || '';
 const SETTINGS_STORAGE_KEY = 'crm_leads_module_settings_v1';
 
 export const DEFAULT_LEAD_SETTINGS: LeadModuleSettings = {
@@ -224,7 +223,7 @@ class LeadService {
       headers['Authorization'] = `Bearer ${token}`;
     }
 
-    const response = await fetch(`${API_BASE_URL}/files/upload`, {
+    const response = await fetch(resolveUrl('/files/upload'), {
       method: 'POST',
       headers,
       body: formData,
