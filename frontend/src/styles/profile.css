@@ -17,15 +17,18 @@
    ========================================================================== */
 
 .app-top-navbar {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 100;
-  background: rgba(9, 13, 22, 0.9);
+  background: rgba(9, 13, 22, 0.95);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-subtle);
   height: 64px;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .navbar-container {
@@ -400,16 +403,20 @@
 
 .authenticated-shell,
 .app-layout,
-.authenticated-page-layout {
+.authenticated-page-layout,
+.crm-app-container {
   min-height: 100vh;
   background-color: var(--bg-primary);
   display: flex;
   flex-direction: column;
-  overflow-x: hidden;
+  overflow-x: clip;
+  padding-top: 64px;
+  box-sizing: border-box;
 }
 
 .authenticated-container,
-.app-main-content {
+.app-main-content,
+.crm-main-content {
   margin-left: 260px !important;
   width: calc(100% - 260px) !important;
   max-width: none !important;
@@ -423,7 +430,8 @@
 
 /* Fixed centered inner container for all child components */
 .authenticated-container > *,
-.app-main-content > * {
+.app-main-content > *,
+.crm-main-content > * {
   width: 100% !important;
   max-width: 1200px !important;
   margin-left: auto !important;
@@ -443,7 +451,8 @@
   }
 
   .authenticated-container,
-  .app-main-content {
+  .app-main-content,
+  .crm-main-content {
     margin-left: 0 !important;
     width: 100% !important;
     padding: 24px 16px 48px !important;
