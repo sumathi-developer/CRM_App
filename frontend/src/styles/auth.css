@@ -1178,16 +1178,19 @@
   --agent-primary: #062E03;
   --agent-secondary: #10B981;
   --agent-accent: #7C3AED;
-  --agent-bg: #F9F7F2;
+  --agent-bg: #062E03;
   --agent-card-bg: #FFFFFF;
   --agent-text-main: #062E03;
-  --agent-text-muted: #64748B;
-  --agent-border: #E2E8F0;
+  --agent-text-muted: rgba(6, 46, 3, 0.65);
+  --agent-border: rgba(6, 46, 3, 0.16);
 
   position: relative;
   min-height: 100vh;
   width: 100%;
   background-color: var(--agent-bg);
+  background-image:
+    radial-gradient(circle at 12% 45%, rgba(16, 185, 129, 0.18) 0%, transparent 45%),
+    radial-gradient(circle at 88% 55%, rgba(124, 58, 237, 0.18) 0%, transparent 45%);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -1203,8 +1206,8 @@
   left: 0;
   right: 0;
   bottom: 23%;
-  height: 1px;
-  background: rgba(6, 46, 3, 0.15);
+  height: 1.5px;
+  background: rgba(16, 185, 129, 0.25);
   z-index: 1;
   pointer-events: none;
 }
@@ -1231,7 +1234,7 @@
   font-size: 1.625rem;
   font-weight: 800;
   letter-spacing: -0.035em;
-  color: var(--agent-primary);
+  color: #FFFFFF;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -1241,12 +1244,12 @@
 .agent-brand-logo-mark {
   width: 22px;
   height: 22px;
-  background: var(--agent-primary);
+  background: var(--agent-secondary);
   border-radius: 6px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--agent-secondary);
+  color: var(--agent-primary);
   font-size: 12px;
   font-weight: 900;
 }
@@ -1254,7 +1257,7 @@
 .agent-brand-contact-link {
   font-size: 0.8125rem;
   font-weight: 500;
-  color: #64748B;
+  color: var(--agent-secondary);
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -1263,7 +1266,7 @@
 }
 
 .agent-brand-contact-link:hover {
-  color: var(--agent-secondary);
+  color: var(--agent-accent);
 }
 
 .agent-navbar-actions {
@@ -1279,23 +1282,23 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  border: 1px solid rgba(6, 46, 3, 0.18);
-  background: transparent;
-  color: var(--agent-primary);
+  border: 1.5px solid rgba(16, 185, 129, 0.4);
+  background: rgba(16, 185, 129, 0.08);
+  color: var(--agent-secondary);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .agent-globe-btn:hover {
-  border-color: var(--agent-secondary);
-  color: var(--agent-secondary);
-  background: rgba(16, 185, 129, 0.08);
+  border-color: var(--agent-accent);
+  color: var(--agent-accent);
+  background: rgba(124, 58, 237, 0.15);
 }
 
 .agent-nav-signup-link {
   font-size: 0.9375rem;
   font-weight: 600;
-  color: var(--agent-primary);
+  color: var(--agent-secondary);
   text-decoration: none;
   transition: color 0.15s ease;
 }
@@ -1307,7 +1310,7 @@
 .agent-request-demo-btn {
   padding: 10px 22px;
   border-radius: 12px;
-  background: #F4BA7B;
+  background: var(--agent-secondary);
   color: var(--agent-primary);
   font-size: 0.875rem;
   font-weight: 700;
@@ -1321,9 +1324,10 @@
 }
 
 .agent-request-demo-btn:hover {
-  background: #EEAA60;
+  background: var(--agent-accent);
+  color: #FFFFFF;
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(244, 186, 123, 0.45);
+  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.45);
 }
 
 /* 2. Central Hero Stage */
@@ -1406,14 +1410,14 @@
 }
 
 .agent-alert-box.error {
-  background: #FEF2F2;
-  border: 1px solid #FECACA;
-  color: #DC2626;
+  background: rgba(124, 58, 237, 0.08);
+  border: 1px solid rgba(124, 58, 237, 0.35);
+  color: var(--agent-accent);
 }
 
 .agent-alert-box.success {
-  background: #ECFDF5;
-  border: 1px solid #A7F3D0;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.4);
   color: var(--agent-primary);
 }
 
@@ -1459,14 +1463,14 @@
 }
 
 .agent-form-input::placeholder {
-  color: #94A3B8;
+  color: rgba(6, 46, 3, 0.45);
   font-weight: 400;
 }
 
 .agent-input-trailing-icon {
   position: absolute;
   right: 18px;
-  color: #94A3B8;
+  color: var(--agent-secondary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1480,19 +1484,19 @@
   border: none;
   font-size: 0.8125rem;
   font-weight: 600;
-  color: #64748B;
+  color: var(--agent-accent);
   cursor: pointer;
   padding: 4px 6px;
   transition: color 0.15s ease;
 }
 
 .agent-pw-toggle-btn:hover {
-  color: var(--agent-accent);
+  color: var(--agent-secondary);
 }
 
 .agent-field-error-text {
   font-size: 0.8125rem;
-  color: #DC2626;
+  color: var(--agent-accent);
   padding-left: 4px;
   margin-top: 2px;
 }
@@ -1524,8 +1528,8 @@
   height: 52px;
   border: none;
   border-radius: 14px;
-  background: #F4BA7B;
-  color: var(--agent-primary);
+  background: var(--agent-primary);
+  color: #FFFFFF;
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
@@ -1534,13 +1538,14 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  box-shadow: 0 4px 14px rgba(244, 186, 123, 0.35);
+  box-shadow: 0 4px 14px rgba(6, 46, 3, 0.35);
 }
 
 .agent-signin-btn:hover:not(:disabled) {
-  background: #EEAA60;
+  background: var(--agent-secondary);
+  color: var(--agent-primary);
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45);
 }
 
 .agent-signin-btn:active:not(:disabled) {
@@ -1558,7 +1563,7 @@
   align-items: center;
   justify-content: center;
   margin: 24px 0 18px;
-  color: #94A3B8;
+  color: rgba(6, 46, 3, 0.45);
   font-size: 0.8125rem;
   font-weight: 500;
   letter-spacing: 0.02em;
@@ -1589,7 +1594,7 @@
 
 .agent-social-pill:hover {
   border-color: var(--agent-secondary);
-  background: #F8FAFC;
+  background: rgba(16, 185, 129, 0.05);
   transform: translateY(-1px);
   box-shadow: 0 2px 8px rgba(6, 46, 3, 0.06);
 }
@@ -1644,7 +1649,7 @@
 .agent-request-now-row {
   margin-top: 24px;
   font-size: 0.875rem;
-  color: #64748B;
+  color: rgba(6, 46, 3, 0.65);
 }
 
 .agent-request-now-link {
@@ -1665,19 +1670,19 @@
   padding: 24px;
   text-align: center;
   font-size: 0.8125rem;
-  color: #94A3B8;
+  color: rgba(16, 185, 129, 0.7);
   z-index: 10;
   position: relative;
 }
 
 .agent-page-footer a {
-  color: #64748B;
+  color: var(--agent-secondary);
   text-decoration: none;
   transition: color 0.15s ease;
 }
 
 .agent-page-footer a:hover {
-  color: var(--agent-primary);
+  color: var(--agent-accent);
 }
 
 /* Responsive queries */

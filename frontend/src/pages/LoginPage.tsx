@@ -3,31 +3,32 @@ import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { GlobeIcon, AlertCircleIcon, CheckCircleIcon } from '../components/common/Icons';
 
-/* Google Icon SVG */
+/* Google Icon SVG (strictly styled with user palette #10B981, #7C3AED, #062E03) */
 const GoogleIcon: React.FC<{ size?: number }> = ({ size = 18 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
     <path
-      fill="#4285F4"
+      fill="#7C3AED"
       d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.65v3h3.88c2.27-2.09 3.665-5.17 3.665-9.09z"
     />
     <path
-      fill="#34A853"
+      fill="#10B981"
       d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.1C3.28 21.43 7.35 24 12 24z"
     />
     <path
-      fill="#FBBC05"
+      fill="#10B981"
+      opacity="0.85"
       d="M5.28 14.32a7.18 7.18 0 0 1 0-4.64V6.58H1.25a11.96 11.96 0 0 0 0 10.84l4.03-3.1z"
     />
     <path
-      fill="#EA4335"
+      fill="#062E03"
       d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.35 0 3.28 2.57 1.25 6.58l4.03 3.1c.95-2.83 3.6-4.93 6.72-4.93z"
     />
   </svg>
 );
 
-/* Facebook Icon SVG (Replaces Apple ID as requested) */
+/* Facebook Icon SVG (replaces Apple ID, styled with Accent color #7C3AED) */
 const FacebookIcon: React.FC<{ size?: number }> = ({ size = 18 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="#1877F2" aria-hidden="true">
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="#7C3AED" aria-hidden="true">
     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
   </svg>
 );
@@ -182,14 +183,14 @@ export const LoginPage: React.FC = () => {
           {/* Squiggly line top left */}
           <path
             d="M30 140 C 60 90, 80 160, 110 110 C 140 70, 170 120, 200 95"
-            stroke="#062E03"
-            strokeWidth="1.5"
+            stroke="#10B981"
+            strokeWidth="1.8"
             fill="none"
             strokeLinecap="round"
           />
 
           {/* Small circle accent */}
-          <circle cx="160" cy="190" r="3.5" fill="none" stroke="#062E03" strokeWidth="1.5" />
+          <circle cx="160" cy="190" r="3.5" fill="none" stroke="#7C3AED" strokeWidth="1.8" />
 
           {/* Document outline box */}
           <rect
@@ -197,9 +198,9 @@ export const LoginPage: React.FC = () => {
             y="155"
             width="105"
             height="75"
-            rx="3"
+            rx="4"
             fill="#FFFFFF"
-            stroke="#062E03"
+            stroke="#10B981"
             strokeWidth="1.5"
           />
           <line
@@ -224,20 +225,20 @@ export const LoginPage: React.FC = () => {
           {/* Curly doodle right of box */}
           <path
             d="M165 260 C 185 285, 195 255, 210 270"
-            stroke="#062E03"
-            strokeWidth="1.5"
+            stroke="#7C3AED"
+            strokeWidth="1.8"
             fill="none"
             strokeLinecap="round"
           />
 
-          {/* Polka-dot pillar left */}
+          {/* Polka-dot pillar left (Secondary emerald #10B981 with primary #062E03 dots) */}
           <rect
             x="20"
             y="275"
             width="68"
             height="145"
-            fill="#F0B268"
-            stroke="#062E03"
+            fill="#10B981"
+            stroke="#10B981"
             strokeWidth="1.5"
           />
           <rect x="20" y="275" width="68" height="145" fill="url(#dotPatternLeft)" />
@@ -249,13 +250,13 @@ export const LoginPage: React.FC = () => {
             width="65"
             height="105"
             fill="#FFFFFF"
-            stroke="#062E03"
+            stroke="#7C3AED"
             strokeWidth="1.5"
           />
           <path
             d="M112 375 L 140 335 M 140 335 L 122 335 M 140 335 L 140 352"
-            stroke="#062E03"
-            strokeWidth="1.5"
+            stroke="#7C3AED"
+            strokeWidth="1.8"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
@@ -315,7 +316,7 @@ export const LoginPage: React.FC = () => {
                     height="18"
                     viewBox="0 0 24 24"
                     fill="none"
-                    stroke="#94A3B8"
+                    stroke="#10B981"
                     strokeWidth="1.8"
                   >
                     <circle cx="12" cy="12" r="9" />
@@ -474,8 +475,8 @@ export const LoginPage: React.FC = () => {
           {/* Floating curly hair loop / doodle at top */}
           <path
             d="M170 70 C 195 50, 200 95, 215 70"
-            stroke="#062E03"
-            strokeWidth="1.5"
+            stroke="#10B981"
+            strokeWidth="1.8"
             fill="none"
             strokeLinecap="round"
           />
@@ -486,9 +487,9 @@ export const LoginPage: React.FC = () => {
             y="135"
             width="55"
             height="38"
-            rx="3"
+            rx="4"
             fill="#FFFFFF"
-            stroke="#062E03"
+            stroke="#7C3AED"
             strokeWidth="1.5"
           />
           <line
@@ -496,7 +497,7 @@ export const LoginPage: React.FC = () => {
             y1="149"
             x2="262"
             y2="149"
-            stroke="#062E03"
+            stroke="#7C3AED"
             strokeWidth="1.5"
             strokeLinecap="round"
           />
@@ -505,7 +506,7 @@ export const LoginPage: React.FC = () => {
             y1="159"
             x2="252"
             y2="159"
-            stroke="#062E03"
+            stroke="#7C3AED"
             strokeWidth="1.5"
             strokeLinecap="round"
           />
@@ -513,14 +514,14 @@ export const LoginPage: React.FC = () => {
           {/* Squiggle behind agent */}
           <path
             d="M290 145 C 320 135, 330 175, 350 155"
-            stroke="#062E03"
-            strokeWidth="1.5"
+            stroke="#10B981"
+            strokeWidth="1.8"
             fill="none"
             strokeLinecap="round"
           />
 
           {/* Small circle accent */}
-          <circle cx="218" cy="265" r="3" fill="none" stroke="#062E03" strokeWidth="1.5" />
+          <circle cx="218" cy="265" r="3" fill="none" stroke="#7C3AED" strokeWidth="1.8" />
 
           {/* Pedestal Box agent sits on */}
           <rect
@@ -529,18 +530,18 @@ export const LoginPage: React.FC = () => {
             width="75"
             height="145"
             fill="#FFFFFF"
-            stroke="#062E03"
+            stroke="#10B981"
             strokeWidth="1.5"
           />
 
-          {/* Polka-dot pillar on far right */}
+          {/* Polka-dot pillar on far right (Accent purple #7C3AED with primary #062E03 dots) */}
           <rect
             x="320"
             y="300"
             width="55"
             height="120"
-            fill="#F0B268"
-            stroke="#062E03"
+            fill="#7C3AED"
+            stroke="#7C3AED"
             strokeWidth="1.5"
           />
           <rect x="320" y="300" width="55" height="120" fill="url(#dotPatternRight)" />
@@ -550,7 +551,7 @@ export const LoginPage: React.FC = () => {
           <path
             d="M250 255 L 220 315 L 235 325 L 265 255 Z"
             fill="#FFFFFF"
-            stroke="#062E03"
+            stroke="#10B981"
             strokeWidth="1.5"
             strokeLinejoin="round"
           />
@@ -558,34 +559,34 @@ export const LoginPage: React.FC = () => {
           <path
             d="M260 255 L 245 325 L 260 333 L 280 255 Z"
             fill="#FFFFFF"
-            stroke="#062E03"
+            stroke="#10B981"
             strokeWidth="1.5"
             strokeLinejoin="round"
           />
           {/* Left shoe */}
           <path
             d="M212 337 L 225 315 L 235 325 L 225 343 Z"
-            fill="#062E03"
-            stroke="#062E03"
+            fill="#10B981"
+            stroke="#10B981"
             strokeWidth="1"
           />
           {/* Right shoe */}
           <path
             d="M245 325 L 255 347 L 265 347 L 260 331 Z"
-            fill="#062E03"
-            stroke="#062E03"
+            fill="#10B981"
+            stroke="#10B981"
             strokeWidth="1"
           />
 
           {/* Torso & patterned top */}
           <path
             d="M260 200 C 255 215, 250 240, 255 260 L 285 260 C 288 240, 288 215, 280 200 Z"
-            fill="#062E03"
+            fill="#7C3AED"
           />
           <path
             d="M260 200 C 255 215, 250 240, 255 260 L 285 260 C 288 240, 288 215, 280 200 Z"
             fill="url(#shirtPattern)"
-            stroke="#062E03"
+            stroke="#7C3AED"
             strokeWidth="1.5"
           />
 
@@ -595,23 +596,24 @@ export const LoginPage: React.FC = () => {
             y="190"
             width="8"
             height="12"
-            fill="#FAF8F5"
-            stroke="#062E03"
+            fill="#FFFFFF"
+            stroke="#7C3AED"
             strokeWidth="1.5"
           />
           {/* Head */}
-          <circle cx="269" cy="183" r="10" fill="#FAF8F5" stroke="#062E03" strokeWidth="1.5" />
+          <circle cx="269" cy="183" r="10" fill="#FFFFFF" stroke="#7C3AED" strokeWidth="1.5" />
           {/* Hair / Topknot Bun */}
           <path
             d="M265 175 C 260 165, 278 160, 278 173 C 285 173, 288 183, 285 193 C 282 203, 272 203, 270 195 Z"
-            fill="#062E03"
+            fill="#10B981"
           />
-          <circle cx="276" cy="163" r="5" fill="#062E03" />
+          <circle cx="276" cy="163" r="5" fill="#10B981" />
 
-          {/* Laptop on lap (with #10B981 emerald screen tint) */}
+          {/* Laptop on lap */}
           <path
             d="M222 200 L 234 255 L 262 255 L 250 200 Z"
-            fill="#D1FAE5"
+            fill="#10B981"
+            fillOpacity="0.2"
             stroke="#10B981"
             strokeWidth="1.5"
           />
@@ -620,7 +622,7 @@ export const LoginPage: React.FC = () => {
             y1="255"
             x2="268"
             y2="255"
-            stroke="#062E03"
+            stroke="#7C3AED"
             strokeWidth="2"
             strokeLinecap="round"
           />
@@ -629,7 +631,7 @@ export const LoginPage: React.FC = () => {
           <path
             d="M262 210 C 250 225, 235 230, 242 240"
             fill="none"
-            stroke="#062E03"
+            stroke="#7C3AED"
             strokeWidth="2"
             strokeLinecap="round"
           />
