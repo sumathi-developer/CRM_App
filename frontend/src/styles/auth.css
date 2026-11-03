@@ -1167,16 +1167,11 @@
 
 
 /* ==========================================================================
-   CRM LOGIN PAGE – PREMIUM SAAS UI REDESIGN
-   Brand Color Palette:
-   - Primary:    #062E03 (Deep Forest Green)
-   - Secondary:  #10B981 (Emerald Green)
-   - Accent:     #7C3AED (Purple)
-   - Background: #F8F9F5 (Soft Off-White)
-   - Card:       #FFFFFF (Pure White)
-   - Text Main:  #111827 (Dark Charcoal)
-   - Text Muted: #4B5563 (Slate Grey)
-   - Border:     #E5E7EB (Subtle Light Grey)
+   CRM LOGIN PAGE – FLUID SILK 3D WAVE BACKGROUND
+   Colors:
+   - Primary:   #062E03 (Deep Forest Green)
+   - Secondary: #10B981 (Emerald Green)
+   - Accent:    #7C3AED (Purple)
    ========================================================================== */
 
 .agent-login-page-root {
@@ -1184,7 +1179,7 @@
   --agent-primary-hover: #0F530A;
   --agent-secondary: #10B981;
   --agent-accent: #7C3AED;
-  --agent-bg: #F8F9F5;
+  --agent-bg: #062E03;
   --agent-card-bg: #FFFFFF;
   --agent-text-main: #111827;
   --agent-text-muted: #4B5563;
@@ -1194,7 +1189,7 @@
   height: 100vh;
   max-height: 100vh;
   width: 100%;
-  background-color: var(--agent-bg, #F8F9F5);
+  background-color: var(--agent-primary, #062E03);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -1204,22 +1199,42 @@
   font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
 }
 
-/* Background Horizon Line */
-.agent-ground-horizon {
+/* 1. Fluid Silk Wave Background Container */
+.agent-fluid-wave-bg {
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 22%;
-  height: 1.5px;
-  background: rgba(6, 46, 3, 0.1);
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
   z-index: 1;
   pointer-events: none;
 }
 
-/* 1. Compact Header */
+.agent-fluid-wave-svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transform-origin: center center;
+  animation: fluidWaveBreathe 22s ease-in-out infinite alternate;
+}
+
+@keyframes fluidWaveBreathe {
+  0% {
+    transform: scale(1) translateY(0);
+  }
+  50% {
+    transform: scale(1.025) translateY(-8px);
+  }
+  100% {
+    transform: scale(1.05) translateY(-4px);
+  }
+}
+
+/* 2. Compact Header */
 .agent-top-navbar {
   width: 100%;
-  padding: 14px 44px;
+  padding: 16px 48px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1235,10 +1250,10 @@
 }
 
 .agent-brand-logo {
-  font-size: 1.25rem;
+  font-size: 1.3125rem;
   font-weight: 800;
   letter-spacing: -0.03em;
-  color: var(--agent-text-main, #111827);
+  color: #FFFFFF;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -1248,20 +1263,21 @@
 .agent-brand-logo-mark {
   width: 28px;
   height: 28px;
-  background: var(--agent-primary, #062E03);
+  background: var(--agent-secondary, #10B981);
   border-radius: 8px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: #FFFFFF;
+  color: #062E03;
   font-size: 14px;
   font-weight: 900;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
 }
 
 .agent-brand-name {
-  font-size: 1.25rem;
+  font-size: 1.3125rem;
   font-weight: 800;
-  color: var(--agent-primary, #062E03);
+  color: #FFFFFF;
   letter-spacing: -0.03em;
 }
 
@@ -1272,7 +1288,7 @@
 .agent-brand-contact-link {
   font-size: 0.8125rem;
   font-weight: 500;
-  color: var(--agent-text-muted, #4B5563);
+  color: rgba(255, 255, 255, 0.8);
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -1281,7 +1297,7 @@
 }
 
 .agent-brand-contact-link:hover {
-  color: var(--agent-primary, #062E03);
+  color: var(--agent-secondary, #10B981);
 }
 
 .agent-navbar-actions {
@@ -1297,22 +1313,24 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  border: 1.5px solid var(--agent-border, #E5E7EB);
-  background: #FFFFFF;
-  color: var(--agent-text-muted, #4B5563);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.1);
+  color: #FFFFFF;
   cursor: pointer;
   transition: all 0.15s ease;
+  backdrop-filter: blur(8px);
 }
 
 .agent-globe-btn:hover {
-  border-color: var(--agent-primary, #062E03);
-  color: var(--agent-primary, #062E03);
+  border-color: var(--agent-secondary, #10B981);
+  color: var(--agent-secondary, #10B981);
+  background: rgba(16, 185, 129, 0.15);
 }
 
 .agent-nav-signup-link {
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--agent-primary, #062E03);
+  color: #FFFFFF;
   text-decoration: none;
   transition: color 0.15s ease;
 }
@@ -1324,8 +1342,8 @@
 .agent-request-demo-btn {
   padding: 8px 18px;
   border-radius: 10px;
-  background: var(--agent-primary, #062E03);
-  color: #FFFFFF;
+  background: var(--agent-secondary, #10B981);
+  color: #062E03;
   font-size: 0.8125rem;
   font-weight: 700;
   border: none;
@@ -1335,15 +1353,17 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
 }
 
 .agent-request-demo-btn:hover {
-  background: var(--agent-primary-hover, #0F530A);
+  background: var(--agent-accent, #7C3AED);
+  color: #FFFFFF;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(6, 46, 3, 0.2);
+  box-shadow: 0 6px 18px rgba(124, 58, 237, 0.45);
 }
 
-/* 2. Central Hero Stage */
+/* 3. Central Hero Stage */
 .agent-stage-viewport {
   position: relative;
   flex: 1;
@@ -1352,49 +1372,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4px 24px;
+  padding: 8px 24px;
   box-sizing: border-box;
   min-height: 0;
   z-index: 5;
 }
 
-/* Left & Right Illustrations */
-.agent-illustration-left {
-  position: absolute;
-  left: 24px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 260px;
-  max-width: 22vw;
-  height: auto;
-  max-height: 440px;
-  pointer-events: none;
-  z-index: 2;
-}
-
-.agent-illustration-right {
-  position: absolute;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 360px;
-  max-width: 30vw;
-  height: auto;
-  max-height: 460px;
-  pointer-events: none;
-  z-index: 2;
-}
-
-/* 3. Centered Login Card – Primary Visual Focus */
+/* 4. Centered White Login Card */
 .agent-login-card {
   position: relative;
   width: 100%;
   max-width: 420px;
   background: var(--agent-card-bg, #FFFFFF);
-  border-radius: 24px;
-  padding: 24px 32px 20px;
-  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.04), 0 20px 40px -15px rgba(6, 46, 3, 0.07);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 26px;
+  padding: 26px 34px 22px;
+  box-shadow: 0 25px 60px -15px rgba(4, 30, 2, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.4);
   z-index: 10;
   box-sizing: border-box;
   text-align: center;
@@ -1543,7 +1535,7 @@
   margin-top: 1px;
 }
 
-/* 4. Remember Me and Forgot Password */
+/* Remember Me & Forgot Password Row */
 .agent-remember-forgot-row {
   display: flex;
   align-items: center;
@@ -1583,7 +1575,7 @@
   text-decoration: underline;
 }
 
-/* 5. Primary Sign In Button */
+/* Primary Sign In Button */
 .agent-signin-btn {
   width: 100%;
   height: 44px;
@@ -1599,14 +1591,14 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  box-shadow: 0 4px 12px rgba(6, 46, 3, 0.2);
+  box-shadow: 0 4px 14px rgba(6, 46, 3, 0.25);
   margin-top: 2px;
 }
 
 .agent-signin-btn:hover:not(:disabled) {
   background: var(--agent-primary-hover, #0F530A);
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(6, 46, 3, 0.28);
+  box-shadow: 0 6px 16px rgba(6, 46, 3, 0.35);
 }
 
 .agent-signin-btn:active:not(:disabled) {
@@ -1634,7 +1626,7 @@
   }
 }
 
-/* 6. Social Separator ("Or continue with") */
+/* Social Separator ("Or continue with") */
 .agent-or-divider {
   display: flex;
   align-items: center;
@@ -1736,7 +1728,7 @@
   color: var(--agent-secondary, #10B981);
 }
 
-/* 7. Registration Link ("Don't have an account? Sign Up") */
+/* Registration Link ("Don't have an account? Sign Up") */
 .agent-request-now-row {
   margin-top: 10px;
   font-size: 0.8125rem;
@@ -1756,12 +1748,12 @@
   text-decoration: underline;
 }
 
-/* 8. Compact Footer */
+/* 5. Compact Footer */
 .agent-page-footer {
-  padding: 10px 24px;
+  padding: 12px 24px;
   text-align: center;
   font-size: 0.75rem;
-  color: var(--agent-text-muted, #4B5563);
+  color: rgba(255, 255, 255, 0.75);
   z-index: 10;
   position: relative;
   display: flex;
@@ -1772,37 +1764,21 @@
 }
 
 .agent-footer-divider {
-  color: #D1D5DB;
+  color: rgba(255, 255, 255, 0.35);
 }
 
 .agent-footer-link {
-  color: var(--agent-text-muted, #4B5563);
+  color: rgba(255, 255, 255, 0.85);
   text-decoration: none;
   transition: color 0.15s ease;
 }
 
 .agent-footer-link:hover {
-  color: var(--agent-primary, #062E03);
+  color: var(--agent-secondary, #10B981);
   text-decoration: underline;
 }
 
 /* Responsive Queries */
-@media (max-width: 1100px) {
-  .agent-illustration-left {
-    display: none;
-  }
-  .agent-illustration-right {
-    width: 290px;
-    right: 12px;
-  }
-}
-
-@media (max-width: 920px) {
-  .agent-illustration-right {
-    display: none;
-  }
-}
-
 @media (max-width: 640px) {
   .agent-login-page-root {
     height: auto;
@@ -1824,7 +1800,7 @@
 
   .agent-login-card {
     padding: 24px 18px 20px;
-    border-radius: 18px;
+    border-radius: 20px;
     max-width: 100%;
   }
 

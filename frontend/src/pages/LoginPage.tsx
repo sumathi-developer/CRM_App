@@ -157,10 +157,157 @@ export const LoginPage: React.FC = () => {
 
   return (
     <div className="agent-login-page-root" id="agent-login-screen">
-      {/* Background Horizon Line */}
-      <div className="agent-ground-horizon" aria-hidden="true" />
+      {/* 1. DYNAMIC FLUID SILK 3D WAVE BACKGROUND LAYER (INSPIRED BY REFERENCE IMAGE) */}
+      <div className="agent-fluid-wave-bg" aria-hidden="true">
+        <svg
+          className="agent-fluid-wave-svg"
+          viewBox="0 0 1440 900"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="xMidYMid slice"
+        >
+          <defs>
+            {/* Base Background Gradient with Primary Forest #062E03 */}
+            <linearGradient id="fluidBg" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#041E02" />
+              <stop offset="40%" stopColor="#062E03" />
+              <stop offset="75%" stopColor="#0A3C07" />
+              <stop offset="100%" stopColor="#041802" />
+            </linearGradient>
 
-      {/* 1. TOP COMPACT HEADER */}
+            {/* Accent Purple Atmospheric Glow (#7C3AED) */}
+            <radialGradient id="purpleAtmosphere" cx="85%" cy="20%" r="65%">
+              <stop offset="0%" stopColor="#7C3AED" stopOpacity="0.32" />
+              <stop offset="45%" stopColor="#7C3AED" stopOpacity="0.1" />
+              <stop offset="85%" stopColor="#7C3AED" stopOpacity="0" />
+            </radialGradient>
+
+            {/* Secondary Emerald Atmosphere Glow (#10B981) */}
+            <radialGradient id="emeraldAtmosphere" cx="20%" cy="80%" r="65%">
+              <stop offset="0%" stopColor="#10B981" stopOpacity="0.36" />
+              <stop offset="50%" stopColor="#062E03" stopOpacity="0.12" />
+              <stop offset="90%" stopColor="#062E03" stopOpacity="0" />
+            </radialGradient>
+
+            {/* Wave 1 - Deep Background Silk Swell */}
+            <linearGradient id="wave1Grad" x1="10%" y1="0%" x2="90%" y2="100%">
+              <stop offset="0%" stopColor="#062E03" stopOpacity="0.95" />
+              <stop offset="40%" stopColor="#0C4F0A" stopOpacity="0.8" />
+              <stop offset="70%" stopColor="#10B981" stopOpacity="0.55" />
+              <stop offset="100%" stopColor="#041E02" stopOpacity="0.9" />
+            </linearGradient>
+
+            {/* Wave 2 - Iconic S-Curve Silk Wave (Foreground Prominent Ribbon) */}
+            <linearGradient id="wave2Grad" x1="0%" y1="20%" x2="100%" y2="80%">
+              <stop offset="0%" stopColor="#052802" />
+              <stop offset="25%" stopColor="#094406" />
+              <stop offset="50%" stopColor="#10B981" />
+              <stop offset="72%" stopColor="#34D399" />
+              <stop offset="88%" stopColor="#10B981" />
+              <stop offset="100%" stopColor="#062E03" />
+            </linearGradient>
+
+            {/* Wave 3 - Luminous Crest Highlight Ribbons */}
+            <linearGradient id="crestGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#10B981" stopOpacity="0.1" />
+              <stop offset="25%" stopColor="#34D399" stopOpacity="0.55" />
+              <stop offset="50%" stopColor="#A7F3D0" stopOpacity="0.9" />
+              <stop offset="65%" stopColor="#FFFFFF" stopOpacity="0.95" />
+              <stop offset="80%" stopColor="#A7F3D0" stopOpacity="0.75" />
+              <stop offset="92%" stopColor="#7C3AED" stopOpacity="0.55" />
+              <stop offset="100%" stopColor="#10B981" stopOpacity="0.1" />
+            </linearGradient>
+
+            {/* Wave 4 - Lower Foreground Rolling Silk Dune */}
+            <linearGradient id="wave4Grad" x1="0%" y1="100%" x2="100%" y2="20%">
+              <stop offset="0%" stopColor="#031601" stopOpacity="0.95" />
+              <stop offset="35%" stopColor="#062E03" stopOpacity="0.85" />
+              <stop offset="65%" stopColor="#0F5A0C" stopOpacity="0.75" />
+              <stop offset="85%" stopColor="#10B981" stopOpacity="0.5" />
+              <stop offset="100%" stopColor="#7C3AED" stopOpacity="0.3" />
+            </linearGradient>
+
+            {/* Soft Silk Diffusion Filters */}
+            <filter id="silkBlur" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="30" />
+            </filter>
+            <filter id="gentleSilkBlur" x="-10%" y="-10%" width="120%" height="120%">
+              <feGaussianBlur stdDeviation="12" />
+            </filter>
+          </defs>
+
+          {/* Base Backdrop Canvas */}
+          <rect width="100%" height="100%" fill="url(#fluidBg)" />
+          <rect width="100%" height="100%" fill="url(#purpleAtmosphere)" />
+          <rect width="100%" height="100%" fill="url(#emeraldAtmosphere)" />
+
+          {/* Wave Layer 1: Ambient Deep Background Curve */}
+          <path
+            d="M-100 240 C 260 80, 520 380, 880 220 C 1180 80, 1420 280, 1600 200 L 1600 950 L -100 950 Z"
+            fill="url(#wave1Grad)"
+            filter="url(#silkBlur)"
+            opacity="0.85"
+          />
+
+          {/* Wave Layer 2: Main Flowing Liquid Silk S-Curve Wave */}
+          <path
+            d="M -80 380 C 220 180, 480 520, 840 340 C 1120 200, 1360 380, 1550 260 L 1550 950 L -80 950 Z"
+            fill="url(#wave2Grad)"
+            opacity="0.9"
+          />
+
+          {/* Wave Layer 3: Highlight Silk Crest on the Ridge */}
+          <path
+            d="M -80 380 C 220 180, 480 520, 840 340 C 1120 200, 1360 380, 1550 260"
+            fill="none"
+            stroke="url(#crestGrad)"
+            strokeWidth="38"
+            strokeLinecap="round"
+            filter="url(#gentleSilkBlur)"
+            opacity="0.85"
+          />
+          <path
+            d="M -80 380 C 220 180, 480 520, 840 340 C 1120 200, 1360 380, 1550 260"
+            fill="none"
+            stroke="#FFFFFF"
+            strokeWidth="6"
+            strokeLinecap="round"
+            filter="url(#gentleSilkBlur)"
+            opacity="0.55"
+          />
+
+          {/* Wave Layer 4: Upper Violet Accent Ribbon Flow (#7C3AED) */}
+          <path
+            d="M 480 80 C 820 20, 1140 180, 1550 110"
+            fill="none"
+            stroke="#7C3AED"
+            strokeWidth="32"
+            strokeLinecap="round"
+            filter="url(#silkBlur)"
+            opacity="0.4"
+          />
+
+          {/* Wave Layer 5: Lower Foreground Silky Dune */}
+          <path
+            d="M -100 680 C 280 480, 680 720, 1080 540 C 1320 440, 1480 620, 1600 560 L 1600 950 L -100 950 Z"
+            fill="url(#wave4Grad)"
+            opacity="0.88"
+          />
+
+          {/* Wave Layer 6: Lower Dune Crest Glow */}
+          <path
+            d="M -100 680 C 280 480, 680 720, 1080 540 C 1320 440, 1480 620, 1600 560"
+            fill="none"
+            stroke="url(#crestGrad)"
+            strokeWidth="24"
+            strokeLinecap="round"
+            filter="url(#gentleSilkBlur)"
+            opacity="0.7"
+          />
+        </svg>
+      </div>
+
+      {/* 2. TOP COMPACT HEADER */}
       <header className="agent-top-navbar" role="banner">
         <div className="agent-brand-group">
           <Link to="/login" className="agent-brand-logo" title="Nexus CRM Home">
@@ -206,116 +353,11 @@ export const LoginPage: React.FC = () => {
         </div>
       </header>
 
-      {/* 2. CENTRAL HERO STAGE WITH ILLUSTRATIONS & FLOATING CARD */}
+      {/* 3. CENTRAL HERO STAGE WITH FLOATING CARD */}
       <div className="agent-stage-viewport">
-        {/* Left Minimalist Line-Art & Memphis-Style Decorative Element */}
-        <svg
-          className="agent-illustration-left"
-          viewBox="0 0 320 480"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-        >
-          <defs>
-            <pattern
-              id="dotPatternLeft"
-              x="0"
-              y="0"
-              width="14"
-              height="14"
-              patternUnits="userSpaceOnUse"
-            >
-              <circle cx="7" cy="7" r="2.2" fill="#062E03" />
-            </pattern>
-          </defs>
-
-          {/* Squiggly line top left */}
-          <path
-            d="M30 140 C 60 90, 80 160, 110 110 C 140 70, 170 120, 200 95"
-            stroke="#10B981"
-            strokeWidth="1.6"
-            fill="none"
-            strokeLinecap="round"
-          />
-
-          {/* Small circle accent */}
-          <circle cx="160" cy="190" r="3.5" fill="none" stroke="#7C3AED" strokeWidth="1.5" />
-
-          {/* Document outline box */}
-          <rect
-            x="45"
-            y="155"
-            width="105"
-            height="75"
-            rx="4"
-            fill="#FFFFFF"
-            stroke="#062E03"
-            strokeWidth="1.5"
-          />
-          <line
-            x1="65"
-            y1="185"
-            x2="115"
-            y2="185"
-            stroke="#10B981"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          />
-          <line
-            x1="65"
-            y1="200"
-            x2="100"
-            y2="200"
-            stroke="#062E03"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          />
-
-          {/* Curly doodle right of box */}
-          <path
-            d="M165 260 C 185 285, 195 255, 210 270"
-            stroke="#7C3AED"
-            strokeWidth="1.6"
-            fill="none"
-            strokeLinecap="round"
-          />
-
-          {/* Polka-dot pillar left (Secondary emerald #10B981 with dark #062E03 dots) */}
-          <rect
-            x="20"
-            y="275"
-            width="68"
-            height="145"
-            rx="3"
-            fill="#10B981"
-            stroke="#062E03"
-            strokeWidth="1.5"
-          />
-          <rect x="20" y="275" width="68" height="145" rx="3" fill="url(#dotPatternLeft)" />
-
-          {/* Isometric Cube with upward growth arrow */}
-          <rect
-            x="95"
-            y="315"
-            width="65"
-            height="105"
-            rx="3"
-            fill="#FFFFFF"
-            stroke="#062E03"
-            strokeWidth="1.5"
-          />
-          <path
-            d="M112 375 L 140 335 M 140 335 L 122 335 M 140 335 L 140 352"
-            stroke="#10B981"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-
         {/* Central White Login Card */}
         <div className="agent-login-card" role="region" aria-labelledby="agent-login-title">
-          {/* 1. Heading & Supporting Text */}
+          {/* Heading & Supporting Text */}
           <h1 className="agent-card-title" id="agent-login-title">
             Welcome Back
           </h1>
@@ -345,7 +387,7 @@ export const LoginPage: React.FC = () => {
             className="agent-login-form"
             id="agent-login-form"
           >
-            {/* 2. Email Address Input */}
+            {/* Email Address Input */}
             <div className="agent-field-wrap">
               <label htmlFor="agent-email-input" className="agent-field-label">
                 Email Address
@@ -376,7 +418,7 @@ export const LoginPage: React.FC = () => {
               )}
             </div>
 
-            {/* 3. Password Input */}
+            {/* Password Input */}
             <div className="agent-field-wrap">
               <label htmlFor="agent-password-input" className="agent-field-label">
                 Password
@@ -416,7 +458,7 @@ export const LoginPage: React.FC = () => {
               )}
             </div>
 
-            {/* 4. Remember Me and Forgot Password */}
+            {/* Remember Me and Forgot Password */}
             <div className="agent-remember-forgot-row">
               <label className="agent-remember-label">
                 <input
@@ -433,7 +475,7 @@ export const LoginPage: React.FC = () => {
               </Link>
             </div>
 
-            {/* 5. Sign In Button */}
+            {/* Sign In Button */}
             <button
               type="submit"
               className="agent-signin-btn"
@@ -450,7 +492,7 @@ export const LoginPage: React.FC = () => {
               )}
             </button>
 
-            {/* 6. Social Login Section (Google, Instagram, Facebook in 1 horizontal row) */}
+            {/* Social Login Section (Google, Instagram, Facebook in 1 horizontal row) */}
             <div className="agent-or-divider">
               <span>Or continue with</span>
             </div>
@@ -513,7 +555,7 @@ export const LoginPage: React.FC = () => {
               </div>
             </div>
 
-            {/* 7. Registration Link */}
+            {/* Registration Link */}
             <div className="agent-request-now-row">
               <span>Don't have an account?</span>
               <Link to="/register" className="agent-request-now-link">
@@ -522,206 +564,9 @@ export const LoginPage: React.FC = () => {
             </div>
           </form>
         </div>
-
-        {/* Right Professional Human Avatar Illustration Working on Laptop */}
-        <svg
-          className="agent-illustration-right"
-          viewBox="0 0 380 480"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-        >
-          <defs>
-            <pattern
-              id="dotPatternRight"
-              x="0"
-              y="0"
-              width="14"
-              height="14"
-              patternUnits="userSpaceOnUse"
-            >
-              <circle cx="7" cy="7" r="2.2" fill="#062E03" />
-            </pattern>
-            <pattern
-              id="shirtPattern"
-              x="0"
-              y="0"
-              width="8"
-              height="8"
-              patternUnits="userSpaceOnUse"
-            >
-              <path d="M0 8 L8 0 M0 0 L8 8" stroke="#FFFFFF" strokeWidth="0.8" opacity="0.4" />
-            </pattern>
-          </defs>
-
-          {/* Floating curly hair loop / doodle at top */}
-          <path
-            d="M170 70 C 195 50, 200 95, 215 70"
-            stroke="#062E03"
-            strokeWidth="1.5"
-            fill="none"
-            strokeLinecap="round"
-          />
-
-          {/* Speech card box above agent */}
-          <rect
-            x="220"
-            y="135"
-            width="58"
-            height="38"
-            rx="4"
-            fill="#FFFFFF"
-            stroke="#062E03"
-            strokeWidth="1.5"
-          />
-          <line
-            x1="232"
-            y1="149"
-            x2="264"
-            y2="149"
-            stroke="#10B981"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          />
-          <line
-            x1="232"
-            y1="159"
-            x2="254"
-            y2="159"
-            stroke="#7C3AED"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          />
-
-          {/* Squiggle behind agent */}
-          <path
-            d="M290 145 C 320 135, 330 175, 350 155"
-            stroke="#7C3AED"
-            strokeWidth="1.5"
-            fill="none"
-            strokeLinecap="round"
-          />
-
-          {/* Small circle accent */}
-          <circle cx="218" cy="265" r="3" fill="none" stroke="#10B981" strokeWidth="1.5" />
-
-          {/* Architectural Pedestal Box avatar sits on */}
-          <rect
-            x="240"
-            y="275"
-            width="75"
-            height="145"
-            rx="3"
-            fill="#FFFFFF"
-            stroke="#062E03"
-            strokeWidth="1.5"
-          />
-
-          {/* Polka-dot pillar on far right (Secondary emerald #10B981 with primary #062E03 dots) */}
-          <rect
-            x="320"
-            y="300"
-            width="55"
-            height="120"
-            rx="3"
-            fill="#10B981"
-            stroke="#062E03"
-            strokeWidth="1.5"
-          />
-          <rect x="320" y="300" width="55" height="120" rx="3" fill="url(#dotPatternRight)" />
-
-          {/* PROFESSIONAL HUMAN AVATAR CHARACTER */}
-          {/* Left leg (crossed/dangling gracefully) */}
-          <path
-            d="M250 255 L 220 315 L 235 325 L 265 255 Z"
-            fill="#FFFFFF"
-            stroke="#062E03"
-            strokeWidth="1.5"
-            strokeLinejoin="round"
-          />
-          {/* Right leg */}
-          <path
-            d="M260 255 L 245 325 L 260 333 L 280 255 Z"
-            fill="#FFFFFF"
-            stroke="#062E03"
-            strokeWidth="1.5"
-            strokeLinejoin="round"
-          />
-          {/* Left shoe */}
-          <path
-            d="M212 337 L 225 315 L 235 325 L 225 343 Z"
-            fill="#062E03"
-            stroke="#062E03"
-            strokeWidth="1"
-          />
-          {/* Right shoe */}
-          <path
-            d="M245 325 L 255 347 L 265 347 L 260 331 Z"
-            fill="#062E03"
-            stroke="#062E03"
-            strokeWidth="1"
-          />
-
-          {/* Torso & patterned corporate blouse in #7C3AED accent */}
-          <path
-            d="M260 200 C 255 215, 250 240, 255 260 L 285 260 C 288 240, 288 215, 280 200 Z"
-            fill="#7C3AED"
-          />
-          <path
-            d="M260 200 C 255 215, 250 240, 255 260 L 285 260 C 288 240, 288 215, 280 200 Z"
-            fill="url(#shirtPattern)"
-            stroke="#062E03"
-            strokeWidth="1.5"
-          />
-
-          {/* Neck with collar */}
-          <rect
-            x="265"
-            y="190"
-            width="8"
-            height="12"
-            fill="#FAF8F5"
-            stroke="#062E03"
-            strokeWidth="1.5"
-          />
-          {/* Head */}
-          <circle cx="269" cy="183" r="10" fill="#FAF8F5" stroke="#062E03" strokeWidth="1.5" />
-          {/* Hair / Corporate Bun */}
-          <path
-            d="M265 175 C 260 165, 278 160, 278 173 C 285 173, 288 183, 285 193 C 282 203, 272 203, 270 195 Z"
-            fill="#062E03"
-          />
-          <circle cx="276" cy="163" r="5" fill="#062E03" />
-
-          {/* Laptop on lap (with #10B981 emerald display screen) */}
-          <path
-            d="M222 200 L 234 255 L 262 255 L 250 200 Z"
-            fill="#D1FAE5"
-            stroke="#10B981"
-            strokeWidth="1.5"
-          />
-          <line
-            x1="234"
-            y1="255"
-            x2="268"
-            y2="255"
-            stroke="#062E03"
-            strokeWidth="2"
-            strokeLinecap="round"
-          />
-
-          {/* Arms typing on laptop */}
-          <path
-            d="M262 210 C 250 225, 235 230, 242 240"
-            fill="none"
-            stroke="#062E03"
-            strokeWidth="2"
-            strokeLinecap="round"
-          />
-        </svg>
       </div>
 
-      {/* 3. PAGE FOOTER */}
+      {/* 4. PAGE FOOTER */}
       <footer className="agent-page-footer" role="contentinfo">
         <span>© 2026 Nexus CRM. All rights reserved.</span>
         <span className="agent-footer-divider">•</span>
