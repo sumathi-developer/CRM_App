@@ -583,16 +583,6 @@ export const LoginPage: React.FC = () => {
             </div>
           </form>
         </div>
-
-        {/* 3D CRM Hero Illustration (Provided image without circle design) */}
-        <div className="agent-hero-card" role="presentation" aria-hidden="true">
-          <img
-            src="/assets/login-hero-artwork.png"
-            alt="Nexus CRM Platform"
-            className="agent-hero-artwork-img"
-            loading="eager"
-          />
-        </div>
       </div>
 
       {/* 3. PAGE FOOTER */}
