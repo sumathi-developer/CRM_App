@@ -56,6 +56,7 @@ import {
 } from '../lead-generation/leadGenConstants';
 import {
   ActivityIcon,
+  ArrowRightIcon,
   AwardIcon,
   BriefcaseIcon,
   CheckCircleIcon,
@@ -384,12 +385,14 @@ export const DashboardExplorerPage: React.FC<DashboardExplorerPageProps> = ({
              ============================================================== */}
           {screen === 'overview' && (
             <div className="space-y-6">
+              {/* Executive Scenic Hero Header */}
               <DashboardScenicHero
                 totalRevenue={formatCurrency(overviewData?.kpis.totalRevenue.current)}
                 dealsWon={overviewData?.kpis.dealsWon.current || 0}
                 winRate={formatPercent(overviewData?.kpis.winRate.current)}
               />
 
+              {/* Balanced 3-Column Executive Matrix (Left Rail, 8 KPI Cards, Right Rail) */}
               <div className="crm-dashboard-3col">
                 <div className="crm-dashboard-left-rail">
                   <DashboardLeftRail
@@ -400,101 +403,116 @@ export const DashboardExplorerPage: React.FC<DashboardExplorerPageProps> = ({
                   />
                 </div>
 
-                <div className="space-y-6" style={{ minWidth: 0 }}>
-                  {/* 8 Executive KPI Cards */}
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                <DashboardKpiCard
-                  label="Total Revenue (Won)"
-                  value={formatCurrency(
-                    overviewData?.kpis.totalRevenue.current,
-                  )}
-                  metric={overviewData?.kpis.totalRevenue}
-                  formatPrev={formatCurrency}
-                  icon={<DollarSignIcon size={20} />}
-                  tone="green"
-                  to="/dashboard/revenue"
-                />
-                <DashboardKpiCard
-                  label="Active Pipeline Value"
-                  value={formatCurrency(
-                    overviewData?.kpis.activePipelineValue.current,
-                  )}
-                  metric={overviewData?.kpis.activePipelineValue}
-                  formatPrev={formatCurrency}
-                  icon={<BriefcaseIcon size={20} />}
-                  tone="blue"
-                  to="/pipelines"
-                />
-                <DashboardKpiCard
-                  label="Deals Won"
-                  value={formatNumber(overviewData?.kpis.dealsWon.current)}
-                  metric={overviewData?.kpis.dealsWon}
-                  icon={<AwardIcon size={20} />}
-                  tone="purple"
-                  to="/deals/won"
-                />
-                <DashboardKpiCard
-                  label="Deal Win Rate"
-                  value={formatPercent(overviewData?.kpis.winRate.current)}
-                  metric={overviewData?.kpis.winRate}
-                  formatPrev={formatPercent}
-                  icon={<TrendingUpIcon size={20} />}
-                  tone="cyan"
-                  to="/dashboard/sales"
-                />
-                <DashboardKpiCard
-                  label="New Leads Captured"
-                  value={formatNumber(overviewData?.kpis.newLeads.current)}
-                  metric={overviewData?.kpis.newLeads}
-                  icon={<TargetIcon size={20} />}
-                  tone="amber"
-                  to="/dashboard/leads"
-                />
-                <DashboardKpiCard
-                  label="Lead Conversion Rate"
-                  value={formatPercent(
-                    overviewData?.kpis.leadConversionRate.current,
-                  )}
-                  metric={overviewData?.kpis.leadConversionRate}
-                  formatPrev={formatPercent}
-                  icon={<TrendingUpIcon size={20} />}
-                  tone="green"
-                  to="/leads/conversion"
-                />
-                <DashboardKpiCard
-                  label="Average Deal Size"
-                  value={formatCurrency(
-                    overviewData?.kpis.avgDealSize.current,
-                  )}
-                  metric={overviewData?.kpis.avgDealSize}
-                  formatPrev={formatCurrency}
-                  icon={<DollarSignIcon size={20} />}
-                  tone="blue"
-                  to="/deals"
-                />
-                <DashboardKpiCard
-                  label="Completed Activities"
-                  value={formatNumber(
-                    overviewData?.kpis.activitiesCompleted.current,
-                  )}
-                  metric={overviewData?.kpis.activitiesCompleted}
-                  icon={<CheckCircleIcon size={20} />}
-                  tone="purple"
-                  to="/activities/completed"
-                />
+                <div className="crm-dashboard-center-kpis" style={{ minWidth: 0 }}>
+                  <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2" style={{ height: "446px" }}>
+                    <DashboardKpiCard
+                      label="Total Revenue (Won)"
+                      value={formatCurrency(
+                        overviewData?.kpis.totalRevenue.current,
+                      )}
+                      metric={overviewData?.kpis.totalRevenue}
+                      formatPrev={formatCurrency}
+                      icon={<DollarSignIcon size={20} />}
+                      tone="green"
+                      to="/dashboard/revenue"
+                    />
+                    <DashboardKpiCard
+                      label="Active Pipeline Value"
+                      value={formatCurrency(
+                        overviewData?.kpis.activePipelineValue.current,
+                      )}
+                      metric={overviewData?.kpis.activePipelineValue}
+                      formatPrev={formatCurrency}
+                      icon={<BriefcaseIcon size={20} />}
+                      tone="blue"
+                      to="/pipelines"
+                    />
+                    <DashboardKpiCard
+                      label="Deals Won"
+                      value={formatNumber(overviewData?.kpis.dealsWon.current)}
+                      metric={overviewData?.kpis.dealsWon}
+                      icon={<AwardIcon size={20} />}
+                      tone="purple"
+                      to="/deals/won"
+                    />
+                    <DashboardKpiCard
+                      label="Deal Win Rate"
+                      value={formatPercent(overviewData?.kpis.winRate.current)}
+                      metric={overviewData?.kpis.winRate}
+                      formatPrev={formatPercent}
+                      icon={<TrendingUpIcon size={20} />}
+                      tone="cyan"
+                      to="/dashboard/sales"
+                    />
+                    <DashboardKpiCard
+                      label="New Leads Captured"
+                      value={formatNumber(overviewData?.kpis.newLeads.current)}
+                      metric={overviewData?.kpis.newLeads}
+                      icon={<TargetIcon size={20} />}
+                      tone="amber"
+                      to="/dashboard/leads"
+                    />
+                    <DashboardKpiCard
+                      label="Lead Conversion Rate"
+                      value={formatPercent(
+                        overviewData?.kpis.leadConversionRate.current,
+                      )}
+                      metric={overviewData?.kpis.leadConversionRate}
+                      formatPrev={formatPercent}
+                      icon={<TrendingUpIcon size={20} />}
+                      tone="green"
+                      to="/leads/conversion"
+                    />
+                    <DashboardKpiCard
+                      label="Average Deal Size"
+                      value={formatCurrency(
+                        overviewData?.kpis.avgDealSize.current,
+                      )}
+                      metric={overviewData?.kpis.avgDealSize}
+                      formatPrev={formatCurrency}
+                      icon={<DollarSignIcon size={20} />}
+                      tone="blue"
+                      to="/deals"
+                    />
+                    <DashboardKpiCard
+                      label="Completed Activities"
+                      value={formatNumber(
+                        overviewData?.kpis.activitiesCompleted.current,
+                      )}
+                      metric={overviewData?.kpis.activitiesCompleted}
+                      icon={<CheckCircleIcon size={20} />}
+                      tone="purple"
+                      to="/activities/completed"
+                    />
+                  </div>
+                </div>
+
+                <div className="crm-dashboard-right-rail">
+                  <DashboardRightRail />
+                </div>
               </div>
 
-              {/* Revenue Summary + Pipeline Summary */}
-              <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+              {/* Lower Tier: Full-Width Analytics & Projections */}
+              <div className="crm-dashboard-tier grid grid-cols-1 gap-6 lg:grid-cols-2">
                 <RevenueSummaryWidget revenue={revenueData} />
                 <PipelineSummaryWidget pipeline={pipelineData} />
               </div>
 
-              {/* Conversion Funnel + Top Lead Sources */}
-              <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+              {/* Lower Tier: Full-Funnel Conversion & Lead Sources */}
+              <div className="crm-dashboard-tier grid grid-cols-1 gap-6 lg:grid-cols-2">
                 <SectionCard
                   title="Full-Funnel Conversion Summary"
                   subtitle="Progression from captured leads to closed-won customer deals"
+                  actions={
+                    <Link
+                      to="/deals"
+                      className="inline-flex items-center gap-1 text-xs font-bold text-emerald-400 hover:text-emerald-300 transition"
+                    >
+                      <span>Conversion Funnel</span>
+                      <ArrowRightIcon size={13} />
+                    </Link>
+                  }
+                  className="crm-funnel-card"
                 >
                   <Funnel
                     steps={(overviewData?.funnelSummary || []).map((st) => ({
@@ -502,45 +520,112 @@ export const DashboardExplorerPage: React.FC<DashboardExplorerPageProps> = ({
                       value: st.count,
                     }))}
                   />
+                  <div className="mt-2 pt-2 border-t border-emerald-900/30 flex items-center justify-between text-xs text-gray-400">
+                    <span>Stage-by-stage pipeline velocity</span>
+                    <Link to="/leads/conversion" className="text-emerald-400 font-bold hover:underline">
+                      Audit Funnel →
+                    </Link>
+                  </div>
                 </SectionCard>
 
                 <SectionCard
                   title="Top Lead Acquisition Sources"
-                  subtitle="Highest volume lead channels in the selected period"
+                  subtitle="Channel volume & attribution performance"
                   actions={
                     <Link
                       to="/dashboard/leads"
-                      className="text-xs font-semibold text-blue-600 hover:underline"
+                      className="inline-flex items-center gap-1 text-xs font-bold text-emerald-400 hover:text-emerald-300 transition"
                     >
-                      Lead Dashboard →
+                      <span>Lead Dashboard</span>
+                      <ArrowRightIcon size={13} />
                     </Link>
                   }
+                  className="crm-lead-sources-card"
                 >
-                  <BarList
-                    data={(overviewData?.topLeadSources || []).map((src) => ({
-                      label: humanize(src.source),
-                      value: src.count,
-                      hint: `Conversion: ${formatPercent(src.conversionRate)} • Attributed: ${formatCurrency(src.revenue)}`,
-                    }))}
-                    emptyText="No lead source data recorded in this period."
-                  />
+                  {(overviewData?.topLeadSources && overviewData.topLeadSources.length > 0) ? (
+                    <div className="crm-lead-sources-breakdown">
+                      {overviewData.topLeadSources.map((src, i) => (
+                        <div key={src.source || i} className="crm-channel-row">
+                          <div className="flex items-center justify-between text-xs font-semibold text-gray-200">
+                            <span>{humanize(src.source)}</span>
+                            <span className="text-emerald-400 font-bold">
+                              {src.count} leads ({formatPercent(src.conversionRate)})
+                            </span>
+                          </div>
+                          <div className="crm-channel-track">
+                            <div
+                              className="crm-channel-fill"
+                              style={{
+                                width: `${Math.min(100, Math.max(0, (src.count / Math.max(...overviewData.topLeadSources.map((s) => s.count), 1)) * 100))}%`,
+                              }}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                      <div className="mt-2 pt-2 border-t border-emerald-900/30 flex items-center justify-between text-xs text-gray-400">
+                        <span>Attribution performance across channels</span>
+                        <Link to="/leads/create" className="text-emerald-400 font-bold hover:underline">
+                          + New Lead
+                        </Link>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="crm-lead-sources-breakdown">
+                      <div className="crm-channel-row">
+                        <div className="flex items-center justify-between text-xs font-semibold text-gray-200">
+                          <span>Direct & Organic Website</span>
+                          <span className="text-emerald-400 font-bold">0 leads (0%)</span>
+                        </div>
+                        <div className="crm-channel-track">
+                          <div className="crm-channel-fill" style={{ width: '0%' }} />
+                        </div>
+                      </div>
+                      <div className="crm-channel-row">
+                        <div className="flex items-center justify-between text-xs font-semibold text-gray-200">
+                          <span>Referral & Partner Traffic</span>
+                          <span className="text-purple-400 font-bold">0 leads (0%)</span>
+                        </div>
+                        <div className="crm-channel-track">
+                          <div className="crm-channel-fill" style={{ width: '0%', background: '#7c3aed' }} />
+                        </div>
+                      </div>
+                      <div className="crm-channel-row">
+                        <div className="flex items-center justify-between text-xs font-semibold text-gray-200">
+                          <span>Outbound Campaigns & Email</span>
+                          <span className="text-cyan-400 font-bold">0 leads (0%)</span>
+                        </div>
+                        <div className="crm-channel-track">
+                          <div className="crm-channel-fill" style={{ width: '0%', background: '#06b6d4' }} />
+                        </div>
+                      </div>
+                      <div className="crm-channel-row">
+                        <div className="flex items-center justify-between text-xs font-semibold text-gray-200">
+                          <span>Social Media & Paid Ads</span>
+                          <span className="text-amber-400 font-bold">0 leads (0%)</span>
+                        </div>
+                        <div className="crm-channel-track">
+                          <div className="crm-channel-fill" style={{ width: '0%', background: '#f59e0b' }} />
+                        </div>
+                      </div>
+                      <div className="mt-2 pt-2 border-t border-emerald-900/30 flex items-center justify-between text-xs text-gray-400">
+                        <span>Tag source channel when capturing leads.</span>
+                        <Link to="/leads/create" className="text-emerald-400 font-bold hover:underline">
+                          + New Lead
+                        </Link>
+                      </div>
+                    </div>
+                  )}
                 </SectionCard>
               </div>
 
-              {/* Recent Records: Deals, Leads, Activities */}
-              <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+              {/* Lower Tier: Recent Operational Stream */}
+              <div className="crm-dashboard-tier grid grid-cols-1 gap-6 lg:grid-cols-3">
                 <RecentDealsWidget deals={recentDeals} />
                 <RecentLeadsWidget leads={recentLeads} />
                 <RecentActivitiesWidget activities={recentActivities} />
               </div>
             </div>
-
-            <div className="crm-dashboard-right-rail">
-              <DashboardRightRail />
-            </div>
-          </div>
-        </div>
-      )}
+          )}
 
           {/* ==============================================================
               SCREEN 2: SALES DASHBOARD

@@ -16,7 +16,6 @@ import type {
 } from '../../../types/dashboard.types';
 import {
   Badge,
-  ScorePill,
   SectionCard,
 } from '../../lead-generation/components/Cards';
 import { LineChart } from '../../lead-generation/components/Charts';
@@ -37,10 +36,15 @@ import {
 } from '../dashboardConstants';
 import {
   ArrowRightIcon,
+  BriefcaseIcon,
+  CalendarIcon,
+  ChevronDownIcon,
   FilterIcon,
   RefreshCwIcon,
+  TargetIcon,
   XIcon,
 } from '../../../components/common/Icons';
+import { Button } from '../../../components/ui/Button';
 
 /* ==========================================================================
    1. Loading Skeleton
@@ -110,54 +114,52 @@ export const DashboardKpiCard: React.FC<DashboardKpiCardProps> = ({
 }) => {
   const direction = metric?.direction || 'FLAT';
   const pct = Number(metric?.percentage ?? 0);
-  const badgeColor =
+  const badgeClass =
     direction === 'UP'
-      ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+      ? 'crm-badge crm-badge-secondary'
       : direction === 'DOWN'
-        ? 'bg-red-50 text-red-700 border-red-200'
-        : 'bg-gray-100 text-gray-600 border-gray-200';
+        ? 'crm-badge crm-badge-danger'
+        : 'crm-badge crm-badge-neutral';
   const arrow = direction === 'UP' ? '↑' : direction === 'DOWN' ? '↓' : '→';
 
   const cardBody = (
-    <div
-      className={`lg-card lg-stat-card tone-${tone} flex flex-col justify-between transition hover:shadow-sm`}
-    >
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0 flex-1">
-          <span className="lg-stat-label">{label}</span>
-          <div className="mt-1 flex flex-wrap items-baseline gap-2">
-            <span className="lg-stat-value">{value}</span>
-            {metric && (
-              <span
-                className={`inline-flex items-center gap-0.5 rounded-full border px-2 py-0.5 text-[11px] font-bold ${badgeColor}`}
-                title="Period-over-period change"
-              >
-                <span>{arrow}</span>
-                <span>{Math.abs(pct).toFixed(1)}%</span>
-              </span>
-            )}
-          </div>
-        </div>
-        {icon && <div className="lg-stat-icon shrink-0">{icon}</div>}
+    <div className={`crm-kpi-card tone-${tone}`}>
+      <div className="crm-kpi-top-row">
+        <span className="crm-kpi-label" title={label}>{label}</span>
+        {icon && <div className={`crm-kpi-icon-wrap tone-${tone}`}>{icon}</div>}
       </div>
 
-      <div className="mt-2 flex items-center justify-between gap-2 text-xs text-gray-500">
+      <div className="crm-kpi-mid-row">
+        <span className="crm-kpi-value">{value}</span>
+        {metric && (
+          <span
+            className={badgeClass}
+            style={{ fontSize: '10px', padding: '0.15rem 0.45rem', lineHeight: 1 }}
+            title="Period-over-period change"
+          >
+            <span>{arrow}</span>
+            <span>{Math.abs(pct).toFixed(1)}%</span>
+          </span>
+        )}
+      </div>
+
+      <div className="crm-kpi-footer">
         {metric ? (
-          <span>
+          <span className="crm-kpi-prev">
             Prev:{' '}
-            <strong className="text-gray-700">
+            <strong style={{ color: '#cbd5e1' }}>
               {formatPrev
                 ? formatPrev(metric.previous)
                 : formatNumber(metric.previous)}
             </strong>
           </span>
         ) : subtitle ? (
-          <span>{subtitle}</span>
+          <span className="crm-kpi-prev" style={{ color: '#94a3b8' }}>{subtitle}</span>
         ) : (
           <span />
         )}
         {to && (
-          <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-600">
+          <span className="crm-kpi-view-link">
             <span>View</span>
             <ArrowRightIcon size={11} />
           </span>
@@ -202,187 +204,234 @@ export const DashboardFilterBar: React.FC<DashboardFilterBarProps> = ({
   pipelines,
   showPipelineFilter = true,
 }) => {
-  const hasActiveFilters =
-    (filters.timeframe && filters.timeframe !== 'LAST_30_DAYS') ||
-    Boolean(filters.interval) ||
-    Boolean(filters.teamId) ||
-    Boolean(filters.userId) ||
-    Boolean(filters.pipelineId) ||
-    Boolean(filters.dateFrom) ||
-    Boolean(filters.dateTo);
+  const activeCount = [
+    Boolean(filters.timeframe && filters.timeframe !== 'LAST_30_DAYS'),
+    Boolean(filters.interval),
+    Boolean(filters.teamId),
+    Boolean(filters.userId),
+    Boolean(filters.pipelineId),
+    Boolean(filters.dateFrom || filters.dateTo),
+  ].filter(Boolean).length;
+
+  const hasActiveFilters = activeCount > 0;
 
   return (
     <section
-      className="lg-card mb-6 p-4"
+      className="crm-filter-bar"
       aria-label="Dashboard filters and timeframe controls"
     >
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 pb-3">
-        <div className="flex items-center gap-2 text-xs font-bold tracking-wider text-gray-600 uppercase">
-          <FilterIcon size={14} />
-          <span>Dashboard Filters</span>
+      <div className="crm-filter-header">
+        <div className="crm-filter-title-group">
+          <div className="crm-filter-icon-badge">
+            <FilterIcon size={16} />
+          </div>
+          <div className="crm-filter-heading">
+            <span>Dashboard Filters</span>
+            {hasActiveFilters && (
+              <span className="crm-badge crm-badge-secondary">
+                <span className="crm-badge-dot" />
+                {activeCount} active
+              </span>
+            )}
+          </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="crm-filter-actions">
           {hasActiveFilters && (
-            <button
+            <Button
               type="button"
+              variant="outline"
+              size="sm"
+              pill
               onClick={onReset}
-              className="inline-flex items-center gap-1 rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-xs font-semibold text-gray-700 hover:bg-gray-50"
+              icon={<XIcon size={13} />}
             >
-              <XIcon size={13} />
-              <span>Reset Filters</span>
-            </button>
+              Reset Filters
+            </Button>
           )}
-          <button
+          <Button
             type="button"
+            variant="secondary"
+            size="sm"
+            pill
             onClick={onRefresh}
-            disabled={isLoading}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-blue-200 bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-700 hover:bg-blue-600 hover:text-white disabled:opacity-50"
+            loading={isLoading}
+            icon={<RefreshCwIcon size={13} />}
           >
-            <RefreshCwIcon size={13} />
-            <span>{isLoading ? 'Refreshing...' : 'Refresh Data'}</span>
-          </button>
+            {isLoading ? 'Refreshing...' : 'Refresh Data'}
+          </Button>
         </div>
       </div>
 
-      <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+      <div className="crm-filter-grid">
         {/* Timeframe Selector */}
-        <div>
-          <label className="mb-1 block text-[11px] font-semibold text-gray-500 uppercase">
+        <div className="crm-filter-control">
+          <label className="crm-filter-label" htmlFor="dashboard-filter-timeframe">
             Date Range
           </label>
-          <select
-            value={filters.timeframe || 'LAST_30_DAYS'}
-            onChange={(e) =>
-              onChange({
-                ...filters,
-                timeframe: e.target.value as AnalyticsTimeframe,
-              })
-            }
-            aria-label="Date Range"
-            className="w-full rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 text-xs text-gray-800 focus:border-blue-600 focus:outline-none"
-          >
-            {TIMEFRAME_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
+          <div className="crm-filter-select-wrap">
+            <select
+              id="dashboard-filter-timeframe"
+              value={filters.timeframe || 'LAST_30_DAYS'}
+              onChange={(e) =>
+                onChange({
+                  ...filters,
+                  timeframe: e.target.value as AnalyticsTimeframe,
+                })
+              }
+              aria-label="Date Range"
+              className="crm-filter-select"
+            >
+              {TIMEFRAME_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+            <span className="crm-filter-chevron">
+              <ChevronDownIcon size={14} />
+            </span>
+          </div>
         </div>
 
         {/* Aggregation Interval */}
-        <div>
-          <label className="mb-1 block text-[11px] font-semibold text-gray-500 uppercase">
+        <div className="crm-filter-control">
+          <label className="crm-filter-label" htmlFor="dashboard-filter-interval">
             Chart Interval
           </label>
-          <select
-            value={filters.interval || ''}
-            onChange={(e) =>
-              onChange({
-                ...filters,
-                interval: (e.target.value || undefined) as
-                  | AnalyticsInterval
-                  | undefined,
-              })
-            }
-            aria-label="Chart Interval"
-            className="w-full rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 text-xs text-gray-800 focus:border-blue-600 focus:outline-none"
-          >
-            <option value="">Auto Interval</option>
-            {INTERVAL_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
+          <div className="crm-filter-select-wrap">
+            <select
+              id="dashboard-filter-interval"
+              value={filters.interval || ''}
+              onChange={(e) =>
+                onChange({
+                  ...filters,
+                  interval: (e.target.value || undefined) as
+                    | AnalyticsInterval
+                    | undefined,
+                })
+              }
+              aria-label="Chart Interval"
+              className="crm-filter-select"
+            >
+              <option value="">Auto Interval</option>
+              {INTERVAL_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+            <span className="crm-filter-chevron">
+              <ChevronDownIcon size={14} />
+            </span>
+          </div>
         </div>
 
         {/* Team Filter */}
-        <div>
-          <label className="mb-1 block text-[11px] font-semibold text-gray-500 uppercase">
+        <div className="crm-filter-control">
+          <label className="crm-filter-label" htmlFor="dashboard-filter-team">
             Sales Team
           </label>
-          <select
-            value={filters.teamId || ''}
-            onChange={(e) =>
-              onChange({
-                ...filters,
-                teamId: e.target.value || undefined,
-              })
-            }
-            aria-label="Sales Team"
-            className="w-full rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 text-xs text-gray-800 focus:border-blue-600 focus:outline-none"
-          >
-            <option value="">All Teams</option>
-            {teams.map((t) => (
-              <option key={t.id} value={t.id}>
-                {t.name}
-              </option>
-            ))}
-          </select>
+          <div className="crm-filter-select-wrap">
+            <select
+              id="dashboard-filter-team"
+              value={filters.teamId || ''}
+              onChange={(e) =>
+                onChange({
+                  ...filters,
+                  teamId: e.target.value || undefined,
+                })
+              }
+              aria-label="Sales Team"
+              className="crm-filter-select"
+            >
+              <option value="">All Teams</option>
+              {teams.map((t) => (
+                <option key={t.id} value={t.id}>
+                  {t.name}
+                </option>
+              ))}
+            </select>
+            <span className="crm-filter-chevron">
+              <ChevronDownIcon size={14} />
+            </span>
+          </div>
         </div>
 
         {/* User / Sales Rep Filter */}
-        <div>
-          <label className="mb-1 block text-[11px] font-semibold text-gray-500 uppercase">
+        <div className="crm-filter-control">
+          <label className="crm-filter-label" htmlFor="dashboard-filter-user">
             User / Representative
           </label>
-          <select
-            value={filters.userId || ''}
-            onChange={(e) =>
-              onChange({
-                ...filters,
-                userId: e.target.value || undefined,
-              })
-            }
-            aria-label="User or Representative"
-            className="w-full rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 text-xs text-gray-800 focus:border-blue-600 focus:outline-none"
-          >
-            <option value="">All Representatives</option>
-            {users.map((u) => (
-              <option key={u.id} value={u.id}>
-                {u.name}
-              </option>
-            ))}
-          </select>
+          <div className="crm-filter-select-wrap">
+            <select
+              id="dashboard-filter-user"
+              value={filters.userId || ''}
+              onChange={(e) =>
+                onChange({
+                  ...filters,
+                  userId: e.target.value || undefined,
+                })
+              }
+              aria-label="User or Representative"
+              className="crm-filter-select"
+            >
+              <option value="">All Representatives</option>
+              {users.map((u) => (
+                <option key={u.id} value={u.id}>
+                  {u.name}
+                </option>
+              ))}
+            </select>
+            <span className="crm-filter-chevron">
+              <ChevronDownIcon size={14} />
+            </span>
+          </div>
         </div>
 
         {/* Pipeline Filter */}
         {showPipelineFilter && (
-          <div>
-            <label className="mb-1 block text-[11px] font-semibold text-gray-500 uppercase">
+          <div className="crm-filter-control">
+            <label className="crm-filter-label" htmlFor="dashboard-filter-pipeline">
               Pipeline
             </label>
-            <select
-              value={filters.pipelineId || ''}
-              onChange={(e) =>
-                onChange({
-                  ...filters,
-                  pipelineId: e.target.value || undefined,
-                })
-              }
-              aria-label="Pipeline"
-              className="w-full rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 text-xs text-gray-800 focus:border-blue-600 focus:outline-none"
-            >
-              <option value="">Default / All Pipelines</option>
-              {pipelines.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.name}
-                </option>
-              ))}
-            </select>
+            <div className="crm-filter-select-wrap">
+              <select
+                id="dashboard-filter-pipeline"
+                value={filters.pipelineId || ''}
+                onChange={(e) =>
+                  onChange({
+                    ...filters,
+                    pipelineId: e.target.value || undefined,
+                  })
+                }
+                aria-label="Pipeline"
+                className="crm-filter-select"
+              >
+                <option value="">Default / All Pipelines</option>
+                {pipelines.map((p) => (
+                  <option key={p.id} value={p.id}>
+                    {p.name}
+                  </option>
+                ))}
+              </select>
+              <span className="crm-filter-chevron">
+                <ChevronDownIcon size={14} />
+              </span>
+            </div>
           </div>
         )}
       </div>
 
       {/* Custom Date Range Pickers when timeframe === CUSTOM */}
       {filters.timeframe === 'CUSTOM' && (
-        <div className="mt-3 grid grid-cols-1 gap-3 border-t border-gray-100 pt-3 sm:grid-cols-2">
-          <div>
-            <label className="mb-1 block text-[11px] font-semibold text-gray-500 uppercase">
+        <div className="crm-filter-custom-dates">
+          <div className="crm-filter-control">
+            <label className="crm-filter-label" htmlFor="dashboard-filter-date-from">
               Start Date
             </label>
             <input
+              id="dashboard-filter-date-from"
               type="date"
               value={filters.dateFrom ? filters.dateFrom.slice(0, 10) : ''}
               onChange={(e) =>
@@ -393,14 +442,15 @@ export const DashboardFilterBar: React.FC<DashboardFilterBarProps> = ({
                     : undefined,
                 })
               }
-              className="w-full rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 text-xs text-gray-800 focus:border-blue-600 focus:outline-none"
+              className="crm-filter-input"
             />
           </div>
-          <div>
-            <label className="mb-1 block text-[11px] font-semibold text-gray-500 uppercase">
+          <div className="crm-filter-control">
+            <label className="crm-filter-label" htmlFor="dashboard-filter-date-to">
               End Date
             </label>
             <input
+              id="dashboard-filter-date-to"
               type="date"
               value={filters.dateTo ? filters.dateTo.slice(0, 10) : ''}
               onChange={(e) =>
@@ -411,7 +461,7 @@ export const DashboardFilterBar: React.FC<DashboardFilterBarProps> = ({
                     : undefined,
                 })
               }
-              className="w-full rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 text-xs text-gray-800 focus:border-blue-600 focus:outline-none"
+              className="crm-filter-input"
             />
           </div>
         </div>
@@ -440,7 +490,7 @@ export const PipelineSummaryWidget: React.FC<{
       actions={
         <Link
           to={pipelineLink}
-          className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:underline"
+          className="inline-flex items-center gap-1 text-xs font-bold text-emerald-400 hover:text-emerald-300 transition"
         >
           <span>Open Pipeline</span>
           <ArrowRightIcon size={13} />
@@ -458,47 +508,58 @@ export const PipelineSummaryWidget: React.FC<{
           }
         />
       ) : (
-        <div className="space-y-3.5">
+        <div className="crm-pipeline-stages-list">
           {stages.map((stage) => {
             const widthPct = Math.max(
               (stage.totalValue / maxStageValue) * 100,
               stage.dealCount > 0 ? 4 : 0,
             );
             return (
-              <div
-                key={stage.stageId}
-                className="rounded-xl border border-gray-100 bg-gray-50/70 p-3"
-              >
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <div className="flex items-center gap-2">
+              <div key={stage.stageId} className="crm-pipeline-stage-item">
+                <div className="crm-pipeline-stage-row">
+                  {/* Left: Stage dot + Name */}
+                  <div className="crm-pipeline-stage-identity">
                     <span
-                      className="h-2.5 w-2.5 rounded-full"
-                      style={{ background: stage.color || '#3b82f6' }}
+                      className="crm-pipeline-stage-dot"
+                      style={{ background: stage.color || '#10b981' }}
                     />
                     <Link
                       to={`/deals?stageId=${stage.stageId}`}
-                      className="text-xs font-bold text-gray-900 hover:text-blue-600"
+                      className="crm-pipeline-stage-name"
+                      title={stage.stageName}
                     >
                       {stage.stageName}
                     </Link>
-                    <Badge tone="slate">{stage.dealCount} deals</Badge>
-                    <Badge tone="blue">{stage.winProbability}% prob.</Badge>
                   </div>
-                  <div className="text-right text-xs">
-                    <span className="font-bold text-gray-900">
+
+                  {/* Badges: Fixed column */}
+                  <div className="crm-pipeline-stage-badges">
+                    <span className="crm-stage-pill count">
+                      {stage.dealCount} {stage.dealCount === 1 ? 'deal' : 'deals'}
+                    </span>
+                    <span className="crm-stage-pill prob">
+                      {stage.winProbability}% prob.
+                    </span>
+                  </div>
+
+                  {/* Metrics: Right-aligned */}
+                  <div className="crm-pipeline-stage-metrics">
+                    <span className="crm-pipeline-stage-value">
                       {formatCurrency(stage.totalValue)}
                     </span>
-                    <span className="ml-2 text-gray-500">
-                      (Weighted: {formatCurrency(stage.weightedValue)})
+                    <span className="crm-pipeline-stage-weighted">
+                      Weighted: {formatCurrency(stage.weightedValue)}
                     </span>
                   </div>
                 </div>
-                <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-gray-200">
+
+                {/* Progress track */}
+                <div className="crm-pipeline-track">
                   <div
-                    className="h-full rounded-full transition-all"
+                    className="crm-pipeline-fill"
                     style={{
                       width: `${widthPct}%`,
-                      background: stage.color || '#3b82f6',
+                      background: stage.color || '#10b981',
                     }}
                   />
                 </div>
@@ -524,6 +585,8 @@ export const RevenueSummaryWidget: React.FC<{
     value: pt.value,
   }));
 
+  const hasData = points.length >= 2 && points.some((p) => p.value > 0);
+
   return (
     <SectionCard
       title="Revenue Summary & Projections"
@@ -531,53 +594,79 @@ export const RevenueSummaryWidget: React.FC<{
       actions={
         <Link
           to="/deals/won"
-          className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:underline"
+          className="inline-flex items-center gap-1 text-xs font-bold text-emerald-400 hover:text-emerald-300 transition"
         >
           <span>Won Deals</span>
           <ArrowRightIcon size={13} />
         </Link>
       }
     >
-      <div className="mb-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <div className="rounded-xl border border-emerald-100 bg-emerald-50/50 p-3">
-          <span className="text-[11px] font-semibold text-emerald-700 uppercase">
-            Closed-Won
-          </span>
-          <p className="mt-1 text-base font-bold text-gray-900">
+      {/* 4 Standardized Metric Cards: Uniform Height, Uniform Typography */}
+      <div className="crm-revenue-metrics-grid">
+        <div className="crm-revenue-kpi-card tone-emerald">
+          <span className="crm-revenue-kpi-label">Closed-Won</span>
+          <span className="crm-revenue-kpi-value">
             {formatCurrency(rev?.closedWonRevenue?.current)}
-          </p>
-        </div>
-        <div className="rounded-xl border border-blue-100 bg-blue-50/50 p-3">
-          <span className="text-[11px] font-semibold text-blue-700 uppercase">
-            Weighted Forecast
           </span>
-          <p className="mt-1 text-base font-bold text-gray-900">
+          <span className="crm-revenue-kpi-sub">Realized Revenue</span>
+        </div>
+
+        <div className="crm-revenue-kpi-card tone-cyan">
+          <span className="crm-revenue-kpi-label">Weighted Forecast</span>
+          <span className="crm-revenue-kpi-value">
             {formatCurrency(rev?.weightedForecastRevenue)}
-          </p>
-        </div>
-        <div className="rounded-xl border border-purple-100 bg-purple-50/50 p-3">
-          <span className="text-[11px] font-semibold text-purple-700 uppercase">
-            Open Pipeline
           </span>
-          <p className="mt-1 text-base font-bold text-gray-900">
+          <span className="crm-revenue-kpi-sub">Probability Calibrated</span>
+        </div>
+
+        <div className="crm-revenue-kpi-card tone-purple">
+          <span className="crm-revenue-kpi-label">Open Pipeline</span>
+          <span className="crm-revenue-kpi-value">
             {formatCurrency(rev?.activePipelineValue)}
-          </p>
-        </div>
-        <div className="rounded-xl border border-amber-100 bg-amber-50/50 p-3">
-          <span className="text-[11px] font-semibold text-amber-700 uppercase">
-            Avg Won Deal
           </span>
-          <p className="mt-1 text-base font-bold text-gray-900">
+          <span className="crm-revenue-kpi-sub">Active Deal Value</span>
+        </div>
+
+        <div className="crm-revenue-kpi-card tone-amber">
+          <span className="crm-revenue-kpi-label">Avg Won Deal</span>
+          <span className="crm-revenue-kpi-value">
             {formatCurrency(rev?.avgRevenuePerDeal)}
-          </p>
+          </span>
+          <span className="crm-revenue-kpi-sub">Per Closed Customer</span>
         </div>
       </div>
 
-      <LineChart
-        points={points}
-        height={200}
-        emptyText="No closed-won revenue recorded in the selected date range."
-      />
+      {/* Chart Section */}
+      {hasData ? (
+        <LineChart
+          points={points}
+          height={180}
+          emptyText="No closed-won revenue recorded in the selected date range."
+        />
+      ) : (
+        <div className="crm-revenue-projection-empty">
+          <div className="crm-revenue-projection-graphic">
+            <svg width="100%" height="60" viewBox="0 0 360 60" fill="none">
+              <path
+                d="M 10 50 Q 90 45, 180 32 T 350 10"
+                stroke="rgba(16, 185, 129, 0.4)"
+                strokeWidth="2"
+                strokeDasharray="4 4"
+                fill="none"
+              />
+              <circle cx="350" cy="10" r="4" fill="#10b981" />
+            </svg>
+          </div>
+          <div className="crm-revenue-projection-text">
+            <span className="crm-revenue-projection-title">
+              Pipeline Trajectory: {formatCurrency(rev?.weightedForecastRevenue)} Expected
+            </span>
+            <p className="crm-revenue-projection-hint">
+              No closed-won revenue finalized in this date range. Projections will automatically plot as deals advance across pipeline stages.
+            </p>
+          </div>
+        </div>
+      )}
     </SectionCard>
   );
 };
@@ -595,35 +684,37 @@ export const RecentDealsWidget: React.FC<{
     actions={
       <Link
         to="/deals"
-        className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:underline"
+        className="inline-flex items-center gap-1 text-xs font-bold text-emerald-400 hover:text-emerald-300 transition"
       >
         <span>All Deals</span>
         <ArrowRightIcon size={13} />
       </Link>
     }
+    className="crm-recent-widget-card"
   >
     {deals.length === 0 ? (
-      <EmptyState
-        title="No deals found"
-        description="Create a new deal to start tracking pipeline revenue."
-        action={
-          <Link to="/deals/create" className="lg-btn lg-btn-primary">
-            Create Deal
-          </Link>
-        }
-      />
+      <div className="crm-widget-empty-state">
+        <div className="crm-widget-empty-icon">
+          <BriefcaseIcon size={24} />
+        </div>
+        <p className="crm-widget-empty-title">No deals found</p>
+        <p className="crm-widget-empty-desc">
+          Create a new deal to start tracking pipeline revenue.
+        </p>
+        <Link to="/deals/create" className="crm-widget-empty-btn">
+          + Create Deal
+        </Link>
+      </div>
     ) : (
-      <div className="divide-y divide-gray-100">
+      <div className="crm-recent-list">
         {deals.map((deal) => (
-          <div
-            key={deal.id}
-            className="flex items-center justify-between gap-3 py-3 first:pt-0 last:pb-0"
-          >
-            <div className="min-w-0 flex-1">
-              <div className="flex flex-wrap items-center gap-2">
+          <div key={deal.id} className="crm-recent-item">
+            <div className="crm-recent-item-main">
+              <div className="crm-recent-item-title-row">
                 <Link
                   to={`/deals/${deal.id}`}
-                  className="truncate text-xs font-bold text-gray-900 hover:text-blue-600"
+                  className="crm-recent-item-title"
+                  title={deal.title}
                 >
                   {deal.title}
                 </Link>
@@ -634,7 +725,7 @@ export const RecentDealsWidget: React.FC<{
                   <Badge tone="blue">{deal.stage.name}</Badge>
                 )}
               </div>
-              <p className="mt-0.5 truncate text-[11px] text-gray-500">
+              <p className="crm-recent-item-sub">
                 {deal.organization?.name ||
                   (deal.contact
                     ? `${deal.contact.firstName} ${deal.contact.lastName}`
@@ -643,22 +734,24 @@ export const RecentDealsWidget: React.FC<{
               </p>
             </div>
 
-            <div className="flex shrink-0 items-center gap-3 text-right">
-              <div>
-                <p className="text-xs font-bold text-gray-900">
+            <div className="crm-recent-item-end">
+              <div className="crm-recent-item-val-wrap">
+                <span className="crm-recent-item-val">
                   {formatCurrency(deal.value)}
-                </p>
+                </span>
                 {deal.probability !== undefined && (
-                  <p className="text-[10px] text-gray-400">
-                    {deal.probability}% probability
-                  </p>
+                  <span className="crm-recent-item-prob">
+                    {deal.probability}% prob
+                  </span>
                 )}
               </div>
               <Link
                 to={`/deals/${deal.id}`}
-                className="rounded-lg border border-gray-200 px-2.5 py-1 text-[11px] font-semibold text-gray-700 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700"
+                className="crm-item-action-btn"
+                title="View Deal"
               >
-                Open
+                <span>View</span>
+                <ArrowRightIcon size={11} />
               </Link>
             </div>
           </div>
@@ -681,35 +774,37 @@ export const RecentLeadsWidget: React.FC<{
     actions={
       <Link
         to="/leads"
-        className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:underline"
+        className="inline-flex items-center gap-1 text-xs font-bold text-emerald-400 hover:text-emerald-300 transition"
       >
         <span>All Leads</span>
         <ArrowRightIcon size={13} />
       </Link>
     }
+    className="crm-recent-widget-card"
   >
     {leads.length === 0 ? (
-      <EmptyState
-        title="No leads found"
-        description="Capture or import leads to populate your acquisition funnel."
-        action={
-          <Link to="/leads/create" className="lg-btn lg-btn-primary">
-            Create Lead
-          </Link>
-        }
-      />
+      <div className="crm-widget-empty-state">
+        <div className="crm-widget-empty-icon">
+          <TargetIcon size={24} />
+        </div>
+        <p className="crm-widget-empty-title">No leads found</p>
+        <p className="crm-widget-empty-desc">
+          Capture or import leads to populate your acquisition funnel.
+        </p>
+        <Link to="/leads/create" className="crm-widget-empty-btn">
+          + Create Lead
+        </Link>
+      </div>
     ) : (
-      <div className="divide-y divide-gray-100">
+      <div className="crm-recent-list">
         {leads.map((lead) => (
-          <div
-            key={lead.id}
-            className="flex items-center justify-between gap-3 py-3 first:pt-0 last:pb-0"
-          >
-            <div className="min-w-0 flex-1">
-              <div className="flex flex-wrap items-center gap-2">
+          <div key={lead.id} className="crm-recent-item">
+            <div className="crm-recent-item-main">
+              <div className="crm-recent-item-title-row">
                 <Link
                   to={`/leads/${lead.id}`}
-                  className="truncate text-xs font-bold text-gray-900 hover:text-blue-600"
+                  className="crm-recent-item-title"
+                  title={formatLeadDisplayName(lead)}
                 >
                   {formatLeadDisplayName(lead)}
                 </Link>
@@ -720,19 +815,24 @@ export const RecentLeadsWidget: React.FC<{
                   <Badge tone="purple">{humanize(lead.source)}</Badge>
                 )}
               </div>
-              <p className="mt-0.5 truncate text-[11px] text-gray-500">
+              <p className="crm-recent-item-sub">
                 {lead.company || lead.email || 'No company'}
                 {lead.owner?.name ? ` • Owner: ${lead.owner.name}` : ''}
               </p>
             </div>
 
-            <div className="flex shrink-0 items-center gap-2.5">
-              <ScorePill score={lead.leadScore} />
+            <div className="crm-recent-item-end">
+              <div className="crm-score-badge" title="Lead Qualification Score">
+                <span className="crm-score-badge-label">Score</span>
+                <span className="crm-score-badge-val">{lead.leadScore ?? 0}</span>
+              </div>
               <Link
                 to={`/leads/${lead.id}`}
-                className="rounded-lg border border-gray-200 px-2.5 py-1 text-[11px] font-semibold text-gray-700 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700"
+                className="crm-item-action-btn"
+                title="View Lead"
               >
-                Open
+                <span>View</span>
+                <ArrowRightIcon size={11} />
               </Link>
             </div>
           </div>
@@ -755,36 +855,38 @@ export const RecentActivitiesWidget: React.FC<{
     actions={
       <Link
         to="/activities"
-        className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:underline"
+        className="inline-flex items-center gap-1 text-xs font-bold text-emerald-400 hover:text-emerald-300 transition"
       >
         <span>All Activities</span>
         <ArrowRightIcon size={13} />
       </Link>
     }
+    className="crm-recent-widget-card"
   >
     {activities.length === 0 ? (
-      <EmptyState
-        title="No recent activities"
-        description="Log a call, schedule a meeting, or create a follow-up task."
-        action={
-          <Link to="/activities/create" className="lg-btn lg-btn-primary">
-            Log Activity
-          </Link>
-        }
-      />
+      <div className="crm-widget-empty-state">
+        <div className="crm-widget-empty-icon">
+          <CalendarIcon size={24} />
+        </div>
+        <p className="crm-widget-empty-title">No recent activities</p>
+        <p className="crm-widget-empty-desc">
+          Log a call, schedule a meeting, or create a follow-up task.
+        </p>
+        <Link to="/activities/create" className="crm-widget-empty-btn">
+          + Log Activity
+        </Link>
+      </div>
     ) : (
-      <div className="divide-y divide-gray-100">
+      <div className="crm-recent-list">
         {activities.map((act) => (
-          <div
-            key={act.id}
-            className="flex items-center justify-between gap-3 py-3 first:pt-0 last:pb-0"
-          >
-            <div className="min-w-0 flex-1">
-              <div className="flex flex-wrap items-center gap-2">
+          <div key={act.id} className="crm-recent-item">
+            <div className="crm-recent-item-main">
+              <div className="crm-recent-item-title-row">
                 <Badge tone="blue">{humanize(act.type)}</Badge>
                 <Link
                   to={`/activities/${act.id}`}
-                  className="truncate text-xs font-bold text-gray-900 hover:text-blue-600"
+                  className="crm-recent-item-title"
+                  title={act.subject || 'Untitled Activity'}
                 >
                   {act.subject || 'Untitled Activity'}
                 </Link>
@@ -792,7 +894,7 @@ export const RecentActivitiesWidget: React.FC<{
                   {humanize(act.status)}
                 </Badge>
               </div>
-              <p className="mt-0.5 truncate text-[11px] text-gray-500">
+              <p className="crm-recent-item-sub">
                 {act.assignedTo?.name
                   ? `Assignee: ${act.assignedTo.name}`
                   : 'Unassigned'}
@@ -805,12 +907,16 @@ export const RecentActivitiesWidget: React.FC<{
               </p>
             </div>
 
-            <Link
-              to={`/activities/${act.id}`}
-              className="shrink-0 rounded-lg border border-gray-200 px-2.5 py-1 text-[11px] font-semibold text-gray-700 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700"
-            >
-              Details
-            </Link>
+            <div className="crm-recent-item-end">
+              <Link
+                to={`/activities/${act.id}`}
+                className="crm-item-action-btn"
+                title="View Activity Details"
+              >
+                <span>Details</span>
+                <ArrowRightIcon size={11} />
+              </Link>
+            </div>
           </div>
         ))}
       </div>

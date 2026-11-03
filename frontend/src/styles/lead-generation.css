@@ -174,7 +174,20 @@
   justify-content: space-between;
   align-items: flex-start;
   gap: 1rem;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+}
+
+.lg-section-head > div:first-child {
+  flex: 1;
+  min-width: 0;
+}
+
+.lg-section-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .lg-section-title {

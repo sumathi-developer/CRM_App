@@ -901,15 +901,16 @@
 
 /* Right Rail (Calendar, Cityscape & Upcoming) */
 .crm-right-rail {
-  background: var(--bg-card, rgba(10, 32, 15, 0.82));
+  background: var(--bg-card, rgba(10, 32, 15, 0.85));
   backdrop-filter: blur(16px);
-  border: 1px solid var(--border-subtle, rgba(16, 185, 129, 0.14));
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle, rgba(16, 185, 129, 0.16));
   border-radius: var(--radius-2xl, 24px);
-  padding: 1.5rem;
+  padding: 0.85rem 1rem;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  box-shadow: var(--shadow-md);
+  gap: 0.45rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
 }
 
 .crm-calendar-card {
@@ -1023,3 +1024,998 @@
   white-space: nowrap;
 }
 
+
+
+/* ---------- 11. DASHBOARD FILTER TOOLBAR (Clean, Structured, Aligned) ---------- */
+
+.crm-filter-bar {
+  background: var(--bg-card, rgba(10, 32, 15, 0.85));
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--border-subtle, rgba(16, 185, 129, 0.16));
+  border-radius: var(--radius-xl, 22px);
+  padding: 1.1rem 1.4rem;
+  box-shadow: 0 8px 24px -4px rgba(6, 46, 3, 0.35);
+  margin-bottom: 1.5rem;
+  transition: all var(--transition-normal, 250ms ease);
+}
+
+.crm-filter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-bottom: 0.85rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(16, 185, 129, 0.12);
+}
+
+.crm-filter-title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.crm-filter-icon-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md, 10px);
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.crm-filter-heading {
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.crm-filter-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.crm-filter-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: flex-end;
+}
+
+@media (max-width: 1200px) {
+  .crm-filter-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .crm-filter-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .crm-filter-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.crm-filter-control {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.crm-filter-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #a7f0a3;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  white-space: nowrap;
+}
+
+.crm-filter-select-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.crm-filter-select {
+  width: 100%;
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: rgba(6, 21, 9, 0.85);
+  border: 1px solid rgba(16, 185, 129, 0.22);
+  border-radius: var(--radius-md, 12px);
+  padding: 0.6rem 2.25rem 0.6rem 0.85rem;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  transition: all var(--transition-fast, 150ms ease);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.crm-filter-select:hover {
+  border-color: rgba(16, 185, 129, 0.45);
+  background-color: rgba(10, 32, 15, 0.95);
+}
+
+.crm-filter-select:focus {
+  border-color: #10b981;
+  background-color: #0a200f;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);
+}
+
+.crm-filter-select option {
+  background-color: #062e03;
+  color: #ffffff;
+  padding: 8px 12px;
+}
+
+.crm-filter-chevron {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #10b981;
+  display: flex;
+  align-items: center;
+}
+
+.crm-filter-custom-dates {
+  margin-top: 1rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid rgba(16, 185, 129, 0.12);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.crm-filter-input {
+  width: 100%;
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  color: #ffffff;
+  background-color: rgba(6, 21, 9, 0.85);
+  border: 1px solid rgba(16, 185, 129, 0.22);
+  border-radius: var(--radius-md, 12px);
+  padding: 0.55rem 0.85rem;
+  outline: none;
+  transition: all var(--transition-fast, 150ms ease);
+}
+
+.crm-filter-input:focus {
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);
+}
+
+
+/* ---------- 11. REFINED EXECUTIVE KPI CARDS & BALANCED 3-COL GRID ---------- */
+
+.crm-dashboard-3col {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr) 320px;
+  gap: 1.25rem;
+  align-items: start;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 1240px) {
+  .crm-dashboard-3col {
+    grid-template-columns: 1fr 320px;
+  }
+  .crm-dashboard-left-rail {
+    display: none;
+  }
+}
+
+@media (max-width: 860px) {
+  .crm-dashboard-3col {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Fixed-Height Left Rail: Matches Center 4-Row Deck */
+.crm-left-rail {
+  min-height: 446px;
+  box-sizing: border-box;
+  padding: 1.15rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: var(--bg-card, rgba(10, 32, 15, 0.85));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle, rgba(16, 185, 129, 0.16));
+  border-radius: var(--radius-2xl, 24px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+}
+
+/* Fixed-Height Right Rail: Exactly 446px to match Center 4-Row Deck */
+.crm-right-rail {
+  min-height: 446px;
+  box-sizing: border-box;
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.45rem;
+  background: var(--bg-card, rgba(10, 32, 15, 0.85));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle, rgba(16, 185, 129, 0.16));
+  border-radius: var(--radius-2xl, 24px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+}
+
+/* Compact KPI Cards: Exactly 104px height (4 rows * 104px + 3 gaps * 10px = 446px) */
+.crm-kpi-card {
+  height: 104px;
+  min-height: 104px;
+  max-height: 104px;
+  box-sizing: border-box;
+  padding: 0.75rem 0.95rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: var(--bg-card, rgba(10, 32, 15, 0.85));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle, rgba(16, 185, 129, 0.16));
+  border-radius: var(--radius-xl, 20px);
+  transition: all var(--transition-fast, 180ms ease);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.crm-kpi-card:hover {
+  border-color: rgba(16, 185, 129, 0.35);
+  box-shadow: 0 8px 24px rgba(6, 46, 3, 0.45);
+  transform: translateY(-2px);
+}
+
+.crm-kpi-card.tone-green {
+  border-left: 3px solid #10b981;
+}
+.crm-kpi-card.tone-blue {
+  border-left: 3px solid #06b6d4;
+}
+.crm-kpi-card.tone-purple {
+  border-left: 3px solid #7c3aed;
+}
+.crm-kpi-card.tone-amber {
+  border-left: 3px solid #f59e0b;
+}
+.crm-kpi-card.tone-cyan {
+  border-left: 3px solid #14b8a6;
+}
+.crm-kpi-card.tone-red {
+  border-left: 3px solid #ef4444;
+}
+
+.crm-kpi-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  line-height: 1;
+}
+
+.crm-kpi-label {
+  display: block;
+  font-size: 0.69rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #a7f0a3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.crm-kpi-icon-wrap {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm, 8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.crm-kpi-icon-wrap.tone-green {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+.crm-kpi-icon-wrap.tone-blue {
+  background: rgba(6, 182, 212, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(6, 182, 212, 0.3);
+}
+.crm-kpi-icon-wrap.tone-purple {
+  background: rgba(124, 58, 237, 0.18);
+  color: #c4b5fd;
+  border: 1px solid rgba(124, 58, 237, 0.35);
+}
+.crm-kpi-icon-wrap.tone-amber {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+.crm-kpi-icon-wrap.tone-cyan {
+  background: rgba(20, 184, 166, 0.15);
+  color: #2dd4bf;
+  border: 1px solid rgba(20, 184, 166, 0.3);
+}
+.crm-kpi-icon-wrap.tone-red {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.crm-kpi-mid-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.15rem 0;
+}
+
+.crm-kpi-value {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #ffffff;
+  font-family: var(--font-sans);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.crm-kpi-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(16, 185, 129, 0.08);
+  padding-top: 0.35rem;
+  font-size: 0.7rem;
+  color: #94a3b8;
+  line-height: 1;
+}
+
+.crm-kpi-prev {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.crm-kpi-view-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #10b981;
+  transition: gap var(--transition-fast, 150ms ease);
+}
+
+.crm-kpi-card:hover .crm-kpi-view-link {
+  gap: 0.4rem;
+  color: #34d399;
+}
+
+/* Channel Attribution Breakdown (Eliminating Empty Lead Sources Box) */
+.crm-lead-sources-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+}
+
+.crm-channel-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.crm-channel-track {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-full, 9999px);
+  overflow: hidden;
+}
+
+.crm-channel-fill {
+  height: 100%;
+  background: #10b981;
+  border-radius: var(--radius-full, 9999px);
+  transition: width 0.3s ease;
+}
+
+
+/* ---------- 13. PERFECT REVENUE & PIPELINE SUMMARY ALIGNMENT ---------- */
+
+.crm-pipeline-stages-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.crm-pipeline-stage-item {
+  background: rgba(10, 32, 15, 0.7);
+  border: 1px solid rgba(16, 185, 129, 0.16);
+  border-radius: var(--radius-md, 12px);
+  padding: 0.55rem 0.85rem;
+  transition: all var(--transition-fast, 150ms ease);
+}
+
+.crm-pipeline-stage-item:hover {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.crm-pipeline-stage-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.crm-pipeline-stage-identity {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 140px;
+  min-width: 120px;
+  flex-shrink: 0;
+}
+
+.crm-pipeline-stage-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.crm-pipeline-stage-name {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color var(--transition-fast, 150ms ease);
+}
+
+.crm-pipeline-stage-name:hover {
+  color: #10b981;
+}
+
+.crm-pipeline-stage-badges {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.crm-stage-pill {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-full, 9999px);
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.crm-stage-pill.count {
+  background: rgba(255, 255, 255, 0.06);
+  color: #cbd5e1;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.crm-stage-pill.prob {
+  background: rgba(6, 182, 212, 0.12);
+  color: #67e8f9;
+  border: 1px solid rgba(6, 182, 212, 0.25);
+}
+
+.crm-pipeline-stage-metrics {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 0.65rem;
+  flex-shrink: 0;
+}
+
+.crm-pipeline-stage-value {
+  font-size: 0.875rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.crm-pipeline-stage-weighted {
+  font-size: 0.72rem;
+  color: #34d399;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.crm-pipeline-track {
+  margin-top: 0.45rem;
+  height: 4px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-full, 9999px);
+  overflow: hidden;
+}
+
+.crm-pipeline-fill {
+  height: 100%;
+  border-radius: var(--radius-full, 9999px);
+  transition: width 0.3s ease;
+}
+
+/* Revenue Summary Grid & Standardized Metric Cards */
+.crm-revenue-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.65rem;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 640px) {
+  .crm-revenue-metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.crm-revenue-kpi-card {
+  height: 72px;
+  box-sizing: border-box;
+  padding: 0.65rem 0.8rem;
+  border-radius: var(--radius-md, 12px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: rgba(10, 32, 15, 0.7);
+  border: 1px solid rgba(16, 185, 129, 0.16);
+  transition: all var(--transition-fast, 150ms ease);
+}
+
+.crm-revenue-kpi-card:hover {
+  transform: translateY(-1px);
+}
+
+.crm-revenue-kpi-card.tone-emerald {
+  border-color: rgba(16, 185, 129, 0.28);
+  background: rgba(16, 185, 129, 0.08);
+}
+.crm-revenue-kpi-card.tone-cyan {
+  border-color: rgba(6, 182, 212, 0.28);
+  background: rgba(6, 182, 212, 0.08);
+}
+.crm-revenue-kpi-card.tone-purple {
+  border-color: rgba(124, 58, 237, 0.28);
+  background: rgba(124, 58, 237, 0.08);
+}
+.crm-revenue-kpi-card.tone-amber {
+  border-color: rgba(245, 158, 11, 0.28);
+  background: rgba(245, 158, 11, 0.08);
+}
+
+.crm-revenue-kpi-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1;
+}
+
+.crm-revenue-kpi-card.tone-emerald .crm-revenue-kpi-label { color: #a7f0a3; }
+.crm-revenue-kpi-card.tone-cyan .crm-revenue-kpi-label { color: #67e8f9; }
+.crm-revenue-kpi-card.tone-purple .crm-revenue-kpi-label { color: #c4b5fd; }
+.crm-revenue-kpi-card.tone-amber .crm-revenue-kpi-label { color: #fcd34d; }
+
+.crm-revenue-kpi-value {
+  font-size: 1.22rem;
+  font-weight: 800;
+  color: #ffffff;
+  font-family: var(--font-sans);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.crm-revenue-kpi-sub {
+  font-size: 0.63rem;
+  color: #94a3b8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1;
+}
+
+.crm-revenue-projection-empty {
+  background: rgba(6, 21, 9, 0.5);
+  border: 1px dashed rgba(16, 185, 129, 0.2);
+  border-radius: var(--radius-lg, 16px);
+  padding: 1.15rem 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 160px;
+}
+
+.crm-revenue-projection-graphic {
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 0.4rem;
+  opacity: 0.85;
+}
+
+.crm-revenue-projection-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #a7f0a3;
+  display: block;
+}
+
+.crm-revenue-projection-hint {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  margin: 0.3rem 0 0;
+  max-width: 420px;
+  line-height: 1.35;
+}
+
+
+/* ---------- 14. LOWER TIER: FULL-FUNNEL CONVERSION & TOP LEAD ACQUISITION SOURCES ---------- */
+
+.crm-funnel-card,
+.crm-lead-sources-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 290px;
+  background: rgba(10, 32, 15, 0.72) !important;
+  border: 1px solid rgba(16, 185, 129, 0.18) !important;
+  backdrop-filter: blur(12px);
+  border-radius: 12px;
+}
+
+.crm-funnel-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+}
+
+.crm-funnel-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.crm-funnel-row-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.75rem;
+}
+
+.crm-funnel-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #e2e8f0;
+  font-weight: 600;
+  min-width: 0;
+}
+
+.crm-funnel-dot {
+  width: 6.5px;
+  height: 6.5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 0 6px currentColor;
+}
+
+.crm-funnel-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.75rem;
+}
+
+.crm-funnel-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.crm-funnel-val {
+  font-weight: 700;
+  font-family: var(--font-mono, monospace);
+}
+
+.crm-funnel-rate {
+  color: #94a3b8;
+  font-size: 0.72rem;
+}
+
+.crm-funnel-track {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-full, 9999px);
+  overflow: hidden;
+}
+
+.crm-funnel-fill {
+  height: 100%;
+  border-radius: var(--radius-full, 9999px);
+  transition: width 0.35s ease;
+}
+
+/* ---------- 15. LOWER TIER: RECENT OPERATIONAL STREAM (Deals, Leads, Activities) ---------- */
+
+.crm-recent-widget-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 290px;
+  background: rgba(10, 32, 15, 0.72) !important;
+  border: 1px solid rgba(16, 185, 129, 0.18) !important;
+  backdrop-filter: blur(12px);
+  border-radius: 12px;
+}
+
+.crm-recent-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  flex: 1;
+}
+
+.crm-recent-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem 0.85rem;
+  background: rgba(16, 185, 129, 0.04);
+  border: 1px solid rgba(16, 185, 129, 0.1);
+  border-radius: 9px;
+  transition: all 180ms ease;
+}
+
+.crm-recent-item:hover {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.25);
+  transform: translateY(-1px);
+}
+
+.crm-recent-item-main {
+  min-width: 0;
+  flex: 1;
+}
+
+.crm-recent-item-title-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.crm-recent-item-title {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #ffffff;
+  max-width: 170px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: color 150ms ease;
+}
+
+.crm-recent-item-title:hover {
+  color: #34d399;
+}
+
+.crm-recent-item-sub {
+  margin-top: 0.25rem;
+  font-size: 0.7rem;
+  color: #94a3b8;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.crm-recent-item-end {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-shrink: 0;
+}
+
+.crm-recent-item-val-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.crm-recent-item-val {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #34d399;
+  letter-spacing: -0.01em;
+}
+
+.crm-recent-item-prob {
+  font-size: 0.65rem;
+  color: #94a3b8;
+}
+
+.crm-score-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 6px;
+  padding: 2px 7px;
+  min-width: 44px;
+}
+
+.crm-score-badge-label {
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.crm-score-badge-val {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #34d399;
+  line-height: 1.2;
+}
+
+.crm-item-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.3rem 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  border-radius: 6px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  color: #6ee7b7;
+  text-decoration: none;
+  transition: all 160ms ease;
+  white-space: nowrap;
+}
+
+.crm-item-action-btn:hover {
+  background: rgba(16, 185, 129, 0.28);
+  border-color: rgba(16, 185, 129, 0.5);
+  color: #ffffff;
+  transform: translateX(1px);
+}
+
+/* Compact Widget Empty State */
+.crm-widget-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem 1rem;
+  flex: 1;
+  background: rgba(16, 185, 129, 0.03);
+  border: 1px dashed rgba(16, 185, 129, 0.18);
+  border-radius: 10px;
+  gap: 0.45rem;
+  min-height: 160px;
+}
+
+.crm-widget-empty-icon {
+  color: #10b981;
+  opacity: 0.8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.2rem;
+}
+
+.crm-widget-empty-title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.crm-widget-empty-desc {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  max-width: 250px;
+  line-height: 1.35;
+}
+
+.crm-widget-empty-btn {
+  margin-top: 0.35rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 6px;
+  background: #10b981;
+  color: #062e03;
+  text-decoration: none;
+  transition: all 160ms ease;
+}
+
+.crm-widget-empty-btn:hover {
+  background: #34d399;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+}
+
+
+/* ---------- 16. UNIFORM TIER MARGIN GAPS (Revenue, Pipeline, Funnel, Sources, Recents) ---------- */
+
+.crm-dashboard-tier {
+  margin-bottom: 1.75rem !important; /* Distinct 28px vertical margin gap between each tier */
+}
+
+.crm-revenue-widget-card,
+.crm-pipeline-widget-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  min-height: 380px;
+}
+
+.crm-revenue-widget-card .crm-revenue-projection-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}

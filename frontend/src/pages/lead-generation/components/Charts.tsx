@@ -174,21 +174,60 @@ export const DonutChart: React.FC<DonutChartProps> = ({ data, centerLabel = 'Tot
 
 interface FunnelProps {
   steps: Array<{ label: string; value: number }>;
+  className?: string;
 }
 
-/** Simple conversion funnel. */
-export const Funnel: React.FC<FunnelProps> = ({ steps }) => {
+/** Modern horizontal stage conversion funnel. */
+export const Funnel: React.FC<FunnelProps> = ({ steps, className = '' }) => {
   const max = Math.max(...steps.map((s) => s.value), 1);
+
+  const stageAccents = [
+    { bg: 'linear-gradient(90deg, #10b981 0%, #059669 100%)', text: '#34d399', dot: '#10b981' },
+    { bg: 'linear-gradient(90deg, #06b6d4 0%, #0284c7 100%)', text: '#38bdf8', dot: '#06b6d4' },
+    { bg: 'linear-gradient(90deg, #8b5cf6 0%, #7c3aed 100%)', text: '#a78bfa', dot: '#8b5cf6' },
+    { bg: 'linear-gradient(90deg, #ec4899 0%, #d946ef 100%)', text: '#f472b6', dot: '#ec4899' },
+  ];
+
   return (
-    <div className="lg-funnel">
-      {steps.map((s, i) => (
-        <div key={s.label} className="lg-funnel-step">
-          <div className="lg-funnel-bar" style={{ width: `${Math.max((s.value / max) * 100, 8)}%`, opacity: 1 - i * 0.12 }}>
-            <span>{s.value}</span>
+    <div className={`crm-funnel-list ${className}`}>
+      {steps.map((s, i) => {
+        const match = s.label.match(/^(.*?)(?:\s*\((.*?)\))?$/);
+        const stageName = match && match[1] ? match[1].trim() : s.label;
+        const rateText =
+          match && match[2]
+            ? match[2].trim()
+            : i > 0 && steps[0].value > 0
+              ? `${((s.value / steps[0].value) * 100).toFixed(1)}%`
+              : null;
+        const pct = Math.min(100, Math.max(0, (s.value / max) * 100));
+        const accent = stageAccents[i % stageAccents.length];
+
+        return (
+          <div key={s.label || i} className="crm-funnel-row">
+            <div className="crm-funnel-row-head">
+              <div className="crm-funnel-title">
+                <span className="crm-funnel-dot" style={{ backgroundColor: accent.dot }} />
+                <span className="crm-funnel-name">{stageName}</span>
+              </div>
+              <div className="crm-funnel-meta">
+                <span className="crm-funnel-val" style={{ color: accent.text }}>
+                  {s.value}
+                </span>
+                {rateText && <span className="crm-funnel-rate">({rateText})</span>}
+              </div>
+            </div>
+            <div className="crm-funnel-track">
+              <div
+                className="crm-funnel-fill"
+                style={{
+                  width: `${s.value > 0 ? Math.max(pct, 4) : 0}%`,
+                  background: accent.bg,
+                }}
+              />
+            </div>
           </div>
-          <span className="lg-funnel-label">{s.label}</span>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 };

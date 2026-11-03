@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Badge } from '../../../components/ui';
-import { TrendingUpIcon, PlusIcon } from '../../../components/common/Icons';
+import { TrendingUpIcon, PlusIcon, AwardIcon } from '../../../components/common/Icons';
 
 /* ==========================================================================
    LEFT RAIL: Pipeline Health, Quota Gauges & Sliders (Matching Reference Layout)
+   Fixed height: 446px to match Center 4-Row Deck
    ========================================================================== */
 
 interface DashboardLeftRailProps {
@@ -22,14 +23,14 @@ export const DashboardLeftRail: React.FC<DashboardLeftRailProps> = ({
 }) => {
   return (
     <aside className="crm-left-rail" aria-label="Performance Indicators">
+      {/* 1. Target Progress */}
       <div>
         <div className="crm-rail-section-title">
           <span>Target Progress</span>
           <Badge variant="secondary">Active</Badge>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
-          {/* Slider 1: Pipeline Health */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', marginTop: '0.65rem' }}>
           <div className="crm-slider-item">
             <div className="crm-slider-header">
               <span>Pipeline Health</span>
@@ -40,7 +41,6 @@ export const DashboardLeftRail: React.FC<DashboardLeftRailProps> = ({
             </div>
           </div>
 
-          {/* Slider 2: Conversion Quota */}
           <div className="crm-slider-item">
             <div className="crm-slider-header">
               <span>Conversion Quota</span>
@@ -51,7 +51,6 @@ export const DashboardLeftRail: React.FC<DashboardLeftRailProps> = ({
             </div>
           </div>
 
-          {/* Slider 3: Deal Velocity */}
           <div className="crm-slider-item">
             <div className="crm-slider-header">
               <span>Deal Velocity</span>
@@ -64,13 +63,14 @@ export const DashboardLeftRail: React.FC<DashboardLeftRailProps> = ({
         </div>
       </div>
 
-      <div style={{ borderTop: '1px solid rgba(16, 185, 129, 0.12)', paddingTop: '1.25rem' }}>
+      {/* 2. Quick Tallies */}
+      <div style={{ borderTop: '1px solid rgba(16, 185, 129, 0.12)', paddingTop: '0.75rem' }}>
         <div className="crm-rail-section-title">
           <span>Quick Tallies</span>
-          <span style={{ fontSize: '0.72rem', color: '#10b981' }}>Live</span>
+          <span style={{ fontSize: '0.72rem', color: '#10b981', fontWeight: 700 }}>Live</span>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: '0.85rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.55rem', marginTop: '0.55rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <span style={{ fontSize: '0.8125rem', color: 'var(--text-secondary, #94a3b8)' }}>New Leads</span>
             <Badge variant="primary">{totalLeads}</Badge>
@@ -86,8 +86,28 @@ export const DashboardLeftRail: React.FC<DashboardLeftRailProps> = ({
         </div>
       </div>
 
-      <div style={{ borderTop: '1px solid rgba(16, 185, 129, 0.12)', paddingTop: '1.25rem' }}>
-        <Link to="/analytics/pipeline" style={{ width: '100%' }}>
+      {/* 3. Conversion Efficiency Pill Metric */}
+      <div
+        style={{
+          background: 'rgba(16, 185, 129, 0.08)',
+          border: '1px solid rgba(16, 185, 129, 0.2)',
+          borderRadius: '12px',
+          padding: '0.55rem 0.75rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+          <AwardIcon size={16} />
+          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#a7f0a3' }}>Win Efficiency</span>
+        </div>
+        <span style={{ fontSize: '0.85rem', fontWeight: 800, color: '#ffffff' }}>94.2%</span>
+      </div>
+
+      {/* 4. Action Button */}
+      <div>
+        <Link to="/analytics/pipeline" style={{ width: '100%', display: 'block' }}>
           <Button variant="outline" pill size="sm" style={{ width: '100%' }} icon={<TrendingUpIcon size={14} />}>
             Full Pipeline Audit
           </Button>
@@ -99,7 +119,7 @@ export const DashboardLeftRail: React.FC<DashboardLeftRailProps> = ({
 
 /* ==========================================================================
    RIGHT RAIL: Performance Graph, Interactive Calendar & Upcoming Schedule
-   (Directly matching the tall card on the right in the Reference Image)
+   Fixed height: 446px to match Center 4-Row Deck
    ========================================================================== */
 
 export const DashboardRightRail: React.FC = () => {
@@ -115,36 +135,33 @@ export const DashboardRightRail: React.FC = () => {
   ];
 
   const currentMonthName = monthNames[today.getMonth()];
-
   const dayLabels = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 
   return (
     <aside className="crm-right-rail" aria-label="Schedule and Performance Rail">
-      {/* Cityscape / Performance Visual Card */}
+      {/* 1. Performance Visual Pulse */}
       <div
         style={{
-          background: 'linear-gradient(135deg, rgba(6, 46, 3, 0.9) 0%, rgba(124, 58, 237, 0.3) 100%)',
-          border: '1px solid rgba(16, 185, 129, 0.25)',
-          borderRadius: '20px',
-          padding: '1.25rem',
-          position: 'relative',
-          overflow: 'hidden',
+          background: 'linear-gradient(135deg, rgba(6, 46, 3, 0.9) 0%, rgba(124, 58, 237, 0.25) 100%)',
+          border: '1px solid rgba(16, 185, 129, 0.22)',
+          borderRadius: '14px',
+          padding: '0.5rem 0.75rem',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div>
-            <span style={{ fontSize: '0.72rem', textTransform: 'uppercase', color: '#10b981', fontWeight: 700 }}>
+            <span style={{ fontSize: '0.68rem', textTransform: 'uppercase', color: '#10b981', fontWeight: 700 }}>
               Performance Pulse
             </span>
-            <h4 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#ffffff', margin: '0.2rem 0 0' }}>
+            <h4 style={{ fontSize: '0.95rem', fontWeight: 800, color: '#ffffff', margin: '0.1rem 0 0' }}>
               Q4 High Momentum
             </h4>
           </div>
-          <span style={{ fontSize: '20px' }}>🏙️</span>
+          <span style={{ fontSize: '18px' }}>🏙️</span>
         </div>
 
-        {/* Mini SVG Chart Bars simulating cityscape graphic in reference image */}
-        <div style={{ display: 'flex', alignItems: 'flex-end', gap: '6px', height: '54px', marginTop: '1rem' }}>
+        {/* Mini chart bars */}
+        <div style={{ display: 'flex', alignItems: 'flex-end', gap: '4px', height: '19px', marginTop: '0.3rem' }}>
           {[35, 52, 44, 70, 85, 60, 92, 78, 64, 88].map((val, idx) => (
             <div
               key={idx}
@@ -152,7 +169,7 @@ export const DashboardRightRail: React.FC = () => {
                 flex: 1,
                 height: `${val}%`,
                 background: idx === 6 ? '#10b981' : idx === 4 ? '#7c3aed' : 'rgba(255, 255, 255, 0.2)',
-                borderRadius: '4px 4px 1px 1px',
+                borderRadius: '3px 3px 1px 1px',
                 transition: 'height 0.3s ease',
               }}
               title={`Day ${idx + 1}: ${val}% capacity`}
@@ -161,23 +178,23 @@ export const DashboardRightRail: React.FC = () => {
         </div>
       </div>
 
-      {/* Interactive Calendar Widget matching Reference Image */}
-      <div className="crm-calendar-card">
-        <div className="crm-calendar-header">
+      {/* 2. Interactive Calendar Widget */}
+      <div className="crm-calendar-card" style={{ gap: '0.4rem' }}>
+        <div className="crm-calendar-header" style={{ fontSize: '0.8rem' }}>
           <span>{currentMonthName} {today.getFullYear()}</span>
           <Badge variant="secondary" withDot>Live Agenda</Badge>
         </div>
 
-        <div className="crm-calendar-grid">
+        <div className="crm-calendar-grid" style={{ gap: '1px' }}>
           {dayLabels.map((lbl, idx) => (
-            <div key={idx} className="crm-calendar-day-label">
+            <div key={idx} className="crm-calendar-day-label" style={{ padding: '2px 0', fontSize: '0.65rem' }}>
               {lbl}
             </div>
           ))}
 
           {/* Empty cells before month start */}
           {Array.from({ length: firstDayIndex }).map((_, idx) => (
-            <div key={`empty-${idx}`} />
+            <div key={`empty-${idx}`} style={{ height: '20px' }} />
           ))}
 
           {/* Days */}
@@ -194,6 +211,15 @@ export const DashboardRightRail: React.FC = () => {
                 className={`crm-calendar-cell ${isToday ? 'is-today' : ''} ${
                   isSelected && !isToday ? 'is-active-day' : ''
                 } ${hasEvent ? 'has-event' : ''}`}
+                style={{
+                  fontSize: '0.72rem',
+                  padding: '2px 0',
+                  height: '22px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: '5px',
+                }}
                 role="button"
                 tabIndex={0}
               >
@@ -204,44 +230,44 @@ export const DashboardRightRail: React.FC = () => {
         </div>
       </div>
 
-      {/* Upcoming Scheduled Agenda */}
+      {/* 3. Upcoming Scheduled Agenda (2 concise items) */}
       <div>
-        <div className="crm-rail-section-title">
+        <div className="crm-rail-section-title" style={{ fontSize: '0.72rem' }}>
           <span>Upcoming Agenda</span>
-          <span style={{ fontSize: '0.72rem', color: '#a78bfa' }}>Day {selectedDay}</span>
+          <span style={{ fontSize: '0.68rem', color: '#a78bfa' }}>Day {selectedDay}</span>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', marginTop: '0.85rem' }}>
-          <div className="crm-agenda-item">
-            <span className="crm-agenda-time">10:30 AM</span>
-            <div className="crm-agenda-title">Enterprise Demo with Acme Corp</div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', marginTop: '0.4rem' }}>
+          <div className="crm-agenda-item" style={{ padding: '0.35rem 0.6rem' }}>
+            <span className="crm-agenda-time" style={{ fontSize: '0.68rem', padding: '0.15rem 0.4rem' }}>10:30 AM</span>
+            <div className="crm-agenda-title" style={{ fontSize: '0.78rem' }}>Enterprise Demo with Acme</div>
           </div>
-          <div className="crm-agenda-item">
-            <span className="crm-agenda-time" style={{ color: '#c4b5fd', background: 'rgba(124, 58, 237, 0.15)' }}>
+          <div className="crm-agenda-item" style={{ padding: '0.35rem 0.6rem' }}>
+            <span
+              className="crm-agenda-time"
+              style={{ color: '#c4b5fd', background: 'rgba(124, 58, 237, 0.15)', fontSize: '0.68rem', padding: '0.15rem 0.4rem' }}
+            >
               02:00 PM
             </span>
-            <div className="crm-agenda-title">Pipeline Review & Forecast</div>
-          </div>
-          <div className="crm-agenda-item">
-            <span className="crm-agenda-time">04:15 PM</span>
-            <div className="crm-agenda-title">Contract Negotiation Call</div>
+            <div className="crm-agenda-title" style={{ fontSize: '0.78rem' }}>Pipeline Review & Forecast</div>
           </div>
         </div>
       </div>
 
-      {/* Prominent Action Pill Button matching bottom orange pill in Reference Image */}
-      <Link to="/activities" style={{ width: '100%' }}>
-        <Button
-          variant="gradient"
-          pill
-          size="md"
-          style={{ width: '100%', fontWeight: 700 }}
-          icon={<PlusIcon size={16} />}
-        >
-          Schedule Activity
-        </Button>
-      </Link>
+      {/* 4. Action Button */}
+      <div>
+        <Link to="/activities" style={{ width: '100%', display: 'block' }}>
+          <Button
+            variant="gradient"
+            pill
+            size="sm"
+            style={{ width: '100%', height: '36px', fontWeight: 700, boxShadow: '0 4px 12px rgba(16, 185, 129, 0.35)' }}
+            icon={<PlusIcon size={14} />}
+          >
+            Schedule Activity
+          </Button>
+        </Link>
+      </div>
     </aside>
   );
 };
-
