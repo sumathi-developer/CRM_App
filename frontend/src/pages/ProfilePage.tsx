@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Navbar } from '../components/common/Navbar';
 import { FormField } from '../components/auth/FormField';
@@ -147,6 +147,37 @@ export const ProfilePage: React.FC = () => {
       <Navbar />
 
       <main className="authenticated-container" id="profile-page">
+        {/* Top Account & Security Sub-Navigation */}
+        <nav
+          className="lg-subnav ld-subnav"
+          aria-label="Account and Security sub-navigation"
+          style={{ marginBottom: '1.5rem' }}
+        >
+          <div className="lg-subnav-group">
+            <span className="lg-subnav-label">Account & Security</span>
+            <div className="lg-subnav-links">
+              <NavLink
+                to="/profile"
+                className={({ isActive }) => `lg-subnav-link ${isActive ? 'is-active' : ''}`}
+              >
+                Profile Settings
+              </NavLink>
+              <NavLink
+                to="/change-password"
+                className={({ isActive }) => `lg-subnav-link ${isActive ? 'is-active' : ''}`}
+              >
+                Change Password
+              </NavLink>
+              <NavLink
+                to="/sessions"
+                className={({ isActive }) => `lg-subnav-link ${isActive ? 'is-active' : ''}`}
+              >
+                Active Sessions
+              </NavLink>
+            </div>
+          </div>
+        </nav>
+
         <div className="page-header">
           <div className="page-title-group">
             <h1 className="page-title">User Account &amp; Profile</h1>
@@ -310,13 +341,13 @@ export const ProfilePage: React.FC = () => {
                 />
 
                 {/* Regional & Interface Preferences */}
-                <div className="pt-2 border-t border-slate-700/60 mt-1">
-                  <h4 className="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-3">
+                <div className="profile-preferences-section">
+                  <h4 className="preferences-section-title">
                     Preferences &amp; Localization
                   </h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    <div className="space-y-1">
-                      <label htmlFor="pref-theme" className="text-xs font-medium text-slate-300 flex items-center gap-1.5">
+                  <div className="preferences-grid">
+                    <div className="preference-field-group">
+                      <label htmlFor="pref-theme" className="preference-field-label">
                         <PaletteIcon size={14} className="text-indigo-400" />
                         <span>Theme</span>
                       </label>
@@ -325,7 +356,7 @@ export const ProfilePage: React.FC = () => {
                         value={theme}
                         onChange={(e) => setTheme(e.target.value as 'light' | 'dark' | 'system')}
                         disabled={isSaving}
-                        className="w-full rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none"
+                        className="preference-select-control"
                       >
                         <option value="dark">Dark Theme</option>
                         <option value="light">Light Theme</option>
@@ -333,8 +364,8 @@ export const ProfilePage: React.FC = () => {
                       </select>
                     </div>
 
-                    <div className="space-y-1">
-                      <label htmlFor="pref-lang" className="text-xs font-medium text-slate-300 flex items-center gap-1.5">
+                    <div className="preference-field-group">
+                      <label htmlFor="pref-lang" className="preference-field-label">
                         <GlobeIcon size={14} className="text-indigo-400" />
                         <span>Language</span>
                       </label>
@@ -343,7 +374,7 @@ export const ProfilePage: React.FC = () => {
                         value={language}
                         onChange={(e) => setLanguage(e.target.value)}
                         disabled={isSaving}
-                        className="w-full rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none"
+                        className="preference-select-control"
                       >
                         <option value="en">English (US)</option>
                         <option value="es">Español (ES)</option>
@@ -353,8 +384,8 @@ export const ProfilePage: React.FC = () => {
                       </select>
                     </div>
 
-                    <div className="space-y-1">
-                      <label htmlFor="pref-tz" className="text-xs font-medium text-slate-300 flex items-center gap-1.5">
+                    <div className="preference-field-group">
+                      <label htmlFor="pref-tz" className="preference-field-label">
                         <ClockIcon size={14} className="text-indigo-400" />
                         <span>Timezone</span>
                       </label>
@@ -363,7 +394,7 @@ export const ProfilePage: React.FC = () => {
                         value={timezone}
                         onChange={(e) => setTimezone(e.target.value)}
                         disabled={isSaving}
-                        className="w-full rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none"
+                        className="preference-select-control"
                       >
                         <option value="UTC">UTC (Coordinated Universal Time)</option>
                         <option value="America/New_York">Eastern Time (US / Canada)</option>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useTransition } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { tagService } from '../../services/tag.service';
 import { useAuth } from '../../context/AuthContext';
 import { useWorkspace } from '../../context/useWorkspace';
@@ -167,6 +167,28 @@ export const TagsListPage: React.FC = () => {
       <Navbar />
 
       <main className="app-main-content tags-page-container">
+        {/* Top Tags Sub-Navigation */}
+        <nav
+          className="lg-subnav ld-subnav"
+          aria-label="Tags navigation"
+          style={{ marginBottom: '1.5rem' }}
+        >
+          <div className="lg-subnav-group">
+            <span className="lg-subnav-label">Tag Management</span>
+            <div className="lg-subnav-links">
+              <NavLink to="/tags" end className={({ isActive }) => `lg-subnav-link ${isActive ? 'is-active' : ''}`}>
+                All Tags
+              </NavLink>
+              <NavLink to="/tags/create" className={({ isActive }) => `lg-subnav-link ${isActive ? 'is-active' : ''}`}>
+                Create Tag
+              </NavLink>
+              <NavLink to="/tags/usage" className={({ isActive }) => `lg-subnav-link ${isActive ? 'is-active' : ''}`}>
+                Tag Usage
+              </NavLink>
+            </div>
+          </div>
+        </nav>
+
         {/* Header Section */}
         <div className="page-header-row">
           <div className="page-header-text">

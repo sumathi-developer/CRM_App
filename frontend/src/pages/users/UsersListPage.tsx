@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { userService } from '../../services/user.service';
 import { useAuth } from '../../context/AuthContext';
 import { useWorkspace } from '../../context/useWorkspace';
@@ -177,6 +177,31 @@ export const UsersListPage: React.FC = () => {
       <Navbar />
 
       <main className="authenticated-container">
+        {/* Top Users & Teams Sub-Navigation */}
+        <nav
+          className="lg-subnav ld-subnav"
+          aria-label="Users and Teams module navigation"
+          style={{ marginBottom: '1.5rem' }}
+        >
+          <div className="lg-subnav-group">
+            <span className="lg-subnav-label">Users & Teams</span>
+            <div className="lg-subnav-links">
+              <NavLink to="/users" end className={({ isActive }) => `lg-subnav-link ${isActive ? 'is-active' : ''}`}>
+                All Users
+              </NavLink>
+              <NavLink to="/users/invite" className={({ isActive }) => `lg-subnav-link ${isActive ? 'is-active' : ''}`}>
+                Invite User
+              </NavLink>
+              <NavLink to="/teams" end className={({ isActive }) => `lg-subnav-link ${isActive ? 'is-active' : ''}`}>
+                Teams
+              </NavLink>
+              <NavLink to="/teams/create" className={({ isActive }) => `lg-subnav-link ${isActive ? 'is-active' : ''}`}>
+                Create Team
+              </NavLink>
+            </div>
+          </div>
+        </nav>
+
         {/* Module Header */}
         <div className="module-title-bar">
           <div className="title-section">

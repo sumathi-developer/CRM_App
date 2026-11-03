@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { customFieldService } from '../../services/custom-field.service';
 import { useAuth } from '../../context/AuthContext';
 import { useWorkspace } from '../../context/useWorkspace';
@@ -159,6 +159,25 @@ export const CustomFieldsListPage: React.FC = () => {
       <Navbar />
 
       <main className="crm-main-content">
+        {/* Top Custom Fields Sub-Navigation */}
+        <nav
+          className="lg-subnav ld-subnav"
+          aria-label="Custom Fields navigation"
+          style={{ marginBottom: '1.5rem' }}
+        >
+          <div className="lg-subnav-group">
+            <span className="lg-subnav-label">Custom Fields</span>
+            <div className="lg-subnav-links">
+              <NavLink to="/custom-fields" end className={({ isActive }) => `lg-subnav-link ${isActive ? 'is-active' : ''}`}>
+                All Custom Fields
+              </NavLink>
+              <NavLink to="/custom-fields/create" className={({ isActive }) => `lg-subnav-link ${isActive ? 'is-active' : ''}`}>
+                Create Custom Field
+              </NavLink>
+            </div>
+          </div>
+        </nav>
+
         {/* Page Header */}
         <div className="workspace-page-header">
           <div>

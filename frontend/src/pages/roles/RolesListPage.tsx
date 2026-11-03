@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { roleService } from '../../services/role.service';
 import { useAuth } from '../../context/AuthContext';
 import { useWorkspace } from '../../context/useWorkspace';
@@ -131,6 +131,25 @@ export const RolesListPage: React.FC = () => {
       <Navbar />
 
       <main className="authenticated-container">
+        {/* Top Roles & Permissions Sub-Navigation */}
+        <nav
+          className="lg-subnav ld-subnav"
+          aria-label="Roles and Permissions navigation"
+          style={{ marginBottom: '1.5rem' }}
+        >
+          <div className="lg-subnav-group">
+            <span className="lg-subnav-label">Roles & Permissions</span>
+            <div className="lg-subnav-links">
+              <NavLink to="/roles" end className={({ isActive }) => `lg-subnav-link ${isActive ? 'is-active' : ''}`}>
+                All Roles
+              </NavLink>
+              <NavLink to="/roles/create" className={({ isActive }) => `lg-subnav-link ${isActive ? 'is-active' : ''}`}>
+                Create Role
+              </NavLink>
+            </div>
+          </div>
+        </nav>
+
         {/* Module Header Strip */}
         <div className="module-header-strip">
           <div className="module-title-area">

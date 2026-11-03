@@ -13,7 +13,6 @@ import {
   ShieldIcon,
   BriefcaseIcon,
   ChevronDownIcon,
-  ChevronRightIcon,
   LockIcon,
   SearchIcon,
   SettingsIcon,
@@ -400,30 +399,10 @@ export const Navbar: React.FC = () => {
 
   const currentModuleId = getActiveModuleId(location.pathname);
 
-  // Open modules state
-  const [openModules, setOpenModules] = useState<Record<string, boolean>>(() => {
-    const initialId = getActiveModuleId(location.pathname);
-    return initialId ? { [initialId]: true } : { workspaces: true };
-  });
-
-  // Automatically keep current module open on route change
+  // Close mobile drawer on route change
   useEffect(() => {
-    if (currentModuleId) {
-      setOpenModules((prev) => ({
-        ...prev,
-        [currentModuleId]: true,
-      }));
-    }
-    // Close mobile drawer on route change
     setIsMobileSidebarOpen(false);
-  }, [location.pathname, currentModuleId]);
-
-  const toggleModule = (moduleId: string) => {
-    setOpenModules((prev) => ({
-      ...prev,
-      [moduleId]: !prev[moduleId],
-    }));
-  };
+  }, [location.pathname]);
 
   const handleLogout = async () => {
     try {
@@ -522,7 +501,7 @@ export const Navbar: React.FC = () => {
         </div>
       </header>
 
-      {/* 2. LEFT VERTICAL SIDEBAR WITH MODULE DROPDOWNS */}
+      {/* 2. LEFT VERTICAL SIDEBAR WITH DIRECT MODULE NAVIGATION */}
       <aside
         className={`app-sidebar ${isMobileSidebarOpen ? 'is-mobile-open' : ''}`}
         id="app-sidebar"
@@ -532,77 +511,25 @@ export const Navbar: React.FC = () => {
           <span>CRM Modules</span>
         </div>
 
-        <nav className="sidebar-modules-list" aria-label="Modules Accordion">
+        <nav className="sidebar-modules-list" aria-label="CRM Modules Navigation">
           {CRM_MODULES.map((module) => {
-            const isOpen = Boolean(openModules[module.id]);
             const isModuleActive = currentModuleId === module.id;
 
             return (
-              <div
+              <Link
                 key={module.id}
-                className={`sidebar-module-card ${isModuleActive ? 'is-active-module' : ''} ${isOpen ? 'is-open' : ''}`}
+                to={module.basePath}
+                className={`sidebar-module-link ${isModuleActive ? 'is-active-module' : ''}`}
+                id={`sidebar-module-${module.id}`}
+                title={module.label}
+                onClick={() => setIsMobileSidebarOpen(false)}
               >
-                {/* Module Header / Dropdown Trigger */}
-                <button
-                  type="button"
-                  className="sidebar-module-trigger"
-                  onClick={() => toggleModule(module.id)}
-                  aria-expanded={isOpen}
-                  id={`sidebar-module-${module.id}`}
-                >
-                  <div className="module-trigger-main">
-                    <span className="module-trigger-icon">{module.icon}</span>
-                    <span className="module-trigger-title">{module.label}</span>
-                  </div>
-                  <span className="module-trigger-chevron">
-                    {isOpen ? <ChevronDownIcon size={14} /> : <ChevronRightIcon size={14} />}
-                  </span>
-                </button>
-
-                {/* Subheadings Dropdown Menu */}
-                {isOpen && (
-                  <div className="sidebar-module-dropdown">
-                    {module.subItems.map((sub) => {
-                      const isSubActive =
-                        (sub.path === '/audit-logs/all' && location.pathname === '/audit-logs') ||
-                        (sub.path === '/help/center' && location.pathname === '/help') ||
-                        (sub.path === '/settings' ||
-                        sub.path === '/dashboard' ||
-                        sub.path === '/analytics' ||
-                        sub.path === '/search' ||
-                        sub.path === '/workspaces' ||
-                        sub.path === '/leads' ||
-                        sub.path === '/contacts' ||
-                        sub.path === '/pipelines' ||
-                        sub.path === '/deals' ||
-                        sub.path === '/activities' ||
-                        sub.path === '/calendar' ||
-                        sub.path === '/communications' ||
-                        sub.path === '/communications/emails' ||
-                        sub.path === '/lead-generation' ||
-                        sub.path === '/users' ||
-                        sub.path === '/teams' ||
-                        sub.path === '/roles' ||
-                        sub.path === '/custom-fields' ||
-                        sub.path === '/tags'
-                          ? location.pathname === sub.path
-                          : location.pathname.startsWith(sub.path));
-
-                      return (
-                        <Link
-                          key={sub.path}
-                          to={sub.path}
-                          className={`sidebar-subitem-link ${isSubActive ? 'is-active' : ''}`}
-                          id={`sidebar-link-${sub.label.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
-                        >
-                          <span className="subitem-dot" aria-hidden="true" />
-                          <span className="subitem-label">{sub.label}</span>
-                        </Link>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
+                <div className="module-link-main">
+                  <span className="module-link-icon">{module.icon}</span>
+                  <span className="module-link-title">{module.label}</span>
+                </div>
+                {isModuleActive && <span className="module-active-indicator" aria-hidden="true" />}
+              </Link>
             );
           })}
         </nav>
