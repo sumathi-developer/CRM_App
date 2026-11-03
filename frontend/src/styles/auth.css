@@ -1356,10 +1356,11 @@
   position: relative;
   flex: 1;
   width: 100%;
-  max-width: 1240px;
+  max-width: 960px;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 36px;
   padding: 8px 24px;
   box-sizing: border-box;
   min-height: 0;
@@ -1370,15 +1371,47 @@
 .agent-login-card {
   position: relative;
   width: 100%;
-  max-width: 420px;
+  max-width: 410px;
   background: var(--agent-card-bg, #FFFFFF);
   border-radius: 24px;
-  padding: 26px 34px 22px;
+  padding: 24px 32px 20px;
   box-shadow: 0 20px 45px -10px rgba(6, 46, 3, 0.12), 0 0 0 1px rgba(6, 46, 3, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.8);
   z-index: 10;
   box-sizing: border-box;
   text-align: center;
+}
+
+/* 3D CRM Hero Illustration Card (Provided image without circle design) */
+.agent-hero-card {
+  position: relative;
+  width: 100%;
+  max-width: 410px;
+  max-height: calc(100vh - 140px);
+  aspect-ratio: 431 / 544;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 45px -10px rgba(6, 46, 3, 0.18), 0 0 0 1px rgba(124, 58, 237, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: #17153B;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+
+.agent-hero-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 24px 50px -10px rgba(6, 46, 3, 0.25), 0 0 0 1px rgba(16, 185, 129, 0.25);
+}
+
+.agent-hero-artwork-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+  user-select: none;
 }
 
 .agent-card-title {
@@ -1774,6 +1807,17 @@
 }
 
 /* Responsive Queries */
+@media (max-width: 920px) {
+  .agent-hero-card {
+    display: none;
+  }
+
+  .agent-stage-viewport {
+    gap: 0;
+    max-width: 440px;
+  }
+}
+
 @media (max-width: 640px) {
   .agent-login-page-root {
     height: auto;
