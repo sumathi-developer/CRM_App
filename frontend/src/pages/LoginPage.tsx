@@ -157,157 +157,176 @@ export const LoginPage: React.FC = () => {
 
   return (
     <div className="agent-login-page-root" id="agent-login-screen">
-      {/* 1. DYNAMIC FLUID SILK 3D WAVE BACKGROUND LAYER (INSPIRED BY REFERENCE IMAGE) */}
-      <div className="agent-fluid-wave-bg" aria-hidden="true">
+      {/* 3D Fluid Wave Ribbon Background (inspired by reference image in lighter tone) */}
+      <div className="agent-fluid-backdrop" aria-hidden="true">
         <svg
-          className="agent-fluid-wave-svg"
+          className="agent-fluid-canvas"
           viewBox="0 0 1440 900"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
           preserveAspectRatio="xMidYMid slice"
+          xmlns="http://www.w3.org/2000/svg"
         >
           <defs>
-            {/* Base Background Gradient with Primary Forest #062E03 */}
-            <linearGradient id="fluidBg" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#041E02" />
-              <stop offset="40%" stopColor="#062E03" />
-              <stop offset="75%" stopColor="#0A3C07" />
-              <stop offset="100%" stopColor="#041802" />
+            {/* Base Soft Ambient Gradients */}
+            <linearGradient id="bgBaseGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#EAF4ED" />
+              <stop offset="45%" stopColor="#E1F0E5" />
+              <stop offset="100%" stopColor="#E8F4EC" />
             </linearGradient>
 
-            {/* Accent Purple Atmospheric Glow (#7C3AED) */}
-            <radialGradient id="purpleAtmosphere" cx="85%" cy="20%" r="65%">
-              <stop offset="0%" stopColor="#7C3AED" stopOpacity="0.32" />
-              <stop offset="45%" stopColor="#7C3AED" stopOpacity="0.1" />
-              <stop offset="85%" stopColor="#7C3AED" stopOpacity="0" />
+            {/* Deep background undulating fold */}
+            <linearGradient id="waveRibbonDeep" x1="15%" y1="10%" x2="85%" y2="90%">
+              <stop offset="0%" stopColor="#D9EDE0" stopOpacity="0.9" />
+              <stop offset="35%" stopColor="#C4E7CE" stopOpacity="0.85" />
+              <stop offset="70%" stopColor="#A9D7B7" stopOpacity="0.75" />
+              <stop offset="100%" stopColor="#CCE9D6" stopOpacity="0.9" />
+            </linearGradient>
+
+            {/* Main 3D Silky Wave Crest & Slopes */}
+            <linearGradient id="waveRibbonMain" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#F5FCF8" />
+              <stop offset="25%" stopColor="#D8F1E2" />
+              <stop offset="55%" stopColor="#B3E1C2" />
+              <stop offset="85%" stopColor="#8CCDA1" />
+              <stop offset="100%" stopColor="#C5E8D2" />
+            </linearGradient>
+
+            {/* Shadow in the wave valley */}
+            <linearGradient id="waveFoldShadow" x1="30%" y1="0%" x2="70%" y2="100%">
+              <stop offset="0%" stopColor="#062E03" stopOpacity="0.14" />
+              <stop offset="45%" stopColor="#10B981" stopOpacity="0.22" />
+              <stop offset="80%" stopColor="#062E03" stopOpacity="0.08" />
+              <stop offset="100%" stopColor="transparent" stopOpacity="0" />
+            </linearGradient>
+
+            {/* Secondary foreground flowing wave */}
+            <linearGradient id="waveForeGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#EDF7F1" stopOpacity="0.95" />
+              <stop offset="40%" stopColor="#D5EFE0" stopOpacity="0.85" />
+              <stop offset="75%" stopColor="#BCE3CB" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#E6F5EC" stopOpacity="0.95" />
+            </linearGradient>
+
+            {/* Subtle Accent Violet Ambient Glow */}
+            <radialGradient id="purpleAura" cx="78%" cy="28%" r="48%">
+              <stop offset="0%" stopColor="#7C3AED" stopOpacity="0.12" />
+              <stop offset="50%" stopColor="#7C3AED" stopOpacity="0.04" />
+              <stop offset="100%" stopColor="#7C3AED" stopOpacity="0" />
             </radialGradient>
 
-            {/* Secondary Emerald Atmosphere Glow (#10B981) */}
-            <radialGradient id="emeraldAtmosphere" cx="20%" cy="80%" r="65%">
-              <stop offset="0%" stopColor="#10B981" stopOpacity="0.36" />
-              <stop offset="50%" stopColor="#062E03" stopOpacity="0.12" />
-              <stop offset="90%" stopColor="#062E03" stopOpacity="0" />
+            {/* Emerald Radial Luster */}
+            <radialGradient id="emeraldLuster" cx="35%" cy="55%" r="55%">
+              <stop offset="0%" stopColor="#10B981" stopOpacity="0.20" />
+              <stop offset="60%" stopColor="#10B981" stopOpacity="0.05" />
+              <stop offset="100%" stopColor="#10B981" stopOpacity="0" />
             </radialGradient>
 
-            {/* Wave 1 - Deep Background Silk Swell */}
-            <linearGradient id="wave1Grad" x1="10%" y1="0%" x2="90%" y2="100%">
-              <stop offset="0%" stopColor="#062E03" stopOpacity="0.95" />
-              <stop offset="40%" stopColor="#0C4F0A" stopOpacity="0.8" />
-              <stop offset="70%" stopColor="#10B981" stopOpacity="0.55" />
-              <stop offset="100%" stopColor="#041E02" stopOpacity="0.9" />
-            </linearGradient>
+            {/* Deep Forest Depth Aura */}
+            <radialGradient id="forestDepth" cx="62%" cy="75%" r="45%">
+              <stop offset="0%" stopColor="#062E03" stopOpacity="0.10" />
+              <stop offset="60%" stopColor="#062E03" stopOpacity="0.02" />
+              <stop offset="100%" stopColor="#062E03" stopOpacity="0" />
+            </radialGradient>
 
-            {/* Wave 2 - Iconic S-Curve Silk Wave (Foreground Prominent Ribbon) */}
-            <linearGradient id="wave2Grad" x1="0%" y1="20%" x2="100%" y2="80%">
-              <stop offset="0%" stopColor="#052802" />
-              <stop offset="25%" stopColor="#094406" />
-              <stop offset="50%" stopColor="#10B981" />
-              <stop offset="72%" stopColor="#34D399" />
-              <stop offset="88%" stopColor="#10B981" />
-              <stop offset="100%" stopColor="#062E03" />
-            </linearGradient>
-
-            {/* Wave 3 - Luminous Crest Highlight Ribbons */}
-            <linearGradient id="crestGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#10B981" stopOpacity="0.1" />
-              <stop offset="25%" stopColor="#34D399" stopOpacity="0.55" />
-              <stop offset="50%" stopColor="#A7F3D0" stopOpacity="0.9" />
-              <stop offset="65%" stopColor="#FFFFFF" stopOpacity="0.95" />
-              <stop offset="80%" stopColor="#A7F3D0" stopOpacity="0.75" />
-              <stop offset="92%" stopColor="#7C3AED" stopOpacity="0.55" />
-              <stop offset="100%" stopColor="#10B981" stopOpacity="0.1" />
-            </linearGradient>
-
-            {/* Wave 4 - Lower Foreground Rolling Silk Dune */}
-            <linearGradient id="wave4Grad" x1="0%" y1="100%" x2="100%" y2="20%">
-              <stop offset="0%" stopColor="#031601" stopOpacity="0.95" />
-              <stop offset="35%" stopColor="#062E03" stopOpacity="0.85" />
-              <stop offset="65%" stopColor="#0F5A0C" stopOpacity="0.75" />
-              <stop offset="85%" stopColor="#10B981" stopOpacity="0.5" />
-              <stop offset="100%" stopColor="#7C3AED" stopOpacity="0.3" />
-            </linearGradient>
-
-            {/* Soft Silk Diffusion Filters */}
-            <filter id="silkBlur" x="-20%" y="-20%" width="140%" height="140%">
+            {/* Soft Gaussian blur filters for fluid depth */}
+            <filter id="softRibbonBlur" x="-20%" y="-20%" width="140%" height="140%">
               <feGaussianBlur stdDeviation="30" />
             </filter>
-            <filter id="gentleSilkBlur" x="-10%" y="-10%" width="120%" height="120%">
-              <feGaussianBlur stdDeviation="12" />
+            <filter id="crestGlowBlur" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="10" />
             </filter>
           </defs>
 
-          {/* Base Backdrop Canvas */}
-          <rect width="100%" height="100%" fill="url(#fluidBg)" />
-          <rect width="100%" height="100%" fill="url(#purpleAtmosphere)" />
-          <rect width="100%" height="100%" fill="url(#emeraldAtmosphere)" />
+          {/* 1. Base Gradient Canvas */}
+          <rect width="1440" height="900" fill="url(#bgBaseGrad)" />
 
-          {/* Wave Layer 1: Ambient Deep Background Curve */}
+          {/* 2. Ambient Lighting Auras */}
+          <rect width="1440" height="900" fill="url(#emeraldLuster)" />
+          <rect width="1440" height="900" fill="url(#purpleAura)" />
+          <rect width="1440" height="900" fill="url(#forestDepth)" />
+
+          {/* 3. Upper Background Soft Wave */}
           <path
-            d="M-100 240 C 260 80, 520 380, 880 220 C 1180 80, 1420 280, 1600 200 L 1600 950 L -100 950 Z"
-            fill="url(#wave1Grad)"
-            filter="url(#silkBlur)"
+            d="M -100, -50
+               C 350, 80 500, 260 850, 190
+               C 1180, 120 1350, -40 1550, 60
+               L 1550, 950 L -100, 950 Z"
+            fill="url(#waveRibbonDeep)"
             opacity="0.85"
           />
 
-          {/* Wave Layer 2: Main Flowing Liquid Silk S-Curve Wave */}
+          {/* 4. Deep Shadow Valley Fold */}
           <path
-            d="M -80 380 C 220 180, 480 520, 840 340 C 1120 200, 1360 380, 1550 260 L 1550 950 L -80 950 Z"
-            fill="url(#wave2Grad)"
+            d="M 250, 160
+               C 480, 260 620, 560 920, 480
+               C 1200, 400 1320, 240 1550, 310
+               L 1550, 720
+               C 1300, 660 1100, 780 820, 680
+               C 540, 580 420, 320 250, 160 Z"
+            fill="url(#waveFoldShadow)"
+            filter="url(#softRibbonBlur)"
+          />
+
+          {/* 5. Main Sweeping 3D Fluid Ribbon Wave */}
+          <path
+            d="M 120, 80
+               C 420, 180 560, 490 880, 410
+               C 1160, 340 1280, 160 1500, 220
+               C 1520, 360 1480, 520 1360, 640
+               C 1140, 520 960, 620 740, 580
+               C 490, 530 310, 340 120, 80 Z"
+            fill="url(#waveRibbonMain)"
             opacity="0.9"
           />
 
-          {/* Wave Layer 3: Highlight Silk Crest on the Ridge */}
+          {/* 6. Ribbon Crest Specular Highlight Line (Silky wave spine) */}
           <path
-            d="M -80 380 C 220 180, 480 520, 840 340 C 1120 200, 1360 380, 1550 260"
-            fill="none"
-            stroke="url(#crestGrad)"
-            strokeWidth="38"
-            strokeLinecap="round"
-            filter="url(#gentleSilkBlur)"
-            opacity="0.85"
-          />
-          <path
-            d="M -80 380 C 220 180, 480 520, 840 340 C 1120 200, 1360 380, 1550 260"
-            fill="none"
+            d="M 140, 90
+               C 430, 190 570, 480 880, 410
+               C 1160, 340 1270, 170 1490, 225"
             stroke="#FFFFFF"
-            strokeWidth="6"
-            strokeLinecap="round"
-            filter="url(#gentleSilkBlur)"
-            opacity="0.55"
-          />
-
-          {/* Wave Layer 4: Upper Violet Accent Ribbon Flow (#7C3AED) */}
-          <path
-            d="M 480 80 C 820 20, 1140 180, 1550 110"
-            fill="none"
-            stroke="#7C3AED"
-            strokeWidth="32"
-            strokeLinecap="round"
-            filter="url(#silkBlur)"
-            opacity="0.4"
-          />
-
-          {/* Wave Layer 5: Lower Foreground Silky Dune */}
-          <path
-            d="M -100 680 C 280 480, 680 720, 1080 540 C 1320 440, 1480 620, 1600 560 L 1600 950 L -100 950 Z"
-            fill="url(#wave4Grad)"
-            opacity="0.88"
-          />
-
-          {/* Wave Layer 6: Lower Dune Crest Glow */}
-          <path
-            d="M -100 680 C 280 480, 680 720, 1080 540 C 1320 440, 1480 620, 1600 560"
-            fill="none"
-            stroke="url(#crestGrad)"
             strokeWidth="24"
             strokeLinecap="round"
-            filter="url(#gentleSilkBlur)"
-            opacity="0.7"
+            opacity="0.65"
+            filter="url(#crestGlowBlur)"
+            fill="none"
+          />
+          <path
+            d="M 140, 90
+               C 430, 190 570, 480 880, 410
+               C 1160, 340 1270, 170 1490, 225"
+            stroke="#F6FCF8"
+            strokeWidth="8"
+            strokeLinecap="round"
+            opacity="0.8"
+            fill="none"
+          />
+
+          {/* 7. Lower Foreground Flowing Wave */}
+          <path
+            d="M -100, 480
+               C 260, 540 450, 760 820, 690
+               C 1150, 620 1320, 780 1550, 700
+               L 1550, 980 L -100, 980 Z"
+            fill="url(#waveForeGrad)"
+            opacity="0.92"
+          />
+
+          {/* 8. Lower Wave Crest Highlight */}
+          <path
+            d="M -80, 490
+               C 270, 550 460, 755 820, 690
+               C 1150, 625 1320, 775 1540, 705"
+            stroke="#FFFFFF"
+            strokeWidth="16"
+            strokeLinecap="round"
+            opacity="0.55"
+            filter="url(#crestGlowBlur)"
+            fill="none"
           />
         </svg>
       </div>
 
-      {/* 2. TOP COMPACT HEADER */}
+      {/* 1. TOP COMPACT HEADER */}
       <header className="agent-top-navbar" role="banner">
         <div className="agent-brand-group">
           <Link to="/login" className="agent-brand-logo" title="Nexus CRM Home">
@@ -353,11 +372,11 @@ export const LoginPage: React.FC = () => {
         </div>
       </header>
 
-      {/* 3. CENTRAL HERO STAGE WITH FLOATING CARD */}
+      {/* 2. CENTRAL HERO STAGE WITH FLOATING CARD */}
       <div className="agent-stage-viewport">
         {/* Central White Login Card */}
         <div className="agent-login-card" role="region" aria-labelledby="agent-login-title">
-          {/* Heading & Supporting Text */}
+          {/* 1. Heading & Supporting Text */}
           <h1 className="agent-card-title" id="agent-login-title">
             Welcome Back
           </h1>
@@ -387,7 +406,7 @@ export const LoginPage: React.FC = () => {
             className="agent-login-form"
             id="agent-login-form"
           >
-            {/* Email Address Input */}
+            {/* 2. Email Address Input */}
             <div className="agent-field-wrap">
               <label htmlFor="agent-email-input" className="agent-field-label">
                 Email Address
@@ -418,7 +437,7 @@ export const LoginPage: React.FC = () => {
               )}
             </div>
 
-            {/* Password Input */}
+            {/* 3. Password Input */}
             <div className="agent-field-wrap">
               <label htmlFor="agent-password-input" className="agent-field-label">
                 Password
@@ -458,7 +477,7 @@ export const LoginPage: React.FC = () => {
               )}
             </div>
 
-            {/* Remember Me and Forgot Password */}
+            {/* 4. Remember Me and Forgot Password */}
             <div className="agent-remember-forgot-row">
               <label className="agent-remember-label">
                 <input
@@ -475,7 +494,7 @@ export const LoginPage: React.FC = () => {
               </Link>
             </div>
 
-            {/* Sign In Button */}
+            {/* 5. Sign In Button */}
             <button
               type="submit"
               className="agent-signin-btn"
@@ -492,7 +511,7 @@ export const LoginPage: React.FC = () => {
               )}
             </button>
 
-            {/* Social Login Section (Google, Instagram, Facebook in 1 horizontal row) */}
+            {/* 6. Social Login Section (Google, Instagram, Facebook in 1 horizontal row) */}
             <div className="agent-or-divider">
               <span>Or continue with</span>
             </div>
@@ -555,7 +574,7 @@ export const LoginPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Registration Link */}
+            {/* 7. Registration Link */}
             <div className="agent-request-now-row">
               <span>Don't have an account?</span>
               <Link to="/register" className="agent-request-now-link">
@@ -566,7 +585,7 @@ export const LoginPage: React.FC = () => {
         </div>
       </div>
 
-      {/* 4. PAGE FOOTER */}
+      {/* 3. PAGE FOOTER */}
       <footer className="agent-page-footer" role="contentinfo">
         <span>© 2026 Nexus CRM. All rights reserved.</span>
         <span className="agent-footer-divider">•</span>

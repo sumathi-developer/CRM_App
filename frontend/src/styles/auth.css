@@ -1167,11 +1167,16 @@
 
 
 /* ==========================================================================
-   CRM LOGIN PAGE – FLUID SILK 3D WAVE BACKGROUND
-   Colors:
-   - Primary:   #062E03 (Deep Forest Green)
-   - Secondary: #10B981 (Emerald Green)
-   - Accent:    #7C3AED (Purple)
+   CRM LOGIN PAGE – PREMIUM FLUID WAVE SAAS UI
+   Brand Color Palette:
+   - Primary:    #062E03 (Deep Forest Green)
+   - Secondary:  #10B981 (Emerald Green)
+   - Accent:     #7C3AED (Purple)
+   - Background: #EAF4ED (Lighter Tone Green Canvas)
+   - Card:       #FFFFFF (Pure Crisp White)
+   - Text Main:  #111827 (Dark Charcoal)
+   - Text Muted: #4B5563 (Slate Grey)
+   - Border:     #E5E7EB (Subtle Light Grey)
    ========================================================================== */
 
 .agent-login-page-root {
@@ -1179,7 +1184,7 @@
   --agent-primary-hover: #0F530A;
   --agent-secondary: #10B981;
   --agent-accent: #7C3AED;
-  --agent-bg: #062E03;
+  --agent-bg: #EAF4ED;
   --agent-card-bg: #FFFFFF;
   --agent-text-main: #111827;
   --agent-text-muted: #4B5563;
@@ -1189,7 +1194,7 @@
   height: 100vh;
   max-height: 100vh;
   width: 100%;
-  background-color: var(--agent-primary, #062E03);
+  background-color: var(--agent-bg, #EAF4ED);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -1199,42 +1204,28 @@
   font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
 }
 
-/* 1. Fluid Silk Wave Background Container */
-.agent-fluid-wave-bg {
+/* 3D Fluid Ribbon Wave Backdrop (Inspired by reference image) */
+.agent-fluid-backdrop {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   overflow: hidden;
-  z-index: 1;
   pointer-events: none;
+  z-index: 1;
 }
 
-.agent-fluid-wave-svg {
+.agent-fluid-canvas {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  transform-origin: center center;
-  animation: fluidWaveBreathe 22s ease-in-out infinite alternate;
 }
 
-@keyframes fluidWaveBreathe {
-  0% {
-    transform: scale(1) translateY(0);
-  }
-  50% {
-    transform: scale(1.025) translateY(-8px);
-  }
-  100% {
-    transform: scale(1.05) translateY(-4px);
-  }
-}
-
-/* 2. Compact Header */
+/* 1. Compact Header */
 .agent-top-navbar {
   width: 100%;
-  padding: 16px 48px;
+  padding: 14px 44px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1250,10 +1241,10 @@
 }
 
 .agent-brand-logo {
-  font-size: 1.3125rem;
+  font-size: 1.25rem;
   font-weight: 800;
   letter-spacing: -0.03em;
-  color: #FFFFFF;
+  color: var(--agent-text-main, #111827);
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -1263,21 +1254,20 @@
 .agent-brand-logo-mark {
   width: 28px;
   height: 28px;
-  background: var(--agent-secondary, #10B981);
+  background: var(--agent-primary, #062E03);
   border-radius: 8px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: #062E03;
+  color: #FFFFFF;
   font-size: 14px;
   font-weight: 900;
-  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
 }
 
 .agent-brand-name {
-  font-size: 1.3125rem;
+  font-size: 1.25rem;
   font-weight: 800;
-  color: #FFFFFF;
+  color: var(--agent-primary, #062E03);
   letter-spacing: -0.03em;
 }
 
@@ -1288,7 +1278,7 @@
 .agent-brand-contact-link {
   font-size: 0.8125rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--agent-text-muted, #4B5563);
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -1297,7 +1287,7 @@
 }
 
 .agent-brand-contact-link:hover {
-  color: var(--agent-secondary, #10B981);
+  color: var(--agent-primary, #062E03);
 }
 
 .agent-navbar-actions {
@@ -1313,24 +1303,24 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  background: rgba(255, 255, 255, 0.1);
-  color: #FFFFFF;
+  border: 1.5px solid rgba(6, 46, 3, 0.12);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
+  color: var(--agent-text-muted, #4B5563);
   cursor: pointer;
   transition: all 0.15s ease;
-  backdrop-filter: blur(8px);
 }
 
 .agent-globe-btn:hover {
-  border-color: var(--agent-secondary, #10B981);
-  color: var(--agent-secondary, #10B981);
-  background: rgba(16, 185, 129, 0.15);
+  border-color: var(--agent-primary, #062E03);
+  color: var(--agent-primary, #062E03);
+  background: #FFFFFF;
 }
 
 .agent-nav-signup-link {
   font-size: 0.875rem;
   font-weight: 600;
-  color: #FFFFFF;
+  color: var(--agent-primary, #062E03);
   text-decoration: none;
   transition: color 0.15s ease;
 }
@@ -1342,8 +1332,8 @@
 .agent-request-demo-btn {
   padding: 8px 18px;
   border-radius: 10px;
-  background: var(--agent-secondary, #10B981);
-  color: #062E03;
+  background: var(--agent-primary, #062E03);
+  color: #FFFFFF;
   font-size: 0.8125rem;
   font-weight: 700;
   border: none;
@@ -1353,17 +1343,15 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
 }
 
 .agent-request-demo-btn:hover {
-  background: var(--agent-accent, #7C3AED);
-  color: #FFFFFF;
+  background: var(--agent-primary-hover, #0F530A);
   transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(124, 58, 237, 0.45);
+  box-shadow: 0 4px 12px rgba(6, 46, 3, 0.2);
 }
 
-/* 3. Central Hero Stage */
+/* 2. Central Hero Stage */
 .agent-stage-viewport {
   position: relative;
   flex: 1;
@@ -1375,18 +1363,19 @@
   padding: 8px 24px;
   box-sizing: border-box;
   min-height: 0;
-  z-index: 5;
+  z-index: 10;
 }
 
-/* 4. Centered White Login Card */
+/* 3. Centered Login Card – Pure White Contrast */
 .agent-login-card {
   position: relative;
   width: 100%;
   max-width: 420px;
   background: var(--agent-card-bg, #FFFFFF);
-  border-radius: 26px;
+  border-radius: 24px;
   padding: 26px 34px 22px;
-  box-shadow: 0 25px 60px -15px rgba(4, 30, 2, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.4);
+  box-shadow: 0 20px 45px -10px rgba(6, 46, 3, 0.12), 0 0 0 1px rgba(6, 46, 3, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.8);
   z-index: 10;
   box-sizing: border-box;
   text-align: center;
@@ -1535,7 +1524,7 @@
   margin-top: 1px;
 }
 
-/* Remember Me & Forgot Password Row */
+/* 4. Remember Me and Forgot Password */
 .agent-remember-forgot-row {
   display: flex;
   align-items: center;
@@ -1575,7 +1564,7 @@
   text-decoration: underline;
 }
 
-/* Primary Sign In Button */
+/* 5. Primary Sign In Button */
 .agent-signin-btn {
   width: 100%;
   height: 44px;
@@ -1591,14 +1580,14 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  box-shadow: 0 4px 14px rgba(6, 46, 3, 0.25);
+  box-shadow: 0 4px 12px rgba(6, 46, 3, 0.2);
   margin-top: 2px;
 }
 
 .agent-signin-btn:hover:not(:disabled) {
   background: var(--agent-primary-hover, #0F530A);
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(6, 46, 3, 0.35);
+  box-shadow: 0 6px 16px rgba(6, 46, 3, 0.28);
 }
 
 .agent-signin-btn:active:not(:disabled) {
@@ -1626,7 +1615,7 @@
   }
 }
 
-/* Social Separator ("Or continue with") */
+/* 6. Social Separator ("Or continue with") */
 .agent-or-divider {
   display: flex;
   align-items: center;
@@ -1728,7 +1717,7 @@
   color: var(--agent-secondary, #10B981);
 }
 
-/* Registration Link ("Don't have an account? Sign Up") */
+/* 7. Registration Link ("Don't have an account? Sign Up") */
 .agent-request-now-row {
   margin-top: 10px;
   font-size: 0.8125rem;
@@ -1748,12 +1737,12 @@
   text-decoration: underline;
 }
 
-/* 5. Compact Footer */
+/* 8. Compact Footer */
 .agent-page-footer {
   padding: 12px 24px;
   text-align: center;
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.75);
+  color: var(--agent-text-muted, #4B5563);
   z-index: 10;
   position: relative;
   display: flex;
@@ -1764,17 +1753,17 @@
 }
 
 .agent-footer-divider {
-  color: rgba(255, 255, 255, 0.35);
+  color: #9CA3AF;
 }
 
 .agent-footer-link {
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--agent-text-muted, #4B5563);
   text-decoration: none;
   transition: color 0.15s ease;
 }
 
 .agent-footer-link:hover {
-  color: var(--agent-secondary, #10B981);
+  color: var(--agent-primary, #062E03);
   text-decoration: underline;
 }
 
@@ -1800,7 +1789,7 @@
 
   .agent-login-card {
     padding: 24px 18px 20px;
-    border-radius: 20px;
+    border-radius: 18px;
     max-width: 100%;
   }
 
