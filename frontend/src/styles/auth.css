@@ -1167,35 +1167,38 @@
 
 
 /* ==========================================================================
-   AGENT LOGIN - EDITORIAL MEMPHIS REDESIGN
-   Color Palette:
-   - Primary:   #062E03 (Deep Forest Obsidian)
-   - Secondary: #10B981 (Vibrant Emerald)
-   - Accent:    #7C3AED (Electric Violet)
+   CRM LOGIN PAGE – PREMIUM SAAS UI REDESIGN
+   Brand Color Palette:
+   - Primary:    #062E03 (Deep Forest Green)
+   - Secondary:  #10B981 (Emerald Green)
+   - Accent:     #7C3AED (Purple)
+   - Background: #F8F8F3 (Warm off-white)
+   - Login Card: #FFFFFF (Crisp White)
+   - Main Text:  #171717
+   - Sub Text:   #737373
    ========================================================================== */
 
 .agent-login-page-root {
   --agent-primary: #062E03;
+  --agent-primary-hover: #031C02;
   --agent-secondary: #10B981;
   --agent-accent: #7C3AED;
-  --agent-bg: #062E03;
+  --agent-bg: #F8F8F3;
   --agent-card-bg: #FFFFFF;
-  --agent-text-main: #062E03;
-  --agent-text-muted: rgba(6, 46, 3, 0.65);
-  --agent-border: rgba(6, 46, 3, 0.16);
+  --agent-text-main: #171717;
+  --agent-text-muted: #737373;
+  --agent-border: #E5E5E5;
 
   position: relative;
+  height: 100vh;
   min-height: 100vh;
   width: 100%;
-  background-color: var(--agent-bg);
-  background-image:
-    radial-gradient(circle at 12% 45%, rgba(16, 185, 129, 0.18) 0%, transparent 45%),
-    radial-gradient(circle at 88% 55%, rgba(124, 58, 237, 0.18) 0%, transparent 45%);
+  background-color: var(--agent-bg, #F8F8F3);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  overflow-x: hidden;
+  overflow: hidden;
   box-sizing: border-box;
   font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
 }
@@ -1205,17 +1208,17 @@
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 23%;
-  height: 1.5px;
-  background: rgba(16, 185, 129, 0.25);
+  bottom: 22%;
+  height: 1px;
+  background: #E8E8DF;
   z-index: 1;
   pointer-events: none;
 }
 
-/* 1. Top Navbar Header */
+/* 1. Compact Header */
 .agent-top-navbar {
   width: 100%;
-  padding: 26px 56px;
+  padding: 16px 44px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1226,15 +1229,15 @@
 
 .agent-brand-group {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
+  align-items: center;
+  gap: 16px;
 }
 
 .agent-brand-logo {
-  font-size: 1.625rem;
+  font-size: 1.3125rem;
   font-weight: 800;
-  letter-spacing: -0.035em;
-  color: #FFFFFF;
+  letter-spacing: -0.03em;
+  color: var(--agent-text-main, #171717);
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -1242,78 +1245,77 @@
 }
 
 .agent-brand-logo-mark {
-  width: 22px;
-  height: 22px;
-  background: var(--agent-secondary);
-  border-radius: 6px;
+  width: 26px;
+  height: 26px;
+  background: var(--agent-primary, #062E03);
+  border-radius: 7px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--agent-primary);
-  font-size: 12px;
+  color: #FFFFFF;
+  font-size: 13px;
   font-weight: 900;
 }
 
 .agent-brand-contact-link {
   font-size: 0.8125rem;
   font-weight: 500;
-  color: var(--agent-secondary);
+  color: var(--agent-text-muted, #737373);
   display: inline-flex;
   align-items: center;
   gap: 4px;
   text-decoration: none;
-  transition: all 0.15s ease;
+  transition: color 0.15s ease;
 }
 
 .agent-brand-contact-link:hover {
-  color: var(--agent-accent);
+  color: var(--agent-primary, #062E03);
 }
 
 .agent-navbar-actions {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 18px;
 }
 
 .agent-globe-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  border: 1.5px solid rgba(16, 185, 129, 0.4);
-  background: rgba(16, 185, 129, 0.08);
-  color: var(--agent-secondary);
+  border: 1px solid var(--agent-border, #E5E5E5);
+  background: #FFFFFF;
+  color: var(--agent-text-muted, #737373);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
 }
 
 .agent-globe-btn:hover {
-  border-color: var(--agent-accent);
-  color: var(--agent-accent);
-  background: rgba(124, 58, 237, 0.15);
+  border-color: #D4D4D4;
+  color: var(--agent-primary, #062E03);
 }
 
 .agent-nav-signup-link {
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   font-weight: 600;
-  color: var(--agent-secondary);
+  color: var(--agent-text-main, #171717);
   text-decoration: none;
   transition: color 0.15s ease;
 }
 
 .agent-nav-signup-link:hover {
-  color: var(--agent-accent);
+  color: var(--agent-primary, #062E03);
 }
 
 .agent-request-demo-btn {
-  padding: 10px 22px;
-  border-radius: 12px;
-  background: var(--agent-secondary);
-  color: var(--agent-primary);
-  font-size: 0.875rem;
-  font-weight: 700;
+  padding: 8px 18px;
+  border-radius: 10px;
+  background: var(--agent-primary, #062E03);
+  color: #FFFFFF;
+  font-size: 0.8125rem;
+  font-weight: 600;
   border: none;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -1324,85 +1326,90 @@
 }
 
 .agent-request-demo-btn:hover {
-  background: var(--agent-accent);
-  color: #FFFFFF;
+  background: var(--agent-primary-hover, #031C02);
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.45);
+  box-shadow: 0 4px 12px rgba(6, 46, 3, 0.2);
 }
 
 /* 2. Central Hero Stage */
 .agent-stage-viewport {
   position: relative;
+  flex: 1;
   width: 100%;
   max-width: 1240px;
-  margin: auto 0;
-  padding: 16px 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 5;
+  padding: 10px 24px;
   box-sizing: border-box;
+  min-height: 0;
+  z-index: 5;
 }
 
-/* Illustrations */
+/* Left & Right Illustrations */
 .agent-illustration-left {
   position: absolute;
-  left: 20px;
+  left: 28px;
   top: 50%;
   transform: translateY(-50%);
-  width: 320px;
-  height: 480px;
+  width: 250px;
+  max-width: 22vw;
+  height: auto;
+  max-height: 420px;
   pointer-events: none;
-  z-index: 1;
+  z-index: 2;
 }
 
 .agent-illustration-right {
   position: absolute;
-  right: 10px;
+  right: 28px;
   top: 50%;
   transform: translateY(-50%);
-  width: 380px;
-  height: 480px;
+  width: 360px;
+  max-width: 30vw;
+  height: auto;
+  max-height: 460px;
   pointer-events: none;
-  z-index: 1;
+  z-index: 2;
 }
 
-/* 3. Central Login Card */
+/* 3. Centered Login Card – Primary Visual Focus */
 .agent-login-card {
   position: relative;
   width: 100%;
-  max-width: 460px;
-  background: #FFFFFF;
-  border-radius: 30px;
-  padding: 44px 40px 36px;
-  box-shadow: 0 25px 50px -12px rgba(6, 46, 3, 0.08), 0 0 0 1px rgba(6, 46, 3, 0.04);
+  max-width: 400px;
+  background: var(--agent-card-bg, #FFFFFF);
+  border-radius: 22px;
+  padding: 30px 32px 26px;
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.04), 0 20px 40px -15px rgba(6, 46, 3, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.06);
   z-index: 10;
   box-sizing: border-box;
   text-align: center;
 }
 
 .agent-card-title {
-  font-size: 1.875rem;
-  font-weight: 800;
+  font-size: 1.625rem;
+  font-weight: 700;
   letter-spacing: -0.025em;
-  color: var(--agent-primary);
-  margin: 0 0 8px 0;
+  color: var(--agent-text-main, #171717);
+  margin: 0 0 6px 0;
 }
 
 .agent-card-subtitle {
-  font-size: 0.9375rem;
-  color: var(--agent-text-muted);
-  margin: 0 0 28px 0;
+  font-size: 0.875rem;
+  color: var(--agent-text-muted, #737373);
+  margin: 0 0 18px 0;
   line-height: 1.45;
 }
 
 /* Feedback banners */
 .agent-alert-box {
-  padding: 10px 14px;
+  padding: 8px 12px;
   border-radius: 10px;
   font-size: 0.8125rem;
   font-weight: 500;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   text-align: left;
   display: flex;
   align-items: center;
@@ -1410,22 +1417,22 @@
 }
 
 .agent-alert-box.error {
-  background: rgba(124, 58, 237, 0.08);
-  border: 1px solid rgba(124, 58, 237, 0.35);
-  color: var(--agent-accent);
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  color: #DC2626;
 }
 
 .agent-alert-box.success {
-  background: rgba(16, 185, 129, 0.12);
-  border: 1px solid rgba(16, 185, 129, 0.4);
-  color: var(--agent-primary);
+  background: #ECFDF5;
+  border: 1px solid #A7F3D0;
+  color: var(--agent-primary, #062E03);
 }
 
 /* Form Styles */
 .agent-login-form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 13px;
   text-align: left;
 }
 
@@ -1442,15 +1449,26 @@
   align-items: center;
 }
 
+.agent-input-leading-icon {
+  position: absolute;
+  left: 14px;
+  color: var(--agent-text-muted, #737373);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  transition: color 0.15s ease;
+}
+
 .agent-form-input {
   width: 100%;
-  height: 52px;
-  padding: 12px 52px 12px 18px;
-  border: 1.5px solid var(--agent-border);
-  border-radius: 14px;
+  height: 44px;
+  padding: 10px 42px 10px 40px;
+  border: 1.5px solid var(--agent-border, #E5E5E5);
+  border-radius: 12px;
   background: #FFFFFF;
-  color: var(--agent-primary);
-  font-size: 0.9375rem;
+  color: var(--agent-text-main, #171717);
+  font-size: 0.875rem;
   font-weight: 500;
   transition: all 0.2s ease;
   box-sizing: border-box;
@@ -1458,94 +1476,108 @@
 
 .agent-form-input:focus {
   outline: none;
-  border-color: var(--agent-secondary);
-  box-shadow: 0 0 0 3.5px rgba(16, 185, 129, 0.18);
+  border-color: var(--agent-primary, #062E03);
+  box-shadow: 0 0 0 3px rgba(6, 46, 3, 0.1);
+}
+
+.agent-form-input:focus ~ .agent-input-leading-icon,
+.agent-input-container:focus-within .agent-input-leading-icon {
+  color: var(--agent-primary, #062E03);
 }
 
 .agent-form-input::placeholder {
-  color: rgba(6, 46, 3, 0.45);
+  color: #A3A3A3;
   font-weight: 400;
-}
-
-.agent-input-trailing-icon {
-  position: absolute;
-  right: 18px;
-  color: var(--agent-secondary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
 }
 
 .agent-pw-toggle-btn {
   position: absolute;
-  right: 16px;
+  right: 12px;
   background: none;
   border: none;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: var(--agent-accent);
+  color: var(--agent-text-muted, #737373);
   cursor: pointer;
-  padding: 4px 6px;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
   transition: color 0.15s ease;
 }
 
 .agent-pw-toggle-btn:hover {
-  color: var(--agent-secondary);
+  color: var(--agent-primary, #062E03);
 }
 
 .agent-field-error-text {
-  font-size: 0.8125rem;
-  color: var(--agent-accent);
-  padding-left: 4px;
-  margin-top: 2px;
+  font-size: 0.75rem;
+  color: #DC2626;
+  padding-left: 2px;
+  margin-top: 1px;
 }
 
-/* Having Trouble in sign in? */
-.agent-trouble-wrap {
+/* Remember Me & Forgot Password Row */
+.agent-form-options-row {
   display: flex;
-  justify-content: flex-start;
-  margin-top: -2px;
-  margin-bottom: 4px;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1px;
+  margin-bottom: 2px;
+  font-size: 0.8125rem;
 }
 
-.agent-trouble-link {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--agent-accent);
+.agent-remember-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--agent-text-muted, #737373);
+  cursor: pointer;
+  user-select: none;
+  font-weight: 500;
+}
+
+.agent-remember-label input[type="checkbox"] {
+  accent-color: var(--agent-primary, #062E03);
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+.agent-forgot-link {
+  color: var(--agent-text-muted, #737373);
   text-decoration: none;
+  font-weight: 500;
   transition: color 0.15s ease;
 }
 
-.agent-trouble-link:hover {
-  color: var(--agent-secondary);
+.agent-forgot-link:hover {
+  color: var(--agent-primary, #062E03);
   text-decoration: underline;
 }
 
 /* Primary Sign In Button */
 .agent-signin-btn {
   width: 100%;
-  height: 52px;
+  height: 44px;
   border: none;
-  border-radius: 14px;
-  background: var(--agent-primary);
+  border-radius: 12px;
+  background: var(--agent-primary, #062E03);
   color: #FFFFFF;
-  font-size: 1rem;
-  font-weight: 700;
+  font-size: 0.9375rem;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  box-shadow: 0 4px 14px rgba(6, 46, 3, 0.35);
+  box-shadow: 0 4px 12px rgba(6, 46, 3, 0.2);
 }
 
 .agent-signin-btn:hover:not(:disabled) {
-  background: var(--agent-secondary);
-  color: var(--agent-primary);
+  background: var(--agent-primary-hover, #031C02);
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45);
+  box-shadow: 0 6px 16px rgba(6, 46, 3, 0.28);
 }
 
 .agent-signin-btn:active:not(:disabled) {
@@ -1557,153 +1589,206 @@
   cursor: not-allowed;
 }
 
-/* Divider */
-.agent-or-divider {
+/* Social Separator */
+.agent-social-divider {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 24px 0 18px;
-  color: rgba(6, 46, 3, 0.45);
-  font-size: 0.8125rem;
-  font-weight: 500;
-  letter-spacing: 0.02em;
+  margin: 14px 0 10px;
+  position: relative;
+  text-align: center;
 }
 
-/* Social Login Grid (Google & Facebook) */
+.agent-social-divider::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: var(--agent-border, #E5E5E5);
+}
+
+.agent-social-divider span {
+  position: relative;
+  background: #FFFFFF;
+  padding: 0 10px;
+  color: var(--agent-text-muted, #737373);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* Social Login Grid (Google, Instagram, Facebook) */
 .agent-social-buttons-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
 }
 
 .agent-social-pill {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  height: 44px;
-  border: 1.5px solid var(--agent-border);
-  border-radius: 12px;
+  gap: 6px;
+  height: 38px;
+  border: 1px solid var(--agent-border, #E5E5E5);
+  border-radius: 10px;
   background: #FFFFFF;
-  color: var(--agent-primary);
-  font-size: 0.875rem;
+  color: var(--agent-text-main, #171717);
+  font-size: 0.75rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.15s ease;
+  padding: 0 6px;
 }
 
 .agent-social-pill:hover {
-  border-color: var(--agent-secondary);
-  background: rgba(16, 185, 129, 0.05);
+  border-color: #D4D4D4;
+  background: #F9F9F8;
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(6, 46, 3, 0.06);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
 /* Quick Demo Switcher helper */
 .agent-quick-demo-box {
-  margin-top: 18px;
-  padding: 10px 14px;
-  background: rgba(16, 185, 129, 0.08);
-  border: 1px dashed rgba(16, 185, 129, 0.35);
-  border-radius: 12px;
+  margin-top: 12px;
+  padding: 7px 10px;
+  background: rgba(16, 185, 129, 0.06);
+  border: 1px dashed rgba(16, 185, 129, 0.3);
+  border-radius: 9px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
   text-align: left;
 }
 
 .agent-quick-demo-title {
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--agent-primary, #062E03);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--agent-primary);
+  letter-spacing: 0.03em;
 }
 
 .agent-quick-demo-pills {
   display: flex;
-  gap: 8px;
+  gap: 6px;
 }
 
 .agent-demo-click-pill {
-  padding: 4px 10px;
-  border-radius: 8px;
+  padding: 2px 7px;
+  border-radius: 6px;
   background: #FFFFFF;
   border: 1px solid rgba(6, 46, 3, 0.15);
-  color: var(--agent-primary);
-  font-size: 0.75rem;
+  color: var(--agent-primary, #062E03);
+  font-size: 0.6875rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
 .agent-demo-click-pill:hover {
-  border-color: var(--agent-secondary);
-  color: var(--agent-secondary);
-  box-shadow: 0 1px 4px rgba(16, 185, 129, 0.2);
+  border-color: var(--agent-secondary, #10B981);
+  color: var(--agent-secondary, #10B981);
 }
 
-/* Request Now footer under card */
+/* Registration Text Row under Card */
 .agent-request-now-row {
-  margin-top: 24px;
-  font-size: 0.875rem;
-  color: rgba(6, 46, 3, 0.65);
+  margin-top: 14px;
+  font-size: 0.8125rem;
+  color: var(--agent-text-muted, #737373);
 }
 
 .agent-request-now-link {
-  font-weight: 700;
-  color: var(--agent-accent);
+  font-weight: 600;
+  color: var(--agent-primary, #062E03);
   text-decoration: none;
   margin-left: 4px;
   transition: color 0.15s ease;
 }
 
 .agent-request-now-link:hover {
-  color: var(--agent-secondary);
+  color: var(--agent-secondary, #10B981);
   text-decoration: underline;
 }
 
-/* 4. Page Footer */
+/* 4. Compact Footer */
 .agent-page-footer {
-  padding: 24px;
+  padding: 12px 24px;
   text-align: center;
-  font-size: 0.8125rem;
-  color: rgba(16, 185, 129, 0.7);
+  font-size: 0.75rem;
+  color: var(--agent-text-muted, #737373);
   z-index: 10;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
-.agent-page-footer a {
-  color: var(--agent-secondary);
+.agent-footer-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.agent-footer-link {
+  color: var(--agent-text-muted, #737373);
   text-decoration: none;
   transition: color 0.15s ease;
 }
 
-.agent-page-footer a:hover {
-  color: var(--agent-accent);
+.agent-footer-link:hover {
+  color: var(--agent-primary, #062E03);
+  text-decoration: underline;
 }
 
-/* Responsive queries */
-@media (max-width: 1080px) {
-  .agent-illustration-left,
+/* Responsive Queries */
+@media (max-width: 1100px) {
+  .agent-illustration-left {
+    display: none;
+  }
+  .agent-illustration-right {
+    width: 290px;
+    right: 12px;
+  }
+}
+
+@media (max-width: 920px) {
   .agent-illustration-right {
     display: none;
   }
 }
 
 @media (max-width: 640px) {
+  .agent-login-page-root {
+    height: auto;
+    min-height: 100vh;
+    overflow-y: auto;
+  }
+
   .agent-top-navbar {
-    padding: 16px 20px;
+    padding: 14px 20px;
+  }
+
+  .agent-brand-contact-link {
+    display: none;
+  }
+
+  .agent-stage-viewport {
+    padding: 16px 16px 24px;
   }
 
   .agent-login-card {
-    padding: 32px 20px;
-    border-radius: 22px;
+    padding: 26px 18px 22px;
+    border-radius: 18px;
+    max-width: 100%;
   }
 
   .agent-social-buttons-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, 1fr);
   }
 }
