@@ -98,7 +98,8 @@
   --text-primary-accent: #10b981;
   --text-purple-accent: #a78bfa;
 
-  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-sans: 'Quicksand', 'Nunito', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: 'Quicksand', 'Syne', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
   /* Elevation & Shadows (Smooth Depth Inspired by Reference Design) */
@@ -127,6 +128,44 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: var(--font-sans);
+}
+
+/* Quicksand Font Utilities */
+.quicksand-light {
+  font-family: 'Quicksand', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.quicksand-normal,
+.quicksand-regular {
+  font-family: 'Quicksand', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.quicksand-medium {
+  font-family: 'Quicksand', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.quicksand-semibold {
+  font-family: 'Quicksand', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.quicksand-bold {
+  font-family: 'Quicksand', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
 }
 
 html {
