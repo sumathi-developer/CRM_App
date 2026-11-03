@@ -73,7 +73,7 @@
 
 .ld-context-tab.is-active {
   color: #ffffff;
-  background: var(--primary-600, #2563eb);
+  background: var(--secondary-color, #10b981);
 }
 
 /* ---------- View & Scope Switcher Bar ---------- */
@@ -114,7 +114,7 @@
 
 .ld-pill-tab.is-active {
   color: #ffffff;
-  background: var(--primary-600, #2563eb);
+  background: var(--secondary-color, #10b981);
   border-color: var(--primary-500, #3b82f6);
   box-shadow: 0 0 12px rgba(37, 99, 235, 0.35);
 }
@@ -164,7 +164,7 @@
 }
 
 .ld-view-btn.is-active {
-  background: var(--primary-600, #2563eb);
+  background: var(--secondary-color, #10b981);
   color: #ffffff;
 }
 

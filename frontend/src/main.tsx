@@ -15,6 +15,7 @@ import './styles/custom-fields.css';
 import './styles/tags.css';
 import './styles/lead-generation.css';
 import './styles/leads.css';
+import './styles/ui.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

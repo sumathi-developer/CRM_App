@@ -27,6 +27,9 @@ import {
   DEFAULT_CUSTOM_WIDGETS,
 } from './dashboardConstants';
 import { DashboardLayout } from './components/DashboardLayout';
+import { Button } from '../../components/ui';
+import { DashboardScenicHero } from './components/DashboardScenicHero';
+import { DashboardLeftRail, DashboardRightRail } from './components/DashboardRails';
 import {
   DashboardFilterBar,
   DashboardKpiCard,
@@ -350,13 +353,11 @@ export const DashboardExplorerPage: React.FC<DashboardExplorerPageProps> = ({
               </span>
             </button>
           )}
-          <Link to="/deals/create" className="lg-btn lg-btn-secondary">
-            <PlusIcon size={15} />
-            <span>New Deal</span>
+          <Link to="/deals/create">
+            <Button variant="secondary" pill size="sm" icon={<PlusIcon size={15} />}>New Deal</Button>
           </Link>
-          <Link to="/leads/create" className="lg-btn lg-btn-secondary">
-            <PlusIcon size={15} />
-            <span>New Lead</span>
+          <Link to="/leads/create">
+            <Button variant="primary" pill size="sm" icon={<PlusIcon size={15} />}>New Lead</Button>
           </Link>
         </div>
       }
@@ -383,7 +384,24 @@ export const DashboardExplorerPage: React.FC<DashboardExplorerPageProps> = ({
              ============================================================== */}
           {screen === 'overview' && (
             <div className="space-y-6">
-              {/* 8 Executive KPI Cards */}
+              <DashboardScenicHero
+                totalRevenue={formatCurrency(overviewData?.kpis.totalRevenue.current)}
+                dealsWon={overviewData?.kpis.dealsWon.current || 0}
+                winRate={formatPercent(overviewData?.kpis.winRate.current)}
+              />
+
+              <div className="crm-dashboard-3col">
+                <div className="crm-dashboard-left-rail">
+                  <DashboardLeftRail
+                    totalLeads={overviewData?.kpis.newLeads.current || 0}
+                    dealsWon={overviewData?.kpis.dealsWon.current || 0}
+                    conversionRate={formatPercent(overviewData?.kpis.leadConversionRate.current)}
+                    activitiesCount={overviewData?.kpis.activitiesCompleted.current || 0}
+                  />
+                </div>
+
+                <div className="space-y-6" style={{ minWidth: 0 }}>
+                  {/* 8 Executive KPI Cards */}
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 <DashboardKpiCard
                   label="Total Revenue (Won)"
@@ -516,7 +534,13 @@ export const DashboardExplorerPage: React.FC<DashboardExplorerPageProps> = ({
                 <RecentActivitiesWidget activities={recentActivities} />
               </div>
             </div>
-          )}
+
+            <div className="crm-dashboard-right-rail">
+              <DashboardRightRail />
+            </div>
+          </div>
+        </div>
+      )}
 
           {/* ==============================================================
               SCREEN 2: SALES DASHBOARD

@@ -694,13 +694,13 @@
 .btn-primary {
   background: var(--brand-gradient);
   color: #ffffff;
-  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
   border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .btn-primary:hover:not(:disabled) {
   background: var(--brand-gradient-hover);
-  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45);
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.45);
 }
 
 .btn-secondary {

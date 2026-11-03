@@ -74,8 +74,8 @@
 
 .lg-subnav-link.is-active {
   color: #ffffff;
-  background: var(--primary-600, #2563eb);
-  box-shadow: 0 0 12px rgba(37, 99, 235, 0.4);
+  background: var(--secondary-color, #10b981);
+  box-shadow: 0 0 14px rgba(16, 185, 129, 0.4);
 }
 
 /* Header */
@@ -486,7 +486,7 @@
 }
 
 .lg-page-num.is-active {
-  background: var(--primary-600, #2563eb);
+  background: var(--secondary-color, #10b981);
   color: #ffffff;
 }
 
@@ -792,7 +792,7 @@
 }
 
 .lg-toggle.is-on .lg-toggle-switch {
-  background: var(--primary-600, #2563eb);
+  background: var(--secondary-color, #10b981);
   border-color: var(--primary-500, #3b82f6);
 }
 
