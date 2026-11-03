@@ -1451,8 +1451,8 @@
 
 .agent-input-leading-icon {
   position: absolute;
-  left: 12px;
-  color: #9CA3AF;
+  left: 13px;
+  color: #6B8F74;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1464,10 +1464,10 @@
   width: 100%;
   height: 42px;
   padding: 8px 14px;
-  border: 1.5px solid var(--agent-border, #E5E7EB);
-  border-radius: 10px;
-  background: #FFFFFF;
-  color: var(--agent-text-main, #111827);
+  border: 1.5px solid #D1E5D7;
+  border-radius: 11px;
+  background: #F2F8F4;
+  color: var(--agent-primary, #062E03);
   font-size: 0.875rem;
   font-weight: 500;
   transition: all 0.2s ease;
@@ -1482,10 +1482,16 @@
   padding-right: 38px;
 }
 
+.agent-form-input:hover {
+  background: #EAF4ED;
+  border-color: #B4D7C0;
+}
+
 .agent-form-input:focus {
   outline: none;
+  background: #FFFFFF;
   border-color: var(--agent-secondary, #10B981);
-  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.18);
 }
 
 .agent-form-input:focus ~ .agent-input-leading-icon,
@@ -1494,7 +1500,7 @@
 }
 
 .agent-form-input::placeholder {
-  color: #9CA3AF;
+  color: #7E9E87;
   font-weight: 400;
 }
 
@@ -1503,7 +1509,7 @@
   right: 10px;
   background: none;
   border: none;
-  color: #6B7280;
+  color: #6B8F74;
   cursor: pointer;
   padding: 4px;
   display: flex;
@@ -1654,9 +1660,9 @@
   justify-content: center;
   gap: 6px;
   height: 38px;
-  border: 1.5px solid var(--agent-border, #E5E7EB);
-  border-radius: 10px;
-  background: #FFFFFF;
+  border: 1.5px solid #D1E5D7;
+  border-radius: 11px;
+  background: #F2F8F4;
   color: var(--agent-text-main, #111827);
   font-size: 0.75rem;
   font-weight: 600;
@@ -1667,7 +1673,7 @@
 
 .agent-social-pill:hover {
   border-color: var(--agent-secondary, #10B981);
-  background: #F9FAF8;
+  background: #EAF4ED;
   transform: translateY(-1px);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
