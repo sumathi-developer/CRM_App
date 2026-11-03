@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Navbar } from '../components/common/Navbar';
 import { FormField } from '../components/auth/FormField';
@@ -147,6 +147,37 @@ export const ProfilePage: React.FC = () => {
       <Navbar />
 
       <main className="authenticated-container" id="profile-page">
+        {/* Top Account & Security Sub-Navigation */}
+        <nav
+          className="lg-subnav ld-subnav"
+          aria-label="Account and Security sub-navigation"
+          style={{ marginBottom: '1.5rem' }}
+        >
+          <div className="lg-subnav-group">
+            <span className="lg-subnav-label">Account & Security</span>
+            <div className="lg-subnav-links">
+              <NavLink
+                to="/profile"
+                className={({ isActive }) => `lg-subnav-link ${isActive ? 'is-active' : ''}`}
+              >
+                Profile Settings
+              </NavLink>
+              <NavLink
+                to="/change-password"
+                className={({ isActive }) => `lg-subnav-link ${isActive ? 'is-active' : ''}`}
+              >
+                Change Password
+              </NavLink>
+              <NavLink
+                to="/sessions"
+                className={({ isActive }) => `lg-subnav-link ${isActive ? 'is-active' : ''}`}
+              >
+                Active Sessions
+              </NavLink>
+            </div>
+          </div>
+        </nav>
+
         <div className="page-header">
           <div className="page-title-group">
             <h1 className="page-title">User Account &amp; Profile</h1>
