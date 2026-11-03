@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import {
@@ -11,7 +11,7 @@ import {
   EyeOffIcon,
 } from '../components/common/Icons';
 
-/* Google Icon SVG (Standard Multi-color Brand Glyph) */
+/* Google Official Brand Icon */
 const GoogleIcon: React.FC<{ size?: number }> = ({ size = 18 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
     <path
@@ -33,26 +33,26 @@ const GoogleIcon: React.FC<{ size?: number }> = ({ size = 18 }) => (
   </svg>
 );
 
-/* Instagram Icon SVG (Replaces Apple ID with Official Camera Gradient) */
+/* Instagram Official Brand Icon */
 const InstagramIcon: React.FC<{ size?: number }> = ({ size = 18 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+  <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
     <defs>
-      <linearGradient id="igLogoGrad" x1="0%" y1="100%" x2="100%" y2="0%">
-        <stop offset="0%" stopColor="#FEE411" />
-        <stop offset="20%" stopColor="#FEDB16" />
-        <stop offset="40%" stopColor="#F35339" />
-        <stop offset="60%" stopColor="#E02D69" />
-        <stop offset="80%" stopColor="#B322B2" />
-        <stop offset="100%" stopColor="#515BD4" />
+      <linearGradient id="igBrandGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+        <stop offset="0%" stopColor="#f09433" />
+        <stop offset="25%" stopColor="#e6683c" />
+        <stop offset="50%" stopColor="#dc2743" />
+        <stop offset="75%" stopColor="#cc2366" />
+        <stop offset="100%" stopColor="#bc1888" />
       </linearGradient>
     </defs>
-    <rect x="2.5" y="2.5" width="19" height="19" rx="5.5" stroke="url(#igLogoGrad)" strokeWidth="2" />
-    <circle cx="12" cy="12" r="4.2" stroke="url(#igLogoGrad)" strokeWidth="2" />
-    <circle cx="17.5" cy="6.5" r="1.3" fill="url(#igLogoGrad)" />
+    <path
+      fill="url(#igBrandGrad)"
+      d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"
+    />
   </svg>
 );
 
-/* Facebook Icon SVG (Official Blue Brand Glyph) */
+/* Facebook Official Brand Icon */
 const FacebookIcon: React.FC<{ size?: number }> = ({ size = 18 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="#1877F2" aria-hidden="true">
     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
@@ -66,8 +66,8 @@ export const LoginPage: React.FC = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   // Form feedback states
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
@@ -75,16 +75,16 @@ export const LoginPage: React.FC = () => {
   const [apiSuccess, setApiSuccess] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Load remember me preference if stored
-  useEffect(() => {
+  // Load remembered email on mount if available
+  React.useEffect(() => {
     try {
-      const savedEmail = localStorage.getItem('nexus_crm_remember_email');
+      const savedEmail = localStorage.getItem('crm_remember_email');
       if (savedEmail) {
         setEmail(savedEmail);
         setRememberMe(true);
       }
     } catch {
-      // Non-blocking storage fallback
+      // Ignore localStorage read issues
     }
   }, []);
 
@@ -122,9 +122,9 @@ export const LoginPage: React.FC = () => {
 
     try {
       if (rememberMe) {
-        localStorage.setItem('nexus_crm_remember_email', email.trim().toLowerCase());
+        localStorage.setItem('crm_remember_email', email.trim().toLowerCase());
       } else {
-        localStorage.removeItem('nexus_crm_remember_email');
+        localStorage.removeItem('crm_remember_email');
       }
 
       await login({
@@ -132,7 +132,7 @@ export const LoginPage: React.FC = () => {
         password,
       });
 
-      setApiSuccess('Authentication successful! Accessing CRM workspace...');
+      setApiSuccess('Authentication successful! Opening workspace...');
 
       const destination = (location.state as any)?.from?.pathname || '/workspaces';
       setTimeout(() => {
@@ -155,30 +155,24 @@ export const LoginPage: React.FC = () => {
     setTimeout(() => setApiSuccess(null), 2500);
   };
 
-  // Social notice (honest notification for Instagram / social demo)
-  const handleSocialNotice = (provider: string) => {
-    setApiSuccess(`${provider} sign-in is currently in sandbox testing. Please use demo credentials.`);
-    setTimeout(() => setApiSuccess(null), 3000);
-  };
-
   return (
     <div className="agent-login-page-root" id="agent-login-screen">
       {/* Background Horizon Line */}
       <div className="agent-ground-horizon" aria-hidden="true" />
 
-      {/* 1. COMPACT TOP HEADER */}
+      {/* 1. TOP COMPACT HEADER */}
       <header className="agent-top-navbar" role="banner">
         <div className="agent-brand-group">
-          <Link to="/login" className="agent-brand-logo" title="Nexus CRM">
+          <Link to="/login" className="agent-brand-logo" title="Nexus CRM Home">
             <span className="agent-brand-logo-mark" aria-hidden="true">N</span>
-            <span>Nexus CRM</span>
+            <span className="agent-brand-name">Nexus<span className="agent-brand-accent">CRM</span></span>
           </Link>
           <a
-            href="mailto:Sales@Nexus.crm"
+            href="mailto:Sales@nexuscrm.com"
             className="agent-brand-contact-link"
             title="Contact Enterprise Sales"
           >
-            <span>Sales@Nexus.crm</span>
+            <span>Sales@nexuscrm.com</span>
             <span aria-hidden="true">&rarr;</span>
           </a>
         </div>
@@ -187,7 +181,7 @@ export const LoginPage: React.FC = () => {
           <button
             type="button"
             className="agent-globe-btn"
-            title="Language & Regional Settings"
+            title="Language & Region"
             aria-label="Language and regional selector"
             onClick={() => {
               setApiSuccess('Language: English (US)');
@@ -198,136 +192,130 @@ export const LoginPage: React.FC = () => {
           </button>
 
           <Link to="/register" className="agent-nav-signup-link">
-            Sign up
+            Sign Up
           </Link>
 
           <button
             type="button"
             className="agent-request-demo-btn"
             onClick={() => handleQuickLogin('admin@crm.com', 'Admin@123')}
-            title="Click to pre-fill Admin demo credentials"
+            title="Pre-fill Admin demo credentials"
           >
             Request Demo
           </button>
         </div>
       </header>
 
-      {/* 2. CENTRAL HERO STAGE: CENTERED LOGIN CARD & SUPPORTING VISUALS */}
-      <main className="agent-stage-viewport" role="main">
-        {/* Left Decorative Minimalist Line-Art Graphics */}
+      {/* 2. CENTRAL HERO STAGE WITH ILLUSTRATIONS & FLOATING CARD */}
+      <div className="agent-stage-viewport">
+        {/* Left Minimalist Line-Art & Memphis-Style Decorative Element */}
         <svg
           className="agent-illustration-left"
-          viewBox="0 0 280 440"
+          viewBox="0 0 320 480"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           aria-hidden="true"
         >
           <defs>
             <pattern
-              id="leftDotGrid"
+              id="dotPatternLeft"
               x="0"
               y="0"
-              width="12"
-              height="12"
+              width="14"
+              height="14"
               patternUnits="userSpaceOnUse"
             >
-              <circle cx="6" cy="6" r="1.6" fill="#10B981" opacity="0.35" />
+              <circle cx="7" cy="7" r="2.2" fill="#062E03" />
             </pattern>
           </defs>
 
-          {/* Thin curved line-art graphic top left */}
+          {/* Squiggly line top left */}
           <path
-            d="M20 120 C 50 80, 75 140, 105 95 C 135 65, 165 110, 195 85"
+            d="M30 140 C 60 90, 80 160, 110 110 C 140 70, 170 120, 200 95"
             stroke="#10B981"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            opacity="0.65"
+            strokeWidth="1.6"
             fill="none"
+            strokeLinecap="round"
           />
 
-          {/* Subtle purple accent ring */}
-          <circle cx="150" cy="165" r="4" fill="none" stroke="#7C3AED" strokeWidth="1.8" opacity="0.6" />
+          {/* Small circle accent */}
+          <circle cx="160" cy="190" r="3.5" fill="none" stroke="#7C3AED" strokeWidth="1.5" />
 
-          {/* Minimalist floating document card outline */}
+          {/* Document outline box */}
           <rect
-            x="35"
-            y="145"
-            width="95"
-            height="68"
-            rx="6"
+            x="45"
+            y="155"
+            width="105"
+            height="75"
+            rx="4"
             fill="#FFFFFF"
-            stroke="#E5E5DF"
+            stroke="#062E03"
             strokeWidth="1.5"
           />
           <line
-            x1="50"
-            y1="172"
-            x2="100"
-            y2="172"
+            x1="65"
+            y1="185"
+            x2="115"
+            y2="185"
             stroke="#10B981"
             strokeWidth="1.5"
             strokeLinecap="round"
-            opacity="0.8"
           />
           <line
-            x1="50"
-            y1="186"
-            x2="85"
-            y2="186"
-            stroke="#737373"
+            x1="65"
+            y1="200"
+            x2="100"
+            y2="200"
+            stroke="#062E03"
             strokeWidth="1.5"
             strokeLinecap="round"
-            opacity="0.45"
           />
 
-          {/* Minimalist curved connector doodle */}
+          {/* Curly doodle right of box */}
           <path
-            d="M155 240 C 175 260, 185 235, 205 250"
-            stroke="#737373"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            opacity="0.4"
+            d="M165 260 C 185 285, 195 255, 210 270"
+            stroke="#7C3AED"
+            strokeWidth="1.6"
             fill="none"
+            strokeLinecap="round"
           />
 
-          {/* Architectural pillar with delicate emerald polka dots */}
+          {/* Polka-dot pillar left (Secondary emerald #10B981 with dark #062E03 dots) */}
           <rect
             x="20"
-            y="260"
-            width="60"
-            height="130"
-            rx="4"
-            fill="#F4F4EE"
-            stroke="#E5E5DF"
-            strokeWidth="1.2"
+            y="275"
+            width="68"
+            height="145"
+            rx="3"
+            fill="#10B981"
+            stroke="#062E03"
+            strokeWidth="1.5"
           />
-          <rect x="20" y="260" width="60" height="130" rx="4" fill="url(#leftDotGrid)" />
+          <rect x="20" y="275" width="68" height="145" rx="3" fill="url(#dotPatternLeft)" />
 
-          {/* Minimalist cube with upward growth arrow */}
+          {/* Isometric Cube with upward growth arrow */}
           <rect
-            x="90"
-            y="295"
-            width="62"
-            height="95"
-            rx="4"
+            x="95"
+            y="315"
+            width="65"
+            height="105"
+            rx="3"
             fill="#FFFFFF"
-            stroke="#E5E5DF"
+            stroke="#062E03"
             strokeWidth="1.5"
           />
           <path
-            d="M106 355 L 132 318 M 132 318 L 116 318 M 132 318 L 132 334"
-            stroke="#062E03"
+            d="M112 375 L 140 335 M 140 335 L 122 335 M 140 335 L 140 352"
+            stroke="#10B981"
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
-
-          {/* Small purple accent dot */}
-          <circle cx="170" cy="275" r="3" fill="#7C3AED" opacity="0.65" />
         </svg>
 
-        {/* 3. CENTERED MAIN LOGIN CARD – PRIMARY VISUAL FOCUS */}
-        <section className="agent-login-card" aria-labelledby="agent-login-title">
+        {/* Central White Login Card */}
+        <div className="agent-login-card" role="region" aria-labelledby="agent-login-title">
+          {/* 1. Heading & Supporting Text */}
           <h1 className="agent-card-title" id="agent-login-title">
             Welcome Back
           </h1>
@@ -335,17 +323,17 @@ export const LoginPage: React.FC = () => {
             Enter your details to access your CRM account.
           </p>
 
-          {/* Feedback alerts */}
+          {/* Alerts */}
           {apiError && (
             <div className="agent-alert-box error" role="alert">
-              <AlertCircleIcon size={16} />
+              <AlertCircleIcon size={15} />
               <span>{Array.isArray(apiError) ? apiError.join(', ') : apiError}</span>
             </div>
           )}
 
           {apiSuccess && (
             <div className="agent-alert-box success" role="status">
-              <CheckCircleIcon size={16} />
+              <CheckCircleIcon size={15} />
               <span>{apiSuccess}</span>
             </div>
           )}
@@ -357,18 +345,21 @@ export const LoginPage: React.FC = () => {
             className="agent-login-form"
             id="agent-login-form"
           >
-            {/* Input 1: Email Address */}
+            {/* 2. Email Address Input */}
             <div className="agent-field-wrap">
+              <label htmlFor="agent-email-input" className="agent-field-label">
+                Email Address
+              </label>
               <div className="agent-input-container">
-                <div className="agent-input-leading-icon" aria-hidden="true">
-                  <MailIcon size={18} />
-                </div>
+                <span className="agent-input-leading-icon" aria-hidden="true">
+                  <MailIcon size={16} strokeWidth={1.8} />
+                </span>
                 <input
                   id="agent-email-input"
                   name="email"
                   type="email"
-                  className="agent-form-input"
-                  placeholder="Email Address"
+                  className="agent-form-input with-leading-icon"
+                  placeholder="name@company.com"
                   value={email}
                   onChange={(e) => {
                     setEmail(e.target.value);
@@ -385,18 +376,21 @@ export const LoginPage: React.FC = () => {
               )}
             </div>
 
-            {/* Input 2: Password with Eye/EyeOff toggle */}
+            {/* 3. Password Input */}
             <div className="agent-field-wrap">
+              <label htmlFor="agent-password-input" className="agent-field-label">
+                Password
+              </label>
               <div className="agent-input-container">
-                <div className="agent-input-leading-icon" aria-hidden="true">
-                  <LockIcon size={18} />
-                </div>
+                <span className="agent-input-leading-icon" aria-hidden="true">
+                  <LockIcon size={16} strokeWidth={1.8} />
+                </span>
                 <input
                   id="agent-password-input"
                   name="password"
                   type={showPassword ? 'text' : 'password'}
-                  className="agent-form-input"
-                  placeholder="Password"
+                  className="agent-form-input with-leading-icon with-trailing-icon"
+                  placeholder="••••••••"
                   value={password}
                   onChange={(e) => {
                     setPassword(e.target.value);
@@ -410,9 +404,9 @@ export const LoginPage: React.FC = () => {
                   className="agent-pw-toggle-btn"
                   onClick={() => setShowPassword((prev) => !prev)}
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
-                  tabIndex={-1}
+                  title={showPassword ? 'Hide password' : 'Show password'}
                 >
-                  {showPassword ? <EyeOffIcon size={18} /> : <EyeIcon size={18} />}
+                  {showPassword ? <EyeOffIcon size={16} /> : <EyeIcon size={16} />}
                 </button>
               </div>
               {errors.password && (
@@ -422,40 +416,45 @@ export const LoginPage: React.FC = () => {
               )}
             </div>
 
-            {/* Remember Me & Forgot Password Row */}
-            <div className="agent-form-options-row">
+            {/* 4. Remember Me and Forgot Password */}
+            <div className="agent-remember-forgot-row">
               <label className="agent-remember-label">
                 <input
                   type="checkbox"
                   id="agent-remember-me-checkbox"
+                  className="agent-remember-checkbox"
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
-                  disabled={isSubmitting}
                 />
                 <span>Remember Me</span>
               </label>
-
-              <Link to="/forgot-password" className="agent-forgot-link">
+              <Link to="/forgot-password" className="agent-trouble-link">
                 Forgot Password?
               </Link>
             </div>
 
-            {/* Sign In Button */}
+            {/* 5. Sign In Button */}
             <button
               type="submit"
               className="agent-signin-btn"
               disabled={isSubmitting}
               id="agent-submit-btn"
             >
-              {isSubmitting ? 'Signing in...' : 'Sign In'}
+              {isSubmitting ? (
+                <>
+                  <span className="agent-btn-spinner" aria-hidden="true" />
+                  <span>Signing in...</span>
+                </>
+              ) : (
+                'Sign In'
+              )}
             </button>
 
-            {/* Social Separator */}
-            <div className="agent-social-divider" aria-hidden="true">
+            {/* 6. Social Login Section (Google, Instagram, Facebook in 1 horizontal row) */}
+            <div className="agent-or-divider">
               <span>Or continue with</span>
             </div>
 
-            {/* Social Buttons: Google, Instagram, Facebook */}
             <div className="agent-social-buttons-grid">
               <button
                 type="button"
@@ -463,17 +462,20 @@ export const LoginPage: React.FC = () => {
                 onClick={() => handleQuickLogin('admin@crm.com', 'Admin@123')}
                 title="Sign in with Google (Demo Admin)"
               >
-                <GoogleIcon size={17} />
+                <GoogleIcon size={16} />
                 <span>Google</span>
               </button>
 
               <button
                 type="button"
                 className="agent-social-pill"
-                onClick={() => handleSocialNotice('Instagram')}
+                onClick={() => {
+                  setApiSuccess('Instagram login ready for OAuth API integration');
+                  setTimeout(() => setApiSuccess(null), 3000);
+                }}
                 title="Sign in with Instagram"
               >
-                <InstagramIcon size={17} />
+                <InstagramIcon size={16} />
                 <span>Instagram</span>
               </button>
 
@@ -483,14 +485,14 @@ export const LoginPage: React.FC = () => {
                 onClick={() => handleQuickLogin('sarah.rep@crm.com', 'Rep@123')}
                 title="Sign in with Facebook (Demo Sales Rep)"
               >
-                <FacebookIcon size={17} />
+                <FacebookIcon size={16} />
                 <span>Facebook</span>
               </button>
             </div>
 
-            {/* Quick Demo Credentials Switcher */}
+            {/* Compact Quick Demo Helper */}
             <div className="agent-quick-demo-box">
-              <span className="agent-quick-demo-title">Quick Demo Login:</span>
+              <span className="agent-quick-demo-title">Demo Accounts:</span>
               <div className="agent-quick-demo-pills">
                 <button
                   type="button"
@@ -511,7 +513,7 @@ export const LoginPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Registration Text */}
+            {/* 7. Registration Link */}
             <div className="agent-request-now-row">
               <span>Don't have an account?</span>
               <Link to="/register" className="agent-request-now-link">
@@ -519,9 +521,9 @@ export const LoginPage: React.FC = () => {
               </Link>
             </div>
           </form>
-        </section>
+        </div>
 
-        {/* 4. PROFESSIONAL HUMAN AVATAR ILLUSTRATION – RIGHT SIDE */}
+        {/* Right Professional Human Avatar Illustration Working on Laptop */}
         <svg
           className="agent-illustration-right"
           viewBox="0 0 380 480"
@@ -531,234 +533,205 @@ export const LoginPage: React.FC = () => {
         >
           <defs>
             <pattern
-              id="rightDotGrid"
+              id="dotPatternRight"
               x="0"
               y="0"
-              width="12"
-              height="12"
+              width="14"
+              height="14"
               patternUnits="userSpaceOnUse"
             >
-              <circle cx="6" cy="6" r="1.6" fill="#062E03" opacity="0.22" />
+              <circle cx="7" cy="7" r="2.2" fill="#062E03" />
             </pattern>
-            <linearGradient id="laptopScreenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#10B981" stopOpacity="0.3" />
-              <stop offset="100%" stopColor="#062E03" stopOpacity="0.12" />
-            </linearGradient>
+            <pattern
+              id="shirtPattern"
+              x="0"
+              y="0"
+              width="8"
+              height="8"
+              patternUnits="userSpaceOnUse"
+            >
+              <path d="M0 8 L8 0 M0 0 L8 8" stroke="#FFFFFF" strokeWidth="0.8" opacity="0.4" />
+            </pattern>
           </defs>
 
-          {/* Floating line-art squiggle top right */}
+          {/* Floating curly hair loop / doodle at top */}
           <path
-            d="M285 130 C 315 115, 325 155, 345 135"
-            stroke="#10B981"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            opacity="0.6"
+            d="M170 70 C 195 50, 200 95, 215 70"
+            stroke="#062E03"
+            strokeWidth="1.5"
             fill="none"
+            strokeLinecap="round"
           />
 
-          {/* Minimalist floating notification / speech card above agent */}
+          {/* Speech card box above agent */}
           <rect
             x="220"
-            y="115"
-            width="60"
-            height="40"
-            rx="8"
+            y="135"
+            width="58"
+            height="38"
+            rx="4"
             fill="#FFFFFF"
-            stroke="#E5E5DF"
+            stroke="#062E03"
+            strokeWidth="1.5"
+          />
+          <line
+            x1="232"
+            y1="149"
+            x2="264"
+            y2="149"
+            stroke="#10B981"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+          <line
+            x1="232"
+            y1="159"
+            x2="254"
+            y2="159"
+            stroke="#7C3AED"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+
+          {/* Squiggle behind agent */}
+          <path
+            d="M290 145 C 320 135, 330 175, 350 155"
+            stroke="#7C3AED"
+            strokeWidth="1.5"
+            fill="none"
+            strokeLinecap="round"
+          />
+
+          {/* Small circle accent */}
+          <circle cx="218" cy="265" r="3" fill="none" stroke="#10B981" strokeWidth="1.5" />
+
+          {/* Architectural Pedestal Box avatar sits on */}
+          <rect
+            x="240"
+            y="275"
+            width="75"
+            height="145"
+            rx="3"
+            fill="#FFFFFF"
+            stroke="#062E03"
+            strokeWidth="1.5"
+          />
+
+          {/* Polka-dot pillar on far right (Secondary emerald #10B981 with primary #062E03 dots) */}
+          <rect
+            x="320"
+            y="300"
+            width="55"
+            height="120"
+            rx="3"
+            fill="#10B981"
+            stroke="#062E03"
+            strokeWidth="1.5"
+          />
+          <rect x="320" y="300" width="55" height="120" rx="3" fill="url(#dotPatternRight)" />
+
+          {/* PROFESSIONAL HUMAN AVATAR CHARACTER */}
+          {/* Left leg (crossed/dangling gracefully) */}
+          <path
+            d="M250 255 L 220 315 L 235 325 L 265 255 Z"
+            fill="#FFFFFF"
+            stroke="#062E03"
+            strokeWidth="1.5"
+            strokeLinejoin="round"
+          />
+          {/* Right leg */}
+          <path
+            d="M260 255 L 245 325 L 260 333 L 280 255 Z"
+            fill="#FFFFFF"
+            stroke="#062E03"
+            strokeWidth="1.5"
+            strokeLinejoin="round"
+          />
+          {/* Left shoe */}
+          <path
+            d="M212 337 L 225 315 L 235 325 L 225 343 Z"
+            fill="#062E03"
+            stroke="#062E03"
+            strokeWidth="1"
+          />
+          {/* Right shoe */}
+          <path
+            d="M245 325 L 255 347 L 265 347 L 260 331 Z"
+            fill="#062E03"
+            stroke="#062E03"
+            strokeWidth="1"
+          />
+
+          {/* Torso & patterned corporate blouse in #7C3AED accent */}
+          <path
+            d="M260 200 C 255 215, 250 240, 255 260 L 285 260 C 288 240, 288 215, 280 200 Z"
+            fill="#7C3AED"
+          />
+          <path
+            d="M260 200 C 255 215, 250 240, 255 260 L 285 260 C 288 240, 288 215, 280 200 Z"
+            fill="url(#shirtPattern)"
+            stroke="#062E03"
+            strokeWidth="1.5"
+          />
+
+          {/* Neck with collar */}
+          <rect
+            x="265"
+            y="190"
+            width="8"
+            height="12"
+            fill="#FAF8F5"
+            stroke="#062E03"
+            strokeWidth="1.5"
+          />
+          {/* Head */}
+          <circle cx="269" cy="183" r="10" fill="#FAF8F5" stroke="#062E03" strokeWidth="1.5" />
+          {/* Hair / Corporate Bun */}
+          <path
+            d="M265 175 C 260 165, 278 160, 278 173 C 285 173, 288 183, 285 193 C 282 203, 272 203, 270 195 Z"
+            fill="#062E03"
+          />
+          <circle cx="276" cy="163" r="5" fill="#062E03" />
+
+          {/* Laptop on lap (with #10B981 emerald display screen) */}
+          <path
+            d="M222 200 L 234 255 L 262 255 L 250 200 Z"
+            fill="#D1FAE5"
+            stroke="#10B981"
             strokeWidth="1.5"
           />
           <line
             x1="234"
-            y1="129"
-            x2="266"
-            y2="129"
-            stroke="#10B981"
+            y1="255"
+            x2="268"
+            y2="255"
+            stroke="#062E03"
             strokeWidth="2"
             strokeLinecap="round"
           />
-          <line
-            x1="234"
-            y1="140"
-            x2="254"
-            y2="140"
-            stroke="#7C3AED"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            opacity="0.8"
-          />
 
-          {/* Small purple accent dot */}
-          <circle cx="212" cy="245" r="3.5" fill="#7C3AED" opacity="0.7" />
-
-          {/* Minimalist architectural pedestal cube the professional sits on */}
-          <rect
-            x="235"
-            y="265"
-            width="80"
-            height="145"
-            rx="4"
-            fill="#FFFFFF"
-            stroke="#E5E5DF"
-            strokeWidth="1.5"
-          />
-          <rect x="235" y="265" width="80" height="145" rx="4" fill="rgba(6, 46, 3, 0.02)" />
-
-          {/* Architectural pillar on far right with subtle dark green polka dots */}
-          <rect
-            x="325"
-            y="290"
-            width="50"
-            height="120"
-            rx="3"
-            fill="#F4F4EE"
-            stroke="#E5E5DF"
-            strokeWidth="1.2"
-          />
-          <rect x="325" y="290" width="50" height="120" rx="3" fill="url(#rightDotGrid)" />
-
-          {/* PROFESSIONAL HUMAN AVATAR */}
-          {/* Left leg (crossed comfortably forward) */}
+          {/* Arms typing on laptop */}
           <path
-            d="M245 255 C 235 275, 215 315, 210 325 C 218 332, 230 330, 238 322 C 248 305, 258 275, 262 255 Z"
-            fill="#FFFFFF"
-            stroke="#D4D4CE"
-            strokeWidth="1.5"
-            strokeLinejoin="round"
-          />
-
-          {/* Right leg (resting naturally downwards) */}
-          <path
-            d="M258 255 C 252 285, 245 325, 245 338 C 255 342, 265 338, 270 330 C 275 305, 280 275, 280 255 Z"
-            fill="#FFFFFF"
-            stroke="#D4D4CE"
-            strokeWidth="1.5"
-            strokeLinejoin="round"
-          />
-
-          {/* Loafer shoes in deep forest green (#062E03) */}
-          <path
-            d="M205 324 L 198 335 C 196 342, 204 345, 215 343 L 222 328 Z"
-            fill="#062E03"
-            stroke="#062E03"
-            strokeWidth="1"
-          />
-          <path
-            d="M242 336 L 244 348 C 245 354, 254 354, 262 350 L 260 334 Z"
-            fill="#062E03"
-            stroke="#062E03"
-            strokeWidth="1"
-          />
-
-          {/* Corporate blazer in deep forest green (#062E03) */}
-          <path
-            d="M258 195 C 248 210, 242 235, 248 260 L 285 260 C 290 235, 288 210, 278 195 Z"
-            fill="#062E03"
-          />
-
-          {/* Inner blouse with emerald collar accent */}
-          <path d="M264 195 L 268 215 L 272 195 Z" fill="#FFFFFF" />
-          <line x1="264" y1="198" x2="268" y2="214" stroke="#10B981" strokeWidth="1.5" />
-          <path
-            d="M258 195 L 268 225 L 278 195"
-            fill="none"
-            stroke="#10B981"
-            strokeWidth="1.2"
-            opacity="0.6"
-          />
-
-          {/* Neck */}
-          <rect x="265" y="184" width="7" height="13" rx="2" fill="#F6D6C2" />
-
-          {/* Head & Natural Profile */}
-          <ellipse cx="268" cy="175" rx="8" ry="9.5" fill="#F6D6C2" />
-          <circle cx="274" cy="176" r="2.2" fill="#E8BFA8" />
-          <path
-            d="M263 176 Q 265 178 267 177"
-            stroke="#9A6B53"
-            strokeWidth="1"
-            fill="none"
-            strokeLinecap="round"
-          />
-
-          {/* Chic modern topknot bun in rich dark espresso with purple accessory pin */}
-          <path
-            d="M263 172 C 258 162, 274 158, 276 169 C 283 169, 285 178, 282 186 C 278 192, 269 191, 267 184 Z"
-            fill="#261C14"
-          />
-          <circle cx="274" cy="159" r="5" fill="#261C14" />
-          <circle cx="278" cy="162" r="2" fill="#7C3AED" />
-
-          {/* Slim metallic laptop on lap with emerald glow */}
-          <polygon
-            points="214,196 226,250 258,250 248,196"
-            fill="#F1F5F9"
-            stroke="#94A3B8"
-            strokeWidth="1.2"
-          />
-          <polygon
-            points="216,199 227,247 256,247 246,199"
-            fill="url(#laptopScreenGrad)"
-          />
-          {/* Subtle dashboard lines on screen */}
-          <line
-            x1="223"
-            y1="212"
-            x2="242"
-            y2="212"
-            stroke="#10B981"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          />
-          <line
-            x1="225"
-            y1="222"
-            x2="238"
-            y2="222"
-            stroke="#7C3AED"
-            strokeWidth="1.2"
-            strokeLinecap="round"
-          />
-          {/* Laptop keyboard base */}
-          <line
-            x1="224"
-            y1="250"
-            x2="265"
-            y2="250"
-            stroke="#475569"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-          />
-
-          {/* Arms typing naturally on laptop */}
-          <path
-            d="M260 205 C 248 218, 236 226, 240 242"
+            d="M262 210 C 250 225, 235 230, 242 240"
             fill="none"
             stroke="#062E03"
-            strokeWidth="5.5"
-            strokeLinecap="round"
-          />
-          <path
-            d="M240 242 C 242 245, 246 247, 250 248"
-            fill="none"
-            stroke="#F6D6C2"
-            strokeWidth="3.5"
+            strokeWidth="2"
             strokeLinecap="round"
           />
         </svg>
-      </main>
+      </div>
 
-      {/* 5. COMPACT FOOTER */}
+      {/* 3. PAGE FOOTER */}
       <footer className="agent-page-footer" role="contentinfo">
-        <span>&copy; 2026 Nexus CRM. All rights reserved.</span>
-        <div className="agent-footer-links">
-          <Link to="/privacy-policy" className="agent-footer-link">
-            Privacy Policy
-          </Link>
-          <span aria-hidden="true">&bull;</span>
-          <Link to="/terms" className="agent-footer-link">
-            Terms and Conditions
-          </Link>
-        </div>
+        <span>© 2026 Nexus CRM. All rights reserved.</span>
+        <span className="agent-footer-divider">•</span>
+        <Link to="/privacy" className="agent-footer-link">
+          Privacy Policy
+        </Link>
+        <span className="agent-footer-divider">•</span>
+        <Link to="/terms" className="agent-footer-link">
+          Terms & Conditions
+        </Link>
       </footer>
     </div>
   );
