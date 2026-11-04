@@ -372,6 +372,27 @@ export const LoginPage: React.FC = () => {
 
       {/* 2. CENTRAL HERO STAGE WITH FLOATING CARD */}
       <div className="agent-stage-viewport">
+        {/* Left Mascot Character Flank */}
+        <aside className="agent-mascot-flank mascot-left" aria-label="Onseclick CRM Mascot Guide Left">
+          <div className="agent-mascot-card">
+            <div className="agent-mascot-speech-bubble">
+              <span className="bubble-text">{email ? `Hi, ${email.split('@')[0]}! 👋` : 'Welcome back! 👋'}</span>
+              <span className="bubble-arrow" />
+            </div>
+            <div className="agent-mascot-img-wrap">
+              <img
+                src="/assets/mascot.png"
+                alt="Onseclick CRM Mascot"
+                className="agent-mascot-img"
+              />
+            </div>
+            <div className="agent-mascot-tag">
+              <span className="mascot-tag-icon">⚡</span>
+              <span className="mascot-tag-text">Unified Intelligence</span>
+            </div>
+          </div>
+        </aside>
+
         {/* Central White Login Card */}
         <div className="agent-login-card" role="region" aria-labelledby="agent-login-title">
           {/* 1. Heading & Supporting Text */}
@@ -581,6 +602,27 @@ export const LoginPage: React.FC = () => {
             </div>
           </form>
         </div>
+
+        {/* Right Mascot Character Flank */}
+        <aside className="agent-mascot-flank mascot-right" aria-label="Onseclick CRM Mascot Guide Right">
+          <div className="agent-mascot-card">
+            <div className="agent-mascot-speech-bubble">
+              <span className="bubble-text">{showPassword ? 'Password visible! 👁️' : 'Safe & Encrypted 🔒'}</span>
+              <span className="bubble-arrow" />
+            </div>
+            <div className="agent-mascot-img-wrap">
+              <img
+                src="/assets/mascot.png"
+                alt="Onseclick CRM Mascot"
+                className="agent-mascot-img flipped"
+              />
+            </div>
+            <div className="agent-mascot-tag">
+              <span className="mascot-tag-icon">🛡️</span>
+              <span className="mascot-tag-text">256-bit SSL Security</span>
+            </div>
+          </div>
+        </aside>
       </div>
 
       {/* 3. PAGE FOOTER */}
