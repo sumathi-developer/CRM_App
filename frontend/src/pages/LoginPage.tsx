@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { Logo } from '../components/auth/Logo';
 import {
   GlobeIcon,
   AlertCircleIcon,
@@ -329,16 +330,13 @@ export const LoginPage: React.FC = () => {
       {/* 1. TOP COMPACT HEADER */}
       <header className="agent-top-navbar" role="banner">
         <div className="agent-brand-group">
-          <Link to="/login" className="agent-brand-logo" title="Nexus CRM Home">
-            <span className="agent-brand-logo-mark" aria-hidden="true">N</span>
-            <span className="agent-brand-name">Nexus<span className="agent-brand-accent">CRM</span></span>
-          </Link>
+          <Logo size="medium" linkTo="/login" showTagline={false} />
           <a
-            href="mailto:Sales@nexuscrm.com"
+            href="mailto:Sales@onseclick.com"
             className="agent-brand-contact-link"
             title="Contact Enterprise Sales"
           >
-            <span>Sales@nexuscrm.com</span>
+            <span>Sales@onseclick.com</span>
             <span aria-hidden="true">&rarr;</span>
           </a>
         </div>
@@ -374,6 +372,27 @@ export const LoginPage: React.FC = () => {
 
       {/* 2. CENTRAL HERO STAGE WITH FLOATING CARD */}
       <div className="agent-stage-viewport">
+        {/* Left Mascot Character Flank */}
+        <aside className="agent-mascot-flank mascot-left" aria-label="Onseclick CRM Mascot Guide Left">
+          <div className="agent-mascot-card">
+            <div className="agent-mascot-speech-bubble">
+              <span className="bubble-text">{email ? `Hi, ${email.split('@')[0]}! 👋` : 'Welcome back! 👋'}</span>
+              <span className="bubble-arrow" />
+            </div>
+            <div className="agent-mascot-img-wrap">
+              <img
+                src="/assets/mascot.png"
+                alt="Onseclick CRM Mascot"
+                className="agent-mascot-img"
+              />
+            </div>
+            <div className="agent-mascot-tag">
+              <span className="mascot-tag-icon">⚡</span>
+              <span className="mascot-tag-text">Unified Intelligence</span>
+            </div>
+          </div>
+        </aside>
+
         {/* Central White Login Card */}
         <div className="agent-login-card" role="region" aria-labelledby="agent-login-title">
           {/* 1. Heading & Supporting Text */}
@@ -583,11 +602,32 @@ export const LoginPage: React.FC = () => {
             </div>
           </form>
         </div>
+
+        {/* Right Mascot Character Flank */}
+        <aside className="agent-mascot-flank mascot-right" aria-label="Onseclick CRM Mascot Guide Right">
+          <div className="agent-mascot-card">
+            <div className="agent-mascot-speech-bubble">
+              <span className="bubble-text">{showPassword ? 'Password visible! 👁️' : 'Safe & Encrypted 🔒'}</span>
+              <span className="bubble-arrow" />
+            </div>
+            <div className="agent-mascot-img-wrap">
+              <img
+                src="/assets/mascot.png"
+                alt="Onseclick CRM Mascot"
+                className="agent-mascot-img flipped"
+              />
+            </div>
+            <div className="agent-mascot-tag">
+              <span className="mascot-tag-icon">🛡️</span>
+              <span className="mascot-tag-text">256-bit SSL Security</span>
+            </div>
+          </div>
+        </aside>
       </div>
 
       {/* 3. PAGE FOOTER */}
       <footer className="agent-page-footer" role="contentinfo">
-        <span>© 2026 Nexus CRM. All rights reserved.</span>
+        <span>© 2026 Onseclick CRM. All rights reserved.</span>
         <span className="agent-footer-divider">•</span>
         <Link to="/privacy" className="agent-footer-link">
           Privacy Policy

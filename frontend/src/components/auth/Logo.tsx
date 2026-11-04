@@ -24,9 +24,8 @@ export const Logo: React.FC<LogoProps> = ({
           xmlns="http://www.w3.org/2000/svg"
         >
           <defs>
-            <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#062e03" />
-              <stop offset="50%" stopColor="#10b981" />
+            <linearGradient id="onseclickLogoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#10b981" />
               <stop offset="100%" stopColor="#7c3aed" />
             </linearGradient>
             <linearGradient id="glowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -34,21 +33,21 @@ export const Logo: React.FC<LogoProps> = ({
               <stop offset="100%" stopColor="#7c3aed" stopOpacity="0.2" />
             </linearGradient>
           </defs>
-          <rect width="40" height="40" rx="10" fill="url(#logoGrad)" />
+          <rect width="40" height="40" rx="10" fill="url(#onseclickLogoGrad)" />
           {/* Geometric CRM nodes & connections */}
           <circle cx="20" cy="13" r="3.5" fill="#ffffff" />
           <circle cx="12" cy="27" r="3" fill="#ffffff" />
           <circle cx="28" cy="27" r="3" fill="#ffffff" />
-          <line x1="20" y1="13" x2="12" y2="27" stroke="#ffffff" strokeWidth="2" strokeOpacity="0.7" />
-          <line x1="20" y1="13" x2="28" y2="27" stroke="#ffffff" strokeWidth="2" strokeOpacity="0.7" />
-          <line x1="12" y1="27" x2="28" y2="27" stroke="#ffffff" strokeWidth="2" strokeOpacity="0.7" />
+          <line x1="20" y1="13" x2="12" y2="27" stroke="#ffffff" strokeWidth="2" strokeOpacity="0.85" />
+          <line x1="20" y1="13" x2="28" y2="27" stroke="#ffffff" strokeWidth="2" strokeOpacity="0.85" />
+          <line x1="12" y1="27" x2="28" y2="27" stroke="#ffffff" strokeWidth="2" strokeOpacity="0.85" />
           <circle cx="20" cy="22" r="1.5" fill="#ffffff" />
         </svg>
       </div>
 
       <div className="auth-logo-text">
         <div className="auth-logo-title">
-          <span className="brand-name">NEXUS</span>
+          <span className="brand-name">ONSECLICK</span>
           <span className="brand-badge">CRM</span>
         </div>
         {showTagline && (
@@ -60,7 +59,7 @@ export const Logo: React.FC<LogoProps> = ({
 
   if (linkTo) {
     return (
-      <Link to={linkTo} className="auth-logo-link" aria-label="Nexus CRM Home">
+      <Link to={linkTo} className="auth-logo-link" aria-label="Onseclick CRM Home">
         {content}
       </Link>
     );
