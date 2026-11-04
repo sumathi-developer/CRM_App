@@ -2019,3 +2019,576 @@
   align-items: center;
   justify-content: center;
 }
+
+
+/* ==========================================================================
+   LIGHT SHADE THEME - PLATFORM-WIDE DESIGN SYSTEM OVERRIDES
+   Matching NexusCRM Authentication / Login Page Aesthetics:
+     - Ambient Canvas: #EAF4ED (Soft Mint Green)
+     - Surfaces & Cards: #FFFFFF (Crisp White with Soft Mint/Emerald Borders)
+     - Headings & Primary: #062E03 (Deep Forest Obsidian)
+     - Accents: #10B981 (Vibrant Emerald) & #7C3AED (Electric Purple)
+     - Body Text: #1E293B / #334155 (Crisp Charcoal Slate)
+   ========================================================================== */
+
+/* Universal Cards & Containers */
+.crm-card,
+.crm-kpi-card,
+.crm-left-rail,
+.crm-right-rail,
+.crm-revenue-widget-card,
+.crm-pipeline-widget-card,
+.crm-funnel-card,
+.crm-lead-sources-card,
+.crm-recent-widget-card,
+.lg-card,
+.lg-section-card {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  box-shadow: 0 4px 20px -2px rgba(6, 46, 3, 0.05), 0 2px 6px -1px rgba(6, 46, 3, 0.03) !important;
+  color: #1E293B !important;
+}
+
+/* Section & Card Headings */
+.lg-section-title,
+.crm-card-title,
+.crm-rail-section-title,
+.crm-calendar-header,
+.lg-title {
+  color: #062E03 !important;
+  font-weight: 700 !important;
+}
+
+.lg-section-subtitle,
+.crm-card-description,
+.lg-subtitle {
+  color: #64748B !important;
+}
+
+/* KPI Card Typography & Elements */
+.crm-kpi-card .crm-kpi-label {
+  color: #475569 !important;
+  font-weight: 600 !important;
+}
+
+.crm-kpi-card .crm-kpi-value {
+  color: #062E03 !important;
+  font-weight: 800 !important;
+}
+
+.crm-kpi-card .crm-kpi-subtext {
+  color: #64748B !important;
+}
+
+/* KPI Card Tone Badges */
+.crm-kpi-card.tone-green {
+  border-left: 4px solid #10b981 !important;
+}
+.crm-kpi-card.tone-blue {
+  border-left: 4px solid #06b6d4 !important;
+}
+.crm-kpi-card.tone-purple {
+  border-left: 4px solid #7c3aed !important;
+}
+.crm-kpi-card.tone-amber {
+  border-left: 4px solid #f59e0b !important;
+}
+.crm-kpi-card.tone-cyan {
+  border-left: 4px solid #0284c7 !important;
+}
+
+/* Filter Bar in Light Mode */
+.crm-filter-bar {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  box-shadow: 0 4px 16px -2px rgba(6, 46, 3, 0.05) !important;
+}
+
+.crm-filter-title {
+  color: #062E03 !important;
+}
+
+.crm-filter-subtitle {
+  color: #64748B !important;
+}
+
+.crm-filter-label {
+  color: #475569 !important;
+}
+
+.crm-filter-select {
+  background: #F8FCF9 !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+  color: #062E03 !important;
+  font-weight: 600 !important;
+}
+
+.crm-filter-select:focus {
+  border-color: #10B981 !important;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15) !important;
+}
+
+/* Revenue Summary 4-KPI Row */
+.crm-revenue-kpi-card {
+  background: #F8FCF9 !important;
+  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+}
+
+.crm-revenue-kpi-label {
+  color: #475569 !important;
+}
+
+.crm-revenue-kpi-value {
+  color: #062E03 !important;
+  font-weight: 800 !important;
+}
+
+.crm-revenue-kpi-sub {
+  color: #64748B !important;
+}
+
+/* Revenue Projection Empty Box */
+.crm-revenue-projection-empty {
+  background: #F4FAF6 !important;
+  border: 1px dashed rgba(16, 185, 129, 0.35) !important;
+}
+
+.crm-revenue-projection-title {
+  color: #062E03 !important;
+}
+
+.crm-revenue-projection-hint {
+  color: #475569 !important;
+}
+
+/* Pipeline Stage Items */
+.crm-pipeline-stage-item {
+  background: #F8FCF9 !important;
+  border: 1px solid rgba(16, 185, 129, 0.18) !important;
+}
+
+.crm-pipeline-stage-item:hover {
+  background: #EAF4ED !important;
+  border-color: rgba(16, 185, 129, 0.4) !important;
+}
+
+.crm-pipeline-stage-name {
+  color: #062E03 !important;
+  font-weight: 700 !important;
+}
+
+.crm-pipeline-stage-value {
+  color: #062E03 !important;
+  font-weight: 800 !important;
+}
+
+.crm-pipeline-stage-weighted {
+  color: #059669 !important;
+}
+
+/* Progress & Funnel Tracks (Crisp Light Track for High Visibility) */
+.crm-progress-track,
+.crm-channel-track,
+.crm-funnel-track,
+.crm-pipeline-track,
+.lg-bar-track {
+  background: #E2E8F0 !important;
+}
+
+/* Funnel & Attribution Row Elements */
+.crm-funnel-name,
+.crm-funnel-title {
+  color: #062E03 !important;
+  font-weight: 600 !important;
+}
+
+.crm-funnel-val {
+  color: #062E03 !important;
+  font-weight: 800 !important;
+}
+
+.crm-funnel-rate {
+  color: #64748B !important;
+}
+
+.crm-channel-row span:first-child {
+  color: #062E03 !important;
+  font-weight: 600 !important;
+}
+
+/* Recent Items (Deals, Leads, Activities) */
+.crm-recent-item {
+  background: #F8FCF9 !important;
+  border: 1px solid rgba(16, 185, 129, 0.18) !important;
+}
+
+.crm-recent-item:hover {
+  background: #EAF4ED !important;
+  border-color: rgba(16, 185, 129, 0.38) !important;
+}
+
+.crm-recent-item-title {
+  color: #062E03 !important;
+  font-weight: 700 !important;
+}
+
+.crm-recent-item-title:hover {
+  color: #059669 !important;
+}
+
+.crm-recent-item-sub {
+  color: #64748B !important;
+}
+
+.crm-recent-item-val {
+  color: #062E03 !important;
+  font-weight: 800 !important;
+}
+
+.crm-recent-item-prob {
+  color: #64748B !important;
+}
+
+.crm-item-action-btn {
+  background: #E6F5EC !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+  color: #065F46 !important;
+  font-weight: 700 !important;
+}
+
+.crm-item-action-btn:hover {
+  background: #062E03 !important;
+  border-color: #062E03 !important;
+  color: #FFFFFF !important;
+}
+
+.crm-score-badge {
+  background: #EAF4ED !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+}
+
+.crm-score-badge-label {
+  color: #64748B !important;
+}
+
+.crm-score-badge-val {
+  color: #062E03 !important;
+}
+
+/* Compact Widget Empty State */
+.crm-widget-empty-state {
+  background: #F4FAF6 !important;
+  border: 1px dashed rgba(16, 185, 129, 0.35) !important;
+}
+
+.crm-widget-empty-title {
+  color: #062E03 !important;
+}
+
+.crm-widget-empty-desc {
+  color: #475569 !important;
+}
+
+.crm-widget-empty-btn {
+  background: #062E03 !important;
+  color: #FFFFFF !important;
+}
+
+.crm-widget-empty-btn:hover {
+  background: #0D4A07 !important;
+}
+
+/* Scenic Hero Banner (Fresh Light Mint Gradient) */
+.crm-hero-banner {
+  background: linear-gradient(135deg, #EAF4ED 0%, #D5EFE0 50%, #BCE3CB 100%) !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+  box-shadow: 0 10px 30px -4px rgba(6, 46, 3, 0.08) !important;
+}
+
+.crm-hero-badge {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+  color: #062E03 !important;
+}
+
+.crm-hero-title {
+  color: #062E03 !important;
+  text-shadow: none !important;
+}
+
+.crm-hero-title span {
+  background: linear-gradient(135deg, #062E03 0%, #059669 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+.crm-hero-subtitle {
+  color: #334155 !important;
+  opacity: 1 !important;
+}
+
+.crm-scenic-arch {
+  background: linear-gradient(180deg, #FFFFFF 0%, #EAF4ED 100%) !important;
+  border: 2px solid rgba(16, 185, 129, 0.35) !important;
+  box-shadow: 0 8px 20px rgba(6, 46, 3, 0.08) !important;
+}
+
+.crm-arch-door {
+  border-color: rgba(16, 185, 129, 0.35) !important;
+  background: rgba(16, 185, 129, 0.08) !important;
+}
+
+/* Right Rail Calendar & Performance Pulse */
+.crm-calendar-day-label {
+  color: #64748B !important;
+}
+
+.crm-calendar-cell {
+  color: #1E293B !important;
+}
+
+.crm-calendar-cell:hover {
+  background: #EAF4ED !important;
+  color: #062E03 !important;
+}
+
+.crm-calendar-cell.is-today {
+  background: #10B981 !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+}
+
+.crm-calendar-cell.has-activity {
+  background: #7C3AED !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+}
+
+.crm-slider-header strong {
+  color: #062E03 !important;
+}
+
+.crm-slider-header {
+  color: #475569 !important;
+}
+
+/* Sub-Navigation Bar in Light Mode */
+.lg-subnav {
+  background: rgba(255, 255, 255, 0.94) !important;
+  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  box-shadow: 0 4px 16px rgba(6, 46, 3, 0.04) !important;
+}
+
+.lg-subnav-label {
+  color: #64748B !important;
+}
+
+.lg-subnav-link {
+  color: #475569 !important;
+}
+
+.lg-subnav-link:hover {
+  color: #062E03 !important;
+  background: #EAF4ED !important;
+}
+
+.lg-subnav-link.is-active {
+  color: #062E03 !important;
+  font-weight: 700 !important;
+  background: #D5EFE0 !important;
+  border: 1px solid rgba(16, 185, 129, 0.4) !important;
+}
+
+/* Badges in Light Mode */
+.lg-badge.tone-green {
+  background: #D1FAE5 !important;
+  color: #065F46 !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+}
+
+.lg-badge.tone-blue {
+  background: #DBEAFE !important;
+  color: #1E40AF !important;
+  border: 1px solid rgba(59, 130, 246, 0.35) !important;
+}
+
+.lg-badge.tone-purple {
+  background: #EDE9FE !important;
+  color: #5B21B6 !important;
+  border: 1px solid rgba(124, 58, 237, 0.35) !important;
+}
+
+.lg-badge.tone-amber {
+  background: #FEF3C7 !important;
+  color: #92400E !important;
+  border: 1px solid rgba(245, 158, 11, 0.35) !important;
+}
+
+.lg-badge.tone-red {
+  background: #FEE2E2 !important;
+  color: #991B1B !important;
+  border: 1px solid rgba(239, 68, 68, 0.35) !important;
+}
+
+.lg-badge.tone-slate {
+  background: #F1F5F9 !important;
+  color: #475569 !important;
+  border: 1px solid #CBD5E1 !important;
+}
+
+
+/* ==========================================================================
+   PLATFORM-WIDE MODULE STYLES (Tables, Modals, Headers, Forms, Workspace)
+   ========================================================================== */
+
+/* Universal Module Headers & Banners */
+.workspace-header-wrapper,
+.settings-header-wrapper,
+.profile-header-card,
+.analytics-hero-card {
+  background: linear-gradient(135deg, #EAF4ED 0%, #D5EFE0 50%, #BCE3CB 100%) !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+  box-shadow: 0 8px 24px -4px rgba(6, 46, 3, 0.06) !important;
+}
+
+.workspace-name,
+.settings-header-title,
+.profile-user-name,
+.analytics-hero-title {
+  color: #062E03 !important;
+  font-weight: 800 !important;
+}
+
+.workspace-meta-item,
+.settings-header-desc,
+.profile-user-email {
+  color: #475569 !important;
+}
+
+/* Universal Tables (Leads, Deals, Contacts, Users, Roles, Audit Logs) */
+.table-container,
+.ws-table-container,
+.leads-table-container,
+.users-table-wrap,
+.crm-table-wrap {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  border-radius: var(--radius-xl, 18px) !important;
+  box-shadow: 0 4px 20px -2px rgba(6, 46, 3, 0.05) !important;
+  overflow: hidden !important;
+}
+
+table,
+.ws-table,
+.leads-table,
+.users-table,
+.roles-table {
+  background: #FFFFFF !important;
+  color: #1E293B !important;
+}
+
+thead,
+th,
+.ws-th,
+.leads-th {
+  background: #F4FAF6 !important;
+  color: #062E03 !important;
+  font-weight: 700 !important;
+  border-bottom: 1px solid rgba(16, 185, 129, 0.22) !important;
+}
+
+tbody tr,
+.ws-tr,
+.leads-tr {
+  background: #FFFFFF !important;
+  border-bottom: 1px solid rgba(16, 185, 129, 0.12) !important;
+  transition: background 120ms ease !important;
+}
+
+tbody tr:hover,
+.ws-tr:hover,
+.leads-tr:hover {
+  background: #F8FCFA !important;
+}
+
+td,
+.ws-td,
+.leads-td {
+  color: #1E293B !important;
+}
+
+/* Universal Modals & Dialogs */
+.modal-overlay,
+.dialog-overlay {
+  background: rgba(6, 46, 3, 0.4) !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+.modal-content,
+.modal-card,
+.dialog-content,
+.dialog-card {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+  box-shadow: 0 24px 48px -12px rgba(6, 46, 3, 0.18) !important;
+  border-radius: 20px !important;
+  color: #1E293B !important;
+}
+
+.modal-header,
+.dialog-header {
+  border-bottom: 1px solid rgba(16, 185, 129, 0.18) !important;
+}
+
+.modal-title,
+.dialog-title {
+  color: #062E03 !important;
+  font-weight: 800 !important;
+}
+
+.modal-footer,
+.dialog-footer {
+  border-top: 1px solid rgba(16, 185, 129, 0.18) !important;
+  background: #F8FCF9 !important;
+}
+
+/* Form Controls & Inputs */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="search"],
+select,
+textarea {
+  background: #FFFFFF !important;
+  color: #0F172A !important;
+  border: 1px solid rgba(16, 185, 129, 0.28) !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #94A3B8 !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #10B981 !important;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.16) !important;
+  outline: none !important;
+}
+
+/* Empty States Across All Pages */
+.empty-state-card {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  box-shadow: 0 4px 16px -2px rgba(6, 46, 3, 0.04) !important;
+}
+
+.empty-state-title {
+  color: #062E03 !important;
+}
+
+.empty-state-desc {
+  color: #475569 !important;
+}
