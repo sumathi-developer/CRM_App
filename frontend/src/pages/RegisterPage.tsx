@@ -338,20 +338,12 @@ export const RegisterPage: React.FC = () => {
         {/* Left Mascot Character Flank */}
         <aside className="agent-mascot-flank mascot-left" aria-label="Onseclick Mascot Guide Left">
           <div className="agent-mascot-card">
-            <div className="agent-mascot-speech-bubble">
-              <span className="bubble-text">{name ? `Welcome, ${name.split(' ')[0]}! 🚀` : 'Join Onseclick! 🚀'}</span>
-              <span className="bubble-arrow" />
-            </div>
             <div className="agent-mascot-img-wrap">
               <img
                 src="/assets/mascot.png"
                 alt="Onseclick CRM Mascot"
                 className="agent-mascot-img"
               />
-            </div>
-            <div className="agent-mascot-tag">
-              <span className="mascot-tag-icon">✨</span>
-              <span className="mascot-tag-text">14-Day Free Access</span>
             </div>
           </div>
         </aside>
@@ -668,20 +660,12 @@ export const RegisterPage: React.FC = () => {
         {/* Right Mascot Character Flank */}
         <aside className="agent-mascot-flank mascot-right" aria-label="Onseclick Mascot Guide Right">
           <div className="agent-mascot-card">
-            <div className="agent-mascot-speech-bubble">
-              <span className="bubble-text">{showPassword ? 'Password visible! 👁️' : 'Safe & Encrypted 🔒'}</span>
-              <span className="bubble-arrow" />
-            </div>
             <div className="agent-mascot-img-wrap">
               <img
                 src="/assets/mascot.png"
                 alt="Onseclick CRM Mascot"
                 className="agent-mascot-img flipped"
               />
-            </div>
-            <div className="agent-mascot-tag">
-              <span className="mascot-tag-icon">🛡️</span>
-              <span className="mascot-tag-text">256-bit SSL Security</span>
             </div>
           </div>
         </aside>
