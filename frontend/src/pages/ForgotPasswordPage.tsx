@@ -56,7 +56,7 @@ export const ForgotPasswordPage: React.FC = () => {
       title="Reset Your Password"
       subtitle="Enter your work email address and we'll send you recovery instructions"
       heroHeadline="Enterprise Security First & Single Sign-On Ready"
-      heroSubtext="Nexus CRM enforces end-to-end encryption and cryptographic password hash verification across your entire workspace."
+      heroSubtext="Onseclick CRM enforces end-to-end encryption and cryptographic password hash verification across your entire workspace."
       footer={
         <div className="auth-footer-content">
           <SecondaryLink to="/login" id="link-back-login" icon={<ArrowLeftIcon size={16} />}>

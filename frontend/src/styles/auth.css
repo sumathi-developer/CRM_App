@@ -364,18 +364,41 @@
 .brand-name {
   font-size: 1.125rem;
   font-weight: 800;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   color: #062E03;
+  line-height: 1;
 }
 
 .brand-badge {
   font-size: 0.6875rem;
-  font-weight: 700;
-  background: var(--brand-gradient);
+  font-weight: 800;
+  background: linear-gradient(135deg, #10B981 0%, #7C3AED 100%);
   color: #ffffff;
-  padding: 2px 6px;
-  border-radius: var(--radius-sm);
+  padding: 3px 8px;
+  border-radius: 9999px;
   letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.auth-brand-logo.size-small .brand-name {
+  font-size: 0.95rem;
+}
+
+.auth-brand-logo.size-small .brand-badge {
+  font-size: 0.625rem;
+  padding: 2px 6px;
+}
+
+.auth-brand-logo.size-large .brand-name {
+  font-size: 1.35rem;
+}
+
+.auth-brand-logo.size-large .brand-badge {
+  font-size: 0.75rem;
+  padding: 4px 10px;
 }
 
 .auth-logo-tagline {

@@ -76,7 +76,7 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({
                 </div>
               </div>
               <p className="trust-quote">
-                "Nexus CRM transformed our deal velocity by 40% in just two quarters. The security and workspace isolation are world-class."
+                "Onseclick CRM transformed our deal velocity by 40% in just two quarters. The security and workspace isolation are world-class."
               </p>
               <div className="trust-author">
                 <strong>Alexander Pierce</strong> &bull; VP of Revenue Operations
@@ -85,7 +85,7 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({
           </div>
 
           <div className="auth-hero-footer">
-            <span>&copy; {CURRENT_YEAR} Nexus CRM Inc. All rights reserved.</span>
+            <span>&copy; {CURRENT_YEAR} Onseclick CRM Inc. All rights reserved.</span>
             <div className="auth-legal-links">
               <a href="#privacy" onClick={(e) => e.preventDefault()}>Privacy Policy</a>
               <span>&bull;</span>
@@ -120,7 +120,7 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({
           </div>
 
           <div className="auth-mobile-footer">
-            <span>Protected by 256-bit SSL encryption &bull; Nexus CRM v1.0</span>
+            <span>Protected by 256-bit SSL encryption &bull; Onseclick CRM v1.0</span>
           </div>
         </div>
       </div>

@@ -231,7 +231,7 @@ export const ProfilePage: React.FC = () => {
 
           <div className="identity-text-details">
             <div className="identity-name-row">
-              <h2 className="identity-full-name">{user?.name || 'Nexus User'}</h2>
+              <h2 className="identity-full-name">{user?.name || 'Onseclick User'}</h2>
               <span className={`status-pill pill-${(user?.status || 'active').toLowerCase()}`}>
                 <span className="status-indicator-dot" />
                 <span>{user?.status || 'ACTIVE'}</span>

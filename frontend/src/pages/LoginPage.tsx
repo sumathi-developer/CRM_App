@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { Logo } from '../components/auth/Logo';
 import {
   GlobeIcon,
   AlertCircleIcon,
@@ -329,16 +330,13 @@ export const LoginPage: React.FC = () => {
       {/* 1. TOP COMPACT HEADER */}
       <header className="agent-top-navbar" role="banner">
         <div className="agent-brand-group">
-          <Link to="/login" className="agent-brand-logo" title="Nexus CRM Home">
-            <span className="agent-brand-logo-mark" aria-hidden="true">N</span>
-            <span className="agent-brand-name">Nexus<span className="agent-brand-accent">CRM</span></span>
-          </Link>
+          <Logo size="medium" linkTo="/login" showTagline={false} />
           <a
-            href="mailto:Sales@nexuscrm.com"
+            href="mailto:Sales@onseclick.com"
             className="agent-brand-contact-link"
             title="Contact Enterprise Sales"
           >
-            <span>Sales@nexuscrm.com</span>
+            <span>Sales@onseclick.com</span>
             <span aria-hidden="true">&rarr;</span>
           </a>
         </div>
@@ -587,7 +585,7 @@ export const LoginPage: React.FC = () => {
 
       {/* 3. PAGE FOOTER */}
       <footer className="agent-page-footer" role="contentinfo">
-        <span>© 2026 Nexus CRM. All rights reserved.</span>
+        <span>© 2026 Onseclick CRM. All rights reserved.</span>
         <span className="agent-footer-divider">•</span>
         <Link to="/privacy" className="agent-footer-link">
           Privacy Policy
