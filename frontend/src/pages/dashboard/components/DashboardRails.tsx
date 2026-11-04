@@ -196,7 +196,7 @@ export const DashboardRightRail: React.FC<DashboardRightRailProps> = ({
       {/* 1. Performance Visual Pulse */}
       <div
         style={{
-          background: '#F4FAF6', border: '1px solid rgba(16, 185, 129, 0.28)',
+          background: '#F4FAF6',
           border: '1px solid rgba(16, 185, 129, 0.22)',
           borderRadius: '14px',
           padding: '0.5rem 0.75rem',

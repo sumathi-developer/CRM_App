@@ -14,7 +14,6 @@ import {
   BriefcaseIcon,
   ChevronDownIcon,
   ChevronRightIcon,
-  ChevronLeftIcon,
   SearchIcon,
   SettingsIcon,
   SlidersIcon,
@@ -40,7 +39,7 @@ interface NavModuleItem {
   badge?: string | number;
 }
 
-interface SettingsGroup {
+interface NeatSettingsGroup {
   title: string;
   items: {
     id: string;
@@ -51,7 +50,7 @@ interface SettingsGroup {
   }[];
 }
 
-/* 1. Main Navigation Modules (Shopify / Modern CRM alignment) */
+/* 1. Main Navigation Modules in Main Left Column (Clean, Uncluttered) */
 const MAIN_MODULES: NavModuleItem[] = [
   {
     id: 'home',
@@ -109,10 +108,10 @@ const MAIN_MODULES: NavModuleItem[] = [
   },
 ];
 
-/* 2. Remaining Modules moved inside Settings (matching Reference Image 2) */
-const SETTINGS_GROUPS: SettingsGroup[] = [
+/* 2. Remaining Modules inside Right-Side Settings Flyout Panel (Neat & Categorized) */
+const SETTINGS_FLYOUT_GROUPS: NeatSettingsGroup[] = [
   {
-    title: 'Governance & Security',
+    title: 'Governance & Access',
     items: [
       { id: 'roles', label: 'Roles & RBAC', icon: <ShieldIcon size={16} />, path: '/roles' },
       { id: 'workspace-settings', label: 'Workspace Settings', icon: <BriefcaseIcon size={16} />, path: '/workspaces/settings' },
@@ -120,7 +119,7 @@ const SETTINGS_GROUPS: SettingsGroup[] = [
     ],
   },
   {
-    title: 'Operations & Activities',
+    title: 'Activities & Operations',
     items: [
       { id: 'activities', label: 'Activities & Tasks', icon: <ActivityIcon size={16} />, path: '/activities' },
       { id: 'calendar', label: 'Calendar & Scheduling', icon: <CalendarIcon size={16} />, path: '/calendar' },
@@ -128,14 +127,14 @@ const SETTINGS_GROUPS: SettingsGroup[] = [
     ],
   },
   {
-    title: 'Data & Customization',
+    title: 'Fields & Customization',
     items: [
       { id: 'custom-fields', label: 'Custom Fields', icon: <SlidersIcon size={16} />, path: '/custom-fields' },
       { id: 'tags', label: 'Tags & Labels', icon: <TagIcon size={16} />, path: '/tags' },
     ],
   },
   {
-    title: 'System & Support',
+    title: 'System & Preferences',
     items: [
       { id: 'general-settings', label: 'General Settings', icon: <SettingsIcon size={16} />, path: '/settings' },
       { id: 'notifications', label: 'Notifications', icon: <BellIcon size={16} />, path: '/settings/notifications', badge: '1' },
@@ -176,17 +175,15 @@ export const Navbar: React.FC = () => {
     );
   };
 
-  // Sidebar mode: 'main' or 'settings'
-  const [sidebarMode, setSidebarMode] = useState<'main' | 'settings'>(() => {
-    return isCurrentRouteInSettings(location.pathname) ? 'settings' : 'main';
+  // Right-side Settings flyout panel open state (opens to the right of sidebar!)
+  const [isSettingsFlyoutOpen, setIsSettingsFlyoutOpen] = useState<boolean>(() => {
+    return isCurrentRouteInSettings(location.pathname);
   });
 
-  // Keep sidebar mode in sync when route changes
+  // Automatically close settings flyout when navigating to a main CRM module
   useEffect(() => {
-    if (isCurrentRouteInSettings(location.pathname)) {
-      setSidebarMode('settings');
-    } else {
-      setSidebarMode('main');
+    if (!isCurrentRouteInSettings(location.pathname)) {
+      setIsSettingsFlyoutOpen(false);
     }
     setIsMobileSidebarOpen(false);
   }, [location.pathname]);
@@ -232,11 +229,11 @@ export const Navbar: React.FC = () => {
     return location.pathname.startsWith(basePath);
   };
 
-  // Filtered settings for Search in Settings mode (Image 2)
+  // Filtered settings for Search in Settings flyout
   const filteredSettingsGroups = useMemo(() => {
-    if (!settingsSearchQuery.trim()) return SETTINGS_GROUPS;
+    if (!settingsSearchQuery.trim()) return SETTINGS_FLYOUT_GROUPS;
     const query = settingsSearchQuery.toLowerCase();
-    return SETTINGS_GROUPS.map((group) => ({
+    return SETTINGS_FLYOUT_GROUPS.map((group) => ({
       ...group,
       items: group.items.filter((item) =>
         item.label.toLowerCase().includes(query)
@@ -312,13 +309,13 @@ export const Navbar: React.FC = () => {
         </div>
       </header>
 
-      {/* 2. LEFT VERTICAL SIDEBAR WITH SHOPYFY-STYLE ALIGNMENT */}
+      {/* 2. MAIN LEFT SIDEBAR (Light Mint color from before - NOT black) */}
       <aside
         className={`app-sidebar ${isMobileSidebarOpen ? 'is-mobile-open' : ''}`}
         id="app-sidebar"
         aria-label="Sidebar Navigation"
       >
-        {/* A. Global Search at top of sidebar (matching Image 1) */}
+        {/* A. Global Search at top of sidebar */}
         <div className="sidebar-search-container">
           <Link
             to="/search"
@@ -335,146 +332,55 @@ export const Navbar: React.FC = () => {
           </Link>
         </div>
 
-        {/* B. Middle Modules List (Main View vs Settings View) */}
-        {sidebarMode === 'main' ? (
-          <nav className="sidebar-modules-list" aria-label="Main CRM Modules">
-            {MAIN_MODULES.map((module) => {
-              const active = isModuleActive(module.basePath);
-              return (
-                <Link
-                  key={module.id}
-                  to={module.basePath}
-                  className={`sidebar-module-link ${active ? 'is-active-module' : ''}`}
-                  id={`sidebar-module-${module.id}`}
-                  title={module.label}
-                  onClick={() => setIsMobileSidebarOpen(false)}
-                >
-                  <div className="module-link-main">
-                    <span className="module-link-icon">{module.icon}</span>
-                    <span className="module-link-title">{module.label}</span>
-                  </div>
-                  {module.badge && (
-                    <span className="module-badge">{module.badge}</span>
-                  )}
-                </Link>
-              );
-            })}
-          </nav>
-        ) : (
-          /* Settings View (matching Image 2) */
-          <div className="sidebar-settings-panel" role="region" aria-label="CRM Settings Menu">
-            {/* Settings Header with Back Button */}
-            <div className="sidebar-settings-header">
-              <button
-                type="button"
-                className="sidebar-settings-back-btn"
-                onClick={() => setSidebarMode('main')}
-                title="Return to Main CRM Menu"
+        {/* B. Main 9 CRM Modules in First Column */}
+        <nav className="sidebar-modules-list" aria-label="Main CRM Modules">
+          {MAIN_MODULES.map((module) => {
+            const active = isModuleActive(module.basePath);
+            return (
+              <Link
+                key={module.id}
+                to={module.basePath}
+                className={`sidebar-module-link ${active ? 'is-active-module' : ''}`}
+                id={`sidebar-module-${module.id}`}
+                title={module.label}
+                onClick={() => {
+                  setIsSettingsFlyoutOpen(false);
+                  setIsMobileSidebarOpen(false);
+                }}
               >
-                <ChevronLeftIcon size={16} />
-                <span>Settings</span>
-              </button>
-            </div>
-
-            {/* Search settings input */}
-            <div className="sidebar-settings-search-wrap">
-              <SearchIcon size={14} className="settings-search-icon" />
-              <input
-                type="text"
-                placeholder="Search settings..."
-                value={settingsSearchQuery}
-                onChange={(e) => setSettingsSearchQuery(e.target.value)}
-                className="sidebar-settings-search-input"
-                aria-label="Search settings"
-              />
-              {settingsSearchQuery && (
-                <button
-                  type="button"
-                  onClick={() => setSettingsSearchQuery('')}
-                  className="settings-search-clear-btn"
-                  title="Clear search"
-                >
-                  <XIcon size={12} />
-                </button>
-              )}
-            </div>
-
-            {/* Grouped Settings Items */}
-            <div className="sidebar-settings-scroll-area">
-              {filteredSettingsGroups.map((group) => (
-                <div key={group.title} className="settings-module-group">
-                  <div className="settings-group-header">
-                    <span>{group.title}</span>
-                  </div>
-                  <div className="settings-group-items">
-                    {group.items.map((item) => {
-                      const active = location.pathname === item.path || (item.path !== '/settings' && location.pathname.startsWith(item.path));
-                      return (
-                        <Link
-                          key={item.id}
-                          to={item.path}
-                          className={`sidebar-settings-link ${active ? 'is-active-module' : ''}`}
-                          id={`sidebar-settings-${item.id}`}
-                          title={item.label}
-                          onClick={() => setIsMobileSidebarOpen(false)}
-                        >
-                          <span className="settings-link-icon">{item.icon}</span>
-                          <span className="settings-link-title">{item.label}</span>
-                          {item.badge && (
-                            <span className="settings-link-badge">{item.badge}</span>
-                          )}
-                        </Link>
-                      );
-                    })}
-                  </div>
+                <div className="module-link-main">
+                  <span className="module-link-icon">{module.icon}</span>
+                  <span className="module-link-title">{module.label}</span>
                 </div>
-              ))}
-            </div>
-          </div>
-        )}
+                {module.badge && (
+                  <span className="module-badge">{module.badge}</span>
+                )}
+              </Link>
+            );
+          })}
+        </nav>
 
-        {/* C. Bottom Section: Settings Link, User Profile, Notifications & Sign Out (Pinned down as requested!) */}
+        {/* C. Bottom Section: Settings Link, User Profile, Notifications & Sign Out (Pinned down!) */}
         <div className="sidebar-bottom-section">
-          {/* Settings Trigger (In Main View) or Main Menu Trigger (In Settings View) */}
-          {sidebarMode === 'main' ? (
-            <button
-              type="button"
-              className={`sidebar-module-link sidebar-settings-trigger ${isCurrentRouteInSettings(location.pathname) ? 'is-active-module' : ''}`}
-              onClick={() => {
-                setSidebarMode('settings');
-                navigate('/settings');
-              }}
-              title="Open CRM Settings"
-              id="sidebar-settings-menu-btn"
-            >
-              <div className="module-link-main">
-                <span className="module-link-icon">
-                  <SettingsIcon size={18} />
-                </span>
-                <span className="module-link-title">Settings</span>
-              </div>
-              <ChevronRightIcon size={14} className="settings-chevron" />
-            </button>
-          ) : (
-            <button
-              type="button"
-              className="sidebar-module-link sidebar-main-menu-trigger"
-              onClick={() => {
-                setSidebarMode('main');
-                navigate('/dashboard');
-              }}
-              title="Return to Main CRM Menu"
-              id="sidebar-main-menu-btn"
-            >
-              <div className="module-link-main">
-                <span className="module-link-icon">
-                  <HomeIcon size={18} />
-                </span>
-                <span className="module-link-title">Main Menu</span>
-              </div>
-              <ChevronLeftIcon size={14} className="settings-chevron" />
-            </button>
-          )}
+          {/* Settings Trigger: opens neat menu on the RIGHT */}
+          <button
+            type="button"
+            className={`sidebar-module-link sidebar-settings-trigger ${isSettingsFlyoutOpen || isCurrentRouteInSettings(location.pathname) ? 'is-active-module' : ''}`}
+            onClick={() => setIsSettingsFlyoutOpen((prev) => !prev)}
+            title="Open Settings Menu"
+            id="sidebar-settings-menu-btn"
+          >
+            <div className="module-link-main">
+              <span className="module-link-icon">
+                <SettingsIcon size={18} />
+              </span>
+              <span className="module-link-title">Settings</span>
+            </div>
+            <ChevronRightIcon
+              size={14}
+              className={`settings-chevron ${isSettingsFlyoutOpen ? 'is-open' : ''}`}
+            />
+          </button>
 
           {/* User Profile Card with Avatar, Name, Notifications and Sign Out */}
           <div className="sidebar-profile-card">
@@ -482,7 +388,10 @@ export const Navbar: React.FC = () => {
               to="/profile"
               className="sidebar-profile-info"
               title={`Logged in as ${user?.name || 'Onseclick User'}`}
-              onClick={() => setIsMobileSidebarOpen(false)}
+              onClick={() => {
+                setIsSettingsFlyoutOpen(false);
+                setIsMobileSidebarOpen(false);
+              }}
             >
               <div className="sidebar-avatar-pill" aria-hidden="true">
                 <span>{getInitials(user?.name)}</span>
@@ -502,7 +411,10 @@ export const Navbar: React.FC = () => {
                 className="sidebar-action-btn notif-btn"
                 title="Notifications (1 new)"
                 aria-label="Notifications"
-                onClick={() => setIsMobileSidebarOpen(false)}
+                onClick={() => {
+                  setIsSettingsFlyoutOpen(true);
+                  setIsMobileSidebarOpen(false);
+                }}
               >
                 <BellIcon size={16} />
                 <span className="sidebar-notif-badge">1</span>
@@ -524,7 +436,108 @@ export const Navbar: React.FC = () => {
         </div>
       </aside>
 
-      {/* Mobile Backdrop for sidebar drawer */}
+      {/* 3. RIGHT-SIDE SETTINGS FLYOUT PANEL (Opens neatly on the RIGHT of the sidebar) */}
+      {isSettingsFlyoutOpen && (
+        <>
+          <div
+            className="sidebar-settings-flyout"
+            role="region"
+            aria-label="Settings Submenu"
+            id="sidebar-settings-flyout-panel"
+          >
+            {/* Flyout Header with Close Button */}
+            <div className="settings-flyout-header">
+              <div className="settings-flyout-title">
+                <SettingsIcon size={18} />
+                <span>Settings</span>
+              </div>
+              <button
+                type="button"
+                className="settings-flyout-close-btn"
+                onClick={() => setIsSettingsFlyoutOpen(false)}
+                title="Close settings menu"
+                aria-label="Close settings menu"
+              >
+                <XIcon size={16} />
+              </button>
+            </div>
+
+            {/* Neat Search input */}
+            <div className="settings-flyout-search">
+              <div className="settings-search-input-box">
+                <SearchIcon size={14} className="settings-search-icon" />
+                <input
+                  type="text"
+                  placeholder="Search settings..."
+                  value={settingsSearchQuery}
+                  onChange={(e) => setSettingsSearchQuery(e.target.value)}
+                  className="settings-search-input"
+                  aria-label="Search settings modules"
+                />
+                {settingsSearchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => setSettingsSearchQuery('')}
+                    className="settings-search-clear-btn"
+                    title="Clear search"
+                  >
+                    <XIcon size={12} />
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Neat, Categorized Settings Modules */}
+            <div className="settings-flyout-body">
+              {filteredSettingsGroups.map((group) => (
+                <div key={group.title} className="neat-settings-group">
+                  <div className="neat-group-label">
+                    <span>{group.title}</span>
+                  </div>
+                  <div className="neat-group-items">
+                    {group.items.map((item) => {
+                      const active =
+                        location.pathname === item.path ||
+                        (item.path !== '/settings' && location.pathname.startsWith(item.path));
+                      return (
+                        <Link
+                          key={item.id}
+                          to={item.path}
+                          className={`neat-settings-item ${active ? 'is-active-module' : ''}`}
+                          id={`settings-item-${item.id}`}
+                          title={item.label}
+                          onClick={() => {
+                            if (window.innerWidth < 900) {
+                              setIsSettingsFlyoutOpen(false);
+                            }
+                          }}
+                        >
+                          <div className="neat-item-icon-box">
+                            {item.icon}
+                          </div>
+                          <span className="neat-item-title">{item.label}</span>
+                          {item.badge && (
+                            <span className="neat-item-badge">{item.badge}</span>
+                          )}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Backdrop for mobile or quick outside click */}
+          <div
+            className="settings-flyout-backdrop"
+            onClick={() => setIsSettingsFlyoutOpen(false)}
+            aria-hidden="true"
+          />
+        </>
+      )}
+
+      {/* Mobile Backdrop for main sidebar drawer */}
       {isMobileSidebarOpen && (
         <div
           className="sidebar-mobile-backdrop"
