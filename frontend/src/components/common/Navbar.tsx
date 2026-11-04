@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useWorkspace } from '../../context/useWorkspace';
@@ -13,351 +13,134 @@ import {
   ShieldIcon,
   BriefcaseIcon,
   ChevronDownIcon,
-  LockIcon,
+  ChevronRightIcon,
+  ChevronLeftIcon,
   SearchIcon,
   SettingsIcon,
   SlidersIcon,
   TagIcon,
   TargetIcon,
-  TrendingUpIcon,
   LifeBuoyIcon,
   MenuIcon,
   XIcon,
+  HomeIcon,
+  BellIcon,
+  DollarSignIcon,
+  CalendarIcon,
+  MailIcon,
+  FileTextIcon,
+  ZapIcon,
 } from './Icons';
 
-interface SubNavOption {
-  label: string;
-  path: string;
-}
-
-interface ModuleNavConfig {
+interface NavModuleItem {
   id: string;
   label: string;
   icon: React.ReactNode;
   basePath: string;
-  subItems: SubNavOption[];
+  badge?: string | number;
 }
 
-const CRM_MODULES: ModuleNavConfig[] = [
+interface SettingsGroup {
+  title: string;
+  items: {
+    id: string;
+    label: string;
+    icon: React.ReactNode;
+    path: string;
+    badge?: string | number;
+  }[];
+}
+
+/* 1. Main Navigation Modules (Shopify / Modern CRM alignment) */
+const MAIN_MODULES: NavModuleItem[] = [
   {
-    id: 'dashboard',
-    label: 'Dashboard',
-    icon: <BarChart2Icon size={18} />,
+    id: 'home',
+    label: 'Home',
+    icon: <HomeIcon size={18} />,
     basePath: '/dashboard',
-    subItems: [
-      { label: 'Overview Dashboard', path: '/dashboard' },
-      { label: 'Sales Dashboard', path: '/dashboard/sales' },
-      { label: 'Lead Dashboard', path: '/dashboard/leads' },
-      { label: 'Revenue Dashboard', path: '/dashboard/revenue' },
-      { label: 'Team Performance', path: '/dashboard/teams' },
-      { label: 'Custom Dashboard', path: '/dashboard/custom' },
-    ],
   },
   {
     id: 'analytics',
     label: 'Analytics',
-    icon: <TrendingUpIcon size={18} />,
+    icon: <BarChart2Icon size={18} />,
     basePath: '/analytics',
-    subItems: [
-      { label: 'Sales Analytics', path: '/analytics/sales' },
-      { label: 'Lead Analytics', path: '/analytics/leads' },
-      { label: 'Lead Source Analytics', path: '/analytics/lead-sources' },
-      { label: 'Pipeline Analytics', path: '/analytics/pipeline' },
-      { label: 'Revenue Analytics', path: '/analytics/revenue' },
-      { label: 'Conversion Analytics', path: '/analytics/conversion' },
-      { label: 'Activity Analytics', path: '/analytics/activities' },
-      { label: 'Team Analytics', path: '/analytics/teams' },
-      { label: 'Performance Analytics', path: '/analytics/performance' },
-    ],
-  },
-  {
-    id: 'search',
-    label: 'Global Search',
-    icon: <SearchIcon size={18} />,
-    basePath: '/search',
-    subItems: [
-      { label: 'Search All', path: '/search' },
-      { label: 'Leads', path: '/search/leads' },
-      { label: 'Contacts', path: '/search/contacts' },
-      { label: 'Companies', path: '/search/companies' },
-      { label: 'Deals', path: '/search/deals' },
-      { label: 'Activities', path: '/search/activities' },
-      { label: 'Documents', path: '/search/documents' },
-      { label: 'Notes', path: '/search/notes' },
-      { label: 'Users', path: '/search/users' },
-    ],
   },
   {
     id: 'workspaces',
-    label: 'Workspaces',
+    label: 'Workspace',
     icon: <BriefcaseIcon size={18} />,
     basePath: '/workspaces',
-    subItems: [
-      { label: 'Overview', path: '/workspaces' },
-      { label: 'Switch Workspace', path: '/workspaces/switcher' },
-      { label: 'Workspace Members', path: '/workspaces/members' },
-      { label: 'Workspace Roles', path: '/workspaces/roles' },
-      { label: 'Workspace Settings', path: '/workspaces/settings' },
-    ],
   },
   {
     id: 'users-teams',
     label: 'Users & Teams',
     icon: <UsersIcon size={18} />,
     basePath: '/users',
-    subItems: [
-      { label: 'All Users', path: '/users' },
-      { label: 'Invite User', path: '/users/invite' },
-      { label: 'All Teams', path: '/teams' },
-      { label: 'Create Team', path: '/teams/create' },
-    ],
-  },
-  {
-    id: 'roles',
-    label: 'Roles & RBAC',
-    icon: <LockIcon size={18} />,
-    basePath: '/roles',
-    subItems: [
-      { label: 'All Roles', path: '/roles' },
-      { label: 'Create Role', path: '/roles/create' },
-    ],
   },
   {
     id: 'leads',
     label: 'Leads',
     icon: <TargetIcon size={18} />,
     basePath: '/leads',
-    subItems: [
-      { label: 'All Leads', path: '/leads' },
-      { label: 'My Leads', path: '/leads/my' },
-      { label: 'Lead List', path: '/leads/list' },
-      { label: 'Lead Board', path: '/leads/board' },
-      { label: 'Lead Table', path: '/leads/table' },
-      { label: 'Create Lead', path: '/leads/create' },
-      { label: 'Lead Assignment', path: '/leads/assignment' },
-      { label: 'Lead Qualification', path: '/leads/qualification' },
-      { label: 'Lead Scoring', path: '/leads/scoring' },
-      { label: 'Lead Activities', path: '/leads/activities' },
-      { label: 'Lead Notes', path: '/leads/notes' },
-      { label: 'Lead Documents', path: '/leads/documents' },
-      { label: 'Lead Import', path: '/leads/import' },
-      { label: 'Lead Export', path: '/leads/export' },
-      { label: 'Lead Conversion', path: '/leads/conversion' },
-      { label: 'Lead Settings', path: '/leads/settings' },
-    ],
   },
   {
     id: 'contacts',
     label: 'Contacts',
-    icon: <UsersIcon size={18} />,
+    icon: <UserIcon size={18} />,
     basePath: '/contacts',
-    subItems: [
-      { label: 'All Contacts', path: '/contacts' },
-      { label: 'My Contacts', path: '/contacts/my' },
-      { label: 'Contact List', path: '/contacts/list' },
-      { label: 'Contact Table', path: '/contacts/table' },
-      { label: 'Create Contact', path: '/contacts/create' },
-      { label: 'Contact Activities', path: '/contacts/activities' },
-      { label: 'Contact Notes', path: '/contacts/notes' },
-      { label: 'Contact Documents', path: '/contacts/documents' },
-      { label: 'Contact Import', path: '/contacts/import' },
-      { label: 'Contact Export', path: '/contacts/export' },
-    ],
   },
   {
     id: 'pipelines',
     label: 'Sales Pipeline',
-    icon: <TrendingUpIcon size={18} />,
+    icon: <SlidersIcon size={18} />,
     basePath: '/pipelines',
-    subItems: [
-      { label: 'Pipeline Overview', path: '/pipelines' },
-      { label: 'Pipeline Board', path: '/pipelines/board' },
-      { label: 'Pipeline List', path: '/pipelines/list' },
-      { label: 'Pipeline Table', path: '/pipelines/table' },
-      { label: 'Pipeline Selector', path: '/pipelines/selector' },
-      { label: 'Pipeline Stages', path: '/pipelines/stages' },
-      { label: 'Create Pipeline', path: '/pipelines/create' },
-      { label: 'Stage Management', path: '/pipelines/stage-management' },
-      { label: 'Stage Probability', path: '/pipelines/probability' },
-      { label: 'Pipeline Settings', path: '/pipelines/settings' },
-    ],
   },
   {
     id: 'deals',
     label: 'Deals',
-    icon: <BriefcaseIcon size={18} />,
+    icon: <DollarSignIcon size={18} />,
     basePath: '/deals',
-    subItems: [
-      { label: 'All Deals', path: '/deals' },
-      { label: 'My Deals', path: '/deals/my' },
-      { label: 'Deal List', path: '/deals/list' },
-      { label: 'Deal Board', path: '/deals/board' },
-      { label: 'Deal Table', path: '/deals/table' },
-      { label: 'Create Deal', path: '/deals/create' },
-      { label: 'Won Deals', path: '/deals/won' },
-      { label: 'Lost Deals', path: '/deals/lost' },
-      { label: 'Deal Activities', path: '/deals/activities' },
-      { label: 'Deal Notes', path: '/deals/notes' },
-      { label: 'Deal Documents', path: '/deals/documents' },
-      { label: 'Deal Settings', path: '/deals/settings' },
-    ],
-  },
-  {
-    id: 'activities',
-    label: 'Activities',
-    icon: <ActivityIcon size={18} />,
-    basePath: '/activities',
-    subItems: [
-      { label: 'All Activities', path: '/activities' },
-      { label: 'My Activities', path: '/activities/my' },
-      { label: 'Tasks', path: '/activities/tasks' },
-      { label: 'Calls', path: '/activities/calls' },
-      { label: 'Meetings', path: '/activities/meetings' },
-      { label: 'Follow-ups', path: '/activities/follow-ups' },
-      { label: 'Emails', path: '/activities/emails' },
-      { label: 'Completed Activities', path: '/activities/completed' },
-      { label: 'Overdue Activities', path: '/activities/overdue' },
-      { label: 'Create Activity', path: '/activities/create' },
-    ],
-  },
-  {
-    id: 'calendar',
-    label: 'Calendar',
-    icon: <ActivityIcon size={18} />,
-    basePath: '/calendar',
-    subItems: [
-      { label: 'Calendar', path: '/calendar' },
-      { label: 'Day View', path: '/calendar/day' },
-      { label: 'Week View', path: '/calendar/week' },
-      { label: 'Month View', path: '/calendar/month' },
-      { label: 'Schedule View', path: '/calendar/schedule' },
-      { label: 'Create Event', path: '/calendar/create' },
-      { label: 'Meeting Scheduling', path: '/calendar/meeting-scheduling' },
-      { label: 'Reminders', path: '/calendar/reminders' },
-    ],
-  },
-  {
-    id: 'communications',
-    label: 'Communications',
-    icon: <ActivityIcon size={18} />,
-    basePath: '/communications',
-    subItems: [
-      { label: 'Communication Center', path: '/communications' },
-      { label: 'Emails', path: '/communications/emails' },
-      { label: 'Email Inbox', path: '/communications/inbox' },
-      { label: 'Sent Emails', path: '/communications/sent' },
-      { label: 'Compose Email', path: '/communications/compose' },
-      { label: 'Internal Comments', path: '/communications/comments' },
-      { label: 'Mentions', path: '/communications/mentions' },
-      { label: 'Communication History', path: '/communications/history' },
-      { label: 'Templates', path: '/communications/templates' },
-    ],
   },
   {
     id: 'lead-generation',
     label: 'Lead Generation',
-    icon: <TargetIcon size={18} />,
+    icon: <ZapIcon size={18} />,
     basePath: '/lead-generation',
-    subItems: [
-      { label: 'Overview', path: '/lead-generation' },
-      { label: 'Lead Sources', path: '/lead-generation/sources' },
-      { label: 'Web Forms', path: '/lead-generation/forms' },
-      { label: 'Form Builder', path: '/lead-generation/forms/create' },
-      { label: 'Capture Forms', path: '/lead-generation/capture-forms' },
-      { label: 'Manual Capture', path: '/lead-generation/manual-capture' },
-      { label: 'Landing Page Leads', path: '/lead-generation/leads/landing-page' },
-      { label: 'Campaign Leads', path: '/lead-generation/leads/campaign' },
-      { label: 'Social Media Leads', path: '/lead-generation/leads/social' },
-      { label: 'Website Leads', path: '/lead-generation/leads/website' },
-      { label: 'Email Leads', path: '/lead-generation/leads/email' },
-      { label: 'Referral Leads', path: '/lead-generation/leads/referral' },
-      { label: 'Lead Scoring', path: '/lead-generation/scoring' },
-      { label: 'Lead Qualification', path: '/lead-generation/qualification' },
-      { label: 'Lead Routing', path: '/lead-generation/routing' },
-      { label: 'Assignment Rules', path: '/lead-generation/assignment-rules' },
-      { label: 'Generation Analytics', path: '/lead-generation/analytics' },
-      { label: 'Source Analytics', path: '/lead-generation/analytics/sources' },
+  },
+];
+
+/* 2. Remaining Modules moved inside Settings (matching Reference Image 2) */
+const SETTINGS_GROUPS: SettingsGroup[] = [
+  {
+    title: 'Governance & Security',
+    items: [
+      { id: 'roles', label: 'Roles & RBAC', icon: <ShieldIcon size={16} />, path: '/roles' },
+      { id: 'workspace-settings', label: 'Workspace Settings', icon: <BriefcaseIcon size={16} />, path: '/workspaces/settings' },
+      { id: 'audit-logs', label: 'Audit Logs', icon: <FileTextIcon size={16} />, path: '/audit-logs' },
     ],
   },
   {
-    id: 'custom-fields',
-    label: 'Custom Fields',
-    icon: <SlidersIcon size={18} />,
-    basePath: '/custom-fields',
-    subItems: [
-      { label: 'All Fields', path: '/custom-fields' },
-      { label: 'Create Custom Field', path: '/custom-fields/create' },
+    title: 'Operations & Activities',
+    items: [
+      { id: 'activities', label: 'Activities & Tasks', icon: <ActivityIcon size={16} />, path: '/activities' },
+      { id: 'calendar', label: 'Calendar & Scheduling', icon: <CalendarIcon size={16} />, path: '/calendar' },
+      { id: 'communications', label: 'Communications & Inbox', icon: <MailIcon size={16} />, path: '/communications' },
     ],
   },
   {
-    id: 'tags',
-    label: 'Tags',
-    icon: <TagIcon size={18} />,
-    basePath: '/tags',
-    subItems: [
-      { label: 'All Tags', path: '/tags' },
-      { label: 'Create Tag', path: '/tags/create' },
-      { label: 'Tag Usage', path: '/tags/usage' },
+    title: 'Data & Customization',
+    items: [
+      { id: 'custom-fields', label: 'Custom Fields', icon: <SlidersIcon size={16} />, path: '/custom-fields' },
+      { id: 'tags', label: 'Tags & Labels', icon: <TagIcon size={16} />, path: '/tags' },
     ],
   },
   {
-    id: 'settings',
-    label: 'Settings',
-    icon: <SettingsIcon size={18} />,
-    basePath: '/settings',
-    subItems: [
-      { label: 'Account Settings', path: '/settings/account' },
-      { label: 'Profile Settings', path: '/settings/profile' },
-      { label: 'Workspace Settings', path: '/settings/workspace' },
-      { label: 'General Settings', path: '/settings/general' },
-      { label: 'Lead Settings', path: '/settings/leads' },
-      { label: 'Contact Settings', path: '/settings/contacts' },
-      { label: 'Company Settings', path: '/settings/companies' },
-      { label: 'Deal Settings', path: '/settings/deals' },
-      { label: 'Pipeline Settings', path: '/settings/pipelines' },
-      { label: 'Activity Settings', path: '/settings/activities' },
-      { label: 'Notification Settings', path: '/settings/notifications' },
-      { label: 'Email Settings', path: '/settings/email' },
-      { label: 'Integration Settings', path: '/settings/integrations' },
-      { label: 'Security Settings', path: '/settings/security' },
-    ],
-  },
-  {
-    id: 'audit-logs',
-    label: 'Audit Logs',
-    icon: <ShieldIcon size={18} />,
-    basePath: '/audit-logs',
-    subItems: [
-      { label: 'All Activity Logs', path: '/audit-logs/all' },
-      { label: 'User Activity', path: '/audit-logs/user-activity' },
-      { label: 'Record Changes', path: '/audit-logs/record-changes' },
-      { label: 'Permission Changes', path: '/audit-logs/permission-changes' },
-      { label: 'Login History', path: '/audit-logs/login-history' },
-      { label: 'System Events', path: '/audit-logs/system-events' },
-    ],
-  },
-  {
-    id: 'help-support',
-    label: 'Help & Support',
-    icon: <LifeBuoyIcon size={18} />,
-    basePath: '/help',
-    subItems: [
-      { label: 'Help Center', path: '/help/center' },
-      { label: 'Documentation', path: '/help/docs' },
-      { label: 'FAQs', path: '/help/faqs' },
-      { label: 'Contact Support', path: '/help/support' },
-      { label: 'Feedback & Ideas', path: '/help/feedback' },
-    ],
-  },
-  {
-    id: 'account',
-    label: 'Account & Security',
-    icon: <UserIcon size={18} />,
-    basePath: '/profile',
-    subItems: [
-      { label: 'Profile Settings', path: '/profile' },
-      { label: 'Change Password', path: '/change-password' },
-      { label: 'Active Sessions', path: '/sessions' },
+    title: 'System & Support',
+    items: [
+      { id: 'general-settings', label: 'General Settings', icon: <SettingsIcon size={16} />, path: '/settings' },
+      { id: 'notifications', label: 'Notifications', icon: <BellIcon size={16} />, path: '/settings/notifications', badge: '1' },
+      { id: 'account', label: 'Profile & Security', icon: <UserIcon size={16} />, path: '/profile' },
+      { id: 'help', label: 'Help & Support', icon: <LifeBuoyIcon size={16} />, path: '/help' },
     ],
   },
 ];
@@ -371,38 +154,54 @@ export const Navbar: React.FC = () => {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [isSwitcherOpen, setIsSwitcherOpen] = useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [settingsSearchQuery, setSettingsSearchQuery] = useState('');
 
-  // Determine active module based on current path
-  const getActiveModuleId = (path: string): string => {
-    if (path.startsWith('/dashboard')) return 'dashboard';
-    if (path.startsWith('/analytics')) return 'analytics';
-    if (path.startsWith('/search')) return 'search';
-    if (path.startsWith('/workspaces')) return 'workspaces';
-    if (path.startsWith('/users') || path.startsWith('/teams')) return 'users-teams';
-    if (path.startsWith('/roles')) return 'roles';
-    if (path.startsWith('/leads')) return 'leads';
-    if (path.startsWith('/contacts')) return 'contacts';
-    if (path.startsWith('/pipelines')) return 'pipelines';
-    if (path.startsWith('/deals')) return 'deals';
-    if (path.startsWith('/activities')) return 'activities';
-    if (path.startsWith('/calendar')) return 'calendar';
-    if (path.startsWith('/communications')) return 'communications';
-    if (path.startsWith('/lead-generation')) return 'lead-generation';
-    if (path.startsWith('/custom-fields')) return 'custom-fields';
-    if (path.startsWith('/tags')) return 'tags';
-    if (path.startsWith('/settings')) return 'settings';
-    if (path.startsWith('/audit-logs')) return 'audit-logs';
-    if (path.startsWith('/help')) return 'help-support';
-    if (path === '/profile' || path === '/change-password' || path === '/sessions') return 'account';
-    return '';
+  // Check if current route is part of settings
+  const isCurrentRouteInSettings = (pathname: string): boolean => {
+    return (
+      pathname.startsWith('/settings') ||
+      pathname.startsWith('/roles') ||
+      pathname.startsWith('/activities') ||
+      pathname.startsWith('/calendar') ||
+      pathname.startsWith('/communications') ||
+      pathname.startsWith('/custom-fields') ||
+      pathname.startsWith('/tags') ||
+      pathname.startsWith('/audit-logs') ||
+      pathname.startsWith('/help') ||
+      pathname === '/profile' ||
+      pathname === '/change-password' ||
+      pathname === '/sessions' ||
+      pathname.startsWith('/workspaces/settings') ||
+      pathname.startsWith('/workspaces/roles')
+    );
   };
 
-  const currentModuleId = getActiveModuleId(location.pathname);
+  // Sidebar mode: 'main' or 'settings'
+  const [sidebarMode, setSidebarMode] = useState<'main' | 'settings'>(() => {
+    return isCurrentRouteInSettings(location.pathname) ? 'settings' : 'main';
+  });
 
-  // Close mobile drawer on route change
+  // Keep sidebar mode in sync when route changes
   useEffect(() => {
+    if (isCurrentRouteInSettings(location.pathname)) {
+      setSidebarMode('settings');
+    } else {
+      setSidebarMode('main');
+    }
     setIsMobileSidebarOpen(false);
   }, [location.pathname]);
+
+  // Global Ctrl+K / Cmd+K listener to trigger search
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        navigate('/search');
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [navigate]);
 
   const handleLogout = async () => {
     try {
@@ -417,7 +216,7 @@ export const Navbar: React.FC = () => {
   };
 
   const getInitials = (name?: string) => {
-    if (!name) return 'U';
+    if (!name) return 'OC';
     return name
       .split(' ')
       .map((part) => part[0])
@@ -426,10 +225,29 @@ export const Navbar: React.FC = () => {
       .toUpperCase();
   };
 
+  const isModuleActive = (basePath: string) => {
+    if (basePath === '/dashboard') {
+      return location.pathname === '/dashboard' || location.pathname === '/';
+    }
+    return location.pathname.startsWith(basePath);
+  };
+
+  // Filtered settings for Search in Settings mode (Image 2)
+  const filteredSettingsGroups = useMemo(() => {
+    if (!settingsSearchQuery.trim()) return SETTINGS_GROUPS;
+    const query = settingsSearchQuery.toLowerCase();
+    return SETTINGS_GROUPS.map((group) => ({
+      ...group,
+      items: group.items.filter((item) =>
+        item.label.toLowerCase().includes(query)
+      ),
+    })).filter((group) => group.items.length > 0);
+  }, [settingsSearchQuery]);
+
   return (
     <>
-      {/* 1. TOP NAVBAR (Clean, fixed, uncrowded header) */}
-      <header className="app-top-navbar" id="app-navbar">
+      {/* 1. TOP NAVBAR (Clean, fixed, uncrowded header with search icon & quick actions) */}
+      <header className="app-top-navbar" id="app-navbar" role="banner">
         <div className="navbar-container">
           <div className="navbar-brand-section">
             {/* Sidebar toggle button (for mobile or toggle) */}
@@ -444,7 +262,7 @@ export const Navbar: React.FC = () => {
               {isMobileSidebarOpen ? <XIcon size={20} /> : <MenuIcon size={20} />}
             </button>
 
-            <Logo size="small" linkTo="/workspaces" showTagline={false} />
+            <Logo size="small" linkTo="/dashboard" showTagline={false} />
 
             {/* Active Workspace Selector Pill in Navbar */}
             <button
@@ -459,80 +277,251 @@ export const Navbar: React.FC = () => {
               </div>
               <div className="ws-pill-details">
                 <span className="ws-pill-label">WORKSPACE</span>
-                <span className="ws-pill-name">{currentWorkspace?.name || 'Acme Workspace'}</span>
+                <span className="ws-pill-name">{currentWorkspace?.name || 'Onseclick Workspace'}</span>
               </div>
               <ChevronDownIcon size={14} className="ws-pill-chevron" />
             </button>
           </div>
 
-          <div className="navbar-user-section">
-            <div className="user-profile-badge" title={user?.email || 'User'}>
-              <div className="user-avatar-circle" aria-hidden="true">
-                {getInitials(user?.name)}
-              </div>
-              <div className="user-meta-info">
-                <span className="user-display-name">{user?.name || 'Authenticated User'}</span>
-                <div className="user-role-row">
-                  <span className="user-role-badge">
-                    <ShieldIcon size={10} />
-                    <span>{user?.role?.name || 'SALES_REP'}</span>
-                  </span>
-                  {user?.organization?.name && (
-                    <span className="user-org-badge">{user.organization.name}</span>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            <button
-              type="button"
-              onClick={handleLogout}
-              disabled={isLoggingOut}
-              className="navbar-logout-btn"
-              title="Log Out"
-              aria-label="Log Out"
+          {/* Right Header Section: Global Search as top icon + Notification Quick Trigger */}
+          <div className="navbar-right-section">
+            {/* Global Search icon trigger at top */}
+            <Link
+              to="/search"
+              className="topbar-search-trigger"
+              title="Global Search (Ctrl+K)"
+              aria-label="Global Search"
+              id="topbar-global-search-btn"
             >
-              <LogOutIcon size={16} />
-              <span className="logout-btn-text">
-                {isLoggingOut ? 'Logging out...' : 'Sign Out'}
-              </span>
-            </button>
+              <SearchIcon size={16} />
+              <span className="topbar-search-text">Search...</span>
+              <kbd className="topbar-search-kbd">Ctrl K</kbd>
+            </Link>
+
+            {/* Topbar Notification Bell */}
+            <Link
+              to="/settings/notifications"
+              className="topbar-icon-action-btn"
+              title="Notifications"
+              aria-label="View notifications"
+            >
+              <BellIcon size={17} />
+              <span className="topbar-unread-badge" aria-hidden="true" />
+            </Link>
           </div>
         </div>
       </header>
 
-      {/* 2. LEFT VERTICAL SIDEBAR WITH DIRECT MODULE NAVIGATION */}
+      {/* 2. LEFT VERTICAL SIDEBAR WITH SHOPYFY-STYLE ALIGNMENT */}
       <aside
         className={`app-sidebar ${isMobileSidebarOpen ? 'is-mobile-open' : ''}`}
         id="app-sidebar"
         aria-label="Sidebar Navigation"
       >
-        <div className="sidebar-header-label">
-          <span>CRM Modules</span>
+        {/* A. Global Search at top of sidebar (matching Image 1) */}
+        <div className="sidebar-search-container">
+          <Link
+            to="/search"
+            className="sidebar-search-bar"
+            title="Global Search (Ctrl+K)"
+            id="sidebar-search-input-btn"
+            onClick={() => setIsMobileSidebarOpen(false)}
+          >
+            <div className="search-bar-left">
+              <SearchIcon size={15} className="search-bar-icon" />
+              <span className="search-bar-placeholder">Search</span>
+            </div>
+            <kbd className="search-bar-kbd">Ctrl K</kbd>
+          </Link>
         </div>
 
-        <nav className="sidebar-modules-list" aria-label="CRM Modules Navigation">
-          {CRM_MODULES.map((module) => {
-            const isModuleActive = currentModuleId === module.id;
+        {/* B. Middle Modules List (Main View vs Settings View) */}
+        {sidebarMode === 'main' ? (
+          <nav className="sidebar-modules-list" aria-label="Main CRM Modules">
+            {MAIN_MODULES.map((module) => {
+              const active = isModuleActive(module.basePath);
+              return (
+                <Link
+                  key={module.id}
+                  to={module.basePath}
+                  className={`sidebar-module-link ${active ? 'is-active-module' : ''}`}
+                  id={`sidebar-module-${module.id}`}
+                  title={module.label}
+                  onClick={() => setIsMobileSidebarOpen(false)}
+                >
+                  <div className="module-link-main">
+                    <span className="module-link-icon">{module.icon}</span>
+                    <span className="module-link-title">{module.label}</span>
+                  </div>
+                  {module.badge && (
+                    <span className="module-badge">{module.badge}</span>
+                  )}
+                </Link>
+              );
+            })}
+          </nav>
+        ) : (
+          /* Settings View (matching Image 2) */
+          <div className="sidebar-settings-panel" role="region" aria-label="CRM Settings Menu">
+            {/* Settings Header with Back Button */}
+            <div className="sidebar-settings-header">
+              <button
+                type="button"
+                className="sidebar-settings-back-btn"
+                onClick={() => setSidebarMode('main')}
+                title="Return to Main CRM Menu"
+              >
+                <ChevronLeftIcon size={16} />
+                <span>Settings</span>
+              </button>
+            </div>
 
-            return (
+            {/* Search settings input */}
+            <div className="sidebar-settings-search-wrap">
+              <SearchIcon size={14} className="settings-search-icon" />
+              <input
+                type="text"
+                placeholder="Search settings..."
+                value={settingsSearchQuery}
+                onChange={(e) => setSettingsSearchQuery(e.target.value)}
+                className="sidebar-settings-search-input"
+                aria-label="Search settings"
+              />
+              {settingsSearchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSettingsSearchQuery('')}
+                  className="settings-search-clear-btn"
+                  title="Clear search"
+                >
+                  <XIcon size={12} />
+                </button>
+              )}
+            </div>
+
+            {/* Grouped Settings Items */}
+            <div className="sidebar-settings-scroll-area">
+              {filteredSettingsGroups.map((group) => (
+                <div key={group.title} className="settings-module-group">
+                  <div className="settings-group-header">
+                    <span>{group.title}</span>
+                  </div>
+                  <div className="settings-group-items">
+                    {group.items.map((item) => {
+                      const active = location.pathname === item.path || (item.path !== '/settings' && location.pathname.startsWith(item.path));
+                      return (
+                        <Link
+                          key={item.id}
+                          to={item.path}
+                          className={`sidebar-settings-link ${active ? 'is-active-module' : ''}`}
+                          id={`sidebar-settings-${item.id}`}
+                          title={item.label}
+                          onClick={() => setIsMobileSidebarOpen(false)}
+                        >
+                          <span className="settings-link-icon">{item.icon}</span>
+                          <span className="settings-link-title">{item.label}</span>
+                          {item.badge && (
+                            <span className="settings-link-badge">{item.badge}</span>
+                          )}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* C. Bottom Section: Settings Link, User Profile, Notifications & Sign Out (Pinned down as requested!) */}
+        <div className="sidebar-bottom-section">
+          {/* Settings Trigger (In Main View) or Main Menu Trigger (In Settings View) */}
+          {sidebarMode === 'main' ? (
+            <button
+              type="button"
+              className={`sidebar-module-link sidebar-settings-trigger ${isCurrentRouteInSettings(location.pathname) ? 'is-active-module' : ''}`}
+              onClick={() => {
+                setSidebarMode('settings');
+                navigate('/settings');
+              }}
+              title="Open CRM Settings"
+              id="sidebar-settings-menu-btn"
+            >
+              <div className="module-link-main">
+                <span className="module-link-icon">
+                  <SettingsIcon size={18} />
+                </span>
+                <span className="module-link-title">Settings</span>
+              </div>
+              <ChevronRightIcon size={14} className="settings-chevron" />
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="sidebar-module-link sidebar-main-menu-trigger"
+              onClick={() => {
+                setSidebarMode('main');
+                navigate('/dashboard');
+              }}
+              title="Return to Main CRM Menu"
+              id="sidebar-main-menu-btn"
+            >
+              <div className="module-link-main">
+                <span className="module-link-icon">
+                  <HomeIcon size={18} />
+                </span>
+                <span className="module-link-title">Main Menu</span>
+              </div>
+              <ChevronLeftIcon size={14} className="settings-chevron" />
+            </button>
+          )}
+
+          {/* User Profile Card with Avatar, Name, Notifications and Sign Out */}
+          <div className="sidebar-profile-card">
+            <Link
+              to="/profile"
+              className="sidebar-profile-info"
+              title={`Logged in as ${user?.name || 'Onseclick User'}`}
+              onClick={() => setIsMobileSidebarOpen(false)}
+            >
+              <div className="sidebar-avatar-pill" aria-hidden="true">
+                <span>{getInitials(user?.name)}</span>
+              </div>
+              <div className="sidebar-user-details">
+                <span className="sidebar-user-name">{user?.name || 'Onseclick Admin'}</span>
+                <span className="sidebar-user-meta">
+                  {user?.role?.name ? user.role.name.toLowerCase() : 'admin'}
+                </span>
+              </div>
+            </Link>
+
+            <div className="sidebar-profile-actions">
+              {/* Notification Bell with Red Badge */}
               <Link
-                key={module.id}
-                to={module.basePath}
-                className={`sidebar-module-link ${isModuleActive ? 'is-active-module' : ''}`}
-                id={`sidebar-module-${module.id}`}
-                title={module.label}
+                to="/settings/notifications"
+                className="sidebar-action-btn notif-btn"
+                title="Notifications (1 new)"
+                aria-label="Notifications"
                 onClick={() => setIsMobileSidebarOpen(false)}
               >
-                <div className="module-link-main">
-                  <span className="module-link-icon">{module.icon}</span>
-                  <span className="module-link-title">{module.label}</span>
-                </div>
-                {isModuleActive && <span className="module-active-indicator" aria-hidden="true" />}
+                <BellIcon size={16} />
+                <span className="sidebar-notif-badge">1</span>
               </Link>
-            );
-          })}
-        </nav>
+
+              {/* Sign Out Button */}
+              <button
+                type="button"
+                onClick={handleLogout}
+                disabled={isLoggingOut}
+                className="sidebar-action-btn logout-btn"
+                title="Sign Out"
+                aria-label="Sign Out"
+              >
+                <LogOutIcon size={16} />
+              </button>
+            </div>
+          </div>
+        </div>
       </aside>
 
       {/* Mobile Backdrop for sidebar drawer */}
