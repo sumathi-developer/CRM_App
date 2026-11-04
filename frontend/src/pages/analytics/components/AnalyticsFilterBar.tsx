@@ -14,7 +14,9 @@ import {
   PERFORMANCE_SORT_OPTIONS,
   type AnalyticsScreenSlug,
 } from '../analyticsConstants';
+import { Button } from '../../../components/ui';
 import {
+  ChevronDownIcon,
   FilterIcon,
   RefreshCwIcon,
   SlidersIcon,
@@ -66,221 +68,275 @@ export const AnalyticsFilterBar: React.FC<AnalyticsFilterBarProps> = ({
     screen === 'sales' || screen === 'pipeline' || screen === 'revenue';
   const showPerformanceSort = screen === 'performance';
 
-  const hasActiveFilters =
-    (filters.timeframe && filters.timeframe !== 'LAST_30_DAYS') ||
-    Boolean(filters.interval) ||
-    Boolean(filters.teamId) ||
-    Boolean(filters.userId) ||
-    Boolean(filters.pipelineId) ||
-    Boolean(filters.dateFrom) ||
-    Boolean(filters.dateTo) ||
-    Boolean(sourceFilter);
+  const activeCount = [
+    Boolean(filters.timeframe && filters.timeframe !== 'LAST_30_DAYS'),
+    Boolean(filters.interval),
+    Boolean(filters.teamId),
+    Boolean(filters.userId),
+    Boolean(filters.pipelineId),
+    Boolean(filters.dateFrom || filters.dateTo),
+    Boolean(sourceFilter),
+    Boolean(showComparison),
+  ].filter(Boolean).length;
+
+  const hasActiveFilters = activeCount > 0;
 
   return (
     <section
-      className="lg-card mb-6 p-4"
+      className="crm-filter-bar"
       aria-label="Analytics filters, source filters, and comparison controls"
     >
-      {/* Top Row: Label, Comparison Toggle, Reset & Refresh */}
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 pb-3">
-        <div className="flex items-center gap-2 text-xs font-bold tracking-wider text-gray-600 uppercase">
-          <FilterIcon size={14} />
-          <span>Analytics Filters &amp; Comparison Controls</span>
+      {/* Top Header: Title, Active Badge, Comparison Pill & Action Buttons */}
+      <div className="crm-filter-header">
+        <div className="crm-filter-title-group">
+          <div className="crm-filter-icon-badge">
+            <FilterIcon size={16} />
+          </div>
+          <div className="crm-filter-heading">
+            <span>Analytics Filters &amp; Controls</span>
+            {hasActiveFilters && (
+              <span className="crm-badge crm-badge-secondary">
+                <span className="crm-badge-dot" />
+                {activeCount} active
+              </span>
+            )}
+          </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="crm-filter-actions">
           {/* Period Comparison Control Toggle */}
-          <label className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-1.5 text-xs font-semibold text-gray-700 select-none hover:bg-gray-100">
-            <input
-              type="checkbox"
-              checked={showComparison}
-              onChange={(e) => onToggleComparison(e.target.checked)}
-              className="h-3.5 w-3.5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-            />
-            <SlidersIcon size={12} />
-            <span>Compare vs. Previous Period</span>
-          </label>
+          <Button
+            type="button"
+            variant={showComparison ? 'secondary' : 'outline'}
+            size="sm"
+            pill
+            onClick={() => onToggleComparison(!showComparison)}
+            icon={<SlidersIcon size={13} />}
+          >
+            {showComparison ? 'Period Comparison: ON' : 'Compare vs. Previous Period'}
+          </Button>
 
           {hasActiveFilters && (
-            <button
+            <Button
               type="button"
+              variant="outline"
+              size="sm"
+              pill
               onClick={onReset}
-              className="inline-flex items-center gap-1 rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-xs font-semibold text-gray-700 hover:bg-gray-50"
+              icon={<XIcon size={13} />}
             >
-              <XIcon size={13} />
-              <span>Reset Filters</span>
-            </button>
+              Reset Filters
+            </Button>
           )}
 
-          <button
+          <Button
             type="button"
+            variant="secondary"
+            size="sm"
+            pill
             onClick={onRefresh}
-            disabled={isLoading}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-blue-200 bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-700 hover:bg-blue-600 hover:text-white disabled:opacity-50"
+            loading={isLoading}
+            icon={<RefreshCwIcon size={13} />}
           >
-            <RefreshCwIcon size={13} />
-            <span>{isLoading ? 'Refreshing...' : 'Refresh Analytics'}</span>
-          </button>
+            {isLoading ? 'Refreshing...' : 'Refresh Analytics'}
+          </Button>
         </div>
       </div>
 
       {/* Filter Selectors Grid */}
-      <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+      <div className="crm-filter-grid">
         {/* Date Range Preset */}
-        <div>
-          <label className="mb-1 block text-[11px] font-semibold text-gray-500 uppercase">
+        <div className="crm-filter-control">
+          <label className="crm-filter-label" htmlFor="analytics-filter-timeframe">
             Date Filter
           </label>
-          <select
-            value={filters.timeframe || 'LAST_30_DAYS'}
-            onChange={(e) =>
-              onChangeFilters({
-                ...filters,
-                timeframe: e.target.value as AnalyticsTimeframe,
-              })
-            }
-            aria-label="Date Filter"
-            className="w-full rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 text-xs text-gray-800 focus:border-blue-600 focus:outline-none"
-          >
-            {TIMEFRAME_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Aggregation Interval */}
-        <div>
-          <label className="mb-1 block text-[11px] font-semibold text-gray-500 uppercase">
-            Time-Series Interval
-          </label>
-          <select
-            value={filters.interval || ''}
-            onChange={(e) =>
-              onChangeFilters({
-                ...filters,
-                interval: (e.target.value || undefined) as
-                  | AnalyticsInterval
-                  | undefined,
-              })
-            }
-            aria-label="Time-Series Interval"
-            className="w-full rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 text-xs text-gray-800 focus:border-blue-600 focus:outline-none"
-          >
-            <option value="">Auto Interval</option>
-            {INTERVAL_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Team Filter */}
-        <div>
-          <label className="mb-1 block text-[11px] font-semibold text-gray-500 uppercase">
-            Team Filter
-          </label>
-          <select
-            value={filters.teamId || ''}
-            onChange={(e) =>
-              onChangeFilters({
-                ...filters,
-                teamId: e.target.value || undefined,
-              })
-            }
-            aria-label="Team Filter"
-            className="w-full rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 text-xs text-gray-800 focus:border-blue-600 focus:outline-none"
-          >
-            <option value="">All Teams</option>
-            {teams.map((t) => (
-              <option key={t.id} value={t.id}>
-                {t.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* User / Rep Filter */}
-        <div>
-          <label className="mb-1 block text-[11px] font-semibold text-gray-500 uppercase">
-            User / Rep Filter
-          </label>
-          <select
-            value={filters.userId || ''}
-            onChange={(e) =>
-              onChangeFilters({
-                ...filters,
-                userId: e.target.value || undefined,
-              })
-            }
-            aria-label="User Filter"
-            className="w-full rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 text-xs text-gray-800 focus:border-blue-600 focus:outline-none"
-          >
-            <option value="">All Users / Reps</option>
-            {users.map((u) => (
-              <option key={u.id} value={u.id}>
-                {u.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Contextual 5th Filter: Source Filter OR Pipeline Filter OR Performance Sort */}
-        {showSourceDropdown ? (
-          <div>
-            <label className="mb-1 block text-[11px] font-semibold text-gray-500 uppercase">
-              Source Filter
-            </label>
+          <div className="crm-filter-select-wrap">
             <select
-              value={sourceFilter}
-              onChange={(e) => onChangeSourceFilter(e.target.value)}
-              aria-label="Source Filter"
-              className="w-full rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 text-xs text-gray-800 focus:border-blue-600 focus:outline-none"
+              id="analytics-filter-timeframe"
+              value={filters.timeframe || 'LAST_30_DAYS'}
+              onChange={(e) =>
+                onChangeFilters({
+                  ...filters,
+                  timeframe: e.target.value as AnalyticsTimeframe,
+                })
+              }
+              aria-label="Date Filter"
+              className="crm-filter-select"
             >
-              {LEAD_SOURCE_FILTER_OPTIONS.map((opt) => (
+              {TIMEFRAME_OPTIONS.map((opt) => (
                 <option key={opt.value} value={opt.value}>
                   {opt.label}
                 </option>
               ))}
             </select>
+            <span className="crm-filter-chevron">
+              <ChevronDownIcon size={14} />
+            </span>
           </div>
-        ) : showPipelineDropdown ? (
-          <div>
-            <label className="mb-1 block text-[11px] font-semibold text-gray-500 uppercase">
-              Pipeline Filter
-            </label>
+        </div>
+
+        {/* Aggregation Interval */}
+        <div className="crm-filter-control">
+          <label className="crm-filter-label" htmlFor="analytics-filter-interval">
+            Time-Series Interval
+          </label>
+          <div className="crm-filter-select-wrap">
             <select
-              value={filters.pipelineId || ''}
+              id="analytics-filter-interval"
+              value={filters.interval || ''}
               onChange={(e) =>
                 onChangeFilters({
                   ...filters,
-                  pipelineId: e.target.value || undefined,
+                  interval: (e.target.value || undefined) as
+                    | AnalyticsInterval
+                    | undefined,
                 })
               }
-              aria-label="Pipeline Filter"
-              className="w-full rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 text-xs text-gray-800 focus:border-blue-600 focus:outline-none"
+              aria-label="Time-Series Interval"
+              className="crm-filter-select"
             >
-              <option value="">Default / All Pipelines</option>
-              {pipelines.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.name}
+              <option value="">Auto Interval</option>
+              {INTERVAL_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
                 </option>
               ))}
             </select>
+            <span className="crm-filter-chevron">
+              <ChevronDownIcon size={14} />
+            </span>
+          </div>
+        </div>
+
+        {/* Team Filter */}
+        <div className="crm-filter-control">
+          <label className="crm-filter-label" htmlFor="analytics-filter-team">
+            Team Filter
+          </label>
+          <div className="crm-filter-select-wrap">
+            <select
+              id="analytics-filter-team"
+              value={filters.teamId || ''}
+              onChange={(e) =>
+                onChangeFilters({
+                  ...filters,
+                  teamId: e.target.value || undefined,
+                })
+              }
+              aria-label="Team Filter"
+              className="crm-filter-select"
+            >
+              <option value="">All Teams</option>
+              {teams.map((t) => (
+                <option key={t.id} value={t.id}>
+                  {t.name}
+                </option>
+              ))}
+            </select>
+            <span className="crm-filter-chevron">
+              <ChevronDownIcon size={14} />
+            </span>
+          </div>
+        </div>
+
+        {/* User / Rep Filter */}
+        <div className="crm-filter-control">
+          <label className="crm-filter-label" htmlFor="analytics-filter-user">
+            User / Rep Filter
+          </label>
+          <div className="crm-filter-select-wrap">
+            <select
+              id="analytics-filter-user"
+              value={filters.userId || ''}
+              onChange={(e) =>
+                onChangeFilters({
+                  ...filters,
+                  userId: e.target.value || undefined,
+                })
+              }
+              aria-label="User Filter"
+              className="crm-filter-select"
+            >
+              <option value="">All Users / Reps</option>
+              {users.map((u) => (
+                <option key={u.id} value={u.id}>
+                  {u.name}
+                </option>
+              ))}
+            </select>
+            <span className="crm-filter-chevron">
+              <ChevronDownIcon size={14} />
+            </span>
+          </div>
+        </div>
+
+        {/* Contextual 5th Filter: Source Filter OR Pipeline Filter OR Performance Sort */}
+        {showSourceDropdown ? (
+          <div className="crm-filter-control">
+            <label className="crm-filter-label" htmlFor="analytics-filter-source">
+              Source Filter
+            </label>
+            <div className="crm-filter-select-wrap">
+              <select
+                id="analytics-filter-source"
+                value={sourceFilter}
+                onChange={(e) => onChangeSourceFilter(e.target.value)}
+                aria-label="Source Filter"
+                className="crm-filter-select"
+              >
+                {LEAD_SOURCE_FILTER_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+              <span className="crm-filter-chevron">
+                <ChevronDownIcon size={14} />
+              </span>
+            </div>
+          </div>
+        ) : showPipelineDropdown ? (
+          <div className="crm-filter-control">
+            <label className="crm-filter-label" htmlFor="analytics-filter-pipeline">
+              Pipeline Filter
+            </label>
+            <div className="crm-filter-select-wrap">
+              <select
+                id="analytics-filter-pipeline"
+                value={filters.pipelineId || ''}
+                onChange={(e) =>
+                  onChangeFilters({
+                    ...filters,
+                    pipelineId: e.target.value || undefined,
+                  })
+                }
+                aria-label="Pipeline Filter"
+                className="crm-filter-select"
+              >
+                <option value="">Default / All Pipelines</option>
+                {pipelines.map((p) => (
+                  <option key={p.id} value={p.id}>
+                    {p.name}
+                  </option>
+                ))}
+              </select>
+              <span className="crm-filter-chevron">
+                <ChevronDownIcon size={14} />
+              </span>
+            </div>
           </div>
         ) : showPerformanceSort ? (
-          <div className="grid grid-cols-2 gap-2">
-            <div>
-              <label className="mb-1 block text-[11px] font-semibold text-gray-500 uppercase">
-                Rank By
-              </label>
+          <div className="crm-filter-control">
+            <label className="crm-filter-label" htmlFor="analytics-filter-sort">
+              Rank By
+            </label>
+            <div className="crm-filter-select-wrap">
               <select
+                id="analytics-filter-sort"
                 value={sortBy}
                 onChange={(e) => onChangeSortBy(e.target.value)}
                 aria-label="Rank By"
-                className="w-full rounded-lg border border-gray-300 bg-white px-2 py-1.5 text-xs text-gray-800 focus:border-blue-600 focus:outline-none"
+                className="crm-filter-select"
               >
                 {PERFORMANCE_SORT_OPTIONS.map((opt) => (
                   <option key={opt.value} value={opt.value}>
@@ -288,53 +344,47 @@ export const AnalyticsFilterBar: React.FC<AnalyticsFilterBarProps> = ({
                   </option>
                 ))}
               </select>
-            </div>
-            <div>
-              <label className="mb-1 block text-[11px] font-semibold text-gray-500 uppercase">
-                Order
-              </label>
-              <select
-                value={sortOrder}
-                onChange={(e) =>
-                  onChangeSortOrder(e.target.value as 'asc' | 'desc')
-                }
-                aria-label="Sort Order"
-                className="w-full rounded-lg border border-gray-300 bg-white px-2 py-1.5 text-xs text-gray-800 focus:border-blue-600 focus:outline-none"
-              >
-                <option value="desc">Top First</option>
-                <option value="asc">Lowest First</option>
-              </select>
+              <span className="crm-filter-chevron">
+                <ChevronDownIcon size={14} />
+              </span>
             </div>
           </div>
         ) : (
-          <div>
-            <label className="mb-1 block text-[11px] font-semibold text-gray-500 uppercase">
+          <div className="crm-filter-control">
+            <label className="crm-filter-label" htmlFor="analytics-filter-source">
               Source Filter
             </label>
-            <select
-              value={sourceFilter}
-              onChange={(e) => onChangeSourceFilter(e.target.value)}
-              aria-label="Source Filter"
-              className="w-full rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 text-xs text-gray-800 focus:border-blue-600 focus:outline-none"
-            >
-              {LEAD_SOURCE_FILTER_OPTIONS.map((opt) => (
-                <option key={opt.value} value={opt.value}>
-                  {opt.label}
-                </option>
-              ))}
-            </select>
+            <div className="crm-filter-select-wrap">
+              <select
+                id="analytics-filter-source"
+                value={sourceFilter}
+                onChange={(e) => onChangeSourceFilter(e.target.value)}
+                aria-label="Source Filter"
+                className="crm-filter-select"
+              >
+                {LEAD_SOURCE_FILTER_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+              <span className="crm-filter-chevron">
+                <ChevronDownIcon size={14} />
+              </span>
+            </div>
           </div>
         )}
       </div>
 
       {/* Custom Date Range Pickers when timeframe === CUSTOM */}
       {filters.timeframe === 'CUSTOM' && (
-        <div className="mt-3 grid grid-cols-1 gap-3 border-t border-gray-100 pt-3 sm:grid-cols-2">
-          <div>
-            <label className="mb-1 block text-[11px] font-semibold text-gray-500 uppercase">
+        <div className="crm-filter-custom-dates grid grid-cols-1 gap-3 border-t border-emerald-900/10 pt-3 sm:grid-cols-2 mt-3">
+          <div className="crm-filter-control">
+            <label className="crm-filter-label" htmlFor="analytics-custom-start">
               Start Date
             </label>
             <input
+              id="analytics-custom-start"
               type="date"
               value={filters.dateFrom ? filters.dateFrom.slice(0, 10) : ''}
               onChange={(e) =>
@@ -345,14 +395,15 @@ export const AnalyticsFilterBar: React.FC<AnalyticsFilterBarProps> = ({
                     : undefined,
                 })
               }
-              className="w-full rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 text-xs text-gray-800 focus:border-blue-600 focus:outline-none"
+              className="crm-filter-select"
             />
           </div>
-          <div>
-            <label className="mb-1 block text-[11px] font-semibold text-gray-500 uppercase">
+          <div className="crm-filter-control">
+            <label className="crm-filter-label" htmlFor="analytics-custom-end">
               End Date
             </label>
             <input
+              id="analytics-custom-end"
               type="date"
               value={filters.dateTo ? filters.dateTo.slice(0, 10) : ''}
               onChange={(e) =>
@@ -363,7 +414,7 @@ export const AnalyticsFilterBar: React.FC<AnalyticsFilterBarProps> = ({
                     : undefined,
                 })
               }
-              className="w-full rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 text-xs text-gray-800 focus:border-blue-600 focus:outline-none"
+              className="crm-filter-select"
             />
           </div>
         </div>
@@ -371,4 +422,3 @@ export const AnalyticsFilterBar: React.FC<AnalyticsFilterBarProps> = ({
     </section>
   );
 };
-
