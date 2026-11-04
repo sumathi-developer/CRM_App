@@ -105,7 +105,7 @@
 .user-display-name {
   font-size: 0.875rem;
   font-weight: 700;
-  color: var(--text-main);
+  color: #000000 !important;
 }
 
 .user-role-row {
@@ -119,9 +119,10 @@
   align-items: center;
   gap: 3px;
   font-size: 0.6875rem;
-  font-weight: 700;
-  background: rgba(59, 130, 246, 0.15);
-  color: #93c5fd;
+  font-weight: 800;
+  background: #E0E7FF;
+  border: 1px solid rgba(99, 102, 241, 0.4);
+  color: #000000 !important;
   padding: 1px 6px;
   border-radius: var(--radius-sm);
   text-transform: uppercase;
@@ -143,11 +144,11 @@
   gap: 6px;
   padding: 8px 12px;
   border-radius: var(--radius-md);
-  background-color: rgba(244, 63, 94, 0.1);
-  border: 1px solid rgba(244, 63, 94, 0.25);
-  color: #fb7185;
+  background-color: #FEE2E2;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #000000 !important;
   font-size: 0.8125rem;
-  font-weight: 600;
+  font-weight: 700;
   transition: all var(--transition-fast);
 }
 

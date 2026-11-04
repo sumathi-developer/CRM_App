@@ -8,11 +8,32 @@ import { TrendingUpIcon, PlusIcon, AwardIcon } from '../../../components/common/
    Fixed height: 446px to match Center 4-Row Deck
    ========================================================================== */
 
-interface DashboardLeftRailProps {
+export interface DashboardLeftRailProps {
   totalLeads?: number;
   dealsWon?: number;
   conversionRate?: string;
   activitiesCount?: number;
+  progressTitle?: string;
+  progress1Label?: string;
+  progress1Value?: string;
+  progress1Width?: string;
+  progress2Label?: string;
+  progress2Value?: string;
+  progress2Width?: string;
+  progress3Label?: string;
+  progress3Value?: string;
+  progress3Width?: string;
+  talliesTitle?: string;
+  tally1Label?: string;
+  tally1Value?: React.ReactNode;
+  tally2Label?: string;
+  tally2Value?: React.ReactNode;
+  tally3Label?: string;
+  tally3Value?: React.ReactNode;
+  efficiencyLabel?: string;
+  efficiencyValue?: string;
+  auditLabel?: string;
+  auditLink?: string;
 }
 
 export const DashboardLeftRail: React.FC<DashboardLeftRailProps> = ({
@@ -20,44 +41,65 @@ export const DashboardLeftRail: React.FC<DashboardLeftRailProps> = ({
   dealsWon = 0,
   conversionRate = '0%',
   activitiesCount = 0,
+  progressTitle = 'Target Progress',
+  progress1Label = 'Pipeline Health',
+  progress1Value = '84%',
+  progress1Width = '84%',
+  progress2Label = 'Conversion Quota',
+  progress2Value = conversionRate,
+  progress2Width = '68%',
+  progress3Label = 'Deal Velocity',
+  progress3Value = '92%',
+  progress3Width = '92%',
+  talliesTitle = 'Quick Tallies',
+  tally1Label = 'New Leads',
+  tally1Value = totalLeads,
+  tally2Label = 'Deals Won',
+  tally2Value = dealsWon,
+  tally3Label = 'Tasks Done',
+  tally3Value = activitiesCount,
+  efficiencyLabel = 'Win Efficiency',
+  efficiencyValue = '94.2%',
+  auditLabel = 'Full Pipeline Audit',
+  auditLink = '/analytics/pipeline',
 }) => {
   return (
     <aside className="crm-left-rail" aria-label="Performance Indicators">
       {/* 1. Target Progress */}
       <div>
         <div className="crm-rail-section-title">
-          <span>Target Progress</span>
+          <span>{progressTitle}</span>
           <Badge variant="secondary">Active</Badge>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', marginTop: '0.65rem' }}>
           <div className="crm-slider-item">
             <div className="crm-slider-header">
-              <span>Pipeline Health</span>
-              <strong>84%</strong>
+              <span>{progress1Label}</span>
+              <strong>{progress1Value}</strong>
             </div>
             <div className="crm-progress-track">
-              <div className="crm-progress-fill-emerald" style={{ width: '84%' }} />
+              <div className="crm-progress-fill-emerald" style={{ width: progress1Width }} />
             </div>
           </div>
 
           <div className="crm-slider-item">
             <div className="crm-slider-header">
-              <span>Conversion Quota</span>
-              <strong>{conversionRate}</strong>
+              <span>{progress2Label}</span>
+              <strong>{progress2Value}</strong>
             </div>
             <div className="crm-progress-track">
-              <div className="crm-progress-fill-violet" style={{ width: '68%' }} />
+              <div className="crm-progress-fill-violet" style={{ width: progress2Width }} />
             </div>
           </div>
 
           <div className="crm-slider-item">
             <div className="crm-slider-header">
-              <span>Deal Velocity</span>
-              <strong>92%</strong>
+              <span>{progress3Label}</span>
+              <strong>{progress3Value}</strong>
             </div>
             <div className="crm-progress-track">
-              <div className="crm-progress-fill-warm" style={{ width: '92%' }} />
+              <div className="crm-progress-fill-warm" style={{ width: progress3Width }} />
             </div>
           </div>
         </div>
@@ -66,22 +108,22 @@ export const DashboardLeftRail: React.FC<DashboardLeftRailProps> = ({
       {/* 2. Quick Tallies */}
       <div style={{ borderTop: '1px solid rgba(16, 185, 129, 0.12)', paddingTop: '0.75rem' }}>
         <div className="crm-rail-section-title">
-          <span>Quick Tallies</span>
-          <span style={{ fontSize: '0.72rem', color: '#059669', fontWeight: 700 }}>Live</span>
+          <span>{talliesTitle}</span>
+          <span style={{ fontSize: '0.72rem', color: '#000000', fontWeight: 700 }}>Live</span>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.55rem', marginTop: '0.55rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontSize: '0.8125rem', color: '#475569' }}>New Leads</span>
-            <Badge variant="primary">{totalLeads}</Badge>
+            <span style={{ fontSize: '0.8125rem', color: '#000000' }}>{tally1Label}</span>
+            <Badge variant="primary">{tally1Value}</Badge>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontSize: '0.8125rem', color: '#475569' }}>Deals Won</span>
-            <Badge variant="secondary">{dealsWon}</Badge>
+            <span style={{ fontSize: '0.8125rem', color: '#000000' }}>{tally2Label}</span>
+            <Badge variant="secondary">{tally2Value}</Badge>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontSize: '0.8125rem', color: '#475569' }}>Tasks Done</span>
-            <Badge variant="accent">{activitiesCount}</Badge>
+            <span style={{ fontSize: '0.8125rem', color: '#000000' }}>{tally3Label}</span>
+            <Badge variant="accent">{tally3Value}</Badge>
           </div>
         </div>
       </div>
@@ -100,16 +142,16 @@ export const DashboardLeftRail: React.FC<DashboardLeftRailProps> = ({
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', color: '#059669' }}>
           <AwardIcon size={16} />
-          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#065F46' }}>Win Efficiency</span>
+          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#000000' }}>{efficiencyLabel}</span>
         </div>
-        <span style={{ fontSize: '0.85rem', fontWeight: 800, color: '#062E03' }}>94.2%</span>
+        <span style={{ fontSize: '0.85rem', fontWeight: 800, color: '#000000' }}>{efficiencyValue}</span>
       </div>
 
       {/* 4. Action Button */}
       <div>
-        <Link to="/analytics/pipeline" style={{ width: '100%', display: 'block' }}>
+        <Link to={auditLink} style={{ width: '100%', display: 'block' }}>
           <Button variant="outline" pill size="sm" style={{ width: '100%' }} icon={<TrendingUpIcon size={14} />}>
-            Full Pipeline Audit
+            {auditLabel}
           </Button>
         </Link>
       </div>
@@ -122,7 +164,19 @@ export const DashboardLeftRail: React.FC<DashboardLeftRailProps> = ({
    Fixed height: 446px to match Center 4-Row Deck
    ========================================================================== */
 
-export const DashboardRightRail: React.FC = () => {
+export interface DashboardRightRailProps {
+  pulseTitle?: string;
+  pulseSubtitle?: string;
+  actionLabel?: string;
+  actionLink?: string;
+}
+
+export const DashboardRightRail: React.FC<DashboardRightRailProps> = ({
+  pulseTitle = 'Performance Pulse',
+  pulseSubtitle = 'Q4 High Momentum',
+  actionLabel = 'Schedule Activity',
+  actionLink = '/activities',
+}) => {
   const today = new Date();
   const [selectedDay, setSelectedDay] = useState<number>(today.getDate());
 
@@ -142,7 +196,7 @@ export const DashboardRightRail: React.FC = () => {
       {/* 1. Performance Visual Pulse */}
       <div
         style={{
-          background: 'linear-gradient(135deg, rgba(6, 46, 3, 0.9) 0%, rgba(124, 58, 237, 0.25) 100%)',
+          background: '#F4FAF6', border: '1px solid rgba(16, 185, 129, 0.28)',
           border: '1px solid rgba(16, 185, 129, 0.22)',
           borderRadius: '14px',
           padding: '0.5rem 0.75rem',
@@ -150,11 +204,11 @@ export const DashboardRightRail: React.FC = () => {
       >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div>
-            <span style={{ fontSize: '0.68rem', textTransform: 'uppercase', color: '#10b981', fontWeight: 700 }}>
-              Performance Pulse
+            <span style={{ fontSize: '0.68rem', textTransform: 'uppercase', color: '#000000', fontWeight: 700 }}>
+              {pulseTitle}
             </span>
-            <h4 style={{ fontSize: '0.95rem', fontWeight: 800, color: '#ffffff', margin: '0.1rem 0 0' }}>
-              Q4 High Momentum
+            <h4 style={{ fontSize: '0.95rem', fontWeight: 800, color: '#000000', margin: '0.1rem 0 0' }}>
+              {pulseSubtitle}
             </h4>
           </div>
           <span style={{ fontSize: '18px' }}>🏙️</span>
@@ -168,7 +222,7 @@ export const DashboardRightRail: React.FC = () => {
               style={{
                 flex: 1,
                 height: `${val}%`,
-                background: idx === 6 ? '#10b981' : idx === 4 ? '#7c3aed' : 'rgba(255, 255, 255, 0.2)',
+                background: idx === 6 ? '#10b981' : idx === 4 ? '#7c3aed' : '#CBD5E1',
                 borderRadius: '3px 3px 1px 1px',
                 transition: 'height 0.3s ease',
               }}
@@ -234,7 +288,7 @@ export const DashboardRightRail: React.FC = () => {
       <div>
         <div className="crm-rail-section-title" style={{ fontSize: '0.72rem' }}>
           <span>Upcoming Agenda</span>
-          <span style={{ fontSize: '0.68rem', color: '#7c3aed', fontWeight: 700 }}>Day {selectedDay}</span>
+          <span style={{ fontSize: '0.68rem', color: '#000000', fontWeight: 700 }}>Day {selectedDay}</span>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', marginTop: '0.4rem' }}>
@@ -245,7 +299,7 @@ export const DashboardRightRail: React.FC = () => {
           <div className="crm-agenda-item" style={{ padding: '0.35rem 0.6rem' }}>
             <span
               className="crm-agenda-time"
-              style={{ color: '#6d28d9', background: 'rgba(124, 58, 237, 0.12)', fontSize: '0.68rem', padding: '0.15rem 0.4rem', fontWeight: 700 }}
+              style={{ color: '#000000', background: 'rgba(124, 58, 237, 0.12)', fontSize: '0.68rem', padding: '0.15rem 0.4rem', fontWeight: 700 }}
             >
               02:00 PM
             </span>
@@ -256,7 +310,7 @@ export const DashboardRightRail: React.FC = () => {
 
       {/* 4. Action Button */}
       <div>
-        <Link to="/activities" style={{ width: '100%', display: 'block' }}>
+        <Link to={actionLink} style={{ width: '100%', display: 'block' }}>
           <Button
             variant="gradient"
             pill
@@ -264,7 +318,7 @@ export const DashboardRightRail: React.FC = () => {
             style={{ width: '100%', height: '36px', fontWeight: 700, boxShadow: '0 4px 12px rgba(16, 185, 129, 0.35)' }}
             icon={<PlusIcon size={14} />}
           >
-            Schedule Activity
+            {actionLabel}
           </Button>
         </Link>
       </div>

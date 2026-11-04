@@ -365,56 +365,16 @@
   font-size: 1.125rem;
   font-weight: 800;
   letter-spacing: 0.08em;
-  color: #062E03;
+  color: #000000 !important;
 }
 
 .brand-badge {
   font-size: 0.6875rem;
   font-weight: 700;
-  background: var(--brand-gradient);
-  color: #ffffff;
+  background: #A7F3D0;
+  border: 1px solid #10B981;
+  color: #000000 !important;
   padding: 2px 6px;
-  border-radius: var(--radius-sm);
-  letter-spacing: 0.05em;
-}
-
-.auth-logo-tagline {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-/* ==========================================================================
-   FORM CONTROLS & INPUTS
-   ========================================================================== */
-
-.auth-form {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
-.form-field-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.form-field-label-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.form-field-label {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #e2e8f0;
 }
 
 .required-mark {
@@ -798,9 +758,10 @@
 }
 
 .auth-alert-banner.alert-error {
-  background-color: var(--color-error-bg);
-  border: 1px solid var(--color-error-border);
-  color: #fecdd3;
+  background-color: #FEE2E2;
+  border: 1.5px solid rgba(239, 68, 68, 0.45);
+  color: #000000 !important;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.08);
 }
 
 .auth-alert-banner.alert-error .alert-icon-wrap {
@@ -808,13 +769,29 @@
 }
 
 .auth-alert-banner.alert-success {
-  background-color: var(--color-success-bg);
-  border: 1px solid var(--color-success-border);
-  color: #a7f3d0;
+  background-color: #E6F5EC;
+  border: 1.5px solid rgba(16, 185, 129, 0.45);
+  color: #000000 !important;
+  box-shadow: 0 2px 8px rgba(6, 46, 3, 0.04);
 }
 
 .auth-alert-banner.alert-success .alert-icon-wrap {
-  color: var(--color-success);
+  color: #059669;
+}
+
+.auth-alert-banner.alert-success .alert-title,
+.auth-alert-banner.alert-success .alert-text {
+  color: #064E3B !important;
+  font-weight: 600 !important;
+}
+
+.auth-alert-banner.alert-success .alert-dismiss-btn {
+  color: #064E3B;
+  opacity: 0.75;
+}
+
+.auth-alert-banner.alert-success .alert-dismiss-btn:hover {
+  opacity: 1;
 }
 
 .alert-body {

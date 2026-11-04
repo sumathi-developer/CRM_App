@@ -147,14 +147,14 @@ export const DashboardKpiCard: React.FC<DashboardKpiCardProps> = ({
         {metric ? (
           <span className="crm-kpi-prev">
             Prev:{' '}
-            <strong style={{ color: '#cbd5e1' }}>
+            <strong style={{ color: '#000000' }}>
               {formatPrev
                 ? formatPrev(metric.previous)
                 : formatNumber(metric.previous)}
             </strong>
           </span>
         ) : subtitle ? (
-          <span className="crm-kpi-prev" style={{ color: '#94a3b8' }}>{subtitle}</span>
+          <span className="crm-kpi-prev" style={{ color: '#000000' }}>{subtitle}</span>
         ) : (
           <span />
         )}

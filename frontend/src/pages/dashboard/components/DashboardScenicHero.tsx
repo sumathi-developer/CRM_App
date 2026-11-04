@@ -1,54 +1,135 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from '../../../components/ui';
+import { Button, type ButtonVariant } from '../../../components/ui';
 import { PlusIcon, TrendingUpIcon, AwardIcon } from '../../../components/common/Icons';
 
-interface DashboardScenicHeroProps {
+export interface DashboardHeroTickerItem {
+  dotColor: string;
+  label: string;
+  value: React.ReactNode;
+}
+
+export interface DashboardHeroAction {
+  label: string;
+  to?: string;
+  onClick?: () => void;
+  variant?: ButtonVariant;
+  icon?: React.ReactNode;
+}
+
+export interface DashboardScenicHeroProps {
   totalRevenue?: string;
   dealsWon?: number;
   winRate?: string;
+  badge?: string;
+  title?: string;
+  highlight?: string;
+  subtitle?: string;
+  actions?: DashboardHeroAction[];
+  tickerItems?: DashboardHeroTickerItem[];
 }
 
 export const DashboardScenicHero: React.FC<DashboardScenicHeroProps> = ({
   totalRevenue = '$0',
   dealsWon = 0,
   winRate = '0%',
+  badge = 'Enterprise Intelligence Hub',
+  title = 'Deliver Impact.',
+  highlight = 'Close Deals Faster.',
+  subtitle = 'Real-time CRM execution across your pipelines. Track revenue momentum, convert high-value leads, and align your teams with automated intelligence.',
+  actions,
+  tickerItems,
 }) => {
+  const defaultActions: DashboardHeroAction[] = [
+    {
+      label: 'Create Deal',
+      to: '/deals/create',
+      variant: 'secondary',
+      icon: <PlusIcon size={15} />,
+    },
+    {
+      label: 'Capture Lead',
+      to: '/leads/create',
+      variant: 'outline',
+      icon: <PlusIcon size={15} />,
+    },
+    {
+      label: 'Revenue Forecast',
+      to: '/dashboard/revenue',
+      variant: 'accent',
+      icon: <TrendingUpIcon size={15} />,
+    },
+  ];
+
+  const resolvedActions = actions && actions.length > 0 ? actions : defaultActions;
+
+  const defaultTickerItems: DashboardHeroTickerItem[] = [
+    {
+      dotColor: '#10b981',
+      label: 'Revenue Won:',
+      value: totalRevenue,
+    },
+    {
+      dotColor: '#7c3aed',
+      label: 'Deals Closed:',
+      value: `${dealsWon} Deals`,
+    },
+    {
+      dotColor: '#059669',
+      label: 'Win Rate:',
+      value: winRate,
+    },
+  ];
+
+  const resolvedTickerItems = tickerItems && tickerItems.length > 0 ? tickerItems : defaultTickerItems;
+
   return (
     <section className="crm-hero-banner" aria-label="Executive Dashboard Overview Showcase">
       <div className="crm-hero-content">
         <div className="crm-hero-badge">
           <span style={{ fontSize: '13px' }}>✨</span>
-          <span>Enterprise Intelligence Hub</span>
+          <span>{badge}</span>
         </div>
 
         <h1 className="crm-hero-title">
-          Deliver Impact. <span>Close Deals Faster.</span>
+          {title}{' '}
+          <span
+            className="crm-hero-highlight"
+            style={{
+              color: '#000000',
+              WebkitTextFillColor: '#000000',
+              background: 'none',
+            }}
+          >
+            {highlight}
+          </span>
         </h1>
 
         <p className="crm-hero-subtitle">
-          Real-time CRM execution across your pipelines. Track revenue momentum, convert high-value leads,
-          and align your teams with automated intelligence.
+          {subtitle}
         </p>
 
         <div className="crm-hero-actions">
-          <Link to="/deals/create">
-            <Button variant="secondary" pill icon={<PlusIcon size={15} />}>
-              Create Deal
-            </Button>
-          </Link>
-
-          <Link to="/leads/create">
-            <Button variant="outline" pill icon={<PlusIcon size={15} />}>
-              Capture Lead
-            </Button>
-          </Link>
-
-          <Link to="/dashboard/revenue">
-            <Button variant="accent" pill icon={<TrendingUpIcon size={15} />}>
-              Revenue Forecast
-            </Button>
-          </Link>
+          {resolvedActions.map((act, idx) =>
+            act.to ? (
+              <Link key={idx} to={act.to}>
+                <Button variant={act.variant || 'outline'} pill icon={act.icon}>
+                  {act.label}
+                </Button>
+              </Link>
+            ) : (
+              <Button
+                key={idx}
+                type="button"
+                onClick={act.onClick}
+                variant={act.variant || 'outline'}
+                pill
+                icon={act.icon}
+              >
+                {act.label}
+              </Button>
+            ),
+          )}
         </div>
 
         {/* Mini quick-metrics pills below hero */}
@@ -61,21 +142,30 @@ export const DashboardScenicHero: React.FC<DashboardScenicHeroProps> = ({
             flexWrap: 'wrap',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.8rem', color: '#334155', fontWeight: 600 }}>
-            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981' }} />
-            <span>Revenue Won:</span>
-            <strong style={{ color: '#062E03', fontWeight: 800 }}>{totalRevenue}</strong>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.8rem', color: '#334155', fontWeight: 600 }}>
-            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#7c3aed' }} />
-            <span>Deals Closed:</span>
-            <strong style={{ color: '#062E03', fontWeight: 800 }}>{dealsWon} Deals</strong>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.8rem', color: '#334155', fontWeight: 600 }}>
-            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#059669' }} />
-            <span>Win Rate:</span>
-            <strong style={{ color: '#062E03', fontWeight: 800 }}>{winRate}</strong>
-          </div>
+          {resolvedTickerItems.map((item, idx) => (
+            <div
+              key={idx}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.45rem',
+                fontSize: '0.8rem',
+                color: '#000000',
+                fontWeight: 600,
+              }}
+            >
+              <span
+                style={{
+                  width: '8px',
+                  height: '8px',
+                  borderRadius: '50%',
+                  background: item.dotColor,
+                }}
+              />
+              <span>{item.label}</span>
+              <strong style={{ color: '#000000', fontWeight: 800 }}>{item.value}</strong>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -102,4 +192,3 @@ export const DashboardScenicHero: React.FC<DashboardScenicHeroProps> = ({
     </section>
   );
 };
-

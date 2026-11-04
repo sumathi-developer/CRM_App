@@ -100,12 +100,12 @@
   --color-info-bg: rgba(14, 165, 233, 0.12);
 
   /* Typography (High Contrast Light Mode) */
-  --text-main: #062E03;
-  --text-secondary: #334155;
-  --text-muted: #64748B;
-  --text-inverse: #ffffff;
-  --text-primary-accent: #059669;
-  --text-purple-accent: #7C3AED;
+  --text-main: #000000;
+  --text-secondary: #000000;
+  --text-muted: #000000;
+  --text-inverse: #000000;
+  --text-primary-accent: #000000;
+  --text-purple-accent: #000000;
 
   --font-sans: 'Quicksand', 'Nunito', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-heading: 'Quicksand', 'Syne', sans-serif;
@@ -186,7 +186,7 @@ html {
 body {
   min-height: 100%;
   font-family: var(--font-sans);
-  background-color: #EAF4ED;
+  background-color: #000000;
   background-image:
     radial-gradient(circle at 10% 15%, rgba(16, 185, 129, 0.14) 0%, transparent 45%),
     radial-gradient(circle at 90% 85%, rgba(124, 58, 237, 0.08) 0%, transparent 45%),
@@ -346,17 +346,17 @@ aside.bg-white {
 
 .text-gray-900,
 .text-gray-800 {
-  color: #f8fafc !important;
+  color: #000000 !important;
 }
 
 .text-gray-700,
 .text-gray-600 {
-  color: #cbd5e1 !important;
+  color: #000000 !important;
 }
 
 .text-gray-500,
 .text-gray-400 {
-  color: #94a3b8 !important;
+  color: #000000 !important;
 }
 
 .border-gray-200,
@@ -372,17 +372,17 @@ aside.bg-white {
 .rounded-xl.bg-white,
 .rounded-2xl.bg-white,
 .rounded-lg.bg-white {
-  background-color: rgba(15, 23, 42, 0.85) !important;
-  border-color: rgba(255, 255, 255, 0.1) !important;
-  color: #f8fafc !important;
+  background-color: #FFFFFF !important;
+  border-color: rgba(16, 185, 129, 0.22) !important;
+  color: #000000 !important;
 }
 
 /* Modals with bg-white */
 [role="dialog"] .bg-white,
 .modal-content.bg-white {
-  background-color: #0f172a !important;
-  border-color: rgba(255, 255, 255, 0.14) !important;
-  color: #f8fafc !important;
+  background-color: #FFFFFF !important;
+  border-color: rgba(16, 185, 129, 0.3) !important;
+  color: #000000 !important;
 }
 
 /* Tables across modules */
@@ -391,12 +391,12 @@ div.bg-white > table,
 tr.bg-white,
 tbody.bg-white {
   background-color: transparent !important;
-  color: #f8fafc !important;
+  color: #000000 !important;
 }
 
 thead.bg-gray-50 {
-  background-color: rgba(30, 41, 59, 0.7) !important;
-  color: #94a3b8 !important;
+  background-color: #F8FCF9 !important;
+  color: #000000 !important;
 }
 
 /* Global full-page loading screen */

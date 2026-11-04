@@ -707,10 +707,13 @@
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-.crm-hero-title span {
-  background: linear-gradient(135deg, #a7f0a3 0%, #10b981 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.crm-hero-title span,
+.crm-hero-highlight {
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  -webkit-text-fill-color: #000000 !important;
+  color: #000000 !important;
 }
 
 .crm-hero-subtitle {
@@ -1299,23 +1302,13 @@
   transform: translateY(-2px);
 }
 
-.crm-kpi-card.tone-green {
-  border-left: 3px solid #10b981;
-}
-.crm-kpi-card.tone-blue {
-  border-left: 3px solid #06b6d4;
-}
-.crm-kpi-card.tone-purple {
-  border-left: 3px solid #7c3aed;
-}
-.crm-kpi-card.tone-amber {
-  border-left: 3px solid #f59e0b;
-}
-.crm-kpi-card.tone-cyan {
-  border-left: 3px solid #14b8a6;
-}
+.crm-kpi-card.tone-green,
+.crm-kpi-card.tone-blue,
+.crm-kpi-card.tone-purple,
+.crm-kpi-card.tone-amber,
+.crm-kpi-card.tone-cyan,
 .crm-kpi-card.tone-red {
-  border-left: 3px solid #ef4444;
+  border-left: 1px solid rgba(16, 185, 129, 0.22) !important;
 }
 
 .crm-kpi-top-row {
@@ -2004,6 +1997,19 @@
   margin-bottom: 1.75rem !important; /* Distinct 28px vertical margin gap between each tier */
 }
 
+.crm-dashboard-tier > .lg-card,
+.crm-dashboard-tier > .crm-card,
+.crm-dashboard-tier > .crm-funnel-card,
+.crm-dashboard-tier > .crm-lead-sources-card,
+.crm-dashboard-tier > .crm-revenue-widget-card,
+.crm-dashboard-tier > .crm-pipeline-widget-card,
+.crm-dashboard-tier > .crm-recent-widget-card,
+.crm-dashboard-tier > div > .lg-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 .crm-revenue-widget-card,
 .crm-pipeline-widget-card {
   display: flex;
@@ -2081,21 +2087,16 @@
   color: #64748B !important;
 }
 
-/* KPI Card Tone Badges */
-.crm-kpi-card.tone-green {
-  border-left: 4px solid #10b981 !important;
-}
-.crm-kpi-card.tone-blue {
-  border-left: 4px solid #06b6d4 !important;
-}
-.crm-kpi-card.tone-purple {
-  border-left: 4px solid #7c3aed !important;
-}
-.crm-kpi-card.tone-amber {
-  border-left: 4px solid #f59e0b !important;
-}
-.crm-kpi-card.tone-cyan {
-  border-left: 4px solid #0284c7 !important;
+/* KPI Card Borders - Uniform Clean Border (Colors Removed) */
+.crm-kpi-card,
+.crm-kpi-card.tone-green,
+.crm-kpi-card.tone-blue,
+.crm-kpi-card.tone-purple,
+.crm-kpi-card.tone-amber,
+.crm-kpi-card.tone-cyan,
+.crm-kpi-card.tone-red {
+  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  border-left: 1px solid rgba(16, 185, 129, 0.22) !important;
 }
 
 /* Filter Bar in Light Mode */
@@ -2639,4 +2640,707 @@ textarea:focus {
   color: #065F46 !important;
   background: rgba(16, 185, 129, 0.14) !important;
   font-weight: 700 !important;
+}
+
+/* ---------- 18. CUSTOM DASHBOARD WIDGET CUSTOMIZER & OPTION CARDS ---------- */
+.crm-customizer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1rem;
+}
+
+@media (max-width: 640px) {
+  .crm-customizer-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.crm-widget-opt-card {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  background: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  border-radius: 12px !important;
+  padding: 1rem 1.15rem !important;
+  min-height: 128px;
+  box-shadow: 0 1px 3px rgba(6, 46, 3, 0.04) !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+.crm-widget-opt-card.is-enabled {
+  background: #F4FAF6 !important;
+  border: 1.5px solid #10B981 !important;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.12) !important;
+}
+
+.crm-widget-opt-card.is-disabled {
+  background: #F8FAFC !important;
+  border: 1px dashed #CBD5E1 !important;
+  opacity: 0.72;
+}
+
+.crm-widget-opt-head {
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+  gap: 0.75rem !important;
+  margin-bottom: 0.35rem !important;
+}
+
+.crm-widget-opt-label {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.625rem !important;
+  cursor: pointer !important;
+  user-select: none !important;
+}
+
+.crm-widget-opt-checkbox {
+  width: 17px !important;
+  height: 17px !important;
+  border-radius: 4px !important;
+  border: 1.5px solid #059669 !important;
+  accent-color: #059669 !important;
+  cursor: pointer !important;
+}
+
+.crm-widget-opt-title {
+  font-size: 0.8125rem !important;
+  font-weight: 700 !important;
+  color: #062E03 !important;
+  line-height: 1.3 !important;
+}
+
+.crm-widget-opt-badge {
+  font-size: 0.6875rem !important;
+  font-weight: 600 !important;
+  padding: 2.5px 8px !important;
+  border-radius: 9999px !important;
+  background: #EAF4ED !important;
+  color: #065F46 !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+}
+
+.crm-widget-opt-desc {
+  font-size: 0.75rem !important;
+  line-height: 1.45 !important;
+  color: #334155 !important;
+  margin: 0.25rem 0 0.75rem 0 !important;
+  padding-left: 1.625rem !important;
+}
+
+.crm-widget-opt-footer {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding-top: 0.625rem !important;
+  margin-top: auto !important;
+  border-top: 1px solid rgba(16, 185, 129, 0.18) !important;
+}
+
+.crm-widget-opt-footer-label {
+  font-size: 0.6875rem !important;
+  font-weight: 600 !important;
+  color: #64748B !important;
+}
+
+.crm-widget-span-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  font-size: 0.6875rem !important;
+  font-weight: 700 !important;
+  color: #062E03 !important;
+  background: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.4) !important;
+  padding: 3px 10px !important;
+  border-radius: 6px !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease-in-out !important;
+}
+
+.crm-widget-span-btn:hover {
+  background: #EAF4ED !important;
+  border-color: #10B981 !important;
+  box-shadow: 0 1px 4px rgba(16, 185, 129, 0.2) !important;
+}
+
+.crm-widget-span-fixed {
+  font-size: 0.6875rem !important;
+  font-weight: 600 !important;
+  color: #64748B !important;
+  background: rgba(100, 116, 139, 0.08) !important;
+  padding: 3px 8px !important;
+  border-radius: 6px !important;
+}
+
+/* Universal High-Contrast Success & Error Banners */
+.auth-alert-banner.alert-success {
+  background-color: #E6F5EC !important;
+  border: 1px solid rgba(16, 185, 129, 0.45) !important;
+  color: #064E3B !important;
+  box-shadow: 0 2px 8px rgba(6, 46, 3, 0.04) !important;
+}
+
+.auth-alert-banner.alert-success .alert-icon-wrap {
+  color: #059669 !important;
+}
+
+.auth-alert-banner.alert-success .alert-title,
+.auth-alert-banner.alert-success .alert-text,
+.auth-alert-banner.alert-success p,
+.auth-alert-banner.alert-success span {
+  color: #064E3B !important;
+  font-weight: 600 !important;
+}
+
+.auth-alert-banner.alert-success .alert-dismiss-btn {
+  color: #064E3B !important;
+  opacity: 0.75 !important;
+}
+
+.auth-alert-banner.alert-success .alert-dismiss-btn:hover {
+  opacity: 1 !important;
+}
+
+
+/* ==========================================================================
+   UNIVERSAL PLATFORM-WIDE BLACK TEXT SYSTEM
+   Every piece of text across the CRM platform is enforced to pure solid #000000:
+   - Headings, Titles, Subtitles, Paragraphs, Spans, Labels, Body text
+   - Popups, Modals, Dialogs, Drawers, Dropdowns, Tooltips
+   - Error messages, Alert banners, Toast notifications, Validation errors
+   - Buttons, Form inputs, Selects, Options, Placeholders
+   - Tables, Badges, Pills, KPI cards, Rails, Dashboards, Widgets
+   ========================================================================== */
+
+/* Universal Core Elements */
+html,
+body,
+#root,
+.app-layout,
+.app-main-content,
+p,
+span,
+h1, h2, h3, h4, h5, h6,
+label,
+a,
+li,
+ul,
+ol,
+th,
+td,
+b,
+strong,
+small,
+em,
+sub,
+sup,
+legend,
+caption {
+  color: #000000 !important;
+}
+
+/* Universal Form Controls, Placeholders & Selects */
+input,
+select,
+textarea,
+option,
+optgroup {
+  color: #000000 !important;
+  font-weight: 600 !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #000000 !important;
+  opacity: 0.6 !important;
+}
+
+/* Universal Button Typography & High-Contrast Light Backgrounds */
+button,
+[role="button"],
+.crm-btn,
+.lg-btn,
+.btn {
+  color: #000000 !important;
+  font-weight: 700 !important;
+}
+
+.crm-btn-primary {
+  background: #10B981 !important;
+  color: #000000 !important;
+  border: 1px solid #059669 !important;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25) !important;
+}
+
+.crm-btn-primary:hover:not(:disabled) {
+  background: #34D399 !important;
+  color: #000000 !important;
+}
+
+.crm-btn-secondary {
+  background: #EAF4ED !important;
+  color: #000000 !important;
+  border: 1.5px solid #10B981 !important;
+}
+
+.crm-btn-secondary:hover:not(:disabled) {
+  background: #D1FAE5 !important;
+  color: #000000 !important;
+}
+
+.crm-btn-outline {
+  background: #FFFFFF !important;
+  color: #000000 !important;
+  border: 1.5px solid rgba(0, 0, 0, 0.28) !important;
+}
+
+.crm-btn-outline:hover:not(:disabled) {
+  background: #F1F5F9 !important;
+  color: #000000 !important;
+}
+
+.crm-btn-accent {
+  background: #DDD6FE !important;
+  color: #000000 !important;
+  border: 1.5px solid #8B5CF6 !important;
+}
+
+.crm-btn-accent:hover:not(:disabled) {
+  background: #C4B5FD !important;
+  color: #000000 !important;
+}
+
+.crm-btn-danger {
+  background: #FEE2E2 !important;
+  color: #000000 !important;
+  border: 1.5px solid #EF4444 !important;
+}
+
+.crm-btn-danger:hover:not(:disabled) {
+  background: #FECDD3 !important;
+  color: #000000 !important;
+}
+
+.crm-btn-ghost {
+  background: transparent !important;
+  color: #000000 !important;
+}
+
+.crm-btn-ghost:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.06) !important;
+  color: #000000 !important;
+}
+
+.crm-btn-soft {
+  background: #EAF4ED !important;
+  color: #000000 !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+}
+
+.crm-btn-soft:hover:not(:disabled) {
+  background: #D1FAE5 !important;
+  color: #000000 !important;
+}
+
+/* Universal Popups, Modals, Dialogs, Drawers & Dropdowns */
+.modal-overlay,
+.dialog-overlay,
+.popover-overlay,
+.drawer-overlay {
+  background: rgba(0, 0, 0, 0.45) !important;
+}
+
+.modal-content,
+.modal-card,
+.dialog-content,
+.dialog-card,
+.modal-container,
+.modal-wide,
+.switcher-modal,
+.modal-body,
+.modal-header,
+.modal-footer,
+.drawer-content,
+.popup-container,
+.popover-content,
+.tooltip,
+.dropdown-menu,
+.sidebar-module-dropdown,
+.workspace-switcher-menu,
+[role="dialog"],
+[role="alertdialog"],
+[role="menu"] {
+  background-color: #FFFFFF !important;
+  color: #000000 !important;
+}
+
+.modal-title,
+.dialog-title,
+.modal-subtitle,
+.modal-header-text,
+.modal-close-btn,
+.modal-tab-btn,
+.modal-tab-btn.is-active,
+.dropdown-item,
+.dropdown-link,
+.popup-title,
+.popup-text,
+.popup-message,
+.toast-title,
+.toast-message,
+.tooltip-text,
+.workspace-option-name,
+.workspace-option-badge {
+  color: #000000 !important;
+  font-weight: 700 !important;
+}
+
+/* Universal Error Messages, Alert Banners & Validation Texts */
+.auth-alert-banner,
+.auth-alert-banner.alert-error,
+.auth-alert-banner.alert-success,
+.auth-alert-banner.alert-warning,
+.auth-alert-banner.alert-info,
+.alert-title,
+.alert-text,
+.alert-body,
+.alert-list,
+.alert-list li,
+.alert-dismiss-btn,
+.form-validation-msg,
+.form-validation-msg.type-error,
+.form-validation-msg.type-success,
+.field-error,
+.error-message,
+.error-text,
+.text-error,
+.text-danger,
+.tag-modal-alert,
+.tag-modal-alert-danger,
+.tag-modal-alert-warning {
+  color: #000000 !important;
+  font-weight: 600 !important;
+}
+
+.auth-alert-banner.alert-error {
+  background-color: #FEE2E2 !important;
+  border: 1.5px solid rgba(239, 68, 68, 0.45) !important;
+}
+
+.auth-alert-banner.alert-success {
+  background-color: #E6F5EC !important;
+  border: 1.5px solid rgba(16, 185, 129, 0.45) !important;
+}
+
+.auth-alert-banner.alert-warning {
+  background-color: #FEF3C7 !important;
+  border: 1.5px solid rgba(245, 158, 11, 0.45) !important;
+}
+
+.auth-alert-banner.alert-info {
+  background-color: #E0F2FE !important;
+  border: 1.5px solid rgba(14, 165, 233, 0.45) !important;
+}
+
+/* Universal Header, Navbar, Sidebar & Navigation */
+.app-top-navbar,
+.navbar-container,
+.navbar-brand-section,
+.navbar-user-section,
+.navbar-workspace-pill,
+.ws-pill-details,
+.ws-pill-label,
+.ws-pill-name,
+.ws-pill-chevron,
+.brand-name,
+.brand-badge,
+.auth-logo-title,
+.auth-logo-tagline,
+.user-profile-badge,
+.user-meta-info,
+.user-display-name,
+.user-role-badge,
+.user-org-badge,
+.navbar-logout-btn,
+.logout-btn-text,
+.app-sidebar,
+.sidebar-header-label,
+.sidebar-header-label span,
+.sidebar-modules-list,
+.sidebar-module-title,
+.sidebar-nav-link,
+.lg-subnav,
+.ld-subnav,
+.lg-subnav-group,
+.lg-subnav-label,
+.lg-subnav-links,
+.lg-subnav-link,
+.lg-header,
+.lg-title,
+.lg-subtitle {
+  color: #000000 !important;
+}
+
+.navbar-workspace-pill {
+  background: #F1F5F9 !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+}
+
+.ws-pill-label {
+  color: #000000 !important;
+  font-weight: 700 !important;
+}
+
+.ws-pill-name {
+  color: #000000 !important;
+  font-weight: 800 !important;
+}
+
+.user-display-name {
+  color: #000000 !important;
+  font-weight: 800 !important;
+}
+
+.user-role-badge {
+  background: #E0E7FF !important;
+  border: 1px solid rgba(99, 102, 241, 0.4) !important;
+  color: #000000 !important;
+  font-weight: 800 !important;
+}
+
+.user-org-badge {
+  color: #000000 !important;
+  font-weight: 600 !important;
+}
+
+.navbar-logout-btn {
+  background-color: #FEE2E2 !important;
+  border: 1px solid rgba(239, 68, 68, 0.35) !important;
+  color: #000000 !important;
+  font-weight: 700 !important;
+}
+
+/* Universal Dashboard Components & Cards */
+.crm-card,
+.crm-kpi-card,
+.crm-stat-card,
+.lg-card,
+.lg-section-card,
+.crm-revenue-widget-card,
+.crm-pipeline-widget-card,
+.crm-funnel-card,
+.crm-lead-sources-card,
+.crm-recent-widget-card,
+.crm-filter-bar,
+.crm-left-rail,
+.crm-right-rail,
+.empty-state-card {
+  color: #000000 !important;
+}
+
+.lg-title,
+.lg-section-title,
+.crm-card-title,
+.crm-rail-section-title,
+.crm-calendar-header,
+.crm-filter-title,
+.crm-hero-title,
+.crm-hero-highlight,
+.crm-hero-subtitle,
+.crm-hero-ticker-label,
+.crm-hero-ticker-val,
+.crm-kpi-label,
+.crm-kpi-value,
+.crm-kpi-subtext,
+.crm-filter-label,
+.crm-filter-subtitle,
+.crm-filter-select,
+.crm-revenue-kpi-label,
+.crm-revenue-kpi-value,
+.crm-revenue-kpi-sub,
+.crm-revenue-projection-title,
+.crm-revenue-projection-hint,
+.crm-pipeline-stage-name,
+.crm-pipeline-stage-value,
+.crm-pipeline-stage-weighted,
+.crm-calendar-day-header,
+.crm-calendar-day-num,
+.crm-agenda-title,
+.crm-agenda-time,
+.crm-agenda-desc,
+.empty-state-title,
+.empty-state-desc {
+  color: #000000 !important;
+}
+
+.crm-kpi-label,
+.crm-kpi-subtext,
+.crm-filter-label,
+.crm-filter-subtitle,
+.crm-hero-subtitle,
+.lg-section-subtitle,
+.crm-card-description {
+  font-weight: 600 !important;
+}
+
+.crm-kpi-value,
+.crm-revenue-kpi-value,
+.crm-pipeline-stage-value,
+.crm-hero-title,
+.crm-hero-highlight,
+.lg-title,
+.lg-section-title {
+  font-weight: 800 !important;
+}
+
+/* Universal Badges, Pills & Chips */
+.crm-badge,
+.lg-badge,
+.score-pill,
+.field-type-badge,
+.tag-pill,
+.status-badge,
+.role-pill,
+.crm-widget-opt-badge,
+.crm-widget-span-fixed,
+.crm-widget-span-btn {
+  color: #000000 !important;
+  font-weight: 700 !important;
+}
+
+/* Universal Tables & Lists */
+table,
+thead,
+tbody,
+tr,
+th,
+td,
+.leads-th,
+.leads-td,
+.deals-th,
+.deals-td,
+.users-th,
+.users-td,
+.roles-th,
+.roles-td {
+  color: #000000 !important;
+}
+
+th,
+.leads-th,
+.deals-th,
+.users-th,
+.roles-th {
+  font-weight: 800 !important;
+}
+
+td,
+.leads-td,
+.deals-td,
+.users-td,
+.roles-td {
+  font-weight: 600 !important;
+}
+
+/* Universal Customizer Drawer Typography */
+.crm-widget-opt-title,
+.crm-widget-opt-desc,
+.crm-widget-opt-badge,
+.crm-widget-opt-footer-label,
+.crm-widget-span-btn,
+.crm-widget-span-fixed {
+  color: #000000 !important;
+}
+
+.crm-widget-opt-title {
+  font-weight: 800 !important;
+}
+
+.crm-widget-opt-desc {
+  font-weight: 600 !important;
+}
+
+/* Tailwind Text Color Utilities Override */
+.text-gray-900,
+.text-gray-800,
+.text-gray-700,
+.text-gray-600,
+.text-gray-500,
+.text-gray-400,
+.text-gray-300,
+.text-slate-900,
+.text-slate-800,
+.text-slate-700,
+.text-slate-600,
+.text-slate-500,
+.text-slate-400,
+.text-zinc-900,
+.text-zinc-800,
+.text-zinc-700,
+.text-zinc-600,
+.text-zinc-500,
+.text-zinc-400,
+.text-emerald-900,
+.text-emerald-800,
+.text-emerald-700,
+.text-emerald-600,
+.text-emerald-500,
+.text-green-900,
+.text-green-800,
+.text-green-700,
+.text-green-600,
+.text-blue-900,
+.text-blue-800,
+.text-blue-700,
+.text-blue-600,
+.text-red-900,
+.text-red-800,
+.text-red-700,
+.text-red-600,
+.text-purple-900,
+.text-purple-800,
+.text-purple-700,
+.text-purple-600,
+.text-white {
+  color: #000000 !important;
+}
+
+
+/* ---------- 19. DEFINITIVE HIGHLIGHT TEXT & CARD BORDER NORMALIZATION ---------- */
+.crm-hero-title,
+.crm-hero-title span,
+.crm-hero-highlight {
+  background: none !important;
+  background-image: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  -webkit-text-fill-color: #000000 !important;
+  color: #000000 !important;
+  font-weight: 800 !important;
+}
+
+/* Remove colored left border on all KPI cards across all dashboards */
+.crm-kpi-card,
+.crm-kpi-card.tone-green,
+.crm-kpi-card.tone-blue,
+.crm-kpi-card.tone-purple,
+.crm-kpi-card.tone-amber,
+.crm-kpi-card.tone-cyan,
+.crm-kpi-card.tone-red,
+.lg-stat-card,
+.lg-stat-card.tone-blue,
+.lg-stat-card.tone-green,
+.lg-stat-card.tone-amber,
+.lg-stat-card.tone-purple,
+.lg-stat-card.tone-red,
+.lg-stat-card.tone-cyan,
+.lg-stat-card.tone-slate {
+  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  border-left: 1px solid rgba(16, 185, 129, 0.22) !important;
+  border-left-color: rgba(16, 185, 129, 0.22) !important;
 }
