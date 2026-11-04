@@ -61,20 +61,20 @@ export const DashboardScenicHero: React.FC<DashboardScenicHeroProps> = ({
             flexWrap: 'wrap',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.8rem', color: '#d1fae5' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.8rem', color: '#334155', fontWeight: 600 }}>
             <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981' }} />
             <span>Revenue Won:</span>
-            <strong style={{ color: '#ffffff' }}>{totalRevenue}</strong>
+            <strong style={{ color: '#062E03', fontWeight: 800 }}>{totalRevenue}</strong>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.8rem', color: '#d1fae5' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.8rem', color: '#334155', fontWeight: 600 }}>
             <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#7c3aed' }} />
             <span>Deals Closed:</span>
-            <strong style={{ color: '#ffffff' }}>{dealsWon} Deals</strong>
+            <strong style={{ color: '#062E03', fontWeight: 800 }}>{dealsWon} Deals</strong>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.8rem', color: '#d1fae5' }}>
-            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#34d399' }} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.8rem', color: '#334155', fontWeight: 600 }}>
+            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#059669' }} />
             <span>Win Rate:</span>
-            <strong style={{ color: '#ffffff' }}>{winRate}</strong>
+            <strong style={{ color: '#062E03', fontWeight: 800 }}>{winRate}</strong>
           </div>
         </div>
       </div>

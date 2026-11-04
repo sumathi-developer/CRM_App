@@ -115,15 +115,16 @@
 }
 
 .crm-btn-outline {
-  background: transparent;
-  color: #f8fafc;
-  border-color: rgba(16, 185, 129, 0.28);
+  background: #FFFFFF;
+  color: #062E03;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  font-weight: 700;
 }
 
 .crm-btn-outline:hover:not(:disabled) {
-  background: rgba(16, 185, 129, 0.1);
+  background: #EAF4ED;
   border-color: #10b981;
-  color: #10b981;
+  color: #062E03;
 }
 
 .crm-btn-ghost {
@@ -2591,4 +2592,51 @@ textarea:focus {
 
 .empty-state-desc {
   color: #475569 !important;
+}
+
+/* Universal Outline & Ghost Buttons for High Contrast */
+.crm-btn-outline {
+  background: #FFFFFF !important;
+  color: #062E03 !important;
+  border: 1px solid rgba(16, 185, 129, 0.38) !important;
+  font-weight: 700 !important;
+  box-shadow: 0 1px 3px rgba(6, 46, 3, 0.05) !important;
+}
+
+.crm-btn-outline:hover:not(:disabled) {
+  background: #EAF4ED !important;
+  border-color: #10B981 !important;
+  color: #062E03 !important;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15) !important;
+}
+
+.crm-btn-ghost {
+  color: #334155 !important;
+}
+
+.crm-btn-ghost:hover:not(:disabled) {
+  background: rgba(16, 185, 129, 0.1) !important;
+  color: #062E03 !important;
+}
+
+/* Agenda Items High Visibility */
+.crm-agenda-item {
+  background: #F8FCF9 !important;
+  border: 1px solid rgba(16, 185, 129, 0.2) !important;
+}
+
+.crm-agenda-item:hover {
+  background: #EAF4ED !important;
+  border-color: rgba(16, 185, 129, 0.4) !important;
+}
+
+.crm-agenda-title {
+  color: #062E03 !important;
+  font-weight: 600 !important;
+}
+
+.crm-agenda-time {
+  color: #065F46 !important;
+  background: rgba(16, 185, 129, 0.14) !important;
+  font-weight: 700 !important;
 }

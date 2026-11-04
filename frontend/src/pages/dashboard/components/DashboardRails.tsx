@@ -67,20 +67,20 @@ export const DashboardLeftRail: React.FC<DashboardLeftRailProps> = ({
       <div style={{ borderTop: '1px solid rgba(16, 185, 129, 0.12)', paddingTop: '0.75rem' }}>
         <div className="crm-rail-section-title">
           <span>Quick Tallies</span>
-          <span style={{ fontSize: '0.72rem', color: '#10b981', fontWeight: 700 }}>Live</span>
+          <span style={{ fontSize: '0.72rem', color: '#059669', fontWeight: 700 }}>Live</span>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.55rem', marginTop: '0.55rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontSize: '0.8125rem', color: 'var(--text-secondary, #94a3b8)' }}>New Leads</span>
+            <span style={{ fontSize: '0.8125rem', color: '#475569' }}>New Leads</span>
             <Badge variant="primary">{totalLeads}</Badge>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontSize: '0.8125rem', color: 'var(--text-secondary, #94a3b8)' }}>Deals Won</span>
+            <span style={{ fontSize: '0.8125rem', color: '#475569' }}>Deals Won</span>
             <Badge variant="secondary">{dealsWon}</Badge>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontSize: '0.8125rem', color: 'var(--text-secondary, #94a3b8)' }}>Tasks Done</span>
+            <span style={{ fontSize: '0.8125rem', color: '#475569' }}>Tasks Done</span>
             <Badge variant="accent">{activitiesCount}</Badge>
           </div>
         </div>
@@ -89,8 +89,8 @@ export const DashboardLeftRail: React.FC<DashboardLeftRailProps> = ({
       {/* 3. Conversion Efficiency Pill Metric */}
       <div
         style={{
-          background: 'rgba(16, 185, 129, 0.08)',
-          border: '1px solid rgba(16, 185, 129, 0.2)',
+          background: '#F4FAF6',
+          border: '1px solid rgba(16, 185, 129, 0.28)',
           borderRadius: '12px',
           padding: '0.55rem 0.75rem',
           display: 'flex',
@@ -98,11 +98,11 @@ export const DashboardLeftRail: React.FC<DashboardLeftRailProps> = ({
           justifyContent: 'space-between',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', color: '#059669' }}>
           <AwardIcon size={16} />
-          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#a7f0a3' }}>Win Efficiency</span>
+          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#065F46' }}>Win Efficiency</span>
         </div>
-        <span style={{ fontSize: '0.85rem', fontWeight: 800, color: '#ffffff' }}>94.2%</span>
+        <span style={{ fontSize: '0.85rem', fontWeight: 800, color: '#062E03' }}>94.2%</span>
       </div>
 
       {/* 4. Action Button */}
@@ -234,7 +234,7 @@ export const DashboardRightRail: React.FC = () => {
       <div>
         <div className="crm-rail-section-title" style={{ fontSize: '0.72rem' }}>
           <span>Upcoming Agenda</span>
-          <span style={{ fontSize: '0.68rem', color: '#a78bfa' }}>Day {selectedDay}</span>
+          <span style={{ fontSize: '0.68rem', color: '#7c3aed', fontWeight: 700 }}>Day {selectedDay}</span>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', marginTop: '0.4rem' }}>
@@ -245,7 +245,7 @@ export const DashboardRightRail: React.FC = () => {
           <div className="crm-agenda-item" style={{ padding: '0.35rem 0.6rem' }}>
             <span
               className="crm-agenda-time"
-              style={{ color: '#c4b5fd', background: 'rgba(124, 58, 237, 0.15)', fontSize: '0.68rem', padding: '0.15rem 0.4rem' }}
+              style={{ color: '#6d28d9', background: 'rgba(124, 58, 237, 0.12)', fontSize: '0.68rem', padding: '0.15rem 0.4rem', fontWeight: 700 }}
             >
               02:00 PM
             </span>
