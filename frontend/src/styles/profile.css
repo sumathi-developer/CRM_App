@@ -471,15 +471,36 @@ main.ld-page > *,
   box-sizing: border-box !important;
 }
 
-/* Sticky subnav pinned cleanly directly beneath 64px fixed header */
+/* Module subnav aligned cleanly beneath 64px fixed header matching exact Screenshot 1 spacing */
 .lg-subnav,
 .ld-subnav,
 .user-subnav-tabs,
 .team-nav-tabs-bar {
   margin-top: 0 !important;
-  position: sticky !important;
-  top: 64px !important;
+  position: relative !important;
+  top: 0 !important;
   z-index: 80 !important;
+}
+
+#dashboard-module-shell.app-layout,
+#dashboard-module-shell {
+  padding-top: 64px !important;
+}
+
+#dashboard-module-shell .app-main-content,
+#dashboard-module-shell main.lg-page,
+#dashboard-module-shell main.ld-page {
+  padding: 14px 32px 64px !important;
+  padding-top: 14px !important;
+  margin-top: 0 !important;
+}
+
+#dashboard-module-shell .lg-subnav,
+#dashboard-module-shell .ld-subnav {
+  position: relative !important;
+  top: 0 !important;
+  margin-top: 0 !important;
+  margin-bottom: 4px !important;
 }
 
 /* Responsive breakpoint for <= 960px */

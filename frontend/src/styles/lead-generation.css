@@ -21,8 +21,8 @@
 
 /* Sub-Navigation Bar */
 .lg-subnav {
-  position: sticky;
-  top: 76px;
+  position: relative;
+  top: 0;
   z-index: 80;
   display: flex;
   flex-wrap: wrap;
