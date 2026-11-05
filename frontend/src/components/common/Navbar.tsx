@@ -633,7 +633,7 @@ export const Navbar: React.FC = () => {
               className="navbar-brand-link"
               title="Onseclick CRM - Go to Dashboard"
             >
-              <Logo size="sm" showText={true} />
+              <Logo size="small" showTagline={false} linkTo="" />
             </Link>
 
             {/* Workspace Selector Pill in Topbar */}
