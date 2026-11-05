@@ -5,6 +5,7 @@ import { useWorkspace } from '../../context/useWorkspace';
 import { Logo } from '../auth/Logo';
 import { WorkspaceSwitcher } from '../workspace/WorkspaceSwitcher';
 import { searchService } from '../../services/search.service';
+import type { SearchResultItem } from '../../types/search.types';
 import {
   ActivityIcon,
   BarChart2Icon,
@@ -387,7 +388,7 @@ export const Navbar: React.FC = () => {
   const [isSearchFocused, setIsSearchFocused] = useState<boolean>(false);
   const [isSearchDropdownOpen, setIsSearchDropdownOpen] = useState<boolean>(false);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
-  const [liveRecordResults, setLiveRecordResults] = useState<any[]>([]);
+  const [liveRecordResults, setLiveRecordResults] = useState<SearchResultItem[]>([]);
   const [isSearchingRecords, setIsSearchingRecords] = useState<boolean>(false);
 
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -444,8 +445,8 @@ export const Navbar: React.FC = () => {
     const timer = setTimeout(async () => {
       try {
         setIsSearchingRecords(true);
-        const res = await searchService.searchAll({ q, limit: 4 });
-        const items = res?.items || (Array.isArray(res) ? res : []);
+        const res = await searchService.globalSearch({ q, limit: 4 });
+        const items = Array.isArray(res?.results) ? res.results : [];
         setLiveRecordResults(items);
       } catch {
         setLiveRecordResults([]);
