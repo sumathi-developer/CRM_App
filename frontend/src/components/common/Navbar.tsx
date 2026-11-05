@@ -5,6 +5,7 @@ import { useWorkspace } from '../../context/useWorkspace';
 import { Logo } from '../auth/Logo';
 import { WorkspaceSwitcher } from '../workspace/WorkspaceSwitcher';
 import { CreateWorkspaceModal } from '../workspace/CreateWorkspaceModal';
+import { QuickSearchModal } from './QuickSearchModal';
 import {
   ActivityIcon,
   BarChart2Icon,
@@ -30,7 +31,6 @@ import {
   MailIcon,
   FileTextIcon,
   ZapIcon,
-  CheckIcon,
   PlusIcon,
   KeyRoundIcon,
 } from './Icons';
@@ -749,8 +749,8 @@ export const Navbar: React.FC = () => {
                         className="text-xs text-slate-500 font-medium truncate"
                         style={{ color: '#64748B', fontSize: '12px' }}
                       >
-                        {currentWorkspace?._count?.members || currentWorkspace?.memberCount || 1} member
-                        {(currentWorkspace?._count?.members || currentWorkspace?.memberCount || 1) !== 1 ? 's' : ''} •{' '}
+                        {currentWorkspace?._count?.members ?? currentWorkspace?.memberCount ?? 1} member
+                        {(currentWorkspace?._count?.members ?? currentWorkspace?.memberCount ?? 1) !== 1 ? 's' : ''} •{' '}
                         {currentWorkspace?.plan === 'ENTERPRISE' ? 'Enterprise' : 'Free Forever'}
                       </span>
                     </div>

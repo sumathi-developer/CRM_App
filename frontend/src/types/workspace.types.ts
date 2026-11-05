@@ -131,6 +131,7 @@ export interface Workspace {
   members?: WorkspaceMember[];
   roles?: WorkspaceRole[];
   settings?: WorkspaceSettings;
+  memberCount?: number;
   _count?: {
     members?: number;
     invites?: number;
