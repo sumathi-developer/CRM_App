@@ -159,6 +159,7 @@ export const Navbar: React.FC = () => {
 
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [isSwitcherOpen, setIsSwitcherOpen] = useState(false);
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [settingsSearchQuery, setSettingsSearchQuery] = useState('');
 
@@ -249,17 +250,17 @@ export const Navbar: React.FC = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isSettingsFlyoutOpen]);
 
-  // Global Ctrl+K / Cmd+K listener to trigger search
+  // Global Ctrl+K / Cmd+K listener to trigger quick search modal
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
-        navigate('/search');
+        setIsSearchModalOpen((prev) => !prev);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [navigate]);
+  }, []);
 
   const getWorkspaceInitial = (name?: any) => {
     if (!name || typeof name !== 'string') return 'W';
@@ -653,20 +654,21 @@ export const Navbar: React.FC = () => {
             </div>
           </div>
 
-          {/* Right Header Section: Global Search as top icon + Notification Quick Trigger */}
+          {/* Right Header Section: Quick Search trigger + Notification Quick Trigger */}
           <div className="navbar-right-section">
-            {/* Global Search icon trigger at top */}
-            <Link
-              to="/search"
+            {/* Quick Search trigger button at top */}
+            <button
+              type="button"
               className="topbar-search-trigger"
-              title="Global Search (Ctrl+K)"
-              aria-label="Global Search"
+              onClick={() => setIsSearchModalOpen(true)}
+              title="Quick Search Modules & Records (Ctrl+K)"
+              aria-label="Quick Search"
               id="topbar-global-search-btn"
             >
               <SearchIcon size={16} />
               <span className="topbar-search-text">Search...</span>
               <kbd className="topbar-search-kbd">Ctrl K</kbd>
-            </Link>
+            </button>
 
             {/* Topbar Notification Bell */}
             <Link
@@ -688,21 +690,24 @@ export const Navbar: React.FC = () => {
         id="app-sidebar"
         aria-label="Sidebar Navigation"
       >
-        {/* A. Global Search at top of sidebar */}
+        {/* A. Quick Search at top of sidebar */}
         <div className="sidebar-search-container">
-          <Link
-            to="/search"
+          <button
+            type="button"
             className="sidebar-search-bar"
-            title="Global Search (Ctrl+K)"
+            title="Quick Search Modules & Records (Ctrl+K)"
             id="sidebar-search-input-btn"
-            onClick={() => setIsMobileSidebarOpen(false)}
+            onClick={() => {
+              setIsSearchModalOpen(true);
+              setIsMobileSidebarOpen(false);
+            }}
           >
             <div className="search-bar-left">
               <SearchIcon size={15} className="search-bar-icon" />
               <span className="search-bar-placeholder">Search</span>
             </div>
             <kbd className="search-bar-kbd">Ctrl K</kbd>
-          </Link>
+          </button>
         </div>
 
         {/* B. Main 9 CRM Modules in First Column */}
@@ -930,6 +935,12 @@ export const Navbar: React.FC = () => {
       <WorkspaceSwitcher
         isOpen={isSwitcherOpen}
         onClose={() => setIsSwitcherOpen(false)}
+      />
+
+      {/* Global Quick Search & Module Palette Modal */}
+      <QuickSearchModal
+        isOpen={isSearchModalOpen}
+        onClose={() => setIsSearchModalOpen(false)}
       />
     </>
   );
