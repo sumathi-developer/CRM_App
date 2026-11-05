@@ -1791,20 +1791,23 @@
   text-decoration: underline;
 }
 
-/* 8. Proper Professional Footer Bar */
+/* 8. Footer (Fixed at Bottom, Clean Like Before) */
 .agent-page-footer {
+  position: fixed;
+  bottom: 8px;
+  left: 0;
+  right: 0;
   width: 100%;
-  margin-top: auto;
-  padding: 14px 24px;
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-top: 1px solid rgba(16, 185, 129, 0.2);
-  z-index: 20;
-  position: relative;
+  padding: 0 24px;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--agent-text-muted, #4B5563);
+  z-index: 15;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: transparent;
+  border: none;
   box-sizing: border-box;
 }
 
@@ -1812,39 +1815,31 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 8px;
   flex-wrap: wrap;
-  font-size: 0.8125rem;
-  color: var(--agent-text-muted, #4B5563);
-  line-height: 1.5;
-  text-align: center;
 }
 
 .agent-footer-copyright {
+  color: #4B5563;
   font-weight: 500;
-  color: #374151;
 }
 
 .agent-footer-divider {
-  color: #10B981;
-  font-size: 0.8125rem;
+  color: #9CA3AF;
+  font-size: 0.75rem;
   user-select: none;
-  display: inline-block;
 }
 
 .agent-footer-link {
-  color: var(--agent-primary, #062E03);
-  font-weight: 600;
+  color: #4B5563;
   text-decoration: none;
-  transition: all 0.15s ease;
-  padding: 2px 6px;
-  border-radius: 6px;
+  font-weight: 500;
+  transition: color 0.15s ease;
 }
 
 .agent-footer-link:hover {
-  color: var(--agent-secondary, #10B981);
+  color: var(--agent-primary, #062E03);
   text-decoration: underline;
-  background: rgba(16, 185, 129, 0.08);
 }
 
 
@@ -1974,82 +1969,122 @@
   }
 }
 
-/* Sign Up Specific Stage & Card Adjustments */
+/* 2-Column Grid for Compact Sign Up Fields */
+.agent-form-row-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  width: 100%;
+}
+
+@media (max-width: 520px) {
+  .agent-form-row-2col {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+
+/* Sign Up Specific Stage & Card Adjustments - NO SCROLL, JUST LIKE LOGIN PAGE */
 .agent-signup-page-root {
-  min-height: 100vh;
-  height: auto;
-  overflow-y: auto;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .agent-signup-page-root .agent-stage-viewport {
-  padding: 20px 24px 28px;
-  flex: 1 0 auto;
-  min-height: auto;
+  padding: 2px 20px 24px;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .agent-login-card.agent-signup-card {
-  max-width: 440px;
-  padding: 20px 30px 16px;
+  max-width: 470px;
+  padding: 14px 24px 10px;
 }
 
 .agent-signup-card .agent-card-title {
-  font-size: 1.375rem;
-  margin-bottom: 2px;
+  font-size: 1.25rem;
+  margin-bottom: 1px;
 }
 
 .agent-signup-card .agent-card-subtitle {
-  font-size: 0.78125rem;
-  margin-bottom: 10px;
+  font-size: 0.75rem;
+  margin-bottom: 6px;
+  line-height: 1.35;
 }
 
 .agent-signup-card .agent-field-wrap {
-  gap: 2px;
-  margin-bottom: 3px;
+  gap: 1px;
+  margin-bottom: 2px;
 }
 
 .agent-signup-card .agent-field-label {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   margin-bottom: 1px;
 }
 
 .agent-signup-card .agent-form-input {
-  height: 38px;
-  padding: 6px 12px;
-  font-size: 0.8125rem;
-  border-radius: 9px;
+  height: 33px;
+  padding: 4px 10px;
+  font-size: 0.78125rem;
+  border-radius: 7px;
 }
 
 .agent-signup-card .agent-form-input.with-leading-icon {
-  padding-left: 36px;
+  padding-left: 30px;
 }
 
 .agent-signup-card .agent-form-input.with-trailing-icon {
-  padding-right: 36px;
+  padding-right: 30px;
+}
+
+.agent-signup-card .agent-input-leading-icon {
+  left: 8px;
+}
+
+.agent-signup-card .agent-pw-toggle-btn {
+  right: 6px;
+  padding: 2px;
+}
+
+.agent-signup-card .agent-remember-forgot-row {
+  margin-top: 2px;
+  margin-bottom: 2px;
 }
 
 .agent-signup-card .agent-signin-btn {
-  height: 40px;
-  font-size: 0.875rem;
-  margin-top: 4px;
+  height: 35px;
+  font-size: 0.8125rem;
+  margin-top: 2px;
+  border-radius: 9px;
 }
 
 .agent-signup-card .agent-or-divider {
-  margin: 10px 0;
+  margin: 5px 0;
 }
 
 .agent-signup-card .agent-social-buttons-grid {
-  margin-bottom: 6px;
+  margin-bottom: 4px;
+  gap: 6px;
 }
 
 .agent-signup-card .agent-social-pill {
-  padding: 6px 8px;
-  font-size: 0.75rem;
+  height: 32px;
+  padding: 4px 6px;
+  font-size: 0.7rem;
+  border-radius: 8px;
 }
 
 .agent-signup-card .agent-card-bottom-row {
-  margin-top: 6px;
+  margin-top: 3px;
+  font-size: 0.75rem;
 }
 
 /* Responsive Mascot Adaptations */

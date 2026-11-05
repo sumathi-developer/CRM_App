@@ -378,76 +378,158 @@ export const RegisterPage: React.FC = () => {
             className="agent-login-form"
             id="agent-register-form"
           >
-            {/* 1. Full Name */}
-            <div className="agent-field-wrap">
-              <label htmlFor="agent-name-input" className="agent-field-label">
-                Full Name
-              </label>
-              <div className="agent-input-container">
-                <span className="agent-input-leading-icon" aria-hidden="true">
-                  <UserIcon size={16} strokeWidth={1.8} />
-                </span>
-                <input
-                  id="agent-name-input"
-                  name="name"
-                  type="text"
-                  className="agent-form-input with-leading-icon"
-                  placeholder="e.g. Eleanor Vance"
-                  value={name}
-                  onChange={(e) => {
-                    setName(e.target.value);
-                    if (errors.name) setErrors((prev) => ({ ...prev, name: undefined }));
-                  }}
-                  autoComplete="name"
-                  disabled={isSubmitting}
-                />
+            {/* 1. Full Name & 2. Work Email Address (2-Column Grid) */}
+            <div className="agent-form-row-2col">
+              <div className="agent-field-wrap">
+                <label htmlFor="agent-name-input" className="agent-field-label">
+                  Full Name
+                </label>
+                <div className="agent-input-container">
+                  <span className="agent-input-leading-icon" aria-hidden="true">
+                    <UserIcon size={15} strokeWidth={1.8} />
+                  </span>
+                  <input
+                    id="agent-name-input"
+                    name="name"
+                    type="text"
+                    className="agent-form-input with-leading-icon"
+                    placeholder="Eleanor Vance"
+                    value={name}
+                    onChange={(e) => {
+                      setName(e.target.value);
+                      if (errors.name) setErrors((prev) => ({ ...prev, name: undefined }));
+                    }}
+                    autoComplete="name"
+                    disabled={isSubmitting}
+                  />
+                </div>
+                {errors.name && (
+                  <span className="agent-field-error-text" role="alert">
+                    {errors.name}
+                  </span>
+                )}
               </div>
-              {errors.name && (
-                <span className="agent-field-error-text" role="alert">
-                  {errors.name}
-                </span>
-              )}
+
+              <div className="agent-field-wrap">
+                <label htmlFor="agent-email-input" className="agent-field-label">
+                  Work Email Address
+                </label>
+                <div className="agent-input-container">
+                  <span className="agent-input-leading-icon" aria-hidden="true">
+                    <MailIcon size={15} strokeWidth={1.8} />
+                  </span>
+                  <input
+                    id="agent-email-input"
+                    name="email"
+                    type="email"
+                    className="agent-form-input with-leading-icon"
+                    placeholder="name@company.com"
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      if (errors.email) setErrors((prev) => ({ ...prev, email: undefined }));
+                    }}
+                    autoComplete="username email"
+                    disabled={isSubmitting}
+                  />
+                </div>
+                {errors.email && (
+                  <span className="agent-field-error-text" role="alert">
+                    {errors.email}
+                  </span>
+                )}
+              </div>
             </div>
 
-            {/* 2. Work Email Address */}
-            <div className="agent-field-wrap">
-              <label htmlFor="agent-email-input" className="agent-field-label">
-                Work Email Address
-              </label>
-              <div className="agent-input-container">
-                <span className="agent-input-leading-icon" aria-hidden="true">
-                  <MailIcon size={16} strokeWidth={1.8} />
-                </span>
-                <input
-                  id="agent-email-input"
-                  name="email"
-                  type="email"
-                  className="agent-form-input with-leading-icon"
-                  placeholder="name@company.com"
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                    if (errors.email) setErrors((prev) => ({ ...prev, email: undefined }));
-                  }}
-                  autoComplete="username email"
-                  disabled={isSubmitting}
-                />
+            {/* 3. Password & 4. Confirm Password (2-Column Grid) */}
+            <div className="agent-form-row-2col">
+              <div className="agent-field-wrap">
+                <label htmlFor="agent-password-input" className="agent-field-label">
+                  Password
+                </label>
+                <div className="agent-input-container">
+                  <span className="agent-input-leading-icon" aria-hidden="true">
+                    <LockIcon size={15} strokeWidth={1.8} />
+                  </span>
+                  <input
+                    id="agent-password-input"
+                    name="password"
+                    type={showPassword ? 'text' : 'password'}
+                    className="agent-form-input with-leading-icon with-trailing-icon"
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      if (errors.password) setErrors((prev) => ({ ...prev, password: undefined }));
+                    }}
+                    autoComplete="new-password"
+                    disabled={isSubmitting}
+                  />
+                  <button
+                    type="button"
+                    className="agent-pw-toggle-btn"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    title={showPassword ? 'Hide password' : 'Show password'}
+                  >
+                    {showPassword ? <EyeOffIcon size={15} /> : <EyeIcon size={15} />}
+                  </button>
+                </div>
+                {errors.password && (
+                  <span className="agent-field-error-text" role="alert">
+                    {errors.password}
+                  </span>
+                )}
               </div>
-              {errors.email && (
-                <span className="agent-field-error-text" role="alert">
-                  {errors.email}
-                </span>
-              )}
+
+              <div className="agent-field-wrap">
+                <label htmlFor="agent-confirm-password-input" className="agent-field-label">
+                  Confirm Password
+                </label>
+                <div className="agent-input-container">
+                  <span className="agent-input-leading-icon" aria-hidden="true">
+                    <LockIcon size={15} strokeWidth={1.8} />
+                  </span>
+                  <input
+                    id="agent-confirm-password-input"
+                    name="confirmPassword"
+                    type={showConfirmPassword ? 'text' : 'password'}
+                    className="agent-form-input with-leading-icon with-trailing-icon"
+                    placeholder="••••••••"
+                    value={confirmPassword}
+                    onChange={(e) => {
+                      setConfirmPassword(e.target.value);
+                      if (errors.confirmPassword) setErrors((prev) => ({ ...prev, confirmPassword: undefined }));
+                    }}
+                    autoComplete="new-password"
+                    disabled={isSubmitting}
+                  />
+                  <button
+                    type="button"
+                    className="agent-pw-toggle-btn"
+                    onClick={() => setShowConfirmPassword((prev) => !prev)}
+                    aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
+                    title={showConfirmPassword ? 'Hide password' : 'Show password'}
+                  >
+                    {showConfirmPassword ? <EyeOffIcon size={15} /> : <EyeIcon size={15} />}
+                  </button>
+                </div>
+                {errors.confirmPassword && (
+                  <span className="agent-field-error-text" role="alert">
+                    {errors.confirmPassword}
+                  </span>
+                )}
+              </div>
             </div>
 
-            {/* 3. Phone Number (Optional) */}
+            {/* 5. Phone Number (Optional) */}
             <div className="agent-field-wrap">
               <label htmlFor="agent-phone-input" className="agent-field-label">
                 Phone Number <span style={{ opacity: 0.65, fontWeight: 400 }}>(Optional)</span>
               </label>
               <div className="agent-input-container">
                 <span className="agent-input-leading-icon" aria-hidden="true">
-                  <PhoneIcon size={16} strokeWidth={1.8} />
+                  <PhoneIcon size={15} strokeWidth={1.8} />
                 </span>
                 <input
                   id="agent-phone-input"
@@ -467,86 +549,6 @@ export const RegisterPage: React.FC = () => {
               {errors.phone && (
                 <span className="agent-field-error-text" role="alert">
                   {errors.phone}
-                </span>
-              )}
-            </div>
-
-            {/* 4. Password */}
-            <div className="agent-field-wrap">
-              <label htmlFor="agent-password-input" className="agent-field-label">
-                Password
-              </label>
-              <div className="agent-input-container">
-                <span className="agent-input-leading-icon" aria-hidden="true">
-                  <LockIcon size={16} strokeWidth={1.8} />
-                </span>
-                <input
-                  id="agent-password-input"
-                  name="password"
-                  type={showPassword ? 'text' : 'password'}
-                  className="agent-form-input with-leading-icon with-trailing-icon"
-                  placeholder="At least 6 characters"
-                  value={password}
-                  onChange={(e) => {
-                    setPassword(e.target.value);
-                    if (errors.password) setErrors((prev) => ({ ...prev, password: undefined }));
-                  }}
-                  autoComplete="new-password"
-                  disabled={isSubmitting}
-                />
-                <button
-                  type="button"
-                  className="agent-pw-toggle-btn"
-                  onClick={() => setShowPassword((prev) => !prev)}
-                  aria-label={showPassword ? 'Hide password' : 'Show password'}
-                  title={showPassword ? 'Hide password' : 'Show password'}
-                >
-                  {showPassword ? <EyeOffIcon size={16} /> : <EyeIcon size={16} />}
-                </button>
-              </div>
-              {errors.password && (
-                <span className="agent-field-error-text" role="alert">
-                  {errors.password}
-                </span>
-              )}
-            </div>
-
-            {/* 5. Confirm Password */}
-            <div className="agent-field-wrap">
-              <label htmlFor="agent-confirm-password-input" className="agent-field-label">
-                Confirm Password
-              </label>
-              <div className="agent-input-container">
-                <span className="agent-input-leading-icon" aria-hidden="true">
-                  <LockIcon size={16} strokeWidth={1.8} />
-                </span>
-                <input
-                  id="agent-confirm-password-input"
-                  name="confirmPassword"
-                  type={showConfirmPassword ? 'text' : 'password'}
-                  className="agent-form-input with-leading-icon with-trailing-icon"
-                  placeholder="Re-enter your password"
-                  value={confirmPassword}
-                  onChange={(e) => {
-                    setConfirmPassword(e.target.value);
-                    if (errors.confirmPassword) setErrors((prev) => ({ ...prev, confirmPassword: undefined }));
-                  }}
-                  autoComplete="new-password"
-                  disabled={isSubmitting}
-                />
-                <button
-                  type="button"
-                  className="agent-pw-toggle-btn"
-                  onClick={() => setShowConfirmPassword((prev) => !prev)}
-                  aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
-                  title={showConfirmPassword ? 'Hide password' : 'Show password'}
-                >
-                  {showConfirmPassword ? <EyeOffIcon size={16} /> : <EyeIcon size={16} />}
-                </button>
-              </div>
-              {errors.confirmPassword && (
-                <span className="agent-field-error-text" role="alert">
-                  {errors.confirmPassword}
                 </span>
               )}
             </div>
