@@ -673,15 +673,17 @@ export const RegisterPage: React.FC = () => {
 
       {/* 3. PAGE FOOTER */}
       <footer className="agent-page-footer" role="contentinfo">
-        <span>© 2026 Onseclick CRM. All rights reserved.</span>
-        <span className="agent-footer-divider">•</span>
-        <Link to="/privacy" className="agent-footer-link">
-          Privacy Policy
-        </Link>
-        <span className="agent-footer-divider">•</span>
-        <Link to="/terms" className="agent-footer-link">
-          Terms & Conditions
-        </Link>
+        <div className="agent-footer-inner">
+          <span className="agent-footer-copyright">© 2026 Onseclick CRM. All rights reserved.</span>
+          <span className="agent-footer-divider" aria-hidden="true">•</span>
+          <Link to="/privacy" className="agent-footer-link">
+            Privacy Policy
+          </Link>
+          <span className="agent-footer-divider" aria-hidden="true">•</span>
+          <Link to="/terms" className="agent-footer-link">
+            Terms & Conditions
+          </Link>
+        </div>
       </footer>
     </div>
   );
