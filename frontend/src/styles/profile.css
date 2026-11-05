@@ -16,19 +16,23 @@
    TOP NAVBAR (Clean, uncrowded header bar)
    ========================================================================== */
 
+header.app-navbar,
+header.app-top-navbar,
+.app-navbar,
 .app-top-navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  background: rgba(255, 255, 255, 0.92);
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 100 !important;
+  background: #FFFFFF !important;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border-subtle);
-  height: 64px;
-  width: 100%;
-  box-sizing: border-box;
+  border-bottom: 1px solid rgba(16, 185, 129, 0.2) !important;
+  height: 64px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  box-shadow: 0 1px 3px rgba(6, 46, 3, 0.05) !important;
 }
 
 .navbar-container {
@@ -403,42 +407,76 @@
    FIXED CENTERED MAIN CONTAINER LAYOUT
    ========================================================================== */
 
+/* Smooth scrolling & strict zero horizontal drift */
+html {
+  scroll-behavior: smooth !important;
+  overflow-x: hidden !important;
+}
+
+body {
+  overflow-x: hidden !important;
+  background-color: var(--bg-primary, #EAF4ED) !important;
+}
+
 .authenticated-shell,
 .app-layout,
 .authenticated-page-layout,
 .crm-app-container {
   min-height: 100vh;
-  background-color: var(--bg-primary);
+  background-color: var(--bg-primary, #EAF4ED) !important;
   display: flex;
   flex-direction: column;
-  overflow-x: clip;
-  padding-top: 64px;
-  box-sizing: border-box;
+  overflow-x: hidden !important;
+  padding-top: 64px !important;
+  box-sizing: border-box !important;
 }
 
 .authenticated-container,
 .app-main-content,
-.crm-main-content {
+.crm-main-content,
+main.lg-page,
+main.ld-page,
+main.analytics-page-root,
+main.dashboard-root-content,
+.lg-page,
+.ld-page {
   margin-left: 260px !important;
+  margin-right: 0 !important;
   width: calc(100% - 260px) !important;
   max-width: none !important;
-  min-height: calc(100vh - 64px);
-  padding: 32px 24px 64px !important;
+  min-height: calc(100vh - 64px) !important;
+  padding: 24px 32px 64px !important;
   box-sizing: border-box !important;
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
+  gap: 20px !important;
+  overflow-x: hidden !important;
 }
 
 /* Fixed centered inner container for all child components */
 .authenticated-container > *,
 .app-main-content > *,
-.crm-main-content > * {
+.crm-main-content > *,
+main.lg-page > *,
+main.ld-page > *,
+.lg-page > *,
+.ld-page > *,
+.analytics-page-root > *,
+.dashboard-root-content > * {
   width: 100% !important;
-  max-width: 1200px !important;
+  max-width: 1280px !important;
   margin-left: auto !important;
   margin-right: auto !important;
   box-sizing: border-box !important;
+}
+
+/* Sticky subnav pinned cleanly directly beneath 64px fixed header */
+.lg-subnav,
+.ld-subnav {
+  position: sticky !important;
+  top: 64px !important;
+  z-index: 80 !important;
 }
 
 /* Responsive breakpoint for <= 960px */

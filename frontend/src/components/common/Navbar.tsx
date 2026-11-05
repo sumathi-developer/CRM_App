@@ -613,8 +613,8 @@ export const Navbar: React.FC = () => {
 
   return (
     <>
-      {/* 1. TOP HORIZONTAL NAVIGATION BAR */}
-      <header className="app-navbar" id="app-topbar">
+      {/* 1. TOP HORIZONTAL NAVIGATION BAR (Fixed at top) */}
+      <header className="app-navbar app-top-navbar" id="app-topbar">
         <div className="navbar-container">
           {/* Left section: Mobile menu toggle + Logo + Workspace Selector */}
           <div className="navbar-left-section">
