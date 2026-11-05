@@ -30,17 +30,23 @@ export const WorkspaceSwitcher: React.FC<WorkspaceSwitcherProps> = ({
 
   const filteredWorkspaces = (Array.isArray(myWorkspaces) ? myWorkspaces : []).filter(
     (ws) =>
-      (ws?.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (ws?.slug || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (ws?.description || '').toLowerCase().includes(searchQuery.toLowerCase())
+      ws &&
+      ws.id !== currentWorkspace?.id &&
+      ws.name?.trim().toLowerCase() !== currentWorkspace?.name?.trim().toLowerCase() &&
+      ((ws?.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (ws?.slug || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (ws?.description || '').toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   const handleSelect = async (wsId: string) => {
-    if (wsId === currentWorkspace?.id || isSwitching) return;
-    setSwitchingId(wsId);
-    try {
-      await switchWorkspace(wsId);
+    if (wsId === currentWorkspace?.id) {
       onClose();
+      return;
+    }
+    onClose();
+    try {
+      setSwitchingId(wsId);
+      await switchWorkspace(wsId);
     } catch (err) {
       console.error('Failed to switch workspace:', err);
     } finally {

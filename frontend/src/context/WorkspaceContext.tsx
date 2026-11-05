@@ -210,20 +210,39 @@ export const WorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   }, [isAuthenticated, user]);
 
   const switchWorkspace = async (workspaceId: string) => {
+    // 1. Instant optimistic switch so UI updates immediately (0ms delay)
+    const prevWorkspace = currentWorkspace;
+    const targetWs = myWorkspaces.find((w) => w.id === workspaceId);
+
+    if (targetWs) {
+      setCurrentWorkspace(targetWs);
+      const role = targetWs.myRole || (targetWs.ownerId === user?.id ? 'OWNER' : 'MEMBER');
+      setUserRoleInWorkspace(role);
+      const matchedRole = targetWs.roles?.find((r) => r.name === role);
+      if (matchedRole?.permissions) {
+        setUserPermissions(matchedRole.permissions);
+      } else if (role === 'OWNER') {
+        setUserPermissions(['*']);
+      }
+    }
+
     try {
       setIsSwitching(true);
       const res = await workspaceService.switchWorkspace(workspaceId);
 
-      // Refresh full details of the switched workspace
-      const [freshCurrent, freshList] = await Promise.all([
-        workspaceService.getCurrentWorkspace(),
-        workspaceService.getMyWorkspaces(),
-      ]);
-
-      setCurrentWorkspace(freshCurrent);
-      setMyWorkspaces(freshList);
       setUserRoleInWorkspace(res.memberRole || 'MEMBER');
-      setUserPermissions(res.permissions || []);
+      if (res.permissions) {
+        setUserPermissions(res.permissions);
+      }
+    } catch (err) {
+      console.error('Failed to switch workspace on server:', err);
+      // Revert if network call fails
+      if (prevWorkspace) {
+        setCurrentWorkspace(prevWorkspace);
+        const prevRole = prevWorkspace.myRole || (prevWorkspace.ownerId === user?.id ? 'OWNER' : 'MEMBER');
+        setUserRoleInWorkspace(prevRole);
+      }
+      throw err;
     } finally {
       setIsSwitching(false);
     }

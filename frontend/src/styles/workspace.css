@@ -83,7 +83,7 @@
   flex-direction: column;
   gap: 20px;
   position: relative;
-  overflow: hidden;
+  overflow: visible !important;
 }
 
 .workspace-header-wrapper::before {
@@ -1878,4 +1878,25 @@
 
 #navbar-workspace-dropdown-menu #ws-dropdown-create-btn {
   margin-top: 6px !important;
+}
+
+/* Workspace Header Switcher Dropdown */
+#workspace-header-dropdown-menu {
+  box-sizing: border-box !important;
+  background-color: #FFFFFF !important;
+  color: #0F172A !important;
+  border: 1.5px solid rgba(16, 185, 129, 0.35) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 20px 40px -8px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(16, 185, 129, 0.15) !important;
+  width: 330px !important;
+  padding: 16px !important;
+}
+
+#workspace-header-dropdown-menu * {
+  box-sizing: border-box !important;
+}
+
+#workspace-header-dropdown-menu button {
+  font-family: inherit !important;
+  outline: none !important;
 }

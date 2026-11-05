@@ -593,14 +593,15 @@ export const Navbar: React.FC = () => {
   }, [myWorkspaces, currentWorkspace]);
 
   const handleSelectWorkspace = async (wsId: string) => {
-    if (wsId === currentWorkspace?.id || isSwitching) {
+    if (wsId === currentWorkspace?.id) {
       setIsWorkspaceDropdownOpen(false);
       return;
     }
+    // Immediately close dropdown for instant feedback
+    setIsWorkspaceDropdownOpen(false);
     try {
       setSwitchingWorkspaceId(wsId);
       await switchWorkspace(wsId);
-      setIsWorkspaceDropdownOpen(false);
     } catch (err) {
       console.error('Failed to switch workspace:', err);
     } finally {
