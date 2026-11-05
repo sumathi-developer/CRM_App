@@ -3557,7 +3557,7 @@ main.dashboard-root-content,
   width: calc(100% - 260px) !important;
   max-width: none !important;
   min-height: calc(100vh - 64px) !important;
-  padding: 32px 32px 64px !important;
+  padding: 14px 32px 64px !important;
   box-sizing: border-box !important;
   display: flex !important;
   flex-direction: column !important;
@@ -3600,9 +3600,13 @@ main.ld-page > *,
 
 /* Module Sub-Navigation Bar */
 .lg-subnav,
-.ld-subnav {
+.ld-subnav,
+.workspace-subnav,
+.user-subnav-tabs,
+.team-nav-tabs-bar {
+  margin-top: 0 !important;
   position: sticky !important;
-  top: 76px !important;
+  top: 78px !important;
   z-index: 40 !important;
   display: flex !important;
   flex-wrap: wrap !important;

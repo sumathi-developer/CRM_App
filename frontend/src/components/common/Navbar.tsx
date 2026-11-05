@@ -5,7 +5,6 @@ import { useWorkspace } from '../../context/useWorkspace';
 import { Logo } from '../auth/Logo';
 import { WorkspaceSwitcher } from '../workspace/WorkspaceSwitcher';
 import { CreateWorkspaceModal } from '../workspace/CreateWorkspaceModal';
-import { QuickSearchModal } from './QuickSearchModal';
 import {
   ActivityIcon,
   BarChart2Icon,

@@ -445,7 +445,7 @@ main.dashboard-root-content,
   width: calc(100% - 260px) !important;
   max-width: none !important;
   min-height: calc(100vh - 64px) !important;
-  padding: 24px 32px 64px !important;
+  padding: 14px 32px 64px !important;
   box-sizing: border-box !important;
   display: flex !important;
   flex-direction: column !important;
@@ -471,11 +471,15 @@ main.ld-page > *,
   box-sizing: border-box !important;
 }
 
-/* Sticky subnav pinned cleanly directly beneath 64px fixed header */
+/* Sticky subnav pinned cleanly directly beneath 64px fixed header with exact compact space */
 .lg-subnav,
-.ld-subnav {
+.ld-subnav,
+.workspace-subnav,
+.user-subnav-tabs,
+.team-nav-tabs-bar {
+  margin-top: 0 !important;
   position: sticky !important;
-  top: 64px !important;
+  top: 78px !important;
   z-index: 80 !important;
 }
 
