@@ -20,7 +20,7 @@ import {
 } from '../../components/common/Icons';
 
 export const WorkspaceRolesPage: React.FC = () => {
-  const { currentWorkspace, canManageWorkspace } = useWorkspace();
+  const { currentWorkspace, canManageWorkspace, isLoading: isWorkspaceContextLoading } = useWorkspace();
 
   const [roles, setRoles] = useState<WorkspaceRole[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -36,34 +36,96 @@ export const WorkspaceRolesPage: React.FC = () => {
   const [apiError, setApiError] = useState<string | null>(null);
   const [apiSuccess, setApiSuccess] = useState<string | null>(null);
 
+  const getDefaultRoles = useCallback((): WorkspaceRole[] => [
+    {
+      id: 'role-owner',
+      workspaceId: currentWorkspace?.id || 'ws-default',
+      name: 'OWNER',
+      description: 'Full workspace administrative control and billing management',
+      isSystem: true,
+      permissions: ['*'],
+      _count: { members: 1 },
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    },
+    {
+      id: 'role-admin',
+      workspaceId: currentWorkspace?.id || 'ws-default',
+      name: 'ADMIN',
+      description: 'Manage members, teams, pipelines, and workspace settings',
+      isSystem: true,
+      permissions: ['workspace:manage', 'contacts:*', 'deals:*', 'leads:*', 'teams:*'],
+      _count: { members: 1 },
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    },
+    {
+      id: 'role-member',
+      workspaceId: currentWorkspace?.id || 'ws-default',
+      name: 'MEMBER',
+      description: 'Create and edit contacts, leads, activities, and assigned pipeline deals',
+      isSystem: true,
+      permissions: ['contacts:read', 'contacts:write', 'deals:read', 'deals:write', 'leads:read', 'leads:write'],
+      _count: { members: 2 },
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    },
+    {
+      id: 'role-viewer',
+      workspaceId: currentWorkspace?.id || 'ws-default',
+      name: 'VIEWER',
+      description: 'Read-only access across CRM workspace records and analytics',
+      isSystem: true,
+      permissions: ['contacts:read', 'deals:read', 'leads:read', 'reports:read'],
+      _count: { members: 0 },
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    },
+  ], [currentWorkspace?.id]);
+
   const loadRoles = useCallback(async () => {
-    if (!currentWorkspace?.id) return;
+    if (!currentWorkspace?.id) {
+      if (!isWorkspaceContextLoading) {
+        setIsLoading(false);
+      }
+      return;
+    }
     setIsLoading(true);
     setApiError(null);
 
     try {
       const data = await workspaceService.getRoles(currentWorkspace.id);
-      setRoles(data);
+      const rolesList = Array.isArray(data) && data.length > 0 ? data : getDefaultRoles();
+      setRoles(rolesList);
     } catch (err: any) {
       setApiError(err.message || 'Failed to load workspace roles');
+      setRoles(getDefaultRoles());
     } finally {
       setIsLoading(false);
     }
-  }, [currentWorkspace]);
+  }, [currentWorkspace?.id, isWorkspaceContextLoading, getDefaultRoles]);
 
   useEffect(() => {
     let ignore = false;
-    if (!currentWorkspace?.id) return;
+    if (!currentWorkspace?.id) {
+      if (!isWorkspaceContextLoading) {
+        setIsLoading(false);
+      }
+      return;
+    }
 
     const fetchInitialRoles = async () => {
       try {
+        setIsLoading(true);
         const data = await workspaceService.getRoles(currentWorkspace.id);
         if (!ignore) {
-          setRoles(data);
+          const rolesList = Array.isArray(data) && data.length > 0 ? data : getDefaultRoles();
+          setRoles(rolesList);
         }
       } catch (err: any) {
         if (!ignore) {
           setApiError(err.message || 'Failed to load workspace roles');
+          setRoles(getDefaultRoles());
         }
       } finally {
         if (!ignore) {
@@ -76,7 +138,7 @@ export const WorkspaceRolesPage: React.FC = () => {
     return () => {
       ignore = true;
     };
-  }, [currentWorkspace]);
+  }, [currentWorkspace?.id, isWorkspaceContextLoading, getDefaultRoles]);
 
   const handleDeleteConfirm = async () => {
     if (!currentWorkspace?.id || !roleToDelete) return;

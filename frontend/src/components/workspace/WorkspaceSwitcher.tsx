@@ -28,11 +28,11 @@ export const WorkspaceSwitcher: React.FC<WorkspaceSwitcherProps> = ({
 
   if (!isOpen) return null;
 
-  const filteredWorkspaces = myWorkspaces.filter(
+  const filteredWorkspaces = (Array.isArray(myWorkspaces) ? myWorkspaces : []).filter(
     (ws) =>
-      ws.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      ws.slug.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      ws.description?.toLowerCase().includes(searchQuery.toLowerCase())
+      (ws?.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (ws?.slug || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (ws?.description || '').toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const handleSelect = async (wsId: string) => {

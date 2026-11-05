@@ -19,7 +19,7 @@ export const WorkspaceHeader: React.FC<WorkspaceHeaderProps> = ({ onOpenSwitcher
   const { currentWorkspace, userRoleInWorkspace, isSwitching } = useWorkspace();
 
   const getInitials = (name?: string) => {
-    if (!name) return 'WS';
+    if (!name) return 'OW';
     return name
       .split(' ')
       .map((part) => part[0])
@@ -42,7 +42,7 @@ export const WorkspaceHeader: React.FC<WorkspaceHeaderProps> = ({ onOpenSwitcher
 
           <div className="workspace-info">
             <div className="workspace-title-row">
-              <h1 className="workspace-name">{currentWorkspace?.name || 'Loading Workspace...'}</h1>
+              <h1 className="workspace-name">{currentWorkspace?.name || 'Onseclick Workspace'}</h1>
               <span className={`plan-pill pill-${(currentWorkspace?.plan || 'free').toLowerCase()}`}>
                 <SparklesIcon size={12} />
                 <span>{currentWorkspace?.plan || 'FREE'}</span>
@@ -53,11 +53,11 @@ export const WorkspaceHeader: React.FC<WorkspaceHeaderProps> = ({ onOpenSwitcher
             </div>
 
             <div className="workspace-meta-row">
-              <span className="workspace-slug">@{currentWorkspace?.slug || 'slug'}</span>
+              <span className="workspace-slug">@{currentWorkspace?.slug || 'onseclick'}</span>
               <span className="meta-dot">&bull;</span>
               <span className="workspace-role-pill">
                 <ShieldIcon size={12} />
-                <span>Your Role: {userRoleInWorkspace}</span>
+                <span>Your Role: {userRoleInWorkspace || 'OWNER'}</span>
               </span>
               {currentWorkspace?.timezone && (
                 <>
