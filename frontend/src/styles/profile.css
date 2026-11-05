@@ -471,15 +471,14 @@ main.ld-page > *,
   box-sizing: border-box !important;
 }
 
-/* Sticky subnav pinned cleanly directly beneath 64px fixed header with exact compact space */
+/* Sticky subnav pinned cleanly directly beneath 64px fixed header */
 .lg-subnav,
 .ld-subnav,
-.workspace-subnav,
 .user-subnav-tabs,
 .team-nav-tabs-bar {
   margin-top: 0 !important;
   position: sticky !important;
-  top: 78px !important;
+  top: 64px !important;
   z-index: 80 !important;
 }
 
