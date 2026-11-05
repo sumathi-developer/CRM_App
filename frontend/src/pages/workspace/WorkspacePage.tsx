@@ -32,17 +32,28 @@ export const WorkspacePage: React.FC = () => {
 
   useEffect(() => {
     let ignore = false;
-    if (!currentWorkspace?.id) return;
+    if (!currentWorkspace?.id) {
+      setMetrics({
+        members: currentWorkspace?._count?.members || 1,
+        contacts: 0,
+        leads: 0,
+        deals: 0,
+        wonRevenue: 0,
+        tasks: 0,
+      });
+      setMetricsLoading(false);
+      return;
+    }
 
     const fetchMetrics = async () => {
       try {
+        setMetricsLoading(true);
         const m = await workspaceService.getMetrics(currentWorkspace.id);
         if (!ignore) {
           setMetrics(m);
         }
       } catch {
         if (!ignore) {
-          // Gracefully default if metrics endpoint is empty
           setMetrics({
             members: currentWorkspace._count?.members || 1,
             contacts: 0,

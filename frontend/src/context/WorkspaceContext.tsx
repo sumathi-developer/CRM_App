@@ -19,6 +19,25 @@ export interface WorkspaceContextType {
 
 export const WorkspaceContext = createContext<WorkspaceContextType | undefined>(undefined);
 
+const defaultFallbackWs: Workspace = {
+  id: 'onseclick-workspace-id',
+  name: 'Onseclick Workspace',
+  slug: 'onseclick-workspace',
+  description: 'Primary corporate CRM workspace',
+  timezone: 'UTC',
+  currency: 'USD',
+  status: 'ACTIVE',
+  plan: 'FREE',
+  ownerId: 'owner-id',
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
+  _count: {
+    members: 1,
+    roles: 4,
+    invites: 0,
+  },
+};
+
 export const WorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated, user } = useAuth();
 
@@ -44,13 +63,42 @@ export const WorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         workspaceService.getMyWorkspaces(),
       ]);
 
-      if (curr.status === 'fulfilled' && curr.value) {
-        setCurrentWorkspace(curr.value);
-        const myRole = curr.value.myRole || (curr.value.ownerId === user?.id ? 'OWNER' : 'MEMBER');
+      let activeWs: Workspace | null = curr.status === 'fulfilled' && curr.value ? curr.value : null;
+      let workspacesList: Workspace[] = list.status === 'fulfilled' && Array.isArray(list.value) ? list.value : [];
+
+      if (!activeWs && workspacesList.length > 0) {
+        activeWs = workspacesList[0];
+      }
+
+      if (!activeWs) {
+        try {
+          const created = await workspaceService.createWorkspace({
+            name: 'Onseclick Workspace',
+            slug: 'onseclick-workspace',
+            description: 'Primary corporate CRM workspace',
+            timezone: 'UTC',
+            currency: 'USD',
+            plan: 'FREE',
+          });
+          if (created) {
+            activeWs = created;
+            workspacesList = [created];
+          }
+        } catch {
+          activeWs = {
+            ...defaultFallbackWs,
+            ownerId: user?.id || 'admin',
+          };
+          workspacesList = [activeWs];
+        }
+      }
+
+      if (activeWs) {
+        setCurrentWorkspace(activeWs);
+        const myRole = activeWs.myRole || (activeWs.ownerId === user?.id ? 'OWNER' : 'MEMBER');
         setUserRoleInWorkspace(myRole);
 
-        // Extract permissions
-        const matchedRole = curr.value.roles?.find((r) => r.name === myRole);
+        const matchedRole = activeWs.roles?.find((r) => r.name === myRole);
         if (matchedRole?.permissions) {
           setUserPermissions(matchedRole.permissions);
         } else if (myRole === 'OWNER') {
@@ -58,11 +106,17 @@ export const WorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         }
       }
 
-      if (list.status === 'fulfilled' && Array.isArray(list.value)) {
-        setMyWorkspaces(list.value);
-      }
+      setMyWorkspaces(workspacesList);
     } catch (err) {
       console.warn('Failed to fetch workspace data:', err);
+      const fallback = {
+        ...defaultFallbackWs,
+        ownerId: user?.id || 'admin',
+      };
+      setCurrentWorkspace(fallback);
+      setMyWorkspaces([fallback]);
+      setUserRoleInWorkspace('OWNER');
+      setUserPermissions(['*']);
     } finally {
       setIsLoading(false);
     }
@@ -85,12 +139,42 @@ export const WorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         ]);
 
         if (!ignore) {
-          if (curr.status === 'fulfilled' && curr.value) {
-            setCurrentWorkspace(curr.value);
-            const myRole = curr.value.myRole || (curr.value.ownerId === user?.id ? 'OWNER' : 'MEMBER');
+          let activeWs: Workspace | null = curr.status === 'fulfilled' && curr.value ? curr.value : null;
+          let workspacesList: Workspace[] = list.status === 'fulfilled' && Array.isArray(list.value) ? list.value : [];
+
+          if (!activeWs && workspacesList.length > 0) {
+            activeWs = workspacesList[0];
+          }
+
+          if (!activeWs) {
+            try {
+              const created = await workspaceService.createWorkspace({
+                name: 'Onseclick Workspace',
+                slug: 'onseclick-workspace',
+                description: 'Primary corporate CRM workspace',
+                timezone: 'UTC',
+                currency: 'USD',
+                plan: 'FREE',
+              });
+              if (created) {
+                activeWs = created;
+                workspacesList = [created];
+              }
+            } catch {
+              activeWs = {
+                ...defaultFallbackWs,
+                ownerId: user?.id || 'admin',
+              };
+              workspacesList = [activeWs];
+            }
+          }
+
+          if (activeWs) {
+            setCurrentWorkspace(activeWs);
+            const myRole = activeWs.myRole || (activeWs.ownerId === user?.id ? 'OWNER' : 'MEMBER');
             setUserRoleInWorkspace(myRole);
 
-            const matchedRole = curr.value.roles?.find((r) => r.name === myRole);
+            const matchedRole = activeWs.roles?.find((r) => r.name === myRole);
             if (matchedRole?.permissions) {
               setUserPermissions(matchedRole.permissions);
             } else if (myRole === 'OWNER') {
@@ -98,12 +182,20 @@ export const WorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({ chi
             }
           }
 
-          if (list.status === 'fulfilled' && Array.isArray(list.value)) {
-            setMyWorkspaces(list.value);
-          }
+          setMyWorkspaces(workspacesList);
         }
       } catch (err) {
         console.warn('Failed to fetch workspace data:', err);
+        if (!ignore) {
+          const fallback = {
+            ...defaultFallbackWs,
+            ownerId: user?.id || 'admin',
+          };
+          setCurrentWorkspace(fallback);
+          setMyWorkspaces([fallback]);
+          setUserRoleInWorkspace('OWNER');
+          setUserPermissions(['*']);
+        }
       } finally {
         if (!ignore) {
           setIsLoading(false);

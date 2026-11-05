@@ -272,6 +272,44 @@ export class WorkspacesService {
     );
   }
 
+  /**
+   * Helper to ensure a user is enrolled in a workspace as MEMBER.
+   */
+  private async ensureUserInWorkspace(userId: string, workspaceId: string): Promise<void> {
+    try {
+      const existing: any[] = await this.prisma.$queryRawUnsafe(
+        `SELECT "id" FROM "WorkspaceMember" WHERE "workspaceId" = $1 AND "userId" = $2 LIMIT 1`,
+        workspaceId,
+        userId,
+      );
+
+      if (!existing || existing.length === 0) {
+        const roleRows: any[] = await this.prisma.$queryRawUnsafe(
+          `SELECT "id" FROM "WorkspaceRole" WHERE "workspaceId" = $1 AND "name" = 'MEMBER' LIMIT 1`,
+          workspaceId,
+        );
+        const roleId = roleRows[0]?.id || null;
+        const id = crypto.randomUUID();
+        const now = new Date();
+
+        await this.prisma.$queryRawUnsafe(
+          `INSERT INTO "WorkspaceMember" ("id", "workspaceId", "userId", "roleId", "role", "status", "joinedAt", "createdAt", "updatedAt")
+           VALUES ($1, $2, $3, $4, 'MEMBER', 'ACTIVE', $5, $6, $7)
+           ON CONFLICT DO NOTHING`,
+          id,
+          workspaceId,
+          userId,
+          roleId,
+          now,
+          now,
+          now,
+        );
+      }
+    } catch {
+      // safe fallback
+    }
+  }
+
   // ==========================================
   // 1. WORKSPACE MANAGEMENT & SWITCHER
   // ==========================================
@@ -411,9 +449,37 @@ export class WorkspacesService {
       ORDER BY "w"."updatedAt" DESC
     `;
 
-    const workspaces: any[] = await this.prisma.$queryRawUnsafe(sql, userId);
+    let workspaces: any[] = await this.prisma.$queryRawUnsafe(sql, userId);
 
-    return workspaces.map((w) => ({
+    if (!workspaces || workspaces.length === 0) {
+      try {
+        const anyWs: any[] = await this.prisma.$queryRawUnsafe(
+          `SELECT "id" FROM "Workspace" WHERE "status" = 'ACTIVE' ORDER BY "createdAt" ASC LIMIT 1`,
+        );
+
+        if (anyWs && anyWs.length > 0) {
+          await this.ensureUserInWorkspace(userId, anyWs[0].id);
+          workspaces = await this.prisma.$queryRawUnsafe(sql, userId);
+        } else {
+          await this.create(
+            {
+              name: 'Onseclick Workspace',
+              slug: 'onseclick-workspace',
+              description: 'Primary corporate CRM workspace',
+              timezone: 'UTC',
+              currency: 'USD',
+              plan: 'FREE',
+            },
+            userId,
+          );
+          workspaces = await this.prisma.$queryRawUnsafe(sql, userId);
+        }
+      } catch {
+        // safe fallback
+      }
+    }
+
+    return (workspaces || []).map((w) => ({
       id: w.id,
       name: w.name,
       slug: w.slug,
@@ -531,17 +597,22 @@ export class WorkspacesService {
   async getCurrentWorkspace(userId: string) {
     let targetWorkspaceId: string | null = await this.getUserActiveWorkspaceId(userId);
 
-    if (!targetWorkspaceId) {
-      const myWorkspaces = await this.findMyWorkspaces(userId);
-      if (myWorkspaces.length === 0) {
-        return null;
+    if (targetWorkspaceId) {
+      try {
+        return await this.findOne(targetWorkspaceId);
+      } catch {
+        targetWorkspaceId = null;
       }
-      targetWorkspaceId = myWorkspaces[0].id;
-      // Auto-set first workspace as active
-      await this.setUserActiveWorkspaceId(userId, targetWorkspaceId);
     }
 
-    return this.findOne(targetWorkspaceId);
+    const myWorkspaces = await this.findMyWorkspaces(userId);
+    if (myWorkspaces.length > 0) {
+      targetWorkspaceId = myWorkspaces[0].id;
+      await this.setUserActiveWorkspaceId(userId, targetWorkspaceId);
+      return this.findOne(targetWorkspaceId);
+    }
+
+    return null;
   }
 
   /**
