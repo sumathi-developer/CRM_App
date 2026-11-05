@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useWorkspace } from '../../context/useWorkspace';
 import { Logo } from '../auth/Logo';
 import { WorkspaceSwitcher } from '../workspace/WorkspaceSwitcher';
-import { QuickSearchModal } from './QuickSearchModal';
+import { searchService } from '../../services/search.service';
 import {
   ActivityIcon,
   BarChart2Icon,
@@ -49,6 +49,16 @@ interface NeatSettingsGroup {
     path: string;
     badge?: string | number;
   }[];
+}
+
+interface SearchableModuleItem {
+  id: string;
+  title: string;
+  category: string;
+  path: string;
+  keywords: string[];
+  description: string;
+  icon: React.ReactNode;
 }
 
 /* 1. Main Navigation Modules in Main Left Column (Clean, Uncluttered) */
@@ -145,6 +155,222 @@ const SETTINGS_FLYOUT_GROUPS: NeatSettingsGroup[] = [
   },
 ];
 
+/* 3. Comprehensive Searchable Items Catalog (Modules & Other Items) */
+const SEARCHABLE_ITEMS: SearchableModuleItem[] = [
+  // 1. Core Modules
+  {
+    id: 'home',
+    title: 'Home',
+    category: 'Core Module',
+    path: '/dashboard',
+    keywords: ['home', 'dashboard', 'overview', 'summary', 'main'],
+    description: 'Executive dashboard & business KPIs',
+    icon: <HomeIcon size={16} />,
+  },
+  {
+    id: 'analytics',
+    title: 'Analytics',
+    category: 'Core Module',
+    path: '/analytics',
+    keywords: ['analytics', 'metrics', 'kpi', 'reports', 'charts', 'performance', 'insights', 'explorer'],
+    description: 'Cross-functional visual analytics and reports',
+    icon: <BarChart2Icon size={16} />,
+  },
+  {
+    id: 'workspace',
+    title: 'Workspace',
+    category: 'Core Module',
+    path: '/workspaces',
+    keywords: ['workspace', 'workspaces', 'organization', 'tenant', 'enterprise'],
+    description: 'Switch and manage enterprise workspaces',
+    icon: <BriefcaseIcon size={16} />,
+  },
+  {
+    id: 'users',
+    title: 'Users & Teams',
+    category: 'Core Module',
+    path: '/users',
+    keywords: ['users', 'teams', 'members', 'staff', 'employees', 'people'],
+    description: 'Team member directory & invitations',
+    icon: <UsersIcon size={16} />,
+  },
+  {
+    id: 'leads',
+    title: 'Leads',
+    category: 'Core Module',
+    path: '/leads',
+    keywords: ['leads', 'prospects', 'inquiries', 'sales leads', 'qualification'],
+    description: 'Track, score, and qualify sales prospects',
+    icon: <TargetIcon size={16} />,
+  },
+  {
+    id: 'contacts',
+    title: 'Contacts',
+    category: 'Core Module',
+    path: '/contacts',
+    keywords: ['contacts', 'clients', 'customers', 'people', 'directory', 'accounts'],
+    description: 'Directory of client relationships and stakeholders',
+    icon: <UserIcon size={16} />,
+  },
+  {
+    id: 'pipelines',
+    title: 'Sales Pipeline',
+    category: 'Core Module',
+    path: '/pipelines',
+    keywords: ['pipeline', 'sales pipeline', 'funnel', 'stages', 'kanban'],
+    description: 'Visual deal stages and opportunity pipelines',
+    icon: <SlidersIcon size={16} />,
+  },
+  {
+    id: 'deals',
+    title: 'Deals',
+    category: 'Core Module',
+    path: '/deals',
+    keywords: ['deals', 'revenue', 'won', 'lost', 'opportunities', 'sales value'],
+    description: 'Manage sales opportunities and revenue targets',
+    icon: <DollarSignIcon size={16} />,
+  },
+  {
+    id: 'lead-generation',
+    title: 'Lead Generation',
+    category: 'Core Module',
+    path: '/lead-generation',
+    keywords: ['lead generation', 'capture', 'forms', 'generation', 'inbound', 'automation'],
+    description: 'Automated capture workflows and routing rules',
+    icon: <ZapIcon size={16} />,
+  },
+
+  // 2. Settings & Admin Sub-Modules
+  {
+    id: 'roles',
+    title: 'Roles & RBAC',
+    category: 'Settings & Admin',
+    path: '/roles',
+    keywords: ['roles', 'rbac', 'permissions', 'access control', 'privileges'],
+    description: 'Granular permissions and access policies',
+    icon: <ShieldIcon size={16} />,
+  },
+  {
+    id: 'workspace-settings',
+    title: 'Workspace Settings',
+    category: 'Settings & Admin',
+    path: '/workspaces/settings',
+    keywords: ['workspace settings', 'company profile', 'domain', 'tenant config'],
+    description: 'Configure workspace profile and domains',
+    icon: <BriefcaseIcon size={16} />,
+  },
+  {
+    id: 'audit-logs',
+    title: 'Audit Logs',
+    category: 'Settings & Admin',
+    path: '/audit-logs',
+    keywords: ['audit logs', 'compliance', 'history', 'security log', 'system events'],
+    description: 'Immutable security log of user actions',
+    icon: <FileTextIcon size={16} />,
+  },
+  {
+    id: 'activities',
+    title: 'Activities & Tasks',
+    category: 'Settings & Admin',
+    path: '/activities',
+    keywords: ['activities', 'tasks', 'to-do', 'follow-ups', 'events', 'calls', 'meetings'],
+    description: 'Task assignments and customer follow-ups',
+    icon: <ActivityIcon size={16} />,
+  },
+  {
+    id: 'calendar',
+    title: 'Calendar & Scheduling',
+    category: 'Settings & Admin',
+    path: '/calendar',
+    keywords: ['calendar', 'scheduling', 'agenda', 'meetings', 'appointments'],
+    description: 'Schedule team appointments and timeline events',
+    icon: <CalendarIcon size={16} />,
+  },
+  {
+    id: 'communications',
+    title: 'Communications & Inbox',
+    category: 'Settings & Admin',
+    path: '/communications',
+    keywords: ['communications', 'email', 'inbox', 'messages', 'outreach', 'chat'],
+    description: 'Unified customer emails and conversation threads',
+    icon: <MailIcon size={16} />,
+  },
+  {
+    id: 'custom-fields',
+    title: 'Custom Fields',
+    category: 'Settings & Admin',
+    path: '/custom-fields',
+    keywords: ['custom fields', 'fields', 'attributes', 'schema', 'properties'],
+    description: 'Extend entity models with custom fields',
+    icon: <SlidersIcon size={16} />,
+  },
+  {
+    id: 'tags',
+    title: 'Tags & Labels',
+    category: 'Settings & Admin',
+    path: '/tags',
+    keywords: ['tags', 'labels', 'categorization', 'tagging', 'badges'],
+    description: 'Organize records with color-coded labels',
+    icon: <TagIcon size={16} />,
+  },
+  {
+    id: 'general-settings',
+    title: 'General Settings',
+    category: 'Settings & Admin',
+    path: '/settings',
+    keywords: ['general settings', 'system preferences', 'configuration', 'defaults', 'settings'],
+    description: 'Manage system-wide defaults and preferences',
+    icon: <SettingsIcon size={16} />,
+  },
+
+  // 3. Preferences & Security
+  {
+    id: 'notifications',
+    title: 'Notifications',
+    category: 'Security & Preferences',
+    path: '/settings/notifications',
+    keywords: ['notifications', 'alerts', 'email alerts', 'bell', 'push notices'],
+    description: 'Notification preferences and triggers',
+    icon: <BellIcon size={16} />,
+  },
+  {
+    id: 'profile',
+    title: 'Profile & Account',
+    category: 'Security & Preferences',
+    path: '/profile',
+    keywords: ['profile', 'account', 'my profile', 'me', 'personal information'],
+    description: 'Update display name, email, and avatar',
+    icon: <UserIcon size={16} />,
+  },
+  {
+    id: 'change-password',
+    title: 'Change Password',
+    category: 'Security & Preferences',
+    path: '/change-password',
+    keywords: ['change password', 'password', 'security', 'credential'],
+    description: 'Update password credentials',
+    icon: <ShieldIcon size={16} />,
+  },
+  {
+    id: 'sessions',
+    title: 'Active Sessions',
+    category: 'Security & Preferences',
+    path: '/sessions',
+    keywords: ['sessions', 'active sessions', 'devices', 'login history', 'security'],
+    description: 'Review active devices and sessions',
+    icon: <FileTextIcon size={16} />,
+  },
+  {
+    id: 'help',
+    title: 'Help & Support',
+    category: 'Settings & Admin',
+    path: '/help',
+    keywords: ['help', 'support', 'docs', 'faqs', 'documentation', 'guide'],
+    description: 'Knowledge base and support resources',
+    icon: <LifeBuoyIcon size={16} />,
+  },
+];
+
 export const Navbar: React.FC = () => {
   const { user, logout } = useAuth();
   const { currentWorkspace } = useWorkspace();
@@ -153,9 +379,19 @@ export const Navbar: React.FC = () => {
 
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [isSwitcherOpen, setIsSwitcherOpen] = useState(false);
-  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [settingsSearchQuery, setSettingsSearchQuery] = useState('');
+
+  // Inline search state - type directly in the search area itself!
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [isSearchFocused, setIsSearchFocused] = useState<boolean>(false);
+  const [isSearchDropdownOpen, setIsSearchDropdownOpen] = useState<boolean>(false);
+  const [selectedIndex, setSelectedIndex] = useState<number>(0);
+  const [liveRecordResults, setLiveRecordResults] = useState<any[]>([]);
+  const [isSearchingRecords, setIsSearchingRecords] = useState<boolean>(false);
+
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const searchContainerRef = useRef<HTMLDivElement>(null);
 
   // Check if current route is part of settings
   const isCurrentRouteInSettings = (pathname: string): boolean => {
@@ -182,10 +418,106 @@ export const Navbar: React.FC = () => {
   const flyoutRef = useRef<HTMLDivElement>(null);
   const settingsBtnRef = useRef<HTMLButtonElement>(null);
 
-  // Automatically close settings flyout whenever navigating to any module
+  // Filter modules based on search query typed directly in the search area
+  const filteredModules = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return [];
+    return SEARCHABLE_ITEMS.filter((item) => {
+      return (
+        item.title.toLowerCase().includes(q) ||
+        item.category.toLowerCase().includes(q) ||
+        item.keywords.some((k) => k.toLowerCase().includes(q)) ||
+        item.description.toLowerCase().includes(q)
+      );
+    });
+  }, [searchQuery]);
+
+  // Debounced search for live CRM records
+  useEffect(() => {
+    const q = searchQuery.trim();
+    if (!q || q.length < 2) {
+      setLiveRecordResults([]);
+      setIsSearchingRecords(false);
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      try {
+        setIsSearchingRecords(true);
+        const res = await searchService.searchAll({ q, limit: 4 });
+        const items = res?.items || (Array.isArray(res) ? res : []);
+        setLiveRecordResults(items);
+      } catch {
+        setLiveRecordResults([]);
+      } finally {
+        setIsSearchingRecords(false);
+      }
+    }, 250);
+
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
+  const totalResultsCount = filteredModules.length + liveRecordResults.length;
+
+  const handleSelectResult = (path: string) => {
+    setSearchQuery('');
+    setIsSearchDropdownOpen(false);
+    setIsSearchFocused(false);
+    setIsMobileSidebarOpen(false);
+    navigate(path);
+  };
+
+  // Keyboard navigation inside search results
+  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setSelectedIndex((prev) => (prev + 1 < totalResultsCount ? prev + 1 : prev));
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setSelectedIndex((prev) => (prev > 0 ? prev - 1 : 0));
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      const allResults = [
+        ...filteredModules.map((m) => m.path),
+        ...liveRecordResults.map((r) =>
+          r.url ||
+          (r.entityType === 'LEADS'
+            ? '/leads'
+            : r.entityType === 'CONTACTS'
+              ? '/contacts'
+              : '/deals'),
+        ),
+      ];
+      if (allResults.length > 0 && allResults[selectedIndex]) {
+        handleSelectResult(allResults[selectedIndex]);
+      }
+    } else if (e.key === 'Escape') {
+      setIsSearchDropdownOpen(false);
+      setIsSearchFocused(false);
+      searchInputRef.current?.blur();
+    }
+  };
+
+  // Close search dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        searchContainerRef.current &&
+        !searchContainerRef.current.contains(e.target as Node)
+      ) {
+        setIsSearchDropdownOpen(false);
+        setIsSearchFocused(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Automatically close settings flyout and search on route change
   useEffect(() => {
     setIsSettingsFlyoutOpen(false);
     setIsMobileSidebarOpen(false);
+    setIsSearchDropdownOpen(false);
   }, [location.pathname]);
 
   // Close flyout on outside click
@@ -217,17 +549,23 @@ export const Navbar: React.FC = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isSettingsFlyoutOpen]);
 
-  // Global Ctrl+K / Cmd+K listener to trigger quick search modal
+  // Global Ctrl+K / Cmd+K listener to focus search area directly
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
-        setIsSearchModalOpen((prev) => !prev);
+        setIsMobileSidebarOpen(true);
+        searchInputRef.current?.focus();
+        searchInputRef.current?.select();
+        setIsSearchFocused(true);
+        if (searchQuery.trim()) {
+          setIsSearchDropdownOpen(true);
+        }
       }
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+    window.addEventListener('keydown', handleGlobalKeyDown);
+    return () => window.removeEventListener('keydown', handleGlobalKeyDown);
+  }, [searchQuery]);
 
   const handleLogout = async () => {
     try {
@@ -253,50 +591,57 @@ export const Navbar: React.FC = () => {
 
   const isModuleActive = (basePath: string) => {
     if (basePath === '/dashboard') {
-      return location.pathname === '/dashboard' || location.pathname === '/';
+      return location.pathname === '/' || location.pathname === '/dashboard';
     }
     return location.pathname.startsWith(basePath);
   };
 
-  // Filtered settings for Search in Settings flyout
+  // Filter settings groups based on search inside flyout
   const filteredSettingsGroups = useMemo(() => {
     if (!settingsSearchQuery.trim()) return SETTINGS_FLYOUT_GROUPS;
-    const query = settingsSearchQuery.toLowerCase();
+    const q = settingsSearchQuery.toLowerCase();
     return SETTINGS_FLYOUT_GROUPS.map((group) => ({
       ...group,
-      items: group.items.filter((item) =>
-        item.label.toLowerCase().includes(query)
+      items: group.items.filter(
+        (item) =>
+          item.label.toLowerCase().includes(q) ||
+          item.path.toLowerCase().includes(q),
       ),
     })).filter((group) => group.items.length > 0);
   }, [settingsSearchQuery]);
 
   return (
     <>
-      {/* 1. TOP NAVBAR (Clean, fixed, uncrowded header with search icon & quick actions) */}
-      <header className="app-top-navbar" id="app-navbar" role="banner">
+      {/* 1. TOP HORIZONTAL NAVIGATION BAR */}
+      <header className="app-navbar" id="app-topbar">
         <div className="navbar-container">
-          <div className="navbar-brand-section">
-            {/* Sidebar toggle button (for mobile or toggle) */}
+          {/* Left section: Mobile menu toggle + Logo + Workspace Selector */}
+          <div className="navbar-left-section">
             <button
               type="button"
-              className="navbar-sidebar-toggle-btn"
+              className="navbar-mobile-toggle"
               onClick={() => setIsMobileSidebarOpen((prev) => !prev)}
-              title="Toggle Navigation Menu"
-              aria-label="Toggle Navigation Menu"
-              id="navbar-sidebar-toggle-btn"
+              aria-label="Toggle Navigation Sidebar"
+              id="sidebar-toggle-btn"
             >
               {isMobileSidebarOpen ? <XIcon size={20} /> : <MenuIcon size={20} />}
             </button>
 
-            <Logo size="small" linkTo="/dashboard" showTagline={false} />
+            <Link
+              to="/dashboard"
+              className="navbar-brand-link"
+              title="Onseclick CRM - Go to Dashboard"
+            >
+              <Logo size="sm" showText={true} />
+            </Link>
 
-            {/* Active Workspace Selector Pill in Navbar */}
+            {/* Workspace Selector Pill in Topbar */}
             <button
               type="button"
-              className="navbar-workspace-pill"
+              className="workspace-pill-button"
               onClick={() => setIsSwitcherOpen(true)}
-              title="Click to switch workspace context"
-              id="navbar-workspace-switcher-trigger"
+              title="Switch Workspace"
+              id="topbar-workspace-switcher-btn"
             >
               <div className="ws-pill-icon">
                 <BriefcaseIcon size={14} />
@@ -309,20 +654,26 @@ export const Navbar: React.FC = () => {
             </button>
           </div>
 
-          {/* Right Header Section: Quick Search trigger + Notification Quick Trigger */}
+          {/* Right Header Section: Quick Search Icon + Notification Bell */}
           <div className="navbar-right-section">
-            {/* Quick Search trigger button at top */}
+            {/* Topbar Search Icon button (Clicking focuses the search area) */}
             <button
               type="button"
-              className="topbar-search-trigger"
-              onClick={() => setIsSearchModalOpen(true)}
-              title="Quick Search Modules & Records (Ctrl+K)"
-              aria-label="Quick Search"
+              className="topbar-icon-action-btn"
+              onClick={() => {
+                setIsMobileSidebarOpen(true);
+                searchInputRef.current?.focus();
+                searchInputRef.current?.select();
+                setIsSearchFocused(true);
+                if (searchQuery.trim()) {
+                  setIsSearchDropdownOpen(true);
+                }
+              }}
+              title="Search Modules & Records (Ctrl+K)"
+              aria-label="Search"
               id="topbar-global-search-btn"
             >
-              <SearchIcon size={16} />
-              <span className="topbar-search-text">Search...</span>
-              <kbd className="topbar-search-kbd">Ctrl K</kbd>
+              <SearchIcon size={17} />
             </button>
 
             {/* Topbar Notification Bell */}
@@ -345,24 +696,142 @@ export const Navbar: React.FC = () => {
         id="app-sidebar"
         aria-label="Sidebar Navigation"
       >
-        {/* A. Quick Search at top of sidebar */}
-        <div className="sidebar-search-container">
-          <button
-            type="button"
-            className="sidebar-search-bar"
-            title="Quick Search Modules & Records (Ctrl+K)"
-            id="sidebar-search-input-btn"
-            onClick={() => {
-              setIsSearchModalOpen(true);
-              setIsMobileSidebarOpen(false);
-            }}
+        {/* A. Search area in Sidebar: user types directly in the search area itself */}
+        <div className="sidebar-search-container" ref={searchContainerRef}>
+          <div
+            className={`sidebar-search-bar ${isSearchFocused || searchQuery ? 'is-focused' : ''}`}
+            onClick={() => searchInputRef.current?.focus()}
           >
             <div className="search-bar-left">
               <SearchIcon size={15} className="search-bar-icon" />
-              <span className="search-bar-placeholder">Search</span>
+              <input
+                ref={searchInputRef}
+                type="text"
+                className="sidebar-search-inline-input"
+                placeholder="Search"
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setIsSearchDropdownOpen(true);
+                  setSelectedIndex(0);
+                }}
+                onFocus={() => {
+                  setIsSearchFocused(true);
+                  if (searchQuery.trim()) {
+                    setIsSearchDropdownOpen(true);
+                  }
+                }}
+                onKeyDown={handleSearchKeyDown}
+                aria-label="Search modules and other items"
+                autoComplete="off"
+                id="sidebar-search-input"
+              />
             </div>
-            <kbd className="search-bar-kbd">Ctrl K</kbd>
-          </button>
+
+            {searchQuery ? (
+              <button
+                type="button"
+                className="sidebar-search-clear-btn"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSearchQuery('');
+                  setIsSearchDropdownOpen(false);
+                  searchInputRef.current?.focus();
+                }}
+                title="Clear search"
+                aria-label="Clear search"
+              >
+                <XIcon size={13} />
+              </button>
+            ) : (
+              <kbd className="search-bar-kbd">Ctrl K</kbd>
+            )}
+          </div>
+
+          {/* Search Results Dropdown anchored directly below the search input */}
+          {isSearchDropdownOpen && searchQuery.trim().length > 0 && (
+            <div
+              className="sidebar-search-dropdown"
+              id="sidebar-search-dropdown-menu"
+              role="listbox"
+            >
+              {totalResultsCount > 0 ? (
+                <div className="sidebar-search-results-list">
+                  {/* Modules & Settings results */}
+                  {filteredModules.map((item, idx) => {
+                    const isSelected = selectedIndex === idx;
+                    return (
+                      <button
+                        key={item.id}
+                        type="button"
+                        className={`sidebar-search-result-item ${isSelected ? 'is-selected' : ''}`}
+                        onClick={() => handleSelectResult(item.path)}
+                        onMouseEnter={() => setSelectedIndex(idx)}
+                      >
+                        <div className="result-item-icon-box">{item.icon}</div>
+                        <div className="result-item-content">
+                          <div className="result-item-title-row">
+                            <span className="result-item-title">{item.title}</span>
+                            <span className="result-item-category-pill">{item.category}</span>
+                          </div>
+                          <span className="result-item-desc">{item.description}</span>
+                        </div>
+                      </button>
+                    );
+                  })}
+
+                  {/* Live Records results (if any found) */}
+                  {liveRecordResults.map((rec, rIdx) => {
+                    const itemIdx = filteredModules.length + rIdx;
+                    const isSelected = selectedIndex === itemIdx;
+                    const targetUrl =
+                      rec.url ||
+                      (rec.entityType === 'LEADS'
+                        ? '/leads'
+                        : rec.entityType === 'CONTACTS'
+                          ? '/contacts'
+                          : '/deals');
+                    return (
+                      <button
+                        key={rec.id || rIdx}
+                        type="button"
+                        className={`sidebar-search-result-item ${isSelected ? 'is-selected' : ''}`}
+                        onClick={() => handleSelectResult(targetUrl)}
+                        onMouseEnter={() => setSelectedIndex(itemIdx)}
+                      >
+                        <div className="result-item-icon-box">
+                          <TargetIcon size={16} />
+                        </div>
+                        <div className="result-item-content">
+                          <div className="result-item-title-row">
+                            <span className="result-item-title">{rec.title}</span>
+                            <span className="result-item-category-pill">Record</span>
+                          </div>
+                          {rec.subtitle && <span className="result-item-desc">{rec.subtitle}</span>}
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              ) : isSearchingRecords ? (
+                <div className="sidebar-search-loading">
+                  <div className="search-loading-spinner" />
+                  <span>Searching...</span>
+                </div>
+              ) : (
+                /* Not found view */
+                <div className="sidebar-search-not-found" id="sidebar-search-not-found-state">
+                  <div className="not-found-icon-wrap">
+                    <SearchIcon size={20} />
+                  </div>
+                  <span className="not-found-title">Not found</span>
+                  <span className="not-found-subtitle">
+                    No modules or items matching &ldquo;{searchQuery}&rdquo;
+                  </span>
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* B. Main 9 CRM Modules in First Column */}
@@ -584,12 +1053,6 @@ export const Navbar: React.FC = () => {
       <WorkspaceSwitcher
         isOpen={isSwitcherOpen}
         onClose={() => setIsSwitcherOpen(false)}
-      />
-
-      {/* Global Quick Search & Module Palette Modal */}
-      <QuickSearchModal
-        isOpen={isSearchModalOpen}
-        onClose={() => setIsSearchModalOpen(false)}
       />
     </>
   );
