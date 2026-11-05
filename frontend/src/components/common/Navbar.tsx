@@ -702,8 +702,10 @@ export const Navbar: React.FC = () => {
               {isWorkspaceDropdownOpen && (
                 <div
                   id="navbar-workspace-dropdown-menu"
-                  className="absolute top-full left-0 mt-2 w-80 bg-white border border-emerald-500/30 rounded-2xl shadow-2xl p-4.5 z-50 flex flex-col font-sans text-left box-border"
+                  className="absolute left-0 w-80 bg-white border border-emerald-500/30 rounded-2xl shadow-2xl p-4.5 z-50 flex flex-col font-sans text-left box-border"
                   style={{
+                    top: 'calc(100% + 8px)',
+                    marginTop: 0,
                     backgroundColor: '#FFFFFF',
                     border: '1.5px solid rgba(16, 185, 129, 0.35)',
                     boxShadow: '0 20px 40px -8px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(16, 185, 129, 0.15)',
