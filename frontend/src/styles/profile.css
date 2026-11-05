@@ -1344,22 +1344,53 @@
   flex-shrink: 0;
 }
 
-.sidebar-search-inline-input {
-  border: none;
-  outline: none;
-  background: transparent;
-  color: #111827;
-  font-size: 0.8125rem;
-  font-weight: 500;
-  width: 100%;
-  font-family: inherit;
-  padding: 0;
-  margin: 0;
+/* Strip all input borders, backgrounds, paddings, and box-shadows so there is NO inner box */
+.sidebar-search-bar input,
+.sidebar-search-bar input[type="text"],
+.sidebar-search-bar .sidebar-search-inline-input,
+input.sidebar-search-inline-input {
+  all: unset !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: unset !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  border-width: 0 !important;
+  border-style: none !important;
+  border-color: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  color: #111827 !important;
+  font-family: inherit !important;
+  font-size: 0.8125rem !important;
+  font-weight: 500 !important;
+  line-height: normal !important;
+  cursor: text !important;
 }
 
-.sidebar-search-inline-input::placeholder {
-  color: #64748B;
-  opacity: 1;
+.sidebar-search-bar input:focus,
+.sidebar-search-bar input[type="text"]:focus,
+.sidebar-search-bar .sidebar-search-inline-input:focus,
+input.sidebar-search-inline-input:focus {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.sidebar-search-bar input::placeholder,
+.sidebar-search-bar input[type="text"]::placeholder,
+.sidebar-search-bar .sidebar-search-inline-input::placeholder,
+input.sidebar-search-inline-input::placeholder {
+  color: #64748B !important;
+  opacity: 1 !important;
+  font-weight: 500 !important;
 }
 
 .sidebar-search-clear-btn {
