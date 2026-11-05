@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useWorkspace } from '../../context/useWorkspace';
@@ -176,17 +176,44 @@ export const Navbar: React.FC = () => {
   };
 
   // Right-side Settings flyout panel open state (opens to the right of sidebar!)
-  const [isSettingsFlyoutOpen, setIsSettingsFlyoutOpen] = useState<boolean>(() => {
-    return isCurrentRouteInSettings(location.pathname);
-  });
+  const [isSettingsFlyoutOpen, setIsSettingsFlyoutOpen] = useState<boolean>(false);
+  const flyoutRef = useRef<HTMLDivElement>(null);
+  const settingsBtnRef = useRef<HTMLButtonElement>(null);
 
-  // Automatically close settings flyout when navigating to a main CRM module
+  // Automatically close settings flyout whenever navigating to any module
   useEffect(() => {
-    if (!isCurrentRouteInSettings(location.pathname)) {
-      setIsSettingsFlyoutOpen(false);
-    }
+    setIsSettingsFlyoutOpen(false);
     setIsMobileSidebarOpen(false);
   }, [location.pathname]);
+
+  // Close flyout on outside click
+  useEffect(() => {
+    const handleOutsideClick = (e: MouseEvent) => {
+      if (!isSettingsFlyoutOpen) return;
+      const target = e.target as Node;
+      if (
+        flyoutRef.current &&
+        !flyoutRef.current.contains(target) &&
+        settingsBtnRef.current &&
+        !settingsBtnRef.current.contains(target)
+      ) {
+        setIsSettingsFlyoutOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleOutsideClick);
+    return () => document.removeEventListener('mousedown', handleOutsideClick);
+  }, [isSettingsFlyoutOpen]);
+
+  // Close flyout on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isSettingsFlyoutOpen) {
+        setIsSettingsFlyoutOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isSettingsFlyoutOpen]);
 
   // Global Ctrl+K / Cmd+K listener to trigger search
   useEffect(() => {
@@ -364,6 +391,7 @@ export const Navbar: React.FC = () => {
         <div className="sidebar-bottom-section">
           {/* Settings Trigger: opens neat menu on the RIGHT */}
           <button
+            ref={settingsBtnRef}
             type="button"
             className={`sidebar-module-link sidebar-settings-trigger ${isSettingsFlyoutOpen || isCurrentRouteInSettings(location.pathname) ? 'is-active-module' : ''}`}
             onClick={() => setIsSettingsFlyoutOpen((prev) => !prev)}
@@ -412,7 +440,7 @@ export const Navbar: React.FC = () => {
                 title="Notifications (1 new)"
                 aria-label="Notifications"
                 onClick={() => {
-                  setIsSettingsFlyoutOpen(true);
+                  setIsSettingsFlyoutOpen(false);
                   setIsMobileSidebarOpen(false);
                 }}
               >
@@ -440,6 +468,7 @@ export const Navbar: React.FC = () => {
       {isSettingsFlyoutOpen && (
         <>
           <div
+            ref={flyoutRef}
             className="sidebar-settings-flyout"
             role="region"
             aria-label="Settings Submenu"
@@ -507,9 +536,8 @@ export const Navbar: React.FC = () => {
                           id={`settings-item-${item.id}`}
                           title={item.label}
                           onClick={() => {
-                            if (window.innerWidth < 900) {
-                              setIsSettingsFlyoutOpen(false);
-                            }
+                            setIsSettingsFlyoutOpen(false);
+                            setIsMobileSidebarOpen(false);
                           }}
                         >
                           <div className="neat-item-icon-box">
