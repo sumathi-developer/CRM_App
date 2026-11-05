@@ -521,7 +521,7 @@ export const AnalyticsExplorerPage: React.FC<AnalyticsExplorerPageProps> = ({
   });
   const [sourceFilter, setSourceFilter] = useState<string>('');
   const [showComparison, setShowComparison] = useState<boolean>(true);
-  const [sortBy, setSortBy] = useState<string>('REVENUE');
+  const [sortBy, setSortBy] = useState<string>('revenue');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
   // Filter Lookup Options
@@ -1230,20 +1230,31 @@ export const AnalyticsExplorerPage: React.FC<AnalyticsExplorerPageProps> = ({
                   title="Lead Status Progression Table"
                   subtitle="Summary count per lifecycle stage"
                 >
-                  <div className="space-y-3">
-                    {Object.entries(leadData?.kpis.statusBreakdown || {}).map(([st, cnt]) => (
-                      <div key={st} className="flex items-center justify-between border-b border-gray-100 pb-2 text-xs">
-                        <span className="font-semibold text-gray-800">{humanize(st)}</span>
-                        <div className="flex items-center gap-3">
-                          <span className="font-bold text-gray-900">{formatNumber(Number(cnt))} leads</span>
-                          <Badge tone={st === 'QUALIFIED' || st === 'CONVERTED' ? 'green' : 'slate'}>
-                            {leadData?.kpis.totalLeads.current
-                              ? formatPercent((Number(cnt) / leadData.kpis.totalLeads.current) * 100)
-                              : '0%'}
-                          </Badge>
+                  <div className="crm-progression-table">
+                    {Object.entries(leadData?.kpis.statusBreakdown || {}).map(([st, cnt]) => {
+                      const total = leadData?.kpis.totalLeads.current || 0;
+                      const countNum = Number(cnt || 0);
+                      const pct = total > 0 ? (countNum / total) * 100 : 0;
+                      const isSuccess = st === 'QUALIFIED' || st === 'CONVERTED';
+                      const tone = isSuccess ? 'green' : 'slate';
+
+                      return (
+                        <div key={st} className="crm-progression-row">
+                          <div className="crm-progression-stage">
+                            <span className={`crm-progression-dot stage-${st.toLowerCase()}`} />
+                            <span className="crm-progression-name">{humanize(st)}</span>
+                          </div>
+                          <div className="crm-progression-metrics">
+                            <span className="crm-progression-count">
+                              <strong>{formatNumber(countNum)}</strong> leads
+                            </span>
+                            <Badge tone={tone} title={`${humanize(st)} percentage share`}>
+                              {formatPercent(pct)}
+                            </Badge>
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </SectionCard>
               </div>
@@ -2505,6 +2516,7 @@ export const AnalyticsExplorerPage: React.FC<AnalyticsExplorerPageProps> = ({
                     <DashboardKpiCard
                       label="Top Performer"
                       value={repData?.items?.[0]?.name || '—'}
+                      valueClassName="crm-kpi-value-performer"
                       subtitle={
                         repData?.items?.[0]
                           ? `${formatCurrency(repData.items[0].totalRevenue)} revenue • ${repData.items[0].dealsWon} won`

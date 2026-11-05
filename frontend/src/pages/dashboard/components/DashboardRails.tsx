@@ -140,11 +140,23 @@ export const DashboardLeftRail: React.FC<DashboardLeftRailProps> = ({
           justifyContent: 'space-between',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', color: '#059669' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', color: '#059669', flexShrink: 0 }}>
           <AwardIcon size={16} />
           <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#000000' }}>{efficiencyLabel}</span>
         </div>
-        <span style={{ fontSize: '0.85rem', fontWeight: 800, color: '#000000' }}>{efficiencyValue}</span>
+        <span
+          style={{
+            fontSize: '0.85rem',
+            fontWeight: 800,
+            color: '#000000',
+            textAlign: 'right',
+            maxWidth: '60%',
+            overflowWrap: 'break-word',
+          }}
+          title={efficiencyValue}
+        >
+          {efficiencyValue}
+        </span>
       </div>
 
       {/* 4. Action Button */}

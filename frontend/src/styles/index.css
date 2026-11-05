@@ -308,9 +308,10 @@ select {
 
 /* Dropdown Options */
 option, optgroup {
-  background-color: #0f172a;
-  color: #f8fafc;
-  padding: 8px 12px;
+  background-color: #FFFFFF !important;
+  background: #FFFFFF !important;
+  color: #000000 !important;
+  padding: 10px 14px !important;
 }
 
 /* Placeholder styling */
@@ -327,7 +328,6 @@ option, optgroup {
 /* Overrides for components that use Tailwind-like utility classes */
 .bg-white,
 input.bg-white,
-select.bg-white,
 textarea.bg-white,
 div.bg-white,
 section.bg-white,

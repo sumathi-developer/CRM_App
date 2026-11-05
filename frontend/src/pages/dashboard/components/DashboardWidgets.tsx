@@ -100,6 +100,7 @@ interface DashboardKpiCardProps {
   icon?: React.ReactNode;
   tone?: Tone;
   to?: string;
+  valueClassName?: string;
 }
 
 export const DashboardKpiCard: React.FC<DashboardKpiCardProps> = ({
@@ -111,6 +112,7 @@ export const DashboardKpiCard: React.FC<DashboardKpiCardProps> = ({
   icon,
   tone = 'blue',
   to,
+  valueClassName,
 }) => {
   const direction = metric?.direction || 'FLAT';
   const pct = Number(metric?.percentage ?? 0);
@@ -122,6 +124,19 @@ export const DashboardKpiCard: React.FC<DashboardKpiCardProps> = ({
         : 'crm-badge crm-badge-neutral';
   const arrow = direction === 'UP' ? '↑' : direction === 'DOWN' ? '↓' : '→';
 
+  // Automatically detect text names or strings (e.g. rep names, team names)
+  const isTextValue =
+    typeof value === 'string' &&
+    (value.length > 9 || /[a-zA-Z]{5,}/.test(value));
+
+  const effectiveValueClass = [
+    'crm-kpi-value',
+    isTextValue ? 'crm-kpi-value-text' : '',
+    valueClassName || '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   const cardBody = (
     <div className={`crm-kpi-card tone-${tone}`}>
       <div className="crm-kpi-top-row">
@@ -130,7 +145,12 @@ export const DashboardKpiCard: React.FC<DashboardKpiCardProps> = ({
       </div>
 
       <div className="crm-kpi-mid-row">
-        <span className="crm-kpi-value">{value}</span>
+        <span
+          className={effectiveValueClass}
+          title={typeof value === 'string' ? value : undefined}
+        >
+          {value}
+        </span>
         {metric && (
           <span
             className={badgeClass}

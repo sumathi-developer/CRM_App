@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { SearchIcon, XIcon, RefreshCwIcon } from '../../../components/common/Icons';
+import {
+  SearchIcon,
+  XIcon,
+  RefreshCwIcon,
+  FilterIcon,
+  ChevronDownIcon,
+} from '../../../components/common/Icons';
 import type { Option } from '../leadGenConstants';
 
 interface SearchInputProps {
@@ -8,15 +14,17 @@ interface SearchInputProps {
   placeholder?: string;
   id?: string;
   debounceMs?: number;
+  label?: string;
 }
 
-/** Search box with debounced change propagation. */
+/** Search box with debounced change propagation and standardized label. */
 export const SearchInput: React.FC<SearchInputProps> = ({
   value,
   onChange,
-  placeholder = 'Search...',
-  id,
+  placeholder = 'Search records...',
+  id = 'search-input-control',
   debounceMs = 350,
+  label = 'Search Records',
 }) => {
   const [local, setLocal] = useState(value);
 
@@ -27,30 +35,37 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   }, [local, value, onChange, debounceMs]);
 
   return (
-    <div className="lg-search">
-      <SearchIcon size={16} className="lg-search-icon" />
-      <input
-        id={id}
-        type="search"
-        className="lg-search-input"
-        placeholder={placeholder}
-        value={local}
-        onChange={(e) => setLocal(e.target.value)}
-        aria-label={placeholder}
-      />
-      {local && (
-        <button
-          type="button"
-          className="lg-search-clear"
-          onClick={() => {
-            setLocal('');
-            onChange('');
-          }}
-          aria-label="Clear search"
-        >
-          <XIcon size={14} />
-        </button>
+    <div className="crm-filter-control lg-filter-control lg-search-control">
+      {label && (
+        <label className="crm-filter-label lg-filter-label" htmlFor={id}>
+          {label}
+        </label>
       )}
+      <div className="crm-filter-search-wrap lg-search">
+        <SearchIcon size={15} className="crm-filter-search-icon lg-search-icon" />
+        <input
+          id={id}
+          type="search"
+          className="crm-filter-select crm-filter-search-input lg-search-input"
+          placeholder={placeholder}
+          value={local}
+          onChange={(e) => setLocal(e.target.value)}
+          aria-label={placeholder}
+        />
+        {local && (
+          <button
+            type="button"
+            className="crm-filter-search-clear lg-search-clear"
+            onClick={() => {
+              setLocal('');
+              onChange('');
+            }}
+            aria-label="Clear search"
+          >
+            <XIcon size={13} />
+          </button>
+        )}
+      </div>
     </div>
   );
 };
@@ -72,17 +87,29 @@ export const FilterSelect: React.FC<FilterSelectProps> = ({
   allLabel = 'All',
   id,
 }) => (
-  <label className="lg-filter-select" htmlFor={id}>
-    <span className="lg-filter-label">{label}</span>
-    <select id={id} className="lg-select" value={value} onChange={(e) => onChange(e.target.value)}>
-      <option value="">{allLabel}</option>
-      {options.map((o) => (
-        <option key={o.value} value={o.value}>
-          {o.label}
-        </option>
-      ))}
-    </select>
-  </label>
+  <div className="crm-filter-control lg-filter-control lg-filter-select-wrap">
+    {label && (
+      <label className="crm-filter-label lg-filter-label" htmlFor={id}>
+        {label}
+      </label>
+    )}
+    <div className="crm-filter-select-wrap">
+      <select
+        id={id}
+        className="crm-filter-select lg-select"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      >
+        <option value="">{allLabel}</option>
+        {options.map((o) => (
+          <option key={o.value} value={o.value}>
+            {o.label}
+          </option>
+        ))}
+      </select>
+      <ChevronDownIcon size={14} className="crm-filter-chevron" />
+    </div>
+  </div>
 );
 
 interface FilterBarProps {
@@ -90,29 +117,62 @@ interface FilterBarProps {
   onRefresh?: () => void;
   onReset?: () => void;
   hasActiveFilters?: boolean;
+  title?: string;
 }
 
-/** Wrapper row for search + filter controls. */
-export const FilterBar: React.FC<FilterBarProps> = ({ children, onRefresh, onReset, hasActiveFilters }) => (
-  <div className="lg-card lg-filter-bar">
-    <div className="lg-filter-controls">{children}</div>
-    <div className="lg-filter-actions">
-      {hasActiveFilters && onReset && (
-        <button type="button" className="lg-link-btn" onClick={onReset}>
-          Reset filters
-        </button>
-      )}
-      {onRefresh && (
-        <button
-          type="button"
-          className="lg-icon-btn"
-          onClick={onRefresh}
-          title="Refresh"
-          aria-label="Refresh"
-        >
-          <RefreshCwIcon size={16} />
-        </button>
-      )}
+/** Standardized CRM Filter Bar with header controls and responsive grid. */
+export const FilterBar: React.FC<FilterBarProps> = ({
+  children,
+  onRefresh,
+  onReset,
+  hasActiveFilters,
+  title = 'Filters & Search Controls',
+}) => (
+  <section
+    className="crm-filter-bar lg-card lg-filter-bar"
+    aria-label="Filters and search controls"
+  >
+    <div className="crm-filter-header">
+      <div className="crm-filter-title-group">
+        <div className="crm-filter-icon-badge">
+          <FilterIcon size={15} />
+        </div>
+        <div className="crm-filter-heading">
+          <span>{title}</span>
+          {hasActiveFilters && (
+            <span className="crm-badge crm-badge-secondary">
+              <span className="crm-badge-dot" />
+              Active
+            </span>
+          )}
+        </div>
+      </div>
+      <div className="crm-filter-actions lg-filter-actions">
+        {hasActiveFilters && onReset && (
+          <button
+            type="button"
+            className="auth-btn btn-secondary btn-size-small lg-link-btn"
+            onClick={onReset}
+            title="Reset filters"
+          >
+            <XIcon size={13} />
+            <span>Reset Filters</span>
+          </button>
+        )}
+        {onRefresh && (
+          <button
+            type="button"
+            className="auth-btn btn-secondary btn-size-small lg-icon-btn"
+            onClick={onRefresh}
+            title="Refresh"
+            aria-label="Refresh"
+          >
+            <RefreshCwIcon size={14} />
+            <span>Refresh</span>
+          </button>
+        )}
+      </div>
     </div>
-  </div>
+    <div className="crm-filter-grid lg-filter-controls">{children}</div>
+  </section>
 );

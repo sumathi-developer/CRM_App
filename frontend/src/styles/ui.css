@@ -1144,10 +1144,11 @@
   font-family: var(--font-sans);
   font-size: 0.8125rem;
   font-weight: 600;
-  color: #ffffff;
-  background-color: rgba(6, 21, 9, 0.85);
-  border: 1px solid rgba(16, 185, 129, 0.22);
-  border-radius: var(--radius-md, 12px);
+  color: #000000 !important;
+  background-color: #FFFFFF !important;
+  background: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+  border-radius: 12px;
   padding: 0.6rem 2.25rem 0.6rem 0.85rem;
   outline: none;
   cursor: pointer;
@@ -1155,27 +1156,32 @@
   -webkit-appearance: none;
   -moz-appearance: none;
   transition: all var(--transition-fast, 150ms ease);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
 }
 
 .crm-filter-select:hover {
-  border-color: rgba(16, 185, 129, 0.45);
-  background-color: rgba(10, 32, 15, 0.95);
+  border-color: rgba(16, 185, 129, 0.65) !important;
+  background-color: #F8FCF9 !important;
+  background: #F8FCF9 !important;
 }
 
 .crm-filter-select:focus {
-  border-color: #10b981;
-  background-color: #0a200f;
-  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);
+  border-color: #10B981 !important;
+  background-color: #FFFFFF !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.22) !important;
 }
 
 .crm-filter-select option {
-  background-color: #062e03;
-  color: #ffffff;
-  padding: 8px 12px;
+  background-color: #FFFFFF !important;
+  background: #FFFFFF !important;
+  color: #000000 !important;
+  padding: 10px 14px !important;
+  font-weight: 600 !important;
+  font-size: 0.8125rem !important;
 }
 
 .crm-filter-chevron {
@@ -3343,4 +3349,1325 @@ td,
   border: 1px solid rgba(16, 185, 129, 0.22) !important;
   border-left: 1px solid rgba(16, 185, 129, 0.22) !important;
   border-left-color: rgba(16, 185, 129, 0.22) !important;
+}
+
+
+/* ==========================================================================
+   20. UNIVERSAL LIGHT DROPDOWNS, SELECTS & POPUP OPTIONS SYSTEM
+   Ensures 100% visibility, crisp solid black text, white background,
+   and clean alignment across all dropdowns, native selects,
+   and option lists throughout the entire CRM platform.
+   ========================================================================== */
+
+/* 1. All Native Select Elements across the CRM */
+select,
+.crm-select,
+.crm-filter-select,
+.lg-select,
+.filter-select,
+.form-select,
+.form-select-custom,
+.preference-select-control,
+.ld-board-stage-select,
+.ld-compact-select,
+.ld-lead-picker-select {
+  background-color: #FFFFFF !important;
+  background: #FFFFFF !important;
+  color: #000000 !important;
+  border: 1px solid rgba(16, 185, 129, 0.32) !important;
+  font-weight: 600 !important;
+  font-size: 0.8125rem !important;
+  border-radius: 10px !important;
+  min-height: 38px !important;
+  height: 38px !important;
+  line-height: 1.4 !important;
+  outline: none !important;
+  cursor: pointer !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+  text-align: left !important;
+  vertical-align: middle !important;
+  box-sizing: border-box !important;
+}
+
+/* Ensure no background SVG icon clash on select wrappers that already have chevron icon */
+.crm-filter-select-wrap select,
+.filter-select-wrap select,
+.filter-select-wrapper select,
+.form-input-wrapper select,
+.crm-filter-select {
+  background-image: none !important;
+  padding-right: 2rem !important;
+}
+
+select:hover:not(:disabled),
+.crm-select:hover:not(:disabled),
+.crm-filter-select:hover:not(:disabled),
+.lg-select:hover:not(:disabled),
+.filter-select:hover:not(:disabled),
+.form-select:hover:not(:disabled),
+.preference-select-control:hover:not(:disabled) {
+  border-color: rgba(16, 185, 129, 0.65) !important;
+  background-color: #F8FCF9 !important;
+  background: #F8FCF9 !important;
+}
+
+select:focus,
+.crm-select:focus,
+.crm-filter-select:focus,
+.lg-select:focus,
+.filter-select:focus,
+.form-select:focus,
+.preference-select-control:focus {
+  border-color: #10B981 !important;
+  background-color: #FFFFFF !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.22) !important;
+}
+
+select:disabled,
+.crm-filter-select:disabled,
+.crm-select:disabled {
+  background-color: #F1F5F9 !important;
+  background: #F1F5F9 !important;
+  color: #64748B !important;
+  border-color: #CBD5E1 !important;
+  cursor: not-allowed !important;
+  opacity: 0.7 !important;
+}
+
+/* 2. All Dropdown Options & Optgroups (Browser Native Popup Menu) */
+option,
+optgroup,
+select option,
+select optgroup,
+.crm-filter-select option,
+.crm-select option,
+.lg-select option,
+.preference-select-control option,
+.filter-select option,
+.form-select option,
+.form-select-custom option,
+.ld-board-stage-select option,
+.ld-compact-select option,
+.ld-lead-picker-select option {
+  background-color: #FFFFFF !important;
+  background: #FFFFFF !important;
+  color: #000000 !important;
+  font-family: inherit !important;
+  font-size: 0.8125rem !important;
+  font-weight: 600 !important;
+  padding: 10px 14px !important;
+  line-height: 1.5 !important;
+  text-align: left !important;
+  border-bottom: 1px solid #F1F5F9 !important;
+}
+
+option:hover,
+option:focus,
+option:active,
+option:checked {
+  background-color: #EAF4ED !important;
+  background: #EAF4ED !important;
+  color: #000000 !important;
+  font-weight: 700 !important;
+}
+
+optgroup {
+  font-weight: 800 !important;
+  color: #000000 !important;
+  background-color: #F4FAF6 !important;
+  background: #F4FAF6 !important;
+  padding: 8px 12px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  font-size: 0.72rem !important;
+}
+
+/* 3. Custom Dropdown Containers, Popovers & Menus */
+.dropdown-menu,
+.sidebar-module-dropdown,
+.workspace-switcher-menu,
+.custom-dropdown-panel,
+[role="menu"] {
+  background-color: #FFFFFF !important;
+  background: #FFFFFF !important;
+  color: #000000 !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.08) !important;
+  border-radius: 12px !important;
+  padding: 6px !important;
+  z-index: 100 !important;
+}
+
+.dropdown-item,
+.dropdown-link,
+[role="menuitem"] {
+  color: #000000 !important;
+  font-weight: 600 !important;
+  font-size: 0.8125rem !important;
+  padding: 8px 14px !important;
+  border-radius: 8px !important;
+  transition: all 120ms ease !important;
+  text-align: left !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.dropdown-item:hover,
+.dropdown-link:hover,
+[role="menuitem"]:hover,
+.dropdown-item:focus,
+.dropdown-link:focus,
+[role="menuitem"]:focus {
+  background-color: #EAF4ED !important;
+  background: #EAF4ED !important;
+  color: #000000 !important;
+}
+
+/* 4. Filter Chevron Icons */
+.crm-filter-chevron,
+.filter-chevron,
+.select-chevron {
+  color: #000000 !important;
+  pointer-events: none !important;
+}
+
+
+/* ==========================================================================
+   21. UNIVERSAL ALIGNMENT & STRUCTURAL HARMONY FOR ALL CRM MODULES
+   Applies the clean, balanced, high-contrast, structured layout standards
+   of the Overview Dashboard and Analytics across Leads, Deals, Contacts,
+   Pipelines, Activities, Calendar, Communications, Lead Gen, Teams,
+   Users, Roles, Custom Fields, Tags, Settings, and Audit Logs.
+   ========================================================================== */
+
+/* ---------- 21.1 Page Container & Layout Consistency ---------- */
+/* Enforce proper 260px offset from the left fixed sidebar across all authenticated page mains */
+.authenticated-container,
+.app-main-content,
+.crm-main-content,
+main.lg-page,
+main.ld-page,
+main.analytics-page-root,
+main.dashboard-root-content,
+.lg-page,
+.ld-page {
+  margin-left: 260px !important;
+  margin-right: 0 !important;
+  width: calc(100% - 260px) !important;
+  max-width: none !important;
+  min-height: calc(100vh - 64px) !important;
+  padding: 32px 32px 64px !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 24px !important;
+}
+
+/* Ensure all child sections/grids inside the module main are centered and constrained */
+.authenticated-container > *,
+.app-main-content > *,
+.crm-main-content > *,
+main.lg-page > *,
+main.ld-page > *,
+.lg-page > *,
+.ld-page > *,
+.analytics-page-root > *,
+.dashboard-root-content > * {
+  width: 100% !important;
+  max-width: 1400px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  box-sizing: border-box !important;
+}
+
+@media (max-width: 960px) {
+  .authenticated-container,
+  .app-main-content,
+  .crm-main-content,
+  main.lg-page,
+  main.ld-page,
+  main.analytics-page-root,
+  main.dashboard-root-content,
+  .lg-page,
+  .ld-page {
+    margin-left: 0 !important;
+    width: 100% !important;
+    padding: 20px 16px 48px !important;
+  }
+}
+
+/* Module Sub-Navigation Bar */
+.lg-subnav,
+.ld-subnav {
+  position: sticky !important;
+  top: 76px !important;
+  z-index: 40 !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 1.25rem !important;
+  padding: 0.85rem 1.35rem !important;
+  background: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  border-radius: 18px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+  margin-bottom: 4px !important;
+}
+
+.lg-subnav-group {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.65rem !important;
+}
+
+.lg-subnav-label {
+  font-size: 0.72rem !important;
+  font-weight: 800 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  color: #000000 !important;
+  padding-right: 0.65rem !important;
+  border-right: 1px solid rgba(16, 185, 129, 0.2) !important;
+  line-height: 1 !important;
+}
+
+.lg-subnav-links {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+}
+
+.lg-subnav-link {
+  font-size: 0.8125rem !important;
+  font-weight: 600 !important;
+  color: #000000 !important;
+  padding: 0.4rem 0.85rem !important;
+  border-radius: 8px !important;
+  transition: all 150ms ease !important;
+  white-space: nowrap !important;
+  text-decoration: none !important;
+  background: transparent !important;
+}
+
+.lg-subnav-link:hover {
+  background: #EAF4ED !important;
+  color: #000000 !important;
+}
+
+.lg-subnav-link.is-active,
+.lg-subnav-link[aria-current="page"] {
+  color: #FFFFFF !important;
+  background: #10B981 !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35) !important;
+}
+
+/* Page Header & Module Title Area */
+.lg-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: flex-start !important;
+  gap: 1.5rem !important;
+  flex-wrap: wrap !important;
+  margin-bottom: 4px !important;
+}
+
+.lg-header-text {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.35rem !important;
+  max-width: 800px !important;
+}
+
+.lg-title {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.85rem !important;
+  font-size: 1.85rem !important;
+  font-weight: 800 !important;
+  color: #000000 !important;
+  letter-spacing: -0.02em !important;
+  margin: 0 !important;
+  line-height: 1.2 !important;
+}
+
+.lg-title-icon {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 12px !important;
+  background: rgba(16, 185, 129, 0.12) !important;
+  color: #10B981 !important;
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
+  flex-shrink: 0 !important;
+}
+
+.lg-subtitle {
+  font-size: 0.9rem !important;
+  color: #000000 !important;
+  opacity: 0.82 !important;
+  line-height: 1.5 !important;
+  margin: 0 !important;
+}
+
+.lg-header-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+  flex-wrap: wrap !important;
+}
+
+/* ---------- 21.2 Universal KPI Stat Cards & Deck Standardization ---------- */
+.lg-stat-grid,
+.lg-stats-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
+  gap: 16px !important;
+  margin-bottom: 24px !important;
+  width: 100% !important;
+}
+
+.lg-stat-grid-compact {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
+  gap: 12px !important;
+  margin-bottom: 24px !important;
+}
+
+.lg-stat-card,
+.crm-kpi-card {
+  height: 104px !important;
+  min-height: 104px !important;
+  max-height: 104px !important;
+  box-sizing: border-box !important;
+  padding: 0.75rem 1.15rem !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  background: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  border-left: 1px solid rgba(16, 185, 129, 0.22) !important;
+  border-radius: 18px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+  transition: all 180ms ease !important;
+}
+
+.lg-stat-card:hover,
+.crm-kpi-card:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.12) !important;
+  border-color: rgba(16, 185, 129, 0.4) !important;
+}
+
+.lg-stat-top,
+.crm-kpi-top-row {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 0.5rem !important;
+  line-height: 1 !important;
+}
+
+.lg-stat-label,
+.crm-kpi-label {
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  color: #000000 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.lg-stat-body,
+.crm-kpi-mid-row {
+  display: flex !important;
+  align-items: baseline !important;
+  justify-content: space-between !important;
+  gap: 0.5rem !important;
+  margin: 0 !important;
+}
+
+.lg-stat-value,
+.crm-kpi-value {
+  font-size: 1.45rem !important;
+  font-weight: 800 !important;
+  color: #000000 !important;
+  line-height: 1.1 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* KPI Value for Names and Text - Always Completely Visible Without Truncation */
+.crm-kpi-value.crm-kpi-value-text,
+.crm-kpi-value.crm-kpi-value-performer,
+.crm-kpi-card .crm-kpi-value.crm-kpi-value-text,
+.crm-kpi-card .crm-kpi-value.crm-kpi-value-performer,
+.lg-stat-value.crm-kpi-value-text,
+.lg-stat-value.crm-kpi-value-performer {
+  font-size: 1.05rem !important;
+  font-weight: 800 !important;
+  color: #000000 !important;
+  line-height: 1.2 !important;
+  white-space: normal !important;
+  word-break: normal !important;
+  overflow-wrap: break-word !important;
+  text-overflow: clip !important;
+  overflow: visible !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  max-width: 100% !important;
+}
+
+.lg-stat-hint-row,
+.crm-kpi-footer {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 0.5rem !important;
+  line-height: 1 !important;
+}
+
+.lg-stat-hint,
+.crm-kpi-prev {
+  font-size: 0.75rem !important;
+  color: #000000 !important;
+  opacity: 0.75 !important;
+  font-weight: 500 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.lg-stat-icon,
+.crm-kpi-icon-wrap {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 9px !important;
+  background: rgba(16, 185, 129, 0.12) !important;
+  color: #10B981 !important;
+  border: 1px solid rgba(16, 185, 129, 0.2) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+}
+
+/* ---------- 21.3 View Switcher & Scope Toolbar Alignment ---------- */
+.ld-view-switcher-bar {
+  padding: 0.85rem 1.35rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 1.25rem !important;
+  flex-wrap: wrap !important;
+  background: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  border-radius: 18px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+  margin-bottom: 24px !important;
+}
+
+.ld-scope-tabs {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  flex-wrap: wrap !important;
+}
+
+.ld-pill-tab {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.45rem !important;
+  padding: 0.45rem 0.95rem !important;
+  border-radius: 10px !important;
+  font-size: 0.8125rem !important;
+  font-weight: 600 !important;
+  color: #000000 !important;
+  background: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  cursor: pointer !important;
+  transition: all 150ms ease !important;
+}
+
+.ld-pill-tab:hover {
+  background: #EAF4ED !important;
+  color: #000000 !important;
+}
+
+.ld-pill-tab.is-active,
+.ld-pill-tab[aria-selected="true"] {
+  background: #10B981 !important;
+  color: #FFFFFF !important;
+  border-color: #10B981 !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35) !important;
+}
+
+.ld-pill-tab.is-active .ld-pill-badge,
+.ld-pill-tab.is-active span {
+  color: #FFFFFF !important;
+}
+
+.ld-pill-badge {
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  padding: 0.1rem 0.45rem !important;
+  border-radius: 999px !important;
+  background: rgba(0, 0, 0, 0.08) !important;
+  color: #000000 !important;
+}
+
+.ld-view-switcher,
+.ld-view-mode-group {
+  display: inline-flex !important;
+  align-items: center !important;
+  background: #F4FAF6 !important;
+  border: 1px solid rgba(16, 185, 129, 0.2) !important;
+  border-radius: 10px !important;
+  padding: 3px !important;
+  gap: 2px !important;
+}
+
+.ld-view-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0.35rem 0.85rem !important;
+  border-radius: 7px !important;
+  border: none !important;
+  background: transparent !important;
+  color: #000000 !important;
+  font-size: 0.8125rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 150ms ease !important;
+}
+
+.ld-view-btn:hover {
+  background: #EAF4ED !important;
+  color: #000000 !important;
+}
+
+.ld-view-btn.active,
+.ld-view-btn.is-active {
+  background: #FFFFFF !important;
+  color: #000000 !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* ---------- 21.4 Standardized Filter Bars Across All CRM Modules ---------- */
+.crm-filter-bar,
+.lg-filter-bar,
+.users-filter-bar,
+.audit-filters-bar {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  border-radius: 20px !important;
+  padding: 1.25rem 1.5rem !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+  margin-bottom: 24px !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+}
+
+.crm-filter-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  gap: 1rem !important;
+  margin-bottom: 1.15rem !important;
+  padding-bottom: 0.9rem !important;
+  border-bottom: 1px solid rgba(16, 185, 129, 0.12) !important;
+  flex-wrap: wrap !important;
+}
+
+.crm-filter-title-group {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+}
+
+.crm-filter-icon-badge {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 9px !important;
+  background: rgba(16, 185, 129, 0.12) !important;
+  color: #10B981 !important;
+  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+}
+
+.crm-filter-heading {
+  font-size: 0.875rem !important;
+  font-weight: 800 !important;
+  color: #000000 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.65rem !important;
+  letter-spacing: -0.01em !important;
+}
+
+.crm-filter-actions,
+.lg-filter-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.65rem !important;
+}
+
+.crm-filter-grid,
+.lg-filter-controls {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
+  gap: 1rem !important;
+  align-items: end !important;
+  width: 100% !important;
+}
+
+.crm-filter-control,
+.lg-filter-control {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.4rem !important;
+  min-width: 0 !important;
+}
+
+.crm-filter-label,
+.lg-filter-label {
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  color: #000000 !important;
+  line-height: 1 !important;
+}
+
+.crm-filter-select-wrap,
+.crm-filter-search-wrap,
+.lg-search {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+}
+
+.crm-filter-select,
+.lg-select,
+.crm-filter-search-input,
+.lg-search-input,
+.search-input-field,
+.filter-select-field,
+.user-search-input,
+.filter-select {
+  height: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  width: 100% !important;
+  background: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.28) !important;
+  border-radius: 10px !important;
+  padding: 0 2.2rem 0 0.85rem !important;
+  color: #000000 !important;
+  font-size: 0.8125rem !important;
+  font-weight: 600 !important;
+  box-sizing: border-box !important;
+  transition: all 150ms ease !important;
+  outline: none !important;
+}
+
+.crm-filter-select:focus,
+.lg-select:focus,
+.crm-filter-search-input:focus,
+.lg-search-input:focus,
+.search-input-field:focus,
+.filter-select-field:focus,
+.user-search-input:focus,
+.filter-select:focus {
+  border-color: #10B981 !important;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.16) !important;
+}
+
+.crm-filter-search-input,
+.lg-search-input,
+.search-input-field,
+.user-search-input {
+  padding-left: 2.3rem !important;
+  padding-right: 2.2rem !important;
+}
+
+.crm-filter-search-icon,
+.lg-search-icon,
+.search-box-icon,
+.search-icon-adornment {
+  position: absolute !important;
+  left: 0.8rem !important;
+  color: #000000 !important;
+  opacity: 0.65 !important;
+  pointer-events: none !important;
+}
+
+.crm-filter-search-clear,
+.lg-search-clear,
+.search-clear-btn {
+  position: absolute !important;
+  right: 0.65rem !important;
+  background: transparent !important;
+  border: none !important;
+  color: #000000 !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 2px !important;
+  border-radius: 4px !important;
+}
+
+.crm-filter-chevron {
+  position: absolute !important;
+  right: 0.75rem !important;
+  color: #000000 !important;
+  pointer-events: none !important;
+}
+
+/* ---------- 21.5 Standardized Kanban Columns & Deal/Lead Cards ---------- */
+.ld-board-columns {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(285px, 1fr)) !important;
+  gap: 16px !important;
+  overflow-x: auto !important;
+  padding-bottom: 0.75rem !important;
+  align-items: start !important;
+  width: 100% !important;
+}
+
+.ld-board-column,
+.ld-board-col {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  border-radius: 18px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 480px !important;
+  max-height: 780px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+  overflow: hidden !important;
+}
+
+.ld-board-col-header {
+  padding: 0.95rem 1.15rem !important;
+  background: #F4FAF6 !important;
+  border-bottom: 1px solid rgba(16, 185, 129, 0.16) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 0.5rem !important;
+}
+
+.ld-board-col-title-row,
+.ld-board-col-title {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  color: #000000 !important;
+  font-weight: 800 !important;
+  font-size: 0.88rem !important;
+}
+
+.ld-board-col-title strong,
+.ld-board-col-title-row strong {
+  color: #000000 !important;
+  font-weight: 800 !important;
+}
+
+.ld-board-col-count {
+  font-size: 0.75rem !important;
+  font-weight: 800 !important;
+  color: #000000 !important;
+  padding: 0.15rem 0.55rem !important;
+  border-radius: 999px !important;
+  background: #EAF4ED !important;
+  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+}
+
+.ld-board-col-value {
+  font-size: 0.82rem !important;
+  font-weight: 800 !important;
+  color: #000000 !important;
+}
+
+.ld-board-col-stats {
+  font-size: 0.78rem !important;
+  color: #000000 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+}
+
+.ld-board-col-stats strong {
+  color: #000000 !important;
+  font-weight: 800 !important;
+}
+
+.ld-board-col-body {
+  padding: 1rem !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+  overflow-y: auto !important;
+  flex: 1 !important;
+  background: #FAFDFB !important;
+}
+
+/* Kanban Cards (Deals, Leads) */
+.ld-lead-card,
+.ld-card {
+  padding: 1.1rem 1.25rem !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.75rem !important;
+  background: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03) !important;
+  transition: all 150ms ease !important;
+  box-sizing: border-box !important;
+}
+
+.ld-lead-card:hover,
+.ld-card:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.12) !important;
+  border-color: rgba(16, 185, 129, 0.4) !important;
+}
+
+.ld-card-title-link,
+.ld-card-titles strong {
+  font-size: 0.92rem !important;
+  font-weight: 800 !important;
+  color: #000000 !important;
+  text-decoration: none !important;
+}
+
+.ld-card-subtitle,
+.ld-card-meta-grid {
+  font-size: 0.78rem !important;
+  color: #000000 !important;
+  opacity: 0.8 !important;
+}
+
+.ld-card-value,
+.ld-context-value {
+  font-size: 0.92rem !important;
+  font-weight: 800 !important;
+  color: #000000 !important;
+}
+
+/* ---------- 21.6 Data Tables & Pagination Across All Modules ---------- */
+.lg-table-card,
+.ld-table-card,
+.users-table-card {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+  overflow: hidden !important;
+  margin-bottom: 24px !important;
+  width: 100% !important;
+}
+
+.lg-table,
+.users-table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  text-align: left !important;
+  font-size: 0.875rem !important;
+}
+
+.lg-table th,
+.users-table th {
+  padding: 0.95rem 1.25rem !important;
+  font-size: 0.72rem !important;
+  font-weight: 800 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  color: #000000 !important;
+  background: #F4FAF6 !important;
+  border-bottom: 1px solid rgba(16, 185, 129, 0.18) !important;
+}
+
+.lg-table td,
+.users-table td {
+  padding: 1rem 1.25rem !important;
+  color: #000000 !important;
+  border-bottom: 1px solid rgba(16, 185, 129, 0.08) !important;
+  vertical-align: middle !important;
+  font-weight: 500 !important;
+}
+
+.lg-table tr:hover td,
+.users-table tr:hover td {
+  background: #F8FCF9 !important;
+}
+
+.lg-row-link {
+  font-weight: 700 !important;
+  color: #000000 !important;
+  text-decoration: none !important;
+}
+
+.lg-row-link:hover {
+  color: #10B981 !important;
+}
+
+/* Pagination */
+.lg-pagination,
+.users-pagination {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 0.95rem 1.35rem !important;
+  background: #FFFFFF !important;
+  border-top: 1px solid rgba(16, 185, 129, 0.12) !important;
+  font-size: 0.8125rem !important;
+  color: #000000 !important;
+  flex-wrap: wrap !important;
+  gap: 0.75rem !important;
+}
+
+.lg-pagination strong,
+.users-pagination strong {
+  color: #000000 !important;
+  font-weight: 800 !important;
+}
+
+.lg-page-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0.35rem 0.75rem !important;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  color: #000000 !important;
+  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  border-radius: 8px !important;
+  background: #FFFFFF !important;
+  cursor: pointer !important;
+  transition: all 150ms ease !important;
+}
+
+.lg-page-btn:hover:not(:disabled) {
+  background: #EAF4ED !important;
+  color: #000000 !important;
+}
+
+.lg-page-num {
+  width: 30px !important;
+  height: 30px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 8px !important;
+  font-size: 0.78rem !important;
+  font-weight: 700 !important;
+  color: #000000 !important;
+  border: 1px solid rgba(16, 185, 129, 0.18) !important;
+  background: #FFFFFF !important;
+  cursor: pointer !important;
+}
+
+.lg-page-num.is-active,
+.lg-page-num[aria-current="page"] {
+  background: #10B981 !important;
+  color: #FFFFFF !important;
+  border-color: #10B981 !important;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.3) !important;
+}
+
+/* ---------- 21.7 Section Cards & Generic Panels ---------- */
+.lg-card {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+}
+
+.lg-section-card {
+  padding: 1.5rem 1.75rem !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1.25rem !important;
+  margin-bottom: 24px !important;
+}
+
+.lg-section-head {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: flex-start !important;
+  gap: 1rem !important;
+  border-bottom: 1px solid rgba(16, 185, 129, 0.12) !important;
+  padding-bottom: 1rem !important;
+}
+
+.lg-section-title {
+  font-size: 1.25rem !important;
+  font-weight: 800 !important;
+  color: #000000 !important;
+  margin: 0 !important;
+}
+
+.lg-section-subtitle {
+  font-size: 0.85rem !important;
+  color: #000000 !important;
+  opacity: 0.78 !important;
+  margin-top: 0.25rem !important;
+}
+
+/* ---------- 21.8 Universal Action Buttons Alignment ---------- */
+.auth-btn.btn-primary,
+.btn-primary,
+.lg-btn-primary {
+  background: #10B981 !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  border-radius: 10px !important;
+  padding: 0.55rem 1.25rem !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.45rem !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  font-size: 0.85rem !important;
+  transition: all 150ms ease !important;
+}
+
+.auth-btn.btn-primary:hover,
+.btn-primary:hover,
+.lg-btn-primary:hover {
+  background: #059669 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4) !important;
+}
+
+.auth-btn.btn-secondary,
+.btn-secondary,
+.lg-btn-secondary {
+  background: #FFFFFF !important;
+  color: #000000 !important;
+  font-weight: 600 !important;
+  border-radius: 10px !important;
+  padding: 0.55rem 1.25rem !important;
+  border: 1px solid rgba(16, 185, 129, 0.28) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.45rem !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  font-size: 0.85rem !important;
+  transition: all 150ms ease !important;
+}
+
+.auth-btn.btn-secondary:hover,
+.btn-secondary:hover,
+.lg-btn-secondary:hover {
+  background: #EAF4ED !important;
+  border-color: #10B981 !important;
+  color: #000000 !important;
+}
+
+.auth-btn.btn-size-small,
+.btn-size-small {
+  padding: 0.35rem 0.85rem !important;
+  font-size: 0.8rem !important;
+}
+
+/* Modals & Slide-Over Quick Drawers */
+.ld-drawer-panel {
+  background: #FFFFFF !important;
+  border-left: 1px solid rgba(16, 185, 129, 0.25) !important;
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1) !important;
+  color: #000000 !important;
+}
+
+.ld-drawer-header {
+  background: #F4FAF6 !important;
+  border-bottom: 1px solid rgba(16, 185, 129, 0.16) !important;
+}
+
+.ld-drawer-title {
+  color: #000000 !important;
+  font-weight: 800 !important;
+}
+
+.ld-lead-context-strip {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  border-left: 4px solid #10B981 !important;
+  border-radius: 14px !important;
+  padding: 0.95rem 1.35rem !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+}
+
+.ld-context-tab {
+  color: #000000 !important;
+  font-weight: 600 !important;
+  background: #F4FAF6 !important;
+  border: 1px solid rgba(16, 185, 129, 0.18) !important;
+}
+
+.ld-context-tab.is-active {
+  background: #10B981 !important;
+  color: #FFFFFF !important;
+}
+
+
+/* ==========================================================================
+   22. LEAD STATUS PROGRESSION TABLE & PROGRESSION LISTS SYSTEM
+   Provides generous row spacing, aligned pill badges, and clean indicators
+   so percentage chips and data never touch each other.
+   ========================================================================== */
+
+.crm-progression-table {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.crm-progression-row {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 10px 16px !important;
+  background: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.18) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+  transition: all 150ms ease !important;
+  box-sizing: border-box !important;
+}
+
+.crm-progression-row:hover {
+  background: #F8FCF9 !important;
+  border-color: rgba(16, 185, 129, 0.38) !important;
+  transform: translateX(2px) !important;
+}
+
+.crm-progression-stage {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+.crm-progression-dot {
+  width: 9px !important;
+  height: 9px !important;
+  border-radius: 50% !important;
+  flex-shrink: 0 !important;
+  background: #64748B !important;
+}
+
+.crm-progression-dot.stage-new {
+  background: #64748B !important;
+}
+
+.crm-progression-dot.stage-contacted {
+  background: #3B82F6 !important;
+}
+
+.crm-progression-dot.stage-qualified {
+  background: #10B981 !important;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.4) !important;
+}
+
+.crm-progression-dot.stage-converted {
+  background: #059669 !important;
+  box-shadow: 0 0 6px rgba(5, 150, 105, 0.5) !important;
+}
+
+.crm-progression-dot.stage-unqualified {
+  background: #EF4444 !important;
+}
+
+.crm-progression-name {
+  font-size: 0.85rem !important;
+  font-weight: 700 !important;
+  color: #000000 !important;
+}
+
+.crm-progression-metrics {
+  display: flex !important;
+  align-items: center !important;
+  gap: 16px !important;
+}
+
+.crm-progression-count {
+  font-size: 0.82rem !important;
+  color: #000000 !important;
+  font-weight: 500 !important;
+}
+
+.crm-progression-count strong {
+  font-weight: 800 !important;
+  color: #000000 !important;
+}
+
+/* Ensure Badge inside progression rows has uniform width, generous padding, and clean spacing */
+.crm-progression-row .lg-badge {
+  min-width: 68px !important;
+  text-align: center !important;
+  justify-content: center !important;
+  padding: 4px 10px !important;
+  font-size: 0.75rem !important;
+  font-weight: 800 !important;
+  border-radius: 9999px !important;
+  line-height: 1.2 !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* Fallback utilities for legacy space-y classes across light theme */
+.space-y-2 > * + * { margin-top: 0.5rem !important; }
+.space-y-3 > * + * { margin-top: 0.75rem !important; }
+.space-y-4 > * + * { margin-top: 1rem !important; }
+.space-y-6 > * + * { margin-top: 1.5rem !important; }
+
+
+/* ==========================================================================
+   23. COMPLETE VISIBILITY FOR REPRESENTATIVE / PERFORMER / TEAM NAMES
+   Ensures text names in KPI cards & dashboards never get truncated with ellipsis
+   ========================================================================== */
+.crm-kpi-value.crm-kpi-value-performer,
+.crm-kpi-value.crm-kpi-value-text,
+.crm-kpi-card .crm-kpi-value-performer,
+.crm-kpi-card .crm-kpi-value-text {
+  font-size: 1.05rem !important;
+  font-weight: 800 !important;
+  color: #000000 !important;
+  line-height: 1.2 !important;
+  white-space: normal !important;
+  word-break: normal !important;
+  overflow-wrap: break-word !important;
+  text-overflow: clip !important;
+  overflow: visible !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  max-width: 100% !important;
 }

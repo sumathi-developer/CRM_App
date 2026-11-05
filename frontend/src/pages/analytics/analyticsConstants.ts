@@ -115,10 +115,10 @@ export const PERFORMANCE_SORT_OPTIONS: Array<{
   value: string;
   label: string;
 }> = [
-  { value: 'REVENUE', label: 'Total Revenue Won' },
-  { value: 'DEALS_WON', label: 'Deals Won Count' },
-  { value: 'WIN_RATE', label: 'Win Rate (%)' },
-  { value: 'ACTIVITIES', label: 'Activities Completed' },
-  { value: 'DEALS_CREATED', label: 'Deals Created' },
+  { value: 'revenue', label: 'Total Revenue Won' },
+  { value: 'dealsWon', label: 'Deals Won Count' },
+  { value: 'winRate', label: 'Win Rate (%)' },
+  { value: 'activities', label: 'Activities Completed' },
+  { value: 'dealsCreated', label: 'Deals Created' },
 ];
 

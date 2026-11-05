@@ -322,7 +322,7 @@ class DashboardApiService {
   /**
    * GET /analytics/performance
    */
-  async getRepPerformance(
+    async getRepPerformance(
     filters?: DashboardQueryFilters & {
       sortBy?: string;
       sortOrder?: 'asc' | 'desc';
@@ -330,8 +330,22 @@ class DashboardApiService {
       limit?: number;
     },
   ): Promise<RepPerformanceResponse> {
+    const sortMap: Record<string, string> = {
+      REVENUE: 'revenue',
+      DEALS_WON: 'dealsWon',
+      WIN_RATE: 'winRate',
+      ACTIVITIES: 'activities',
+      DEALS_CREATED: 'dealsCreated',
+    };
+    const normalizedFilters = filters
+      ? {
+          ...filters,
+          sortBy: filters.sortBy ? (sortMap[filters.sortBy] || filters.sortBy) : 'revenue',
+        }
+      : { sortBy: 'revenue' };
+
     const res = await api.get<any>(
-      `/analytics/performance${buildQuery(filters as Record<string, unknown>)}`,
+      `/analytics/performance${buildQuery(normalizedFilters as Record<string, unknown>)}`,
     );
     const payload = res?.data && !Array.isArray(res.data) ? res.data : res;
     const items = extractList<any>(res);

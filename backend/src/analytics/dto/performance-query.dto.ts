@@ -1,6 +1,6 @@
 import { IsOptional, IsString, IsEnum, IsInt, Min, Max } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
+import { Type, Transform } from 'class-transformer';
 import { AnalyticsTimeframeEnum } from './analytics-query.dto';
 
 export enum PerformanceSortByEnum {
@@ -44,6 +44,26 @@ export class PerformanceQueryDto {
     description: 'Field to rank/sort representatives by',
   })
   @IsOptional()
+  @Transform(({ value }) => {
+    if (!value) return PerformanceSortByEnum.REVENUE;
+    const s = String(value).trim();
+    const map: Record<string, PerformanceSortByEnum> = {
+      revenue: PerformanceSortByEnum.REVENUE,
+      REVENUE: PerformanceSortByEnum.REVENUE,
+      dealswon: PerformanceSortByEnum.DEALS_WON,
+      dealsWon: PerformanceSortByEnum.DEALS_WON,
+      DEALS_WON: PerformanceSortByEnum.DEALS_WON,
+      winrate: PerformanceSortByEnum.WIN_RATE,
+      winRate: PerformanceSortByEnum.WIN_RATE,
+      WIN_RATE: PerformanceSortByEnum.WIN_RATE,
+      activities: PerformanceSortByEnum.ACTIVITIES,
+      ACTIVITIES: PerformanceSortByEnum.ACTIVITIES,
+      dealscreated: PerformanceSortByEnum.DEALS_CREATED,
+      dealsCreated: PerformanceSortByEnum.DEALS_CREATED,
+      DEALS_CREATED: PerformanceSortByEnum.DEALS_CREATED,
+    };
+    return map[s] || map[s.toLowerCase()] || value;
+  })
   @IsEnum(PerformanceSortByEnum)
   sortBy?: PerformanceSortByEnum = PerformanceSortByEnum.REVENUE;
 

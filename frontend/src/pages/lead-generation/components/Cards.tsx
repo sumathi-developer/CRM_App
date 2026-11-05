@@ -9,15 +9,33 @@ interface StatCardProps {
   tone?: Tone;
 }
 
-/** Analytics KPI card. */
-export const StatCard: React.FC<StatCardProps> = ({ label, value, hint, icon, tone = 'blue' }) => (
-  <div className={`lg-card lg-stat-card tone-${tone}`}>
-    {icon && <div className="lg-stat-icon">{icon}</div>}
-    <div className="lg-stat-body">
-      <span className="lg-stat-label">{label}</span>
-      <span className="lg-stat-value">{value}</span>
-      {hint && <span className="lg-stat-hint">{hint}</span>}
+/** Standardized CRM KPI card matching Dashboard and Analytics. */
+export const StatCard: React.FC<StatCardProps> = ({
+  label,
+  value,
+  hint,
+  icon,
+  tone = 'blue',
+}) => (
+  <div className={`crm-kpi-card lg-card lg-stat-card tone-${tone}`}>
+    <div className="crm-kpi-top-row lg-stat-top">
+      <span className="crm-kpi-label lg-stat-label" title={label}>
+        {label}
+      </span>
+      {icon && (
+        <div className={`crm-kpi-icon-wrap lg-stat-icon tone-${tone}`}>
+          {icon}
+        </div>
+      )}
     </div>
+    <div className="crm-kpi-mid-row lg-stat-body">
+      <span className="crm-kpi-value lg-stat-value">{value}</span>
+    </div>
+    {hint && (
+      <div className="crm-kpi-footer lg-stat-hint-row">
+        <span className="crm-kpi-prev lg-stat-hint">{hint}</span>
+      </div>
+    )}
   </div>
 );
 
@@ -53,8 +71,14 @@ interface SectionCardProps {
 }
 
 /** Titled content card used on overview, analytics and details screens. */
-export const SectionCard: React.FC<SectionCardProps> = ({ title, subtitle, actions, children, className = '' }) => (
-  <section className={`lg-card lg-section-card ${className}`}>
+export const SectionCard: React.FC<SectionCardProps> = ({
+  title,
+  subtitle,
+  actions,
+  children,
+  className = '',
+}) => (
+  <section className={`crm-dashboard-tier lg-card lg-section-card ${className}`}>
     <div className="lg-section-head">
       <div>
         <h2 className="lg-section-title">{title}</h2>
