@@ -1379,7 +1379,7 @@
 .agent-request-demo-btn {
   padding: 8px 18px;
   border-radius: 10px;
-  background: var(--agent-primary, #062E03);
+  background: var(--agent-secondary, #10B981);
   color: #FFFFFF;
   font-size: 0.8125rem;
   font-weight: 700;
@@ -1390,12 +1390,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25);
 }
 
 .agent-request-demo-btn:hover {
-  background: var(--agent-primary-hover, #0F530A);
+  background: #059669;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(6, 46, 3, 0.2);
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
 }
 
 /* 2. Central Hero Stage */
@@ -1618,13 +1619,13 @@
   text-decoration: underline;
 }
 
-/* 5. Primary Sign In Button */
+/* 5. Primary Sign In Button (Light Tone Secondary Emerald) */
 .agent-signin-btn {
   width: 100%;
   height: 44px;
   border: none;
   border-radius: 11px;
-  background: var(--agent-primary, #062E03);
+  background: var(--agent-secondary, #10B981);
   color: #FFFFFF;
   font-size: 0.9375rem;
   font-weight: 700;
@@ -1634,24 +1635,25 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  box-shadow: 0 4px 12px rgba(6, 46, 3, 0.2);
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
   margin-top: 2px;
 }
 
 .agent-signin-btn:hover:not(:disabled) {
-  background: var(--agent-primary-hover, #0F530A);
+  background: #059669;
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(6, 46, 3, 0.28);
+  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.4);
 }
 
 .agent-signin-btn:active:not(:disabled) {
   transform: translateY(0);
-  background: #042002;
+  background: #047857;
 }
 
 .agent-signin-btn:disabled {
-  opacity: 0.7;
+  opacity: 0.65;
   cursor: not-allowed;
+  box-shadow: none;
 }
 
 .agent-btn-spinner {
