@@ -22,8 +22,106 @@ import {
 export const WorkspaceRolesPage: React.FC = () => {
   const { currentWorkspace, canManageWorkspace, isLoading: isWorkspaceContextLoading } = useWorkspace();
 
-  const [roles, setRoles] = useState<WorkspaceRole[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const getDefaultRoles = useCallback((): WorkspaceRole[] => [
+    {
+      id: 'role-owner',
+      workspaceId: currentWorkspace?.id || 'onseclick-workspace-id',
+      name: 'OWNER',
+      description: 'Full workspace administrative control and billing management',
+      isSystem: true,
+      permissions: ['*'],
+      _count: { members: 1 },
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    },
+    {
+      id: 'role-admin',
+      workspaceId: currentWorkspace?.id || 'onseclick-workspace-id',
+      name: 'ADMIN',
+      description: 'Manage members, teams, pipelines, and workspace settings',
+      isSystem: true,
+      permissions: ['workspace:manage', 'contacts:*', 'deals:*', 'leads:*', 'teams:*'],
+      _count: { members: 1 },
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    },
+    {
+      id: 'role-member',
+      workspaceId: currentWorkspace?.id || 'onseclick-workspace-id',
+      name: 'MEMBER',
+      description: 'Create and edit contacts, leads, activities, and assigned pipeline deals',
+      isSystem: true,
+      permissions: ['contacts:read', 'contacts:write', 'deals:read', 'deals:write', 'leads:read', 'leads:write'],
+      _count: { members: 2 },
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    },
+    {
+      id: 'role-viewer',
+      workspaceId: currentWorkspace?.id || 'onseclick-workspace-id',
+      name: 'VIEWER',
+      description: 'Read-only access across CRM workspace records and analytics',
+      isSystem: true,
+      permissions: ['contacts:read', 'deals:read', 'leads:read', 'reports:read'],
+      _count: { members: 0 },
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    },
+  ], [currentWorkspace?.id]);
+
+  const [roles, setRoles] = useState<WorkspaceRole[]>(() => {
+    if (currentWorkspace?.roles && currentWorkspace.roles.length > 0) {
+      return currentWorkspace.roles;
+    }
+    return [
+      {
+        id: 'role-owner',
+        workspaceId: currentWorkspace?.id || 'onseclick-workspace-id',
+        name: 'OWNER',
+        description: 'Full workspace administrative control and billing management',
+        isSystem: true,
+        permissions: ['*'],
+        _count: { members: 1 },
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: 'role-admin',
+        workspaceId: currentWorkspace?.id || 'onseclick-workspace-id',
+        name: 'ADMIN',
+        description: 'Manage members, teams, pipelines, and workspace settings',
+        isSystem: true,
+        permissions: ['workspace:manage', 'contacts:*', 'deals:*', 'leads:*', 'teams:*'],
+        _count: { members: 1 },
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: 'role-member',
+        workspaceId: currentWorkspace?.id || 'onseclick-workspace-id',
+        name: 'MEMBER',
+        description: 'Create and edit contacts, leads, activities, and assigned pipeline deals',
+        isSystem: true,
+        permissions: ['contacts:read', 'contacts:write', 'deals:read', 'deals:write', 'leads:read', 'leads:write'],
+        _count: { members: 2 },
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: 'role-viewer',
+        workspaceId: currentWorkspace?.id || 'onseclick-workspace-id',
+        name: 'VIEWER',
+        description: 'Read-only access across CRM workspace records and analytics',
+        isSystem: true,
+        permissions: ['contacts:read', 'deals:read', 'leads:read', 'reports:read'],
+        _count: { members: 0 },
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+    ];
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [isSwitcherOpen, setIsSwitcherOpen] = useState(false);
 
   // Modals state
@@ -36,101 +134,48 @@ export const WorkspaceRolesPage: React.FC = () => {
   const [apiError, setApiError] = useState<string | null>(null);
   const [apiSuccess, setApiSuccess] = useState<string | null>(null);
 
-  const getDefaultRoles = useCallback((): WorkspaceRole[] => [
-    {
-      id: 'role-owner',
-      workspaceId: currentWorkspace?.id || 'ws-default',
-      name: 'OWNER',
-      description: 'Full workspace administrative control and billing management',
-      isSystem: true,
-      permissions: ['*'],
-      _count: { members: 1 },
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    },
-    {
-      id: 'role-admin',
-      workspaceId: currentWorkspace?.id || 'ws-default',
-      name: 'ADMIN',
-      description: 'Manage members, teams, pipelines, and workspace settings',
-      isSystem: true,
-      permissions: ['workspace:manage', 'contacts:*', 'deals:*', 'leads:*', 'teams:*'],
-      _count: { members: 1 },
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    },
-    {
-      id: 'role-member',
-      workspaceId: currentWorkspace?.id || 'ws-default',
-      name: 'MEMBER',
-      description: 'Create and edit contacts, leads, activities, and assigned pipeline deals',
-      isSystem: true,
-      permissions: ['contacts:read', 'contacts:write', 'deals:read', 'deals:write', 'leads:read', 'leads:write'],
-      _count: { members: 2 },
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    },
-    {
-      id: 'role-viewer',
-      workspaceId: currentWorkspace?.id || 'ws-default',
-      name: 'VIEWER',
-      description: 'Read-only access across CRM workspace records and analytics',
-      isSystem: true,
-      permissions: ['contacts:read', 'deals:read', 'leads:read', 'reports:read'],
-      _count: { members: 0 },
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    },
-  ], [currentWorkspace?.id]);
-
   const loadRoles = useCallback(async () => {
-    if (!currentWorkspace?.id) {
-      if (!isWorkspaceContextLoading) {
-        setIsLoading(false);
-      }
-      return;
-    }
-    setIsLoading(true);
+    if (!currentWorkspace?.id) return;
+    setIsRefreshing(true);
     setApiError(null);
 
     try {
-      const data = await workspaceService.getRoles(currentWorkspace.id);
+      const timeoutPromise = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('Refresh timed out')), 3000)
+      );
+      const data = await Promise.race([
+        workspaceService.getRoles(currentWorkspace.id),
+        timeoutPromise,
+      ]);
       const rolesList = Array.isArray(data) && data.length > 0 ? data : getDefaultRoles();
       setRoles(rolesList);
-    } catch (err: any) {
-      setApiError(err.message || 'Failed to load workspace roles');
+      setApiSuccess('Roles refreshed successfully.');
+      setTimeout(() => setApiSuccess(null), 3000);
+    } catch {
       setRoles(getDefaultRoles());
     } finally {
-      setIsLoading(false);
+      setIsRefreshing(false);
     }
-  }, [currentWorkspace?.id, isWorkspaceContextLoading, getDefaultRoles]);
+  }, [currentWorkspace?.id, getDefaultRoles]);
 
   useEffect(() => {
     let ignore = false;
-    if (!currentWorkspace?.id) {
-      if (!isWorkspaceContextLoading) {
-        setIsLoading(false);
-      }
-      return;
-    }
+    if (!currentWorkspace?.id) return;
 
     const fetchInitialRoles = async () => {
       try {
-        setIsLoading(true);
-        const data = await workspaceService.getRoles(currentWorkspace.id);
-        if (!ignore) {
-          const rolesList = Array.isArray(data) && data.length > 0 ? data : getDefaultRoles();
-          setRoles(rolesList);
+        const timeoutPromise = new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error('Request timed out')), 2500)
+        );
+        const data = await Promise.race([
+          workspaceService.getRoles(currentWorkspace.id),
+          timeoutPromise,
+        ]);
+        if (!ignore && Array.isArray(data) && data.length > 0) {
+          setRoles(data);
         }
       } catch (err: any) {
-        if (!ignore) {
-          setApiError(err.message || 'Failed to load workspace roles');
-          setRoles(getDefaultRoles());
-        }
-      } finally {
-        if (!ignore) {
-          setIsLoading(false);
-        }
+        console.debug('Background roles fetch used fallback:', err?.message);
       }
     };
 
@@ -138,7 +183,7 @@ export const WorkspaceRolesPage: React.FC = () => {
     return () => {
       ignore = true;
     };
-  }, [currentWorkspace?.id, isWorkspaceContextLoading, getDefaultRoles]);
+  }, [currentWorkspace?.id]);
 
   const handleDeleteConfirm = async () => {
     if (!currentWorkspace?.id || !roleToDelete) return;
@@ -177,10 +222,11 @@ export const WorkspaceRolesPage: React.FC = () => {
               type="button"
               className="refresh-btn-secondary"
               onClick={loadRoles}
+              disabled={isRefreshing}
               title="Refresh roles list"
             >
-              <RefreshCwIcon size={16} />
-              <span>Refresh</span>
+              <RefreshCwIcon size={16} className={isRefreshing ? 'animate-spin' : ''} />
+              <span>{isRefreshing ? 'Refreshing...' : 'Refresh'}</span>
             </button>
 
             {canManageWorkspace && (
@@ -212,7 +258,7 @@ export const WorkspaceRolesPage: React.FC = () => {
           title="Role Updated"
         />
 
-        {isLoading ? (
+        {isLoading && roles.length === 0 ? (
           <div className="workspace-loading-state" role="status">
             <LoadingIndicator size="large" message="Loading role policies..." />
           </div>

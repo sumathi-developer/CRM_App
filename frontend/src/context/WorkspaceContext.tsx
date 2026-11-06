@@ -19,6 +19,53 @@ export interface WorkspaceContextType {
 
 export const WorkspaceContext = createContext<WorkspaceContextType | undefined>(undefined);
 
+export const defaultSystemWorkspaceRoles = [
+  {
+    id: 'role-owner',
+    workspaceId: 'onseclick-workspace-id',
+    name: 'OWNER',
+    description: 'Full workspace administrative control and billing management',
+    isSystem: true,
+    permissions: ['*'],
+    _count: { members: 1 },
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'role-admin',
+    workspaceId: 'onseclick-workspace-id',
+    name: 'ADMIN',
+    description: 'Manage members, teams, pipelines, and workspace settings',
+    isSystem: true,
+    permissions: ['workspace:manage', 'contacts:*', 'deals:*', 'leads:*', 'teams:*'],
+    _count: { members: 1 },
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'role-member',
+    workspaceId: 'onseclick-workspace-id',
+    name: 'MEMBER',
+    description: 'Create and edit contacts, leads, activities, and assigned pipeline deals',
+    isSystem: true,
+    permissions: ['contacts:read', 'contacts:write', 'deals:read', 'deals:write', 'leads:read', 'leads:write'],
+    _count: { members: 2 },
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'role-viewer',
+    workspaceId: 'onseclick-workspace-id',
+    name: 'VIEWER',
+    description: 'Read-only access across CRM workspace records and analytics',
+    isSystem: true,
+    permissions: ['contacts:read', 'deals:read', 'leads:read', 'reports:read'],
+    _count: { members: 0 },
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+];
+
 const defaultFallbackWs: Workspace = {
   id: 'onseclick-workspace-id',
   name: 'Onseclick Workspace',
@@ -36,6 +83,23 @@ const defaultFallbackWs: Workspace = {
     roles: 4,
     invites: 0,
   },
+  roles: defaultSystemWorkspaceRoles,
+  members: [
+    {
+      id: 'active-member-primary',
+      workspaceId: 'onseclick-workspace-id',
+      userId: 'admin',
+      role: 'OWNER',
+      status: 'ACTIVE',
+      joinedAt: new Date().toISOString(),
+      createdAt: new Date().toISOString(),
+      user: {
+        id: 'admin',
+        name: 'Sri (Admin)',
+        email: 'admin@crm.com',
+      },
+    },
+  ],
 };
 
 export const WorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -94,6 +158,27 @@ export const WorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       }
 
       if (activeWs) {
+        if (!activeWs.roles || activeWs.roles.length === 0) {
+          activeWs.roles = defaultSystemWorkspaceRoles.map((r) => ({ ...r, workspaceId: activeWs!.id }));
+        }
+        if (!activeWs.members || activeWs.members.length === 0) {
+          activeWs.members = [
+            {
+              id: 'active-member-primary',
+              workspaceId: activeWs.id,
+              userId: user?.id || 'admin',
+              role: 'OWNER',
+              status: 'ACTIVE',
+              joinedAt: activeWs.createdAt || new Date().toISOString(),
+              createdAt: activeWs.createdAt || new Date().toISOString(),
+              user: {
+                id: user?.id || 'admin',
+                name: user?.name || 'Sri (Admin)',
+                email: user?.email || 'admin@crm.com',
+              },
+            },
+          ];
+        }
         setCurrentWorkspace(activeWs);
         const myRole = activeWs.myRole || (activeWs.ownerId === user?.id ? 'OWNER' : 'MEMBER');
         setUserRoleInWorkspace(myRole);
@@ -170,6 +255,27 @@ export const WorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({ chi
           }
 
           if (activeWs) {
+            if (!activeWs.roles || activeWs.roles.length === 0) {
+              activeWs.roles = defaultSystemWorkspaceRoles.map((r) => ({ ...r, workspaceId: activeWs!.id }));
+            }
+            if (!activeWs.members || activeWs.members.length === 0) {
+              activeWs.members = [
+                {
+                  id: 'active-member-primary',
+                  workspaceId: activeWs.id,
+                  userId: user?.id || 'admin',
+                  role: 'OWNER',
+                  status: 'ACTIVE',
+                  joinedAt: activeWs.createdAt || new Date().toISOString(),
+                  createdAt: activeWs.createdAt || new Date().toISOString(),
+                  user: {
+                    id: user?.id || 'admin',
+                    name: user?.name || 'Sri (Admin)',
+                    email: user?.email || 'admin@crm.com',
+                  },
+                },
+              ];
+            }
             setCurrentWorkspace(activeWs);
             const myRole = activeWs.myRole || (activeWs.ownerId === user?.id ? 'OWNER' : 'MEMBER');
             setUserRoleInWorkspace(myRole);

@@ -84,7 +84,13 @@ export const WorkspaceSettingsPage: React.FC = () => {
     const fetchInitialSettings = async () => {
       try {
         setIsLoading(true);
-        const data = await workspaceService.getSettings(currentWorkspace.id);
+        const timeoutPromise = new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error('Request timed out')), 2500)
+        );
+        const data = await Promise.race([
+          workspaceService.getSettings(currentWorkspace.id),
+          timeoutPromise,
+        ]);
         if (!ignore) {
           setName(currentWorkspace.name || 'Onseclick Workspace');
           setSlug(currentWorkspace.slug || 'onseclick-workspace');
