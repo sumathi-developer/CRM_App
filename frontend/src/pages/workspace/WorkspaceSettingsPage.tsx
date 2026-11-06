@@ -12,10 +12,6 @@ import { LoadingIndicator } from '../../components/auth/LoadingIndicator';
 import { ErrorMessage } from '../../components/auth/ErrorMessage';
 import { SuccessMessage } from '../../components/auth/SuccessMessage';
 import {
-  BuildingIcon,
-  PaletteIcon,
-  SlidersIcon,
-  TrashIcon,
   CheckCircleIcon,
   UploadIcon,
 } from '../../components/common/Icons';
@@ -33,7 +29,6 @@ export const WorkspaceSettingsPage: React.FC = () => {
   const navigate = useNavigate();
   const { currentWorkspace, canManageWorkspace, refreshCurrentWorkspace, refreshWorkspaces, isLoading: isWorkspaceContextLoading } = useWorkspace();
 
-  const [activeSection, setActiveSection] = useState<'general' | 'branding' | 'preferences' | 'danger'>('general');
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isDeletingWs, setIsDeletingWs] = useState(false);
@@ -60,9 +55,6 @@ export const WorkspaceSettingsPage: React.FC = () => {
   const [isAvatarPopoverOpen, setIsAvatarPopoverOpen] = useState(false);
   const avatarPickerRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  // Branding Fields
-  const [companyPortalUrl, setCompanyPortalUrl] = useState(settings?.branding?.companyPortalUrl || '');
 
   // Preferences Fields
   const [emailNotifications, setEmailNotifications] = useState(settings?.preferences?.emailNotifications ?? true);
@@ -196,10 +188,6 @@ export const WorkspaceSettingsPage: React.FC = () => {
           setName(currentWorkspace.name || 'Onseclick Workspace');
           setSlug(currentWorkspace.slug || 'onseclick-workspace');
 
-          if (data.branding) {
-            setCompanyPortalUrl(data.branding.companyPortalUrl || '');
-          }
-
           if (data.preferences) {
             setEmailNotifications(data.preferences.emailNotifications ?? true);
             setAutoAssignLeads(data.preferences.autoAssignLeads ?? false);
@@ -242,27 +230,6 @@ export const WorkspaceSettingsPage: React.FC = () => {
       setTimeout(() => setApiSuccess(null), 4000);
     } catch (err: any) {
       setApiError(err.message || 'Failed to save general settings');
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
-  // Save Branding
-  const handleSaveBranding = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!currentWorkspace?.id) return;
-    setIsSaving(true);
-    setApiError(null);
-
-    try {
-      await workspaceService.updateBranding(currentWorkspace.id, {
-        companyPortalUrl,
-      });
-
-      setApiSuccess('Branding settings updated!');
-      setTimeout(() => setApiSuccess(null), 4000);
-    } catch (err: any) {
-      setApiError(err.message || 'Failed to save branding');
     } finally {
       setIsSaving(false);
     }
@@ -341,50 +308,10 @@ export const WorkspaceSettingsPage: React.FC = () => {
             <LoadingIndicator size="large" message="Loading workspace settings..." />
           </div>
         ) : (
-          <div className="settings-tabbed-layout">
-            {/* Left Nav Menu */}
-            <aside className="settings-sidebar-nav">
-              <button
-                type="button"
-                className={`settings-nav-btn ${activeSection === 'general' ? 'is-active' : ''}`}
-                onClick={() => setActiveSection('general')}
-              >
-                <BuildingIcon size={18} />
-                <span>General Information</span>
-              </button>
-
-              <button
-                type="button"
-                className={`settings-nav-btn ${activeSection === 'branding' ? 'is-active' : ''}`}
-                onClick={() => setActiveSection('branding')}
-              >
-                <PaletteIcon size={18} />
-                <span>Branding & Theme</span>
-              </button>
-
-              <button
-                type="button"
-                className={`settings-nav-btn ${activeSection === 'preferences' ? 'is-active' : ''}`}
-                onClick={() => setActiveSection('preferences')}
-              >
-                <SlidersIcon size={18} />
-                <span>Preferences & Automation</span>
-              </button>
-
-              <button
-                type="button"
-                className={`settings-nav-btn danger-tab ${activeSection === 'danger' ? 'is-active' : ''}`}
-                onClick={() => setActiveSection('danger')}
-              >
-                <TrashIcon size={18} />
-                <span>Danger Zone</span>
-              </button>
-            </aside>
-
-            {/* Right Form Card */}
-            <div className="settings-content-card">
+          <div className="settings-vertical-layout">
+            <div className="settings-content-card settings-flow-card">
               {/* 1. GENERAL SETTINGS */}
-              {activeSection === 'general' && (
+              <section className="settings-section-block">
                 <form onSubmit={handleSaveGeneral} className="general-settings-form" id="form-general-settings">
                   <h3 className="general-section-heading">General</h3>
 
@@ -474,7 +401,7 @@ export const WorkspaceSettingsPage: React.FC = () => {
                   </div>
 
                   {canManageWorkspace && (
-                    <div className="form-action-row" style={{ marginTop: '24px' }}>
+                    <div className="form-action-row" style={{ marginTop: '20px' }}>
                       <PrimaryButton
                         type="submit"
                         isLoading={isSaving}
@@ -488,104 +415,61 @@ export const WorkspaceSettingsPage: React.FC = () => {
                     </div>
                   )}
                 </form>
-              )}
+              </section>
 
-              {/* 2. BRANDING SETTINGS */}
-              {activeSection === 'branding' && (
-                <form onSubmit={handleSaveBranding} className="portal-form" id="form-branding-settings">
-                  <div className="card-section-header">
-                    <div className="section-icon-badge">
-                      <PaletteIcon size={20} />
-                    </div>
-                    <div>
-                      <h3 className="section-title">Branding & White-Label Theme</h3>
-                      <p className="section-desc">Customize logos, favicons, and corporate palette colors</p>
-                    </div>
-                  </div>
+              <div className="settings-section-separator" />
 
-                  <FormField
-                    id="branding-portal-url"
-                    name="companyPortalUrl"
-                    label="Custom Enterprise Portal URL"
-                    placeholder="https://crm.mycompany.com"
-                    value={companyPortalUrl}
-                    onChange={(e) => setCompanyPortalUrl(e.target.value)}
-                    disabled={!canManageWorkspace || isSaving}
-                  />
+              {/* 2. PREFERENCES & AUTOMATION */}
+              <section className="settings-section-block">
+                <form onSubmit={handleSavePreferences} className="general-settings-form" id="form-preferences-settings">
+                  <h3 className="general-section-heading">Preferences & Automation</h3>
 
-                  {canManageWorkspace && (
-                    <div className="form-action-row">
-                      <PrimaryButton
-                        type="submit"
-                        isLoading={isSaving}
-                        loadingText="Updating Branding..."
-                        icon={<CheckCircleIcon size={16} />}
-                        fullWidth={false}
-                        id="btn-save-branding-settings"
-                      >
-                        Save Branding Configuration
-                      </PrimaryButton>
-                    </div>
-                  )}
-                </form>
-              )}
-
-              {/* 3. PREFERENCES SETTINGS */}
-              {activeSection === 'preferences' && (
-                <form onSubmit={handleSavePreferences} className="portal-form" id="form-preferences-settings">
-                  <div className="card-section-header">
-                    <div className="section-icon-badge">
-                      <SlidersIcon size={20} />
-                    </div>
-                    <div>
-                      <h3 className="section-title">Preferences & Automation Policies</h3>
-                      <p className="section-desc">Automated assignment rules, notification digests, and defaults</p>
-                    </div>
-                  </div>
-
-                  <div className="settings-switches-stack">
-                    <label className="settings-toggle-card">
+                  <div className="general-card-group">
+                    <div className="general-card-row">
                       <div className="toggle-text-wrap">
-                        <span className="toggle-title">System Email Notifications</span>
+                        <span className="general-row-label">System Email Notifications</span>
                         <span className="toggle-sub">Notify team members regarding new lead assignments and deal updates</span>
                       </div>
                       <input
                         type="checkbox"
+                        className="settings-toggle-checkbox"
                         checked={emailNotifications}
                         onChange={(e) => setEmailNotifications(e.target.checked)}
                         disabled={!canManageWorkspace || isSaving}
                       />
-                    </label>
+                    </div>
 
-                    <label className="settings-toggle-card">
+                    <div className="general-card-row">
                       <div className="toggle-text-wrap">
-                        <span className="toggle-title">Automatic Lead Routing</span>
+                        <span className="general-row-label">Automatic Lead Routing</span>
                         <span className="toggle-sub">Auto-assign new inbound leads evenly across active sales reps</span>
                       </div>
                       <input
                         type="checkbox"
+                        className="settings-toggle-checkbox"
                         checked={autoAssignLeads}
                         onChange={(e) => setAutoAssignLeads(e.target.checked)}
                         disabled={!canManageWorkspace || isSaving}
                       />
-                    </label>
+                    </div>
 
-                    <label className="settings-toggle-card">
+                    <div className="general-card-row">
                       <div className="toggle-text-wrap">
-                        <span className="toggle-title">Weekly Performance Digest</span>
+                        <span className="general-row-label">Weekly Performance Digest</span>
                         <span className="toggle-sub">Send executive summary report every Monday at 08:00 AM</span>
                       </div>
                       <input
                         type="checkbox"
+                        className="settings-toggle-checkbox"
                         checked={weeklyDigest}
                         onChange={(e) => setWeeklyDigest(e.target.checked)}
                         disabled={!canManageWorkspace || isSaving}
                       />
-                    </label>
+                    </div>
                   </div>
 
                   {canManageWorkspace && (
-                    <div className="form-action-row">
+                    <div className="form-action-row" style={{ marginTop: '20px' }}>
                       <PrimaryButton
                         type="submit"
                         isLoading={isSaving}
@@ -599,10 +483,12 @@ export const WorkspaceSettingsPage: React.FC = () => {
                     </div>
                   )}
                 </form>
-              )}
+              </section>
 
-              {/* 4. DANGER ZONE */}
-              {activeSection === 'danger' && (
+              <div className="settings-section-separator" />
+
+              {/* 3. DANGER ZONE */}
+              <section className="settings-section-block">
                 <div className="danger-zone-wrapper">
                   <h3 className="danger-section-heading">Danger zone</h3>
 
@@ -639,7 +525,7 @@ export const WorkspaceSettingsPage: React.FC = () => {
                     </div>
                   </div>
                 </div>
-              )}
+              </section>
             </div>
           </div>
         )}

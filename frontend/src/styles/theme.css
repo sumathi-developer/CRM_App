@@ -1550,3 +1550,8 @@ html.dark .delete-ws-submit-btn:hover:not(:disabled),
   background: #B91C1C !important;
 }
 
+html.dark .settings-section-separator,
+[data-theme="dark"] .settings-section-separator {
+  background: rgba(16, 185, 129, 0.15) !important;
+}
+

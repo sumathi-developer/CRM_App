@@ -2442,3 +2442,40 @@ body.modal-open::-webkit-scrollbar {
   opacity: 0.55;
   cursor: not-allowed;
 }
+
+/* Vertical settings flow layout */
+.settings-vertical-layout {
+  width: 100%;
+}
+
+.settings-flow-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 36px;
+}
+
+.settings-section-block {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.settings-section-separator {
+  height: 1px;
+  background: var(--border-subtle);
+  margin: 52px 0 44px 0;
+  width: 100%;
+  opacity: 0.65;
+}
+
+.settings-toggle-checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-primary, #10b981);
+  cursor: pointer;
+  flex-shrink: 0;
+}
