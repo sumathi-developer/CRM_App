@@ -5,7 +5,7 @@ import { workspaceService } from '../../services/workspace.service';
 import { Navbar } from '../../components/common/Navbar';
 import { WorkspaceHeader } from '../../components/workspace/WorkspaceHeader';
 import { WorkspaceSwitcher } from '../../components/workspace/WorkspaceSwitcher';
-import { ConfirmDeleteModal } from '../../components/workspace/ConfirmDeleteModal';
+import { DeleteWorkspaceModal } from '../../components/workspace/DeleteWorkspaceModal';
 import { FormField } from '../../components/auth/FormField';
 import { PrimaryButton } from '../../components/auth/PrimaryButton';
 import { LoadingIndicator } from '../../components/auth/LoadingIndicator';
@@ -603,35 +603,40 @@ export const WorkspaceSettingsPage: React.FC = () => {
 
               {/* 4. DANGER ZONE */}
               {activeSection === 'danger' && (
-                <div className="danger-zone-container">
-                  <div className="card-section-header">
-                    <div className="section-icon-badge danger">
-                      <TrashIcon size={20} />
-                    </div>
-                    <div>
-                      <h3 className="section-title text-danger">Danger Zone</h3>
-                      <p className="section-desc">Irreversible operational actions for this CRM workspace</p>
-                    </div>
-                  </div>
+                <div className="danger-zone-wrapper">
+                  <h3 className="danger-section-heading">Danger zone</h3>
 
-                  <div className="danger-action-card">
-                    <div className="danger-action-info">
-                      <h4 className="danger-action-title">Delete this Workspace</h4>
-                      <p className="danger-action-desc">
-                        Permanently deletes <strong>{currentWorkspace?.name || 'this workspace'}</strong>, including all linked leads, deals, contacts, pipeline stages, and audit logs.
-                      </p>
+                  <div className="danger-card-group">
+                    {/* Row 1: Transfer Ownership */}
+                    <div className="danger-card-row">
+                      <span className="danger-row-title">
+                        Transfer full ownership to another person
+                      </span>
+                      <button
+                        type="button"
+                        className="danger-btn-secondary"
+                        onClick={() => navigate('/workspaces/members')}
+                        disabled={!canManageWorkspace}
+                      >
+                        Select new owner
+                      </button>
                     </div>
 
-                    <button
-                      type="button"
-                      className="auth-btn btn-danger"
-                      onClick={() => setIsDeleteModalOpen(true)}
-                      disabled={!canManageWorkspace}
-                      id="btn-delete-workspace-trigger"
-                    >
-                      <TrashIcon size={16} />
-                      <span>Delete Workspace</span>
-                    </button>
+                    {/* Row 2: Delete Workspace */}
+                    <div className="danger-card-row">
+                      <span className="danger-row-title">
+                        Delete this Workspace forever
+                      </span>
+                      <button
+                        type="button"
+                        className="danger-btn-outline-danger"
+                        onClick={() => setIsDeleteModalOpen(true)}
+                        disabled={!canManageWorkspace}
+                        id="btn-delete-workspace-trigger"
+                      >
+                        Delete Workspace
+                      </button>
+                    </div>
                   </div>
                 </div>
               )}
@@ -645,15 +650,12 @@ export const WorkspaceSettingsPage: React.FC = () => {
         onClose={() => setIsSwitcherOpen(false)}
       />
 
-      <ConfirmDeleteModal
+      <DeleteWorkspaceModal
         isOpen={isDeleteModalOpen}
-        title="Permanently Delete Workspace"
-        message={`Are you completely certain you want to delete "${currentWorkspace?.name}"? All contacts, pipelines, deals, and team settings will be permanently destroyed. This cannot be undone.`}
-        itemName={currentWorkspace?.name}
-        confirmLabel="I understand, Delete Workspace"
-        isLoading={isDeletingWs}
         onClose={() => setIsDeleteModalOpen(false)}
         onConfirm={handleConfirmDeleteWorkspace}
+        workspaceName={currentWorkspace?.name || 'Workspace'}
+        isLoading={isDeletingWs}
       />
     </div>
   );

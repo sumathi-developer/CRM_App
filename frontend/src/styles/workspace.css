@@ -2193,3 +2193,252 @@ body.modal-open::-webkit-scrollbar {
   border-color: var(--color-primary, #10b981);
   box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
 }
+
+/* ==========================================================================
+   WORKSPACE DANGER ZONE & DELETE WORKSPACE MODAL
+   ========================================================================== */
+
+.danger-zone-wrapper {
+  width: 100%;
+}
+
+.danger-section-heading {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0 0 16px 0;
+  letter-spacing: -0.01em;
+}
+
+.danger-card-group {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.danger-card-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  min-height: 64px;
+  gap: 16px;
+}
+
+.danger-card-row:not(:last-child) {
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.danger-row-title {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-main);
+  margin: 0;
+}
+
+.danger-btn-secondary {
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-main);
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+  white-space: nowrap;
+}
+
+.danger-btn-secondary:hover:not(:disabled) {
+  background: var(--bg-hover, rgba(0, 0, 0, 0.04));
+}
+
+.danger-btn-outline-danger {
+  background: transparent;
+  border: 1px solid rgba(229, 72, 77, 0.6);
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #e5484d;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+}
+
+.danger-btn-outline-danger:hover:not(:disabled) {
+  background: rgba(229, 72, 77, 0.08);
+  border-color: #e5484d;
+}
+
+/* Delete Workspace Custom Modal */
+.delete-ws-modal-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  width: 490px;
+  max-width: calc(100vw - 32px);
+  padding: 24px;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-sizing: border-box;
+  animation: modalFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.delete-ws-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.delete-ws-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0;
+}
+
+.delete-ws-close-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.06);
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.delete-ws-close-btn:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.12);
+  color: var(--text-main);
+}
+
+.delete-ws-desc {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.delete-ws-desc strong {
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.delete-ws-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.delete-ws-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.delete-ws-label {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.delete-ws-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: var(--bg-input, var(--bg-hover));
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  font-size: 0.92rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.delete-ws-input:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+}
+
+.delete-ws-checkbox-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+  font-size: 0.86rem;
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+.delete-ws-checkbox {
+  margin-top: 3px;
+  accent-color: #ef4444;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.delete-ws-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.delete-ws-cancel-btn {
+  background: transparent;
+  border: none;
+  padding: 8px 14px;
+  color: var(--text-main);
+  font-size: 0.92rem;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.delete-ws-cancel-btn:hover:not(:disabled) {
+  color: var(--text-muted);
+  background: var(--bg-hover, rgba(0, 0, 0, 0.04));
+}
+
+.delete-ws-submit-btn {
+  background: #c92a2a;
+  color: #ffffff;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s ease, background-color 0.15s ease, transform 0.1s ease;
+}
+
+.delete-ws-submit-btn:hover:not(:disabled) {
+  background: #a61e1e;
+}
+
+.delete-ws-submit-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.delete-ws-submit-btn.is-disabled,
+.delete-ws-submit-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
