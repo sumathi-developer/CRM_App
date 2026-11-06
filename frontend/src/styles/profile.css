@@ -587,16 +587,6 @@ main.ld-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
   overflow: hidden;
 }
 
-.profile-identity-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background: var(--brand-gradient);
-}
-
 .identity-avatar-large {
   width: 80px;
   height: 80px;

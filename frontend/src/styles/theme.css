@@ -815,6 +815,12 @@ html.dark .crm-filter-subtitle, html.dark .crm-hero-subtitle,
   color: #CBD5E1 !important;
 }
 
+/* Profile Identity Card (Alexander Pierce Admin Box) - No upper gradient line */
+.profile-identity-card::before {
+  display: none !important;
+  content: none !important;
+}
+
 /* Profile Identity Card (Alexander Pierce Admin Box) in Dark Mode */
 html.dark .profile-identity-card,
 [data-theme="dark"] .profile-identity-card {
