@@ -37,10 +37,6 @@ export const WorkspaceSettingsPage: React.FC = () => {
   const [slug, setSlug] = useState(currentWorkspace?.slug || 'onseclick-workspace');
 
   // Branding Fields
-  const [logoUrl, setLogoUrl] = useState(settings?.branding?.logoUrl || '');
-  const [faviconUrl, setFaviconUrl] = useState(settings?.branding?.faviconUrl || '');
-  const [primaryColor, setPrimaryColor] = useState(settings?.branding?.primaryColor || '#10b981');
-  const [accentColor, setAccentColor] = useState(settings?.branding?.accentColor || '#062e03');
   const [companyPortalUrl, setCompanyPortalUrl] = useState(settings?.branding?.companyPortalUrl || '');
 
   // Localization Fields
@@ -106,10 +102,6 @@ export const WorkspaceSettingsPage: React.FC = () => {
           setSlug(currentWorkspace.slug || 'onseclick-workspace');
 
           if (data.branding) {
-            setLogoUrl(data.branding.logoUrl || '');
-            setFaviconUrl(data.branding.faviconUrl || '');
-            setPrimaryColor(data.branding.primaryColor || '#10b981');
-            setAccentColor(data.branding.accentColor || '#062e03');
             setCompanyPortalUrl(data.branding.companyPortalUrl || '');
           }
 
@@ -183,10 +175,6 @@ export const WorkspaceSettingsPage: React.FC = () => {
 
     try {
       await workspaceService.updateBranding(currentWorkspace.id, {
-        logoUrl,
-        faviconUrl,
-        primaryColor,
-        accentColor,
         companyPortalUrl,
       });
 
@@ -453,71 +441,6 @@ export const WorkspaceSettingsPage: React.FC = () => {
                     <div>
                       <h3 className="section-title">Branding & White-Label Theme</h3>
                       <p className="section-desc">Customize logos, favicons, and corporate palette colors</p>
-                    </div>
-                  </div>
-
-                  <FormField
-                    id="branding-logo-url"
-                    name="logoUrl"
-                    label="Workspace Logo URL"
-                    placeholder="https://cdn.example.com/logo.png"
-                    value={logoUrl}
-                    onChange={(e) => setLogoUrl(e.target.value)}
-                    disabled={!canManageWorkspace || isSaving}
-                    helperText="Recommended dimension: 256x256 PNG or SVG with transparent background."
-                  />
-
-                  <FormField
-                    id="branding-favicon-url"
-                    name="faviconUrl"
-                    label="Favicon URL"
-                    placeholder="https://cdn.example.com/favicon.ico"
-                    value={faviconUrl}
-                    onChange={(e) => setFaviconUrl(e.target.value)}
-                    disabled={!canManageWorkspace || isSaving}
-                  />
-
-                  <div className="form-row-two-col">
-                    <div className="form-field-group">
-                      <label htmlFor="color-primary-input" className="form-field-label">Primary Brand Color</label>
-                      <div className="color-picker-input-wrap">
-                        <input
-                          id="color-primary-input"
-                          type="color"
-                          className="color-picker-swatch"
-                          value={primaryColor}
-                          onChange={(e) => setPrimaryColor(e.target.value)}
-                          disabled={!canManageWorkspace || isSaving}
-                        />
-                        <input
-                          type="text"
-                          className="form-input font-mono"
-                          value={primaryColor}
-                          onChange={(e) => setPrimaryColor(e.target.value)}
-                          disabled={!canManageWorkspace || isSaving}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="form-field-group">
-                      <label htmlFor="color-accent-input" className="form-field-label">Accent Highlight Color</label>
-                      <div className="color-picker-input-wrap">
-                        <input
-                          id="color-accent-input"
-                          type="color"
-                          className="color-picker-swatch"
-                          value={accentColor}
-                          onChange={(e) => setAccentColor(e.target.value)}
-                          disabled={!canManageWorkspace || isSaving}
-                        />
-                        <input
-                          type="text"
-                          className="form-input font-mono"
-                          value={accentColor}
-                          onChange={(e) => setAccentColor(e.target.value)}
-                          disabled={!canManageWorkspace || isSaving}
-                        />
-                      </div>
                     </div>
                   </div>
 
