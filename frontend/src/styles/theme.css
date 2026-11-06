@@ -423,40 +423,154 @@ html.dark .sidebar-action-btn:hover,
   border-color: #34D399 !important;
 }
 
-/* Sidebar Settings Flyout */
+/* Sidebar Settings Flyout in Dark Mode */
 html.dark .sidebar-settings-flyout,
 [data-theme="dark"] .sidebar-settings-flyout {
-  background: #0E1A12 !important;
-  border-color: rgba(16, 185, 129, 0.3) !important;
-  box-shadow: 4px 0 32px rgba(0, 0, 0, 0.7) !important;
+  background: #0B160F !important;
+  border-right: 1px solid rgba(16, 185, 129, 0.25) !important;
+  box-shadow: 6px 0 32px rgba(0, 0, 0, 0.7) !important;
+}
+
+html.dark .settings-flyout-header,
+[data-theme="dark"] .settings-flyout-header {
+  border-bottom: 1px solid rgba(16, 185, 129, 0.2) !important;
 }
 
 html.dark .settings-flyout-title,
 [data-theme="dark"] .settings-flyout-title {
   color: #FFFFFF !important;
+  font-weight: 800 !important;
 }
 
-html.dark .settings-flyout-search input,
-[data-theme="dark"] .settings-flyout-search input {
-  background: #14251B !important;
-  border-color: rgba(16, 185, 129, 0.3) !important;
-  color: #FFFFFF !important;
-}
-
-html.dark .settings-group-header,
-[data-theme="dark"] .settings-group-header {
+html.dark .settings-flyout-title svg,
+[data-theme="dark"] .settings-flyout-title svg {
   color: #34D399 !important;
 }
 
-html.dark .settings-flyout-link,
-[data-theme="dark"] .settings-flyout-link {
+html.dark .settings-flyout-close-btn,
+[data-theme="dark"] .settings-flyout-close-btn {
   color: #CBD5E1 !important;
 }
 
-html.dark .settings-flyout-link:hover,
-[data-theme="dark"] .settings-flyout-link:hover {
-  background: #162B1D !important;
+html.dark .settings-flyout-close-btn:hover,
+[data-theme="dark"] .settings-flyout-close-btn:hover {
+  background: rgba(16, 185, 129, 0.15) !important;
   color: #FFFFFF !important;
+}
+
+html.dark .settings-flyout-search,
+[data-theme="dark"] .settings-flyout-search {
+  border-bottom: 1px solid rgba(16, 185, 129, 0.15) !important;
+}
+
+html.dark .settings-search-input,
+[data-theme="dark"] .settings-search-input {
+  background: #122217 !important;
+  border: 1.5px solid rgba(16, 185, 129, 0.35) !important;
+  color: #FFFFFF !important;
+}
+
+html.dark .settings-search-input::placeholder,
+[data-theme="dark"] .settings-search-input::placeholder {
+  color: #94A3B8 !important;
+}
+
+html.dark .settings-search-icon,
+[data-theme="dark"] .settings-search-icon {
+  color: #34D399 !important;
+}
+
+/* Category Headers: Crisp Emerald Tone */
+html.dark .neat-group-label,
+[data-theme="dark"] .neat-group-label {
+  color: #34D399 !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.08em !important;
+  font-size: 0.6875rem !important;
+}
+
+/* Modules / Items in Settings Menu: LIGHT TONE! */
+html.dark .neat-settings-item,
+[data-theme="dark"] .neat-settings-item {
+  color: #E2E8F0 !important;
+  background: transparent !important;
+}
+
+html.dark .neat-item-title,
+html.dark .neat-settings-item .neat-item-title,
+[data-theme="dark"] .neat-item-title,
+[data-theme="dark"] .neat-settings-item .neat-item-title {
+  color: #E2E8F0 !important;
+  font-weight: 600 !important;
+  font-size: 0.8125rem !important;
+}
+
+html.dark .neat-item-icon-box,
+[data-theme="dark"] .neat-item-icon-box {
+  background: rgba(16, 185, 129, 0.18) !important;
+  color: #34D399 !important;
+  border: 1px solid rgba(16, 185, 129, 0.28) !important;
+}
+
+html.dark .neat-item-icon-box svg,
+html.dark .neat-settings-item svg,
+[data-theme="dark"] .neat-item-icon-box svg,
+[data-theme="dark"] .neat-settings-item svg {
+  color: #34D399 !important;
+}
+
+/* Hover state on settings module */
+html.dark .neat-settings-item:hover,
+[data-theme="dark"] .neat-settings-item:hover {
+  background: rgba(16, 185, 129, 0.16) !important;
+}
+
+html.dark .neat-settings-item:hover .neat-item-title,
+[data-theme="dark"] .neat-settings-item:hover .neat-item-title {
+  color: #FFFFFF !important;
+}
+
+html.dark .neat-settings-item:hover .neat-item-icon-box,
+[data-theme="dark"] .neat-settings-item:hover .neat-item-icon-box {
+  background: rgba(16, 185, 129, 0.3) !important;
+  color: #FFFFFF !important;
+  border-color: #34D399 !important;
+}
+
+html.dark .neat-settings-item:hover svg,
+[data-theme="dark"] .neat-settings-item:hover svg {
+  color: #FFFFFF !important;
+}
+
+/* Active state on settings module */
+html.dark .neat-settings-item.is-active-module,
+[data-theme="dark"] .neat-settings-item.is-active-module {
+  background: rgba(16, 185, 129, 0.24) !important;
+  border-left: 3px solid #10B981 !important;
+}
+
+html.dark .neat-settings-item.is-active-module .neat-item-title,
+[data-theme="dark"] .neat-settings-item.is-active-module .neat-item-title {
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+}
+
+html.dark .neat-settings-item.is-active-module .neat-item-icon-box,
+[data-theme="dark"] .neat-settings-item.is-active-module .neat-item-icon-box {
+  background: #10B981 !important;
+  color: #042102 !important;
+}
+
+html.dark .neat-settings-item.is-active-module svg,
+[data-theme="dark"] .neat-settings-item.is-active-module svg {
+  color: #042102 !important;
+}
+
+html.dark .neat-item-badge,
+[data-theme="dark"] .neat-item-badge {
+  background: #EF4444 !important;
+  color: #FFFFFF !important;
+  font-weight: 800 !important;
 }
 
 /* --------------------------------------------------------------------------
@@ -698,6 +812,143 @@ html.dark .page-subtitle, html.dark .section-desc, html.dark .card-desc,
 html.dark .lg-subtitle, html.dark .lg-section-subtitle, html.dark .crm-card-description,
 html.dark .crm-filter-subtitle, html.dark .crm-hero-subtitle,
 [data-theme="dark"] .page-subtitle, [data-theme="dark"] .section-desc {
+  color: #CBD5E1 !important;
+}
+
+/* Profile Identity Card (Alexander Pierce Admin Box) in Dark Mode */
+html.dark .profile-identity-card,
+[data-theme="dark"] .profile-identity-card {
+  background: #0E1A12 !important;
+  border: 1.5px solid rgba(16, 185, 129, 0.28) !important;
+}
+
+html.dark .identity-full-name,
+[data-theme="dark"] .identity-full-name {
+  color: #FFFFFF !important;
+}
+
+html.dark .identity-email,
+html.dark .identity-email span,
+[data-theme="dark"] .identity-email,
+[data-theme="dark"] .identity-email span {
+  color: #CBD5E1 !important;
+}
+
+html.dark .identity-email svg,
+[data-theme="dark"] .identity-email svg {
+  color: #34D399 !important;
+}
+
+html.dark .role-pill,
+html.dark .role-pill span,
+html.dark .org-pill,
+html.dark .org-pill span,
+html.dark .member-since-pill,
+html.dark .member-since-pill span,
+[data-theme="dark"] .role-pill,
+[data-theme="dark"] .org-pill,
+[data-theme="dark"] .member-since-pill {
+  background: #122217 !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+  color: #E2E8F0 !important;
+}
+
+html.dark .role-pill svg,
+html.dark .org-pill svg,
+html.dark .member-since-pill svg,
+[data-theme="dark"] .role-pill svg,
+[data-theme="dark"] .org-pill svg,
+[data-theme="dark"] .member-since-pill svg {
+  color: #34D399 !important;
+}
+
+/* Profile Identity Card (Alexander Pierce Admin Box) in Light Mode - APP COLOR TONE (NOT GRAY!) */
+html.light .profile-identity-card,
+[data-theme="light"] .profile-identity-card,
+body:not(.dark) .profile-identity-card {
+  background: linear-gradient(135deg, #FFFFFF 0%, #F4FAF6 100%) !important;
+  border: 1.5px solid rgba(16, 185, 129, 0.28) !important;
+  box-shadow: 0 4px 20px -2px rgba(6, 46, 3, 0.06), 0 2px 6px -1px rgba(6, 46, 3, 0.03) !important;
+}
+
+html.light .identity-full-name,
+[data-theme="light"] .identity-full-name,
+body:not(.dark) .identity-full-name {
+  color: #062E03 !important;
+  font-weight: 800 !important;
+}
+
+html.light .identity-email,
+[data-theme="light"] .identity-email,
+body:not(.dark) .identity-email {
+  color: #475569 !important;
+}
+
+html.light .identity-email svg,
+[data-theme="light"] .identity-email svg,
+body:not(.dark) .identity-email svg {
+  color: #059669 !important;
+}
+
+html.light .role-pill,
+html.light .org-pill,
+html.light .member-since-pill,
+[data-theme="light"] .role-pill,
+[data-theme="light"] .org-pill,
+[data-theme="light"] .member-since-pill,
+body:not(.dark) .role-pill,
+body:not(.dark) .org-pill,
+body:not(.dark) .member-since-pill {
+  background: #F4FAF6 !important;
+  border: 1px solid rgba(16, 185, 129, 0.28) !important;
+  color: #065F46 !important;
+}
+
+html.light .role-pill svg,
+html.light .org-pill svg,
+html.light .member-since-pill svg,
+[data-theme="light"] .role-pill svg,
+[data-theme="light"] .org-pill svg,
+[data-theme="light"] .member-since-pill svg,
+body:not(.dark) .role-pill svg,
+body:not(.dark) .org-pill svg,
+body:not(.dark) .member-since-pill svg {
+  color: #059669 !important;
+}
+
+/* Universal White & Light Text in Dark Mode (Eliminates any black text in dark mode) */
+html.dark .text-black,
+html.dark .text-gray-900,
+html.dark .text-gray-800,
+html.dark .text-slate-900,
+html.dark .text-slate-800,
+[data-theme="dark"] .text-black,
+[data-theme="dark"] .text-gray-900,
+[data-theme="dark"] .text-gray-800,
+[data-theme="dark"] .text-slate-900,
+[data-theme="dark"] .text-slate-800 {
+  color: #FFFFFF !important;
+}
+
+html.dark .text-gray-700,
+html.dark .text-gray-600,
+html.dark .text-gray-500,
+html.dark .text-slate-700,
+html.dark .text-slate-600,
+html.dark .text-slate-500,
+[data-theme="dark"] .text-gray-700,
+[data-theme="dark"] .text-gray-600,
+[data-theme="dark"] .text-slate-700,
+[data-theme="dark"] .text-slate-600 {
+  color: #CBD5E1 !important;
+}
+
+html.dark .card-section-header p,
+html.dark .card-section-header-split p,
+html.dark .portal-card p,
+[data-theme="dark"] .card-section-header p,
+[data-theme="dark"] .card-section-header-split p,
+[data-theme="dark"] .portal-card p {
   color: #CBD5E1 !important;
 }
 
