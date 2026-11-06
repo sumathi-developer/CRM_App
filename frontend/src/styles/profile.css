@@ -455,15 +455,15 @@ main.dashboard-root-content,
 }
 
 /* Fixed centered inner container for all child components */
-.authenticated-container > *,
-.app-main-content > *,
-.crm-main-content > *,
-main.lg-page > *,
-main.ld-page > *,
-.lg-page > *,
-.ld-page > *,
-.analytics-page-root > *,
-.dashboard-root-content > * {
+.authenticated-container > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
+.app-main-content > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
+.crm-main-content > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
+main.lg-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
+main.ld-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
+.lg-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
+.ld-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
+.analytics-page-root > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
+.dashboard-root-content > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay) {
   width: 100% !important;
   max-width: 1280px !important;
   margin-left: auto !important;

@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useWorkspace } from '../../context/useWorkspace';
 import { FormField } from '../auth/FormField';
 import { PrimaryButton } from '../auth/PrimaryButton';
 import { ErrorMessage } from '../auth/ErrorMessage';
-import { BriefcaseIcon, XIcon, PlusIcon } from '../common/Icons';
+import { BriefcaseIcon, XIcon } from '../common/Icons';
 
 interface CreateWorkspaceModalProps {
   isOpen: boolean;
@@ -24,6 +25,19 @@ export const CreateWorkspaceModal: React.FC<CreateWorkspaceModalProps> = ({
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const prevBodyOverflow = document.body.style.overflow;
+    const prevHtmlOverflow = document.documentElement.style.overflow;
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = prevBodyOverflow;
+      document.documentElement.style.overflow = prevHtmlOverflow;
+    };
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -60,7 +74,7 @@ export const CreateWorkspaceModal: React.FC<CreateWorkspaceModalProps> = ({
     }
   };
 
-  return (
+  const modalContent = (
     <div
       className="modal-backdrop"
       onClick={(e) => {
@@ -157,7 +171,6 @@ export const CreateWorkspaceModal: React.FC<CreateWorkspaceModalProps> = ({
               type="submit"
               isLoading={isSubmitting}
               loadingText="Creating..."
-              icon={<PlusIcon size={16} />}
               fullWidth={false}
               id="btn-confirm-create-workspace"
             >
@@ -168,4 +181,8 @@ export const CreateWorkspaceModal: React.FC<CreateWorkspaceModalProps> = ({
       </div>
     </div>
   );
+
+  return typeof document !== 'undefined'
+    ? createPortal(modalContent, document.body)
+    : modalContent;
 };

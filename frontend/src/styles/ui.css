@@ -3566,15 +3566,15 @@ main.dashboard-root-content,
 }
 
 /* Ensure all child sections/grids inside the module main are centered and constrained */
-.authenticated-container > *,
-.app-main-content > *,
-.crm-main-content > *,
-main.lg-page > *,
-main.ld-page > *,
-.lg-page > *,
-.ld-page > *,
-.analytics-page-root > *,
-.dashboard-root-content > * {
+.authenticated-container > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
+.app-main-content > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
+.crm-main-content > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
+main.lg-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
+main.ld-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
+.lg-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
+.ld-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
+.analytics-page-root > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
+.dashboard-root-content > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay) {
   width: 100% !important;
   max-width: 1400px !important;
   margin-left: auto !important;
@@ -4888,7 +4888,11 @@ input.search-input:focus {
 }
 
 
-/* Modals Backdrop - Darkened semi-transparent overlay covering entire viewport */
+/* Modals Backdrop - Darkened semi-transparent overlay covering entire viewport edge-to-edge */
+html, body {
+  scrollbar-gutter: auto !important;
+}
+
 .modal-backdrop,
 [role="dialog"].modal-backdrop,
 .modal-backdrop[role="dialog"] {
@@ -4898,8 +4902,10 @@ input.search-input:focus {
   left: 0 !important;
   right: 0 !important;
   bottom: 0 !important;
-  width: 100vw !important;
-  height: 100vh !important;
+  width: auto !important;
+  min-width: 100% !important;
+  height: auto !important;
+  min-height: 100% !important;
   background: rgba(0, 0, 0, 0.55) !important;
   background-color: rgba(0, 0, 0, 0.55) !important;
   backdrop-filter: blur(6px) !important;
@@ -4909,4 +4915,6 @@ input.search-input:focus {
   align-items: center !important;
   justify-content: center !important;
   margin: 0 !important;
+  padding: 20px !important;
+  box-sizing: border-box !important;
 }

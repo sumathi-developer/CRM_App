@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useWorkspace } from '../../context/useWorkspace';
 import {
   BriefcaseIcon,
@@ -25,6 +26,19 @@ export const WorkspaceSwitcher: React.FC<WorkspaceSwitcherProps> = ({
   const { currentWorkspace, myWorkspaces, switchWorkspace, isSwitching } = useWorkspace();
   const [searchQuery, setSearchQuery] = useState('');
   const [switchingId, setSwitchingId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const prevBodyOverflow = document.body.style.overflow;
+    const prevHtmlOverflow = document.documentElement.style.overflow;
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = prevBodyOverflow;
+      document.documentElement.style.overflow = prevHtmlOverflow;
+    };
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -64,7 +78,7 @@ export const WorkspaceSwitcher: React.FC<WorkspaceSwitcherProps> = ({
       .toUpperCase();
   };
 
-  return (
+  const modalContent = (
     <div
       className="modal-backdrop"
       onClick={(e) => {
@@ -209,4 +223,8 @@ export const WorkspaceSwitcher: React.FC<WorkspaceSwitcherProps> = ({
       </div>
     </div>
   );
+
+  return typeof document !== 'undefined'
+    ? createPortal(modalContent, document.body)
+    : modalContent;
 };
