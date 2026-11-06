@@ -1403,3 +1403,61 @@ html.dark .metrics-cards-grid .metric-number,
   }
 }
 
+/* General Settings Card & Avatar Popover */
+html.dark .general-card-group,
+[data-theme="dark"] .general-card-group {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-color: rgba(16, 185, 129, 0.2) !important;
+}
+
+html.dark .general-card-row:not(:last-child),
+[data-theme="dark"] .general-card-row:not(:last-child) {
+  border-bottom: 1px solid rgba(16, 185, 129, 0.15) !important;
+}
+
+html.dark .general-name-input,
+[data-theme="dark"] .general-name-input {
+  background: rgba(0, 0, 0, 0.3) !important;
+  border-color: rgba(16, 185, 129, 0.25) !important;
+  color: #FFFFFF !important;
+}
+
+html.dark .general-name-input:focus,
+[data-theme="dark"] .general-name-input:focus {
+  border-color: #10B981 !important;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25) !important;
+}
+
+html.dark .avatar-popover-card,
+[data-theme="dark"] .avatar-popover-card {
+  background: #0E1A12 !important;
+  border-color: rgba(16, 185, 129, 0.25) !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6) !important;
+}
+
+html.dark .avatar-popover-title,
+[data-theme="dark"] .avatar-popover-title {
+  color: #94A3B8 !important;
+}
+
+html.dark .avatar-popover-divider,
+[data-theme="dark"] .avatar-popover-divider {
+  background: rgba(16, 185, 129, 0.15) !important;
+}
+
+html.dark .avatar-upload-btn,
+[data-theme="dark"] .avatar-upload-btn {
+  color: #F8FAFC !important;
+}
+
+html.dark .avatar-upload-btn:hover,
+[data-theme="dark"] .avatar-upload-btn:hover {
+  background: rgba(16, 185, 129, 0.12) !important;
+  color: #FFFFFF !important;
+}
+
+html.dark .avatar-color-swatch,
+[data-theme="dark"] .avatar-color-swatch {
+  border-color: rgba(255, 255, 255, 0.18) !important;
+}
+

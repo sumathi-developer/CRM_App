@@ -123,8 +123,19 @@ export const WorkspaceSwitcherPage: React.FC = () => {
                 id={`workspace-card-${ws.id}`}
               >
                 <div className="card-top-row">
-                  <div className="ws-card-avatar">
-                    {getInitials(ws.name)}
+                  <div
+                    className="ws-card-avatar"
+                    style={
+                      ws.avatar && ws.avatar.startsWith('#')
+                        ? { backgroundColor: ws.avatar, background: ws.avatar, color: '#ffffff' }
+                        : undefined
+                    }
+                  >
+                    {ws.avatar && !ws.avatar.startsWith('#') ? (
+                      <img src={ws.avatar} alt={ws.name} className="workspace-avatar-img" />
+                    ) : (
+                      getInitials(ws.name)
+                    )}
                   </div>
 
                   <div className="card-badges-stack">
