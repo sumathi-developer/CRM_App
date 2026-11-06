@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import type { WorkspaceMember, WorkspaceRole } from '../../types/workspace.types';
 import { workspaceService } from '../../services/workspace.service';
 import { PrimaryButton } from '../auth/PrimaryButton';
@@ -27,6 +28,30 @@ export const EditMemberModal: React.FC<EditMemberModalProps> = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (!isOpen) return;
+    const prevBodyOverflow = document.body.style.overflow;
+    const prevHtmlOverflow = document.documentElement.style.overflow;
+
+    document.documentElement.classList.add('modal-open');
+    document.body.classList.add('modal-open');
+    document.documentElement.style.setProperty('overflow', 'hidden', 'important');
+    document.body.style.setProperty('overflow', 'hidden', 'important');
+    document.documentElement.style.setProperty('scrollbar-gutter', 'auto', 'important');
+    document.body.style.setProperty('scrollbar-gutter', 'auto', 'important');
+
+    return () => {
+      document.documentElement.classList.remove('modal-open');
+      document.body.classList.remove('modal-open');
+      document.documentElement.style.removeProperty('overflow');
+      document.body.style.removeProperty('overflow');
+      document.documentElement.style.removeProperty('scrollbar-gutter');
+      document.body.style.removeProperty('scrollbar-gutter');
+      if (prevBodyOverflow) document.body.style.overflow = prevBodyOverflow;
+      if (prevHtmlOverflow) document.documentElement.style.overflow = prevHtmlOverflow;
+    };
+  }, [isOpen]);
+
   if (!isOpen || !member) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -49,8 +74,28 @@ export const EditMemberModal: React.FC<EditMemberModalProps> = ({
     }
   };
 
-  return (
-    <div className="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="edit-member-title">
+  const modalContent = (
+    <div
+      className="modal-backdrop"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="edit-member-title"
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        width: '100vw',
+        minWidth: '100vw',
+        maxWidth: '100vw',
+        height: '100vh',
+        minHeight: '100vh',
+        maxHeight: '100vh',
+        margin: 0,
+        zIndex: 99999,
+      }}
+    >
       <div className="modal-container">
         <div className="modal-header">
           <div className="modal-header-icon primary">
@@ -159,4 +204,8 @@ export const EditMemberModal: React.FC<EditMemberModalProps> = ({
       </div>
     </div>
   );
+
+  return typeof document !== 'undefined'
+    ? createPortal(modalContent, document.body)
+    : modalContent;
 };

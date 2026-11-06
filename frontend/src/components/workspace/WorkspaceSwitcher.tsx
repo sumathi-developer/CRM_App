@@ -31,12 +31,23 @@ export const WorkspaceSwitcher: React.FC<WorkspaceSwitcherProps> = ({
     if (!isOpen) return;
     const prevBodyOverflow = document.body.style.overflow;
     const prevHtmlOverflow = document.documentElement.style.overflow;
-    document.body.style.overflow = 'hidden';
-    document.documentElement.style.overflow = 'hidden';
+
+    document.documentElement.classList.add('modal-open');
+    document.body.classList.add('modal-open');
+    document.documentElement.style.setProperty('overflow', 'hidden', 'important');
+    document.body.style.setProperty('overflow', 'hidden', 'important');
+    document.documentElement.style.setProperty('scrollbar-gutter', 'auto', 'important');
+    document.body.style.setProperty('scrollbar-gutter', 'auto', 'important');
 
     return () => {
-      document.body.style.overflow = prevBodyOverflow;
-      document.documentElement.style.overflow = prevHtmlOverflow;
+      document.documentElement.classList.remove('modal-open');
+      document.body.classList.remove('modal-open');
+      document.documentElement.style.removeProperty('overflow');
+      document.body.style.removeProperty('overflow');
+      document.documentElement.style.removeProperty('scrollbar-gutter');
+      document.body.style.removeProperty('scrollbar-gutter');
+      if (prevBodyOverflow) document.body.style.overflow = prevBodyOverflow;
+      if (prevHtmlOverflow) document.documentElement.style.overflow = prevHtmlOverflow;
     };
   }, [isOpen]);
 
@@ -81,6 +92,21 @@ export const WorkspaceSwitcher: React.FC<WorkspaceSwitcherProps> = ({
   const modalContent = (
     <div
       className="modal-backdrop"
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        width: '100vw',
+        minWidth: '100vw',
+        maxWidth: '100vw',
+        height: '100vh',
+        minHeight: '100vh',
+        maxHeight: '100vh',
+        margin: 0,
+        zIndex: 99999,
+      }}
       onClick={(e) => {
         if (e.target === e.currentTarget) {
           onClose();
