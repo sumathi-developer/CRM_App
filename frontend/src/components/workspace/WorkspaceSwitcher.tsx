@@ -65,8 +65,20 @@ export const WorkspaceSwitcher: React.FC<WorkspaceSwitcherProps> = ({
   };
 
   return (
-    <div className="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="switcher-modal-title">
-      <div className="modal-container switcher-modal">
+    <div
+      className="modal-backdrop"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          onClose();
+        }
+      }}
+    >
+      <div
+        className="modal-container switcher-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="switcher-modal-title"
+      >
         <div className="modal-header">
           <div className="modal-header-icon primary">
             <BriefcaseIcon size={20} />

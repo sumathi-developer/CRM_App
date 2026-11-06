@@ -3,7 +3,7 @@ import { useWorkspace } from '../../context/useWorkspace';
 import { FormField } from '../auth/FormField';
 import { PrimaryButton } from '../auth/PrimaryButton';
 import { ErrorMessage } from '../auth/ErrorMessage';
-import { BriefcaseIcon, XIcon, PlusIcon, GlobeIcon } from '../common/Icons';
+import { BriefcaseIcon, XIcon, PlusIcon } from '../common/Icons';
 
 interface CreateWorkspaceModalProps {
   isOpen: boolean;
@@ -20,10 +20,6 @@ export const CreateWorkspaceModal: React.FC<CreateWorkspaceModalProps> = ({
 
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
-  const [description, setDescription] = useState('');
-  const [timezone, setTimezone] = useState('America/New_York');
-  const [currency, setCurrency] = useState('USD');
-  const [website, setWebsite] = useState('');
   const [plan, setPlan] = useState('FREE');
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -52,10 +48,6 @@ export const CreateWorkspaceModal: React.FC<CreateWorkspaceModalProps> = ({
       await createWorkspace({
         name: name.trim(),
         slug: slug.trim() || undefined,
-        description: description.trim() || undefined,
-        timezone,
-        currency,
-        website: website.trim() || undefined,
         plan,
       });
 
@@ -69,8 +61,20 @@ export const CreateWorkspaceModal: React.FC<CreateWorkspaceModalProps> = ({
   };
 
   return (
-    <div className="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="create-ws-modal-title">
-      <div className="modal-container">
+    <div
+      className="modal-backdrop"
+      onClick={(e) => {
+        if (e.target === e.currentTarget && !isSubmitting) {
+          onClose();
+        }
+      }}
+    >
+      <div
+        className="modal-container"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="create-ws-modal-title"
+      >
         <div className="modal-header">
           <div className="modal-header-icon primary">
             <BriefcaseIcon size={20} />
@@ -120,82 +124,6 @@ export const CreateWorkspaceModal: React.FC<CreateWorkspaceModalProps> = ({
               disabled={isSubmitting}
               helperText="Unique identifier for workspace URL routing."
             />
-
-            <div className="form-field-group">
-              <label htmlFor="ws-desc-input" className="form-field-label">
-                Description (Optional)
-              </label>
-              <textarea
-                id="ws-desc-input"
-                name="description"
-                className="form-textarea"
-                rows={2}
-                placeholder="Brief purpose of this CRM workspace..."
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                disabled={isSubmitting}
-              />
-            </div>
-
-            <FormField
-              id="ws-website-input"
-              name="website"
-              label="Corporate Website (Optional)"
-              placeholder="https://company.com"
-              value={website}
-              onChange={(e) => setWebsite(e.target.value)}
-              disabled={isSubmitting}
-            />
-
-            <div className="form-row-two-col">
-              <div className="form-field-group">
-                <label htmlFor="ws-tz-select" className="form-field-label">
-                  Timezone
-                </label>
-                <div className="form-input-wrapper has-left-icon">
-                  <div className="form-input-icon left">
-                    <GlobeIcon size={18} />
-                  </div>
-                  <select
-                    id="ws-tz-select"
-                    className="form-select"
-                    value={timezone}
-                    onChange={(e) => setTimezone(e.target.value)}
-                    disabled={isSubmitting}
-                  >
-                    <option value="UTC">UTC (Universal)</option>
-                    <option value="America/New_York">America/New_York (EST)</option>
-                    <option value="America/Chicago">America/Chicago (CST)</option>
-                    <option value="America/Los_Angeles">America/Los_Angeles (PST)</option>
-                    <option value="Europe/London">Europe/London (GMT)</option>
-                    <option value="Europe/Berlin">Europe/Berlin (CET)</option>
-                    <option value="Asia/Tokyo">Asia/Tokyo (JST)</option>
-                    <option value="Asia/Kolkata">Asia/Kolkata (IST)</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="form-field-group">
-                <label htmlFor="ws-currency-select" className="form-field-label">
-                  Base Currency
-                </label>
-                <select
-                  id="ws-currency-select"
-                  className="form-select"
-                  value={currency}
-                  onChange={(e) => setCurrency(e.target.value)}
-                  disabled={isSubmitting}
-                >
-                  <option value="USD">USD ($)</option>
-                  <option value="EUR">EUR (€)</option>
-                  <option value="GBP">GBP (£)</option>
-                  <option value="CAD">CAD ($)</option>
-                  <option value="AUD">AUD ($)</option>
-                  <option value="INR">INR (₹)</option>
-                  <option value="JPY">JPY (¥)</option>
-                </select>
-              </div>
-            </div>
 
             <div className="form-field-group">
               <label htmlFor="ws-plan-select" className="form-field-label">

@@ -4847,3 +4847,66 @@ main.ld-page > *,
   width: fit-content !important;
   box-shadow: 0 1px 3px rgba(16, 185, 129, 0.08) !important;
 }
+
+
+.workspace-header-wrapper::before {
+  display: none !important;
+  content: none !important;
+}
+
+
+/* Search input box - Remove inner border and background from search input */
+.search-input-box .search-input,
+.search-input-box input,
+input.search-input {
+  width: 100% !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  border-width: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  color: #000000 !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  padding: 0 0 0 10px !important;
+}
+
+.search-input-box .search-input:focus,
+.search-input-box input:focus,
+input.search-input:focus {
+  border: none !important;
+  border-width: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+
+/* Modals Backdrop - Darkened semi-transparent overlay covering entire viewport */
+.modal-backdrop,
+[role="dialog"].modal-backdrop,
+.modal-backdrop[role="dialog"] {
+  position: fixed !important;
+  inset: 0 !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: rgba(0, 0, 0, 0.55) !important;
+  background-color: rgba(0, 0, 0, 0.55) !important;
+  backdrop-filter: blur(6px) !important;
+  -webkit-backdrop-filter: blur(6px) !important;
+  z-index: 99999 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 !important;
+}
