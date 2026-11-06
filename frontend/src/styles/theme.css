@@ -1336,3 +1336,64 @@ html.dark tr:hover td,
     transform: scale(0.85);
   }
 }
+
+/* ==========================================================================
+   Users & Teams and Workspace Unified Single KPI Card Theming
+   ========================================================================== */
+
+/* Dark Theme */
+html.dark .users-metrics-strip,
+[data-theme="dark"] .users-metrics-strip,
+html.dark .metrics-cards-grid,
+[data-theme="dark"] .metrics-cards-grid {
+  background: #0E1A12 !important;
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45) !important;
+}
+
+html.dark .users-metrics-strip .kpi-mini-card:not(:last-child),
+[data-theme="dark"] .users-metrics-strip .kpi-mini-card:not(:last-child),
+html.dark .metrics-cards-grid .metric-kpi-card:not(:last-child),
+[data-theme="dark"] .metrics-cards-grid .metric-kpi-card:not(:last-child) {
+  border-right: 1px solid rgba(16, 185, 129, 0.2) !important;
+}
+
+html.dark .users-metrics-strip .kpi-mini-card:hover,
+[data-theme="dark"] .users-metrics-strip .kpi-mini-card:hover,
+html.dark .metrics-cards-grid .metric-kpi-card:hover,
+[data-theme="dark"] .metrics-cards-grid .metric-kpi-card:hover {
+  background: rgba(16, 185, 129, 0.05) !important;
+}
+
+html.dark .users-metrics-strip .kpi-label,
+[data-theme="dark"] .users-metrics-strip .kpi-label,
+html.dark .metrics-cards-grid .metric-label,
+[data-theme="dark"] .metrics-cards-grid .metric-label {
+  color: #94A3B8 !important;
+  font-weight: 700 !important;
+}
+
+html.dark .users-metrics-strip .kpi-value,
+[data-theme="dark"] .users-metrics-strip .kpi-value,
+html.dark .metrics-cards-grid .metric-number,
+[data-theme="dark"] .metrics-cards-grid .metric-number {
+  color: #FFFFFF !important;
+  font-weight: 800 !important;
+}
+
+@media (max-width: 960px) {
+  html.dark .users-metrics-strip .kpi-mini-card:nth-child(1),
+  html.dark .users-metrics-strip .kpi-mini-card:nth-child(2),
+  [data-theme="dark"] .users-metrics-strip .kpi-mini-card:nth-child(1),
+  [data-theme="dark"] .users-metrics-strip .kpi-mini-card:nth-child(2) {
+    border-bottom: 1px solid rgba(16, 185, 129, 0.2) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  html.dark .users-metrics-strip .kpi-mini-card,
+  [data-theme="dark"] .users-metrics-strip .kpi-mini-card {
+    border-bottom: 1px solid rgba(16, 185, 129, 0.2) !important;
+  }
+}
+
