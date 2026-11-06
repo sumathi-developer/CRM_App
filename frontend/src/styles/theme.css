@@ -1,24 +1,24 @@
 /* ==========================================================================
    ONSECLICK CRM - COMPREHENSIVE THEME & LOCALIZATION SYSTEM
-   Supports:
-     - Instant Light Mode (clean mint/white crisp aesthetics)
-     - Instant Dark Mode (deep obsidian & emerald aesthetics)
+   Provides:
+     - High-contrast, crystal-clear Dark Mode (bright buttons, visible letterings, vibrant icons)
+     - Clean mint & white Light Mode
      - Dynamic System Mode (synchronizes with OS color scheme)
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   1. DARK MODE ROOT & LAYOUT OVERRIDES (Applied on html.dark & [data-theme="dark"])
+   1. DARK MODE ROOT CANVAS & SURFACES
    -------------------------------------------------------------------------- */
 
 html.dark,
 html.dark body,
 [data-theme="dark"],
 [data-theme="dark"] body {
-  background-color: #08100B !important;
+  background-color: #070E09 !important;
   background-image:
-    radial-gradient(circle at 10% 15%, rgba(16, 185, 129, 0.12) 0%, transparent 45%),
-    radial-gradient(circle at 90% 85%, rgba(124, 58, 237, 0.10) 0%, transparent 45%),
-    radial-gradient(circle at 50% 50%, rgba(6, 46, 3, 0.30) 0%, transparent 60%) !important;
+    radial-gradient(circle at 10% 15%, rgba(16, 185, 129, 0.14) 0%, transparent 45%),
+    radial-gradient(circle at 90% 85%, rgba(124, 58, 237, 0.12) 0%, transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(6, 46, 3, 0.35) 0%, transparent 60%) !important;
   background-attachment: fixed !important;
   color: #F8FAFC !important;
 }
@@ -38,7 +38,7 @@ html.dark .authenticated-container,
 }
 
 /* --------------------------------------------------------------------------
-   2. TOP NAVBAR & WORKSPACE CONTROLS (DARK THEME)
+   2. TOP NAVBAR & LOGO (HIGH VISIBILITY TONES)
    -------------------------------------------------------------------------- */
 
 html.dark header.app-top-navbar,
@@ -47,34 +47,76 @@ html.dark .app-top-navbar,
 [data-theme="dark"] header.app-top-navbar,
 [data-theme="dark"] header.app-navbar,
 [data-theme="dark"] .app-top-navbar {
-  background: rgba(11, 20, 14, 0.96) !important;
+  background: rgba(10, 18, 12, 0.97) !important;
   backdrop-filter: blur(16px) !important;
   -webkit-backdrop-filter: blur(16px) !important;
-  border-bottom: 1px solid rgba(16, 185, 129, 0.22) !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45) !important;
+  border-bottom: 1px solid rgba(16, 185, 129, 0.25) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
 }
 
+/* Brand Logo Text */
+html.dark .brand-name,
+html.dark .auth-logo-title .brand-name,
+html.dark #app-logo .brand-name,
+[data-theme="dark"] .brand-name,
+[data-theme="dark"] .auth-logo-title .brand-name {
+  color: #FFFFFF !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.06em !important;
+}
+
+html.dark .brand-badge,
+html.dark .auth-logo-title .brand-badge,
+[data-theme="dark"] .brand-badge {
+  background: #10B981 !important;
+  color: #042102 !important;
+  font-weight: 800 !important;
+}
+
+html.dark .auth-logo-tagline,
+[data-theme="dark"] .auth-logo-tagline {
+  color: #94A3B8 !important;
+}
+
+/* Sidebar Toggle Hamburger */
+html.dark .navbar-sidebar-toggle-btn,
+[data-theme="dark"] .navbar-sidebar-toggle-btn {
+  background: #122217 !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+  color: #34D399 !important;
+}
+
+html.dark .navbar-sidebar-toggle-btn:hover,
+[data-theme="dark"] .navbar-sidebar-toggle-btn:hover {
+  background: #182F20 !important;
+  border-color: #34D399 !important;
+  color: #FFFFFF !important;
+}
+
+/* Topbar Workspace Selector Pill */
 html.dark .navbar-workspace-pill,
 [data-theme="dark"] .navbar-workspace-pill {
   background: #122217 !important;
-  border: 1px solid rgba(16, 185, 129, 0.32) !important;
+  border: 1.5px solid rgba(16, 185, 129, 0.35) !important;
   color: #F8FAFC !important;
 }
 
 html.dark .navbar-workspace-pill:hover,
 [data-theme="dark"] .navbar-workspace-pill:hover {
-  background: #162B1D !important;
-  border-color: rgba(16, 185, 129, 0.55) !important;
+  background: #182F20 !important;
+  border-color: #34D399 !important;
 }
 
 html.dark .ws-pill-name,
 [data-theme="dark"] .ws-pill-name {
-  color: #F8FAFC !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
 }
 
 html.dark .ws-pill-label,
 [data-theme="dark"] .ws-pill-label {
   color: #34D399 !important;
+  font-weight: 800 !important;
 }
 
 html.dark .ws-pill-chevron,
@@ -82,12 +124,12 @@ html.dark .ws-pill-chevron,
   color: #34D399 !important;
 }
 
-/* Dropdown Menu for Workspace in Navbar */
+/* Workspace Dropdown in Topbar */
 html.dark #navbar-workspace-dropdown-menu,
 [data-theme="dark"] #navbar-workspace-dropdown-menu {
   background-color: #0E1A12 !important;
-  border: 1.5px solid rgba(16, 185, 129, 0.35) !important;
-  box-shadow: 0 24px 48px -8px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(16, 185, 129, 0.2) !important;
+  border: 1.5px solid rgba(16, 185, 129, 0.38) !important;
+  box-shadow: 0 24px 48px -8px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(16, 185, 129, 0.25) !important;
   color: #F8FAFC !important;
 }
 
@@ -98,91 +140,116 @@ html.dark #navbar-workspace-dropdown-menu span,
 
 html.dark #navbar-workspace-dropdown-menu .ws-dropdown-divider,
 [data-theme="dark"] #navbar-workspace-dropdown-menu .ws-dropdown-divider {
-  border-top-color: rgba(16, 185, 129, 0.18) !important;
+  border-top-color: rgba(16, 185, 129, 0.2) !important;
 }
 
 html.dark #navbar-workspace-dropdown-menu button,
 [data-theme="dark"] #navbar-workspace-dropdown-menu button {
   background-color: #122217 !important;
-  border-color: rgba(16, 185, 129, 0.2) !important;
+  border-color: rgba(16, 185, 129, 0.25) !important;
   color: #F8FAFC !important;
 }
 
 html.dark #navbar-workspace-dropdown-menu button:hover,
 [data-theme="dark"] #navbar-workspace-dropdown-menu button:hover {
   background-color: #182F20 !important;
-  border-color: rgba(16, 185, 129, 0.45) !important;
+  border-color: #34D399 !important;
 }
 
-/* Search trigger and topbar icons */
+/* Topbar Search Trigger */
 html.dark .topbar-search-trigger,
 [data-theme="dark"] .topbar-search-trigger {
   background: #122217 !important;
-  border: 1px solid rgba(16, 185, 129, 0.28) !important;
-  color: #94A3B8 !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+  color: #E2E8F0 !important;
 }
 
 html.dark .topbar-search-trigger:hover,
 [data-theme="dark"] .topbar-search-trigger:hover {
-  background: #162B1D !important;
-  border-color: rgba(16, 185, 129, 0.5) !important;
-  color: #F8FAFC !important;
+  background: #182F20 !important;
+  border-color: #34D399 !important;
+  color: #FFFFFF !important;
+}
+
+html.dark .topbar-search-trigger .topbar-search-text,
+[data-theme="dark"] .topbar-search-trigger .topbar-search-text {
+  color: #E2E8F0 !important;
+}
+
+html.dark .topbar-search-trigger svg,
+[data-theme="dark"] .topbar-search-trigger svg {
+  color: #34D399 !important;
 }
 
 html.dark .topbar-search-kbd,
 [data-theme="dark"] .topbar-search-kbd {
   background: #182F20 !important;
-  border-color: rgba(16, 185, 129, 0.3) !important;
+  border-color: rgba(16, 185, 129, 0.35) !important;
   color: #34D399 !important;
 }
 
+/* Topbar Notification Bell */
 html.dark .topbar-icon-action-btn,
 [data-theme="dark"] .topbar-icon-action-btn {
   background: #122217 !important;
-  border: 1px solid rgba(16, 185, 129, 0.28) !important;
-  color: #94A3B8 !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+  color: #34D399 !important;
 }
 
 html.dark .topbar-icon-action-btn:hover,
 [data-theme="dark"] .topbar-icon-action-btn:hover {
-  background: #162B1D !important;
-  border-color: rgba(16, 185, 129, 0.5) !important;
-  color: #34D399 !important;
+  background: #182F20 !important;
+  border-color: #34D399 !important;
+  color: #FFFFFF !important;
 }
 
 /* --------------------------------------------------------------------------
-   3. SIDEBAR NAVIGATION & SEARCH (DARK THEME)
+   3. SIDEBAR NAVIGATION, MODULES, ICONS & PINNED BOTTOM SECTION
    -------------------------------------------------------------------------- */
 
 html.dark aside.app-sidebar,
 [data-theme="dark"] aside.app-sidebar {
-  background-color: #0A140E !important;
-  border-right: 1px solid rgba(16, 185, 129, 0.2) !important;
-  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.4) !important;
+  background-color: #09120C !important;
+  border-right: 1px solid rgba(16, 185, 129, 0.22) !important;
+  box-shadow: 2px 0 16px rgba(0, 0, 0, 0.45) !important;
 }
 
+/* Sidebar Search Box */
 html.dark .sidebar-search-bar,
 [data-theme="dark"] .sidebar-search-bar {
   background: #122217 !important;
-  border-color: rgba(16, 185, 129, 0.28) !important;
-  color: #F8FAFC !important;
+  border: 1.5px solid rgba(16, 185, 129, 0.35) !important;
+  color: #FFFFFF !important;
 }
 
 html.dark .sidebar-search-inline-input,
 [data-theme="dark"] .sidebar-search-inline-input {
-  color: #F8FAFC !important;
+  color: #FFFFFF !important;
 }
 
 html.dark .sidebar-search-inline-input::placeholder,
 [data-theme="dark"] .sidebar-search-inline-input::placeholder {
-  color: #64748B !important;
+  color: #94A3B8 !important;
 }
 
+html.dark .search-bar-icon,
+[data-theme="dark"] .search-bar-icon {
+  color: #34D399 !important;
+}
+
+html.dark .search-bar-kbd,
+[data-theme="dark"] .search-bar-kbd {
+  background: #182F20 !important;
+  border-color: rgba(16, 185, 129, 0.35) !important;
+  color: #34D399 !important;
+}
+
+/* Sidebar Search Dropdown */
 html.dark .sidebar-search-dropdown,
 [data-theme="dark"] .sidebar-search-dropdown {
   background: #0E1A12 !important;
-  border-color: rgba(16, 185, 129, 0.3) !important;
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65) !important;
+  border-color: rgba(16, 185, 129, 0.35) !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.7) !important;
 }
 
 html.dark .sidebar-search-result-item,
@@ -202,34 +269,139 @@ html.dark .result-item-title,
   color: #FFFFFF !important;
 }
 
+html.dark .result-item-desc,
+[data-theme="dark"] .result-item-desc {
+  color: #94A3B8 !important;
+}
+
+/* Sidebar Modules Navigation Links (HIGH VISIBILITY) */
 html.dark .sidebar-module-link,
 [data-theme="dark"] .sidebar-module-link {
-  color: #94A3B8 !important;
+  color: #E2E8F0 !important;
+  background: transparent !important;
+}
+
+html.dark .sidebar-module-link .module-link-title,
+html.dark .sidebar-module-title,
+[data-theme="dark"] .sidebar-module-link .module-link-title,
+[data-theme="dark"] .sidebar-module-title {
+  color: #E2E8F0 !important;
+  font-weight: 600 !important;
+}
+
+html.dark .sidebar-module-link .module-link-icon,
+html.dark .sidebar-module-link svg,
+[data-theme="dark"] .sidebar-module-link .module-link-icon,
+[data-theme="dark"] .sidebar-module-link svg {
+  color: #34D399 !important;
 }
 
 html.dark .sidebar-module-link:hover,
 [data-theme="dark"] .sidebar-module-link:hover {
-  background: rgba(16, 185, 129, 0.12) !important;
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #FFFFFF !important;
+}
+
+html.dark .sidebar-module-link:hover .module-link-title,
+[data-theme="dark"] .sidebar-module-link:hover .module-link-title {
+  color: #FFFFFF !important;
+}
+
+html.dark .sidebar-module-link:hover .module-link-icon,
+html.dark .sidebar-module-link:hover svg,
+[data-theme="dark"] .sidebar-module-link:hover .module-link-icon,
+[data-theme="dark"] .sidebar-module-link:hover svg {
   color: #34D399 !important;
 }
 
 html.dark .sidebar-module-link.is-active-module,
 [data-theme="dark"] .sidebar-module-link.is-active-module {
-  background: #062E03 !important;
+  background: rgba(16, 185, 129, 0.22) !important;
+  color: #FFFFFF !important;
+  border-left: 3px solid #10B981 !important;
+  border-color: rgba(16, 185, 129, 0.4) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3) !important;
+}
+
+html.dark .sidebar-module-link.is-active-module .module-link-title,
+[data-theme="dark"] .sidebar-module-link.is-active-module .module-link-title {
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+}
+
+html.dark .sidebar-module-link.is-active-module .module-link-icon,
+html.dark .sidebar-module-link.is-active-module svg,
+[data-theme="dark"] .sidebar-module-link.is-active-module .module-link-icon,
+[data-theme="dark"] .sidebar-module-link.is-active-module svg {
+  color: #10B981 !important;
+}
+
+html.dark .module-badge,
+[data-theme="dark"] .module-badge {
+  background: #14251B !important;
   color: #34D399 !important;
   border: 1px solid rgba(16, 185, 129, 0.35) !important;
-  box-shadow: 0 2px 10px rgba(6, 46, 3, 0.4) !important;
+}
+
+/* Sidebar Bottom Pinned Section (REMOVES WHITE RECTANGLE) */
+html.dark .sidebar-bottom-section,
+[data-theme="dark"] .sidebar-bottom-section {
+  background: #09120C !important;
+  border-top: 1px solid rgba(16, 185, 129, 0.22) !important;
+}
+
+html.dark .sidebar-settings-trigger,
+[data-theme="dark"] .sidebar-settings-trigger {
+  background: #122217 !important;
+  border: 1px solid rgba(16, 185, 129, 0.28) !important;
+  color: #E2E8F0 !important;
+}
+
+html.dark .sidebar-settings-trigger .module-link-title,
+[data-theme="dark"] .sidebar-settings-trigger .module-link-title {
+  color: #E2E8F0 !important;
+}
+
+html.dark .sidebar-settings-trigger .module-link-icon,
+html.dark .sidebar-settings-trigger svg,
+[data-theme="dark"] .sidebar-settings-trigger .module-link-icon,
+[data-theme="dark"] .sidebar-settings-trigger svg {
+  color: #34D399 !important;
+}
+
+html.dark .sidebar-settings-trigger .settings-chevron,
+[data-theme="dark"] .sidebar-settings-trigger .settings-chevron {
+  color: #94A3B8 !important;
+}
+
+html.dark .sidebar-settings-trigger:hover,
+[data-theme="dark"] .sidebar-settings-trigger:hover {
+  background: #182F20 !important;
+  border-color: #34D399 !important;
+}
+
+html.dark .sidebar-settings-trigger:hover .module-link-title,
+[data-theme="dark"] .sidebar-settings-trigger:hover .module-link-title {
+  color: #FFFFFF !important;
+}
+
+html.dark .sidebar-settings-trigger:hover .module-link-icon,
+html.dark .sidebar-settings-trigger:hover svg,
+[data-theme="dark"] .sidebar-settings-trigger:hover .module-link-icon,
+[data-theme="dark"] .sidebar-settings-trigger:hover svg {
+  color: #34D399 !important;
 }
 
 html.dark .sidebar-profile-card,
 [data-theme="dark"] .sidebar-profile-card {
   background: #122217 !important;
-  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  border: 1px solid rgba(16, 185, 129, 0.28) !important;
 }
 
 html.dark .sidebar-user-name,
 [data-theme="dark"] .sidebar-user-name {
-  color: #F8FAFC !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
 }
 
 html.dark .sidebar-user-meta,
@@ -240,33 +412,40 @@ html.dark .sidebar-user-meta,
 html.dark .sidebar-action-btn,
 [data-theme="dark"] .sidebar-action-btn {
   background: #182F20 !important;
-  border-color: rgba(16, 185, 129, 0.25) !important;
-  color: #94A3B8 !important;
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
+  color: #CBD5E1 !important;
 }
 
 html.dark .sidebar-action-btn:hover,
 [data-theme="dark"] .sidebar-action-btn:hover {
   background: #1E3B28 !important;
-  color: #F8FAFC !important;
+  color: #34D399 !important;
+  border-color: #34D399 !important;
 }
 
+/* Sidebar Settings Flyout */
 html.dark .sidebar-settings-flyout,
 [data-theme="dark"] .sidebar-settings-flyout {
   background: #0E1A12 !important;
-  border-color: rgba(16, 185, 129, 0.25) !important;
-  box-shadow: 4px 0 28px rgba(0, 0, 0, 0.6) !important;
+  border-color: rgba(16, 185, 129, 0.3) !important;
+  box-shadow: 4px 0 32px rgba(0, 0, 0, 0.7) !important;
+}
+
+html.dark .settings-flyout-title,
+[data-theme="dark"] .settings-flyout-title {
+  color: #FFFFFF !important;
 }
 
 html.dark .settings-flyout-search input,
 [data-theme="dark"] .settings-flyout-search input {
   background: #14251B !important;
-  border-color: rgba(16, 185, 129, 0.25) !important;
-  color: #F8FAFC !important;
+  border-color: rgba(16, 185, 129, 0.3) !important;
+  color: #FFFFFF !important;
 }
 
 html.dark .settings-group-header,
 [data-theme="dark"] .settings-group-header {
-  color: #64748B !important;
+  color: #34D399 !important;
 }
 
 html.dark .settings-flyout-link,
@@ -277,53 +456,207 @@ html.dark .settings-flyout-link,
 html.dark .settings-flyout-link:hover,
 [data-theme="dark"] .settings-flyout-link:hover {
   background: #162B1D !important;
+  color: #FFFFFF !important;
+}
+
+/* --------------------------------------------------------------------------
+   4. BUTTONS ACROSS THE ENTIRE CRM (VIBRANT & VISIBLE TONES)
+   -------------------------------------------------------------------------- */
+
+/* Primary Action Buttons */
+html.dark .crm-btn-primary,
+html.dark .auth-btn.btn-primary,
+html.dark button[type="submit"].btn-primary,
+html.dark .primary-button,
+html.dark #btn-save-profile-changes,
+[data-theme="dark"] .crm-btn-primary,
+[data-theme="dark"] .auth-btn.btn-primary,
+[data-theme="dark"] .primary-button {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%) !important;
+  color: #FFFFFF !important;
+  border: 1px solid #34D399 !important;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4) !important;
+  font-weight: 700 !important;
+}
+
+html.dark .crm-btn-primary:hover:not(:disabled),
+html.dark .auth-btn.btn-primary:hover:not(:disabled),
+html.dark button[type="submit"].btn-primary:hover:not(:disabled),
+html.dark #btn-save-profile-changes:hover:not(:disabled),
+[data-theme="dark"] .crm-btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #34D399 0%, #10B981 100%) !important;
+  color: #031B08 !important;
+  box-shadow: 0 6px 20px rgba(52, 211, 153, 0.5) !important;
+}
+
+/* Secondary & Toggle Buttons */
+html.dark .btn-edit-toggle,
+html.dark .refresh-btn-secondary,
+html.dark .crm-btn-secondary,
+html.dark .btn-secondary,
+[data-theme="dark"] .btn-edit-toggle,
+[data-theme="dark"] .refresh-btn-secondary,
+[data-theme="dark"] .crm-btn-secondary {
+  background: #122217 !important;
+  border: 1.5px solid rgba(52, 211, 153, 0.45) !important;
+  color: #34D399 !important;
+  font-weight: 700 !important;
+}
+
+html.dark .btn-edit-toggle:hover:not(:disabled),
+html.dark .refresh-btn-secondary:hover:not(:disabled),
+html.dark .crm-btn-secondary:hover:not(:disabled),
+[data-theme="dark"] .btn-edit-toggle:hover:not(:disabled),
+[data-theme="dark"] .refresh-btn-secondary:hover:not(:disabled) {
+  background: rgba(16, 185, 129, 0.25) !important;
+  color: #FFFFFF !important;
+  border-color: #34D399 !important;
+  box-shadow: 0 0 14px rgba(16, 185, 129, 0.35) !important;
+}
+
+/* Ghost / Cancel / Outline Buttons */
+html.dark .auth-btn.btn-ghost,
+html.dark .crm-btn-ghost,
+html.dark .crm-btn-outline,
+[data-theme="dark"] .auth-btn.btn-ghost,
+[data-theme="dark"] .crm-btn-ghost,
+[data-theme="dark"] .crm-btn-outline {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(148, 163, 184, 0.35) !important;
+  color: #E2E8F0 !important;
+  font-weight: 600 !important;
+}
+
+html.dark .auth-btn.btn-ghost:hover:not(:disabled),
+html.dark .crm-btn-ghost:hover:not(:disabled),
+html.dark .crm-btn-outline:hover:not(:disabled),
+[data-theme="dark"] .auth-btn.btn-ghost:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+  border-color: #CBD5E1 !important;
+}
+
+/* --------------------------------------------------------------------------
+   5. PROFILE & SECURITY: DETAIL ITEMS, THEME CARDS & TIMEZONE
+   -------------------------------------------------------------------------- */
+
+/* Detail Item Containers */
+html.dark .detail-item,
+[data-theme="dark"] .detail-item {
+  background: #101E15 !important;
+  border: 1.5px solid rgba(16, 185, 129, 0.25) !important;
+}
+
+/* Labels: Emerald Pop for Maximum Legibility */
+html.dark .detail-label,
+[data-theme="dark"] .detail-label {
+  color: #34D399 !important;
+  font-weight: 700 !important;
+  font-size: 0.75rem !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+}
+
+/* Values: Crisp Pure White */
+html.dark .detail-value,
+html.dark #profile-display-name,
+html.dark #profile-display-email,
+html.dark #profile-display-theme,
+html.dark #profile-display-timezone,
+[data-theme="dark"] .detail-value {
+  color: #FFFFFF !important;
+  font-weight: 600 !important;
+}
+
+/* Theme Option Cards in Dark Mode (FIXES BLACK TEXT IN SCREENSHOT) */
+html.dark .theme-option-card,
+[data-theme="dark"] .theme-option-card {
+  background: #101E15 !important;
+  border: 1.5px solid rgba(16, 185, 129, 0.25) !important;
+}
+
+html.dark .theme-option-card:hover,
+[data-theme="dark"] .theme-option-card:hover {
+  background: #14271B !important;
+  border-color: #34D399 !important;
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.2) !important;
+}
+
+html.dark .theme-option-card.is-active,
+[data-theme="dark"] .theme-option-card.is-active {
+  background: #162E20 !important;
+  border-color: #34D399 !important;
+  box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.45), 0 8px 24px rgba(0, 0, 0, 0.55) !important;
+}
+
+/* Theme Option Titles - PURE CRISP WHITE */
+html.dark .theme-option-name,
+[data-theme="dark"] .theme-option-name {
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  font-size: 0.9375rem !important;
+}
+
+/* Theme Option Descriptions - CRISP LIGHT SLATE (NOT BLACK!) */
+html.dark .theme-option-desc,
+[data-theme="dark"] .theme-option-desc {
+  color: #CBD5E1 !important;
+  font-size: 0.8125rem !important;
+  line-height: 1.45 !important;
+}
+
+html.dark .theme-option-card.is-active .theme-option-desc,
+[data-theme="dark"] .theme-option-card.is-active .theme-option-desc {
+  color: #E2E8F0 !important;
+}
+
+/* Theme Option Icon Box */
+html.dark .theme-option-icon-box,
+[data-theme="dark"] .theme-option-icon-box {
+  background: rgba(16, 185, 129, 0.2) !important;
+  color: #34D399 !important;
+}
+
+html.dark .theme-option-card.is-active .theme-option-icon-box,
+[data-theme="dark"] .theme-option-card.is-active .theme-option-icon-box {
+  background: #10B981 !important;
+  color: #031B08 !important;
+}
+
+/* Theme Radio Indicator */
+html.dark .theme-active-indicator,
+[data-theme="dark"] .theme-active-indicator {
+  border-color: rgba(16, 185, 129, 0.45) !important;
+}
+
+html.dark .theme-option-card.is-active .theme-active-indicator,
+[data-theme="dark"] .theme-option-card.is-active .theme-active-indicator {
+  border-color: #34D399 !important;
+  background: #10B981 !important;
+  color: #FFFFFF !important;
+}
+
+/* Timezone Card Wrapper & Live Clock */
+html.dark .timezone-card-wrapper,
+[data-theme="dark"] .timezone-card-wrapper {
+  background: #101E15 !important;
+  border: 1.5px solid rgba(16, 185, 129, 0.25) !important;
+}
+
+html.dark .timezone-live-clock-badge,
+[data-theme="dark"] .timezone-live-clock-badge {
+  background: rgba(16, 185, 129, 0.18) !important;
+  border: 1px solid rgba(52, 211, 153, 0.4) !important;
+  color: #FFFFFF !important;
+}
+
+html.dark .timezone-live-clock-badge strong,
+[data-theme="dark"] .timezone-live-clock-badge strong {
   color: #34D399 !important;
 }
 
 /* --------------------------------------------------------------------------
-   4. SUBNAVBARS ACROSS ALL MODULES (DARK THEME)
-   -------------------------------------------------------------------------- */
-
-html.dark .lg-subnav,
-html.dark .ld-subnav,
-html.dark .ws-subnav,
-html.dark .crm-subnav,
-html.dark .analytics-subnav,
-[data-theme="dark"] .lg-subnav,
-[data-theme="dark"] .ld-subnav,
-[data-theme="dark"] .ws-subnav,
-[data-theme="dark"] .crm-subnav,
-[data-theme="dark"] .analytics-subnav {
-  background: rgba(14, 26, 18, 0.95) !important;
-  border: 1px solid rgba(16, 185, 129, 0.22) !important;
-  color: #FFFFFF !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
-}
-
-html.dark .lg-subnav-label,
-html.dark .ld-subnav-label,
-[data-theme="dark"] .lg-subnav-label,
-[data-theme="dark"] .ld-subnav-label {
-  color: #94A3B8 !important;
-}
-
-html.dark .lg-subnav-item:not(.active),
-html.dark .ld-subnav-item:not(.active),
-[data-theme="dark"] .lg-subnav-item:not(.active),
-[data-theme="dark"] .ld-subnav-item:not(.active) {
-  color: #94A3B8 !important;
-}
-
-html.dark .lg-subnav-item:hover,
-html.dark .ld-subnav-item:hover,
-[data-theme="dark"] .lg-subnav-item:hover,
-[data-theme="dark"] .ld-subnav-item:hover {
-  color: #FFFFFF !important;
-  background: rgba(16, 185, 129, 0.12) !important;
-}
-
-/* --------------------------------------------------------------------------
-   5. CARDS, PANELS, DETAIL ITEMS & TABLES (DARK THEME)
+   6. CARDS, HEADINGS, SUBTITLES & RIGHT SIDEBAR IN DARK MODE
    -------------------------------------------------------------------------- */
 
 html.dark .portal-card,
@@ -344,69 +677,31 @@ html.dark .settings-card,
 [data-theme="dark"] .crm-table-container,
 [data-theme="dark"] .modal-content,
 [data-theme="dark"] .settings-card {
-  background: #0F1E14 !important;
-  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  background: #0E1A12 !important;
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
   color: #F8FAFC !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45) !important;
 }
 
-html.dark .detail-item,
-[data-theme="dark"] .detail-item {
-  background: #14251B !important;
-  border: 1px solid rgba(16, 185, 129, 0.18) !important;
-}
-
-html.dark .detail-label,
-[data-theme="dark"] .detail-label {
-  color: #8492A6 !important;
-}
-
-html.dark .detail-value,
-[data-theme="dark"] .detail-value {
-  color: #F8FAFC !important;
-}
-
-html.dark .section-title,
-html.dark .page-title,
-html.dark .identity-full-name,
-html.dark .shortcuts-title,
-html.dark .card-title,
-[data-theme="dark"] .section-title,
-[data-theme="dark"] .page-title,
-[data-theme="dark"] .identity-full-name,
-[data-theme="dark"] .shortcuts-title,
-[data-theme="dark"] .card-title {
+/* All Headings & Titles in Dark Mode */
+html.dark h1, html.dark h2, html.dark h3, html.dark h4, html.dark h5, html.dark h6,
+html.dark .page-title, html.dark .section-title, html.dark .identity-full-name,
+html.dark .shortcuts-title, html.dark .card-title, html.dark .lg-title, html.dark .lg-section-title,
+html.dark .crm-card-title, html.dark .crm-hero-title, html.dark .crm-rail-section-title,
+[data-theme="dark"] h1, [data-theme="dark"] h2, [data-theme="dark"] h3,
+[data-theme="dark"] .page-title, [data-theme="dark"] .section-title, [data-theme="dark"] .shortcuts-title {
   color: #FFFFFF !important;
 }
 
-html.dark .section-desc,
-html.dark .page-subtitle,
-html.dark .shortcut-sub,
-html.dark .card-desc,
-[data-theme="dark"] .section-desc,
-[data-theme="dark"] .page-subtitle,
-[data-theme="dark"] .shortcut-sub,
-[data-theme="dark"] .card-desc {
-  color: #94A3B8 !important;
+/* All Subtitles & Descriptions */
+html.dark .page-subtitle, html.dark .section-desc, html.dark .card-desc,
+html.dark .lg-subtitle, html.dark .lg-section-subtitle, html.dark .crm-card-description,
+html.dark .crm-filter-subtitle, html.dark .crm-hero-subtitle,
+[data-theme="dark"] .page-subtitle, [data-theme="dark"] .section-desc {
+  color: #CBD5E1 !important;
 }
 
-html.dark .shortcut-nav-item,
-[data-theme="dark"] .shortcut-nav-item {
-  background: #14251B !important;
-  border: 1px solid rgba(16, 185, 129, 0.18) !important;
-}
-
-html.dark .shortcut-nav-item:hover,
-[data-theme="dark"] .shortcut-nav-item:hover {
-  background: #182F22 !important;
-  border-color: rgba(16, 185, 129, 0.4) !important;
-}
-
-html.dark .shortcut-title,
-[data-theme="dark"] .shortcut-title {
-  color: #F8FAFC !important;
-}
-
+/* Organization Card in Right Sidebar */
 html.dark .sidebar-org-card .org-name-large,
 [data-theme="dark"] .sidebar-org-card .org-name-large {
   color: #FFFFFF !important;
@@ -414,11 +709,49 @@ html.dark .sidebar-org-card .org-name-large,
 
 html.dark .org-meta-line,
 [data-theme="dark"] .org-meta-line {
-  color: #94A3B8 !important;
+  color: #CBD5E1 !important;
+}
+
+/* Security Shortcuts in Right Sidebar */
+html.dark .shortcut-nav-item,
+[data-theme="dark"] .shortcut-nav-item {
+  background: #101E15 !important;
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
+}
+
+html.dark .shortcut-nav-item:hover,
+[data-theme="dark"] .shortcut-nav-item:hover {
+  background: #14271B !important;
+  border-color: rgba(52, 211, 153, 0.5) !important;
+}
+
+html.dark .shortcut-title,
+[data-theme="dark"] .shortcut-title {
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+}
+
+html.dark .shortcut-sub,
+[data-theme="dark"] .shortcut-sub {
+  color: #CBD5E1 !important;
+}
+
+html.dark .shortcut-icon-badge,
+[data-theme="dark"] .shortcut-icon-badge {
+  background: rgba(16, 185, 129, 0.2) !important;
+  border: 1px solid rgba(52, 211, 153, 0.4) !important;
+  color: #34D399 !important;
+}
+
+html.dark .section-icon-badge,
+[data-theme="dark"] .section-icon-badge {
+  background: rgba(16, 185, 129, 0.2) !important;
+  border: 1px solid rgba(52, 211, 153, 0.4) !important;
+  color: #34D399 !important;
 }
 
 /* --------------------------------------------------------------------------
-   6. FORM INPUTS & SELECTS (DARK THEME)
+   7. FORM INPUTS & SELECTS (DARK THEME)
    -------------------------------------------------------------------------- */
 
 html.dark select,
@@ -429,6 +762,7 @@ html.dark input[type="url"],
 html.dark input[type="password"],
 html.dark input[type="number"],
 html.dark textarea,
+html.dark .preference-select-control,
 [data-theme="dark"] select,
 [data-theme="dark"] input[type="text"],
 [data-theme="dark"] input[type="email"],
@@ -436,10 +770,11 @@ html.dark textarea,
 [data-theme="dark"] input[type="url"],
 [data-theme="dark"] input[type="password"],
 [data-theme="dark"] input[type="number"],
-[data-theme="dark"] textarea {
-  background-color: #14251B !important;
-  border-color: rgba(16, 185, 129, 0.3) !important;
-  color: #F8FAFC !important;
+[data-theme="dark"] textarea,
+[data-theme="dark"] .preference-select-control {
+  background-color: #122217 !important;
+  border: 1.5px solid rgba(16, 185, 129, 0.35) !important;
+  color: #FFFFFF !important;
 }
 
 html.dark select:focus,
@@ -448,27 +783,161 @@ html.dark textarea:focus,
 [data-theme="dark"] select:focus,
 [data-theme="dark"] input:focus,
 [data-theme="dark"] textarea:focus {
-  border-color: #10B981 !important;
-  background-color: #182E22 !important;
-  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3) !important;
+  border-color: #34D399 !important;
+  background-color: #162B1D !important;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.35) !important;
 }
 
 html.dark option,
 html.dark optgroup,
 [data-theme="dark"] option,
 [data-theme="dark"] optgroup {
-  background-color: #0F1E14 !important;
-  background: #0F1E14 !important;
-  color: #F8FAFC !important;
+  background-color: #0E1A12 !important;
+  background: #0E1A12 !important;
+  color: #FFFFFF !important;
 }
 
 html.dark ::placeholder,
 [data-theme="dark"] ::placeholder {
-  color: #64748B !important;
+  color: #94A3B8 !important;
+}
+
+/* Form Labels */
+html.dark label,
+html.dark .field-label,
+html.dark .preference-field-label,
+[data-theme="dark"] label,
+[data-theme="dark"] .field-label,
+[data-theme="dark"] .preference-field-label {
+  color: #34D399 !important;
+  font-weight: 700 !important;
 }
 
 /* --------------------------------------------------------------------------
-   7. INTERACTIVE THEME & TIMEZONE SELECTOR STYLES (Used in ProfilePage)
+   8. SUBNAVS, BADGES & TABLES ACROSS ALL MODULES
+   -------------------------------------------------------------------------- */
+
+html.dark .lg-subnav,
+html.dark .ld-subnav,
+html.dark .ws-subnav,
+html.dark .crm-subnav,
+html.dark .analytics-subnav,
+[data-theme="dark"] .lg-subnav,
+[data-theme="dark"] .ld-subnav,
+[data-theme="dark"] .ws-subnav,
+[data-theme="dark"] .crm-subnav,
+[data-theme="dark"] .analytics-subnav {
+  background: rgba(14, 26, 18, 0.96) !important;
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+}
+
+html.dark .lg-subnav-label,
+html.dark .ld-subnav-label,
+[data-theme="dark"] .lg-subnav-label,
+[data-theme="dark"] .ld-subnav-label {
+  color: #34D399 !important;
+  font-weight: 700 !important;
+}
+
+html.dark .lg-subnav-link,
+html.dark .ld-subnav-link,
+[data-theme="dark"] .lg-subnav-link,
+[data-theme="dark"] .ld-subnav-link {
+  color: #CBD5E1 !important;
+}
+
+html.dark .lg-subnav-link:hover,
+html.dark .ld-subnav-link:hover,
+[data-theme="dark"] .lg-subnav-link:hover,
+[data-theme="dark"] .ld-subnav-link:hover {
+  color: #FFFFFF !important;
+  background: rgba(16, 185, 129, 0.15) !important;
+}
+
+html.dark .lg-subnav-link.is-active,
+html.dark .ld-subnav-link.is-active,
+[data-theme="dark"] .lg-subnav-link.is-active,
+[data-theme="dark"] .ld-subnav-link.is-active {
+  background: #10B981 !important;
+  color: #042102 !important;
+  font-weight: 800 !important;
+}
+
+/* Badges & Pills */
+html.dark .role-pill,
+html.dark .org-pill,
+html.dark .member-since-pill,
+html.dark .crm-badge,
+html.dark .tag-pill,
+html.dark .field-type-badge,
+[data-theme="dark"] .role-pill,
+[data-theme="dark"] .org-pill,
+[data-theme="dark"] .member-since-pill,
+[data-theme="dark"] .crm-badge {
+  background: #122217 !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+  color: #34D399 !important;
+}
+
+html.dark .status-pill.pill-active,
+[data-theme="dark"] .status-pill.pill-active {
+  background: rgba(16, 185, 129, 0.2) !important;
+  border: 1px solid rgba(52, 211, 153, 0.45) !important;
+  color: #34D399 !important;
+}
+
+/* Tables in Dark Mode */
+html.dark table,
+html.dark thead,
+html.dark tbody,
+html.dark tr,
+html.dark th,
+html.dark td,
+html.dark .leads-th,
+html.dark .leads-td,
+html.dark .deals-th,
+html.dark .deals-td,
+html.dark .users-th,
+html.dark .users-td,
+html.dark .roles-th,
+html.dark .roles-td,
+[data-theme="dark"] table,
+[data-theme="dark"] th,
+[data-theme="dark"] td {
+  color: #E2E8F0 !important;
+}
+
+html.dark th,
+html.dark .leads-th,
+html.dark .deals-th,
+html.dark .users-th,
+html.dark .roles-th,
+[data-theme="dark"] th {
+  background: #122217 !important;
+  color: #34D399 !important;
+  border-bottom: 1.5px solid rgba(16, 185, 129, 0.3) !important;
+  font-weight: 700 !important;
+}
+
+html.dark td,
+html.dark .leads-td,
+html.dark .deals-td,
+html.dark .users-td,
+html.dark .roles-td,
+[data-theme="dark"] td {
+  border-bottom: 1px solid rgba(16, 185, 129, 0.15) !important;
+  color: #F8FAFC !important;
+}
+
+html.dark tr:hover td,
+[data-theme="dark"] tr:hover td {
+  background: rgba(16, 185, 129, 0.1) !important;
+}
+
+/* --------------------------------------------------------------------------
+   9. INTERACTIVE THEME & TIMEZONE SELECTOR COMPONENT BASE STYLES
    -------------------------------------------------------------------------- */
 
 .theme-selector-section {
@@ -505,12 +974,6 @@ html.dark ::placeholder,
   user-select: none;
 }
 
-html.dark .theme-option-card,
-[data-theme="dark"] .theme-option-card {
-  background: #14251B;
-  border-color: rgba(16, 185, 129, 0.25);
-}
-
 .theme-option-card:hover {
   border-color: #10B981;
   transform: translateY(-2px);
@@ -521,13 +984,6 @@ html.dark .theme-option-card,
   border-color: #10B981;
   background: rgba(16, 185, 129, 0.08);
   box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.35), 0 8px 20px rgba(16, 185, 129, 0.15);
-}
-
-html.dark .theme-option-card.is-active,
-[data-theme="dark"] .theme-option-card.is-active {
-  background: #193123;
-  border-color: #34D399;
-  box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.35), 0 8px 20px rgba(0, 0, 0, 0.4);
 }
 
 .theme-option-icon-box {
@@ -542,12 +998,6 @@ html.dark .theme-option-card.is-active,
   color: #059669;
 }
 
-html.dark .theme-option-icon-box,
-[data-theme="dark"] .theme-option-icon-box {
-  background: rgba(16, 185, 129, 0.18);
-  color: #34D399;
-}
-
 .theme-option-card.is-active .theme-option-icon-box {
   background: #10B981;
   color: #FFFFFF;
@@ -560,20 +1010,10 @@ html.dark .theme-option-icon-box,
   margin-bottom: 4px;
 }
 
-html.dark .theme-option-name,
-[data-theme="dark"] .theme-option-name {
-  color: #F8FAFC;
-}
-
 .theme-option-desc {
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   color: #64748B;
-  line-height: 1.4;
-}
-
-html.dark .theme-option-desc,
-[data-theme="dark"] .theme-option-desc {
-  color: #94A3B8;
+  line-height: 1.45;
 }
 
 .theme-active-indicator {
@@ -595,7 +1035,6 @@ html.dark .theme-option-desc,
   color: #FFFFFF;
 }
 
-/* Timezone selector & live clock badge */
 .timezone-card-wrapper {
   display: flex;
   flex-direction: column;
@@ -605,12 +1044,6 @@ html.dark .theme-option-desc,
   background: #FFFFFF;
   border: 1.5px solid rgba(16, 185, 129, 0.25);
   transition: all var(--transition-fast);
-}
-
-html.dark .timezone-card-wrapper,
-[data-theme="dark"] .timezone-card-wrapper {
-  background: #14251B;
-  border-color: rgba(16, 185, 129, 0.25);
 }
 
 .timezone-live-clock-badge {
@@ -625,13 +1058,6 @@ html.dark .timezone-card-wrapper,
   font-weight: 600;
   color: #065F46;
   width: fit-content;
-}
-
-html.dark .timezone-live-clock-badge,
-[data-theme="dark"] .timezone-live-clock-badge {
-  background: rgba(16, 185, 129, 0.16);
-  border-color: rgba(16, 185, 129, 0.35);
-  color: #34D399;
 }
 
 .timezone-clock-dot {
@@ -651,37 +1077,5 @@ html.dark .timezone-live-clock-badge,
   50% {
     opacity: 0.4;
     transform: scale(0.85);
-  }
-}
-
-.theme-toast-feedback {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 14px;
-  border-radius: 10px;
-  background: rgba(16, 185, 129, 0.15);
-  border: 1px solid rgba(16, 185, 129, 0.4);
-  color: #059669;
-  font-size: 0.8125rem;
-  font-weight: 700;
-  animation: fadeInDown 200ms ease;
-}
-
-html.dark .theme-toast-feedback,
-[data-theme="dark"] .theme-toast-feedback {
-  background: rgba(16, 185, 129, 0.2);
-  border-color: rgba(16, 185, 129, 0.5);
-  color: #34D399;
-}
-
-@keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
   }
 }
