@@ -19,7 +19,6 @@ import {
   ShieldIcon,
   TrashIcon,
   CheckCircleIcon,
-  MailIcon,
 } from '../../components/common/Icons';
 
 export const WorkspaceSettingsPage: React.FC = () => {
@@ -36,11 +35,6 @@ export const WorkspaceSettingsPage: React.FC = () => {
   // General Fields
   const [name, setName] = useState(currentWorkspace?.name || 'Onseclick Workspace');
   const [slug, setSlug] = useState(currentWorkspace?.slug || 'onseclick-workspace');
-  const [description, setDescription] = useState(currentWorkspace?.description || 'Primary corporate CRM workspace');
-  const [website, setWebsite] = useState(currentWorkspace?.website || 'https://onseclick.com');
-  const [companyName, setCompanyName] = useState(settings?.general?.companyName || 'Onseclick Enterprise');
-  const [industry, setIndustry] = useState(settings?.general?.industry || 'Technology / Software');
-  const [supportEmail, setSupportEmail] = useState(settings?.general?.supportEmail || 'support@onseclick.com');
 
   // Branding Fields
   const [logoUrl, setLogoUrl] = useState(settings?.branding?.logoUrl || '');
@@ -81,8 +75,6 @@ export const WorkspaceSettingsPage: React.FC = () => {
     if (currentWorkspace) {
       setName(currentWorkspace.name || 'Onseclick Workspace');
       setSlug(currentWorkspace.slug || 'onseclick-workspace');
-      setDescription(currentWorkspace.description || 'Primary corporate CRM workspace');
-      setWebsite(currentWorkspace.website || 'https://onseclick.com');
       if (currentWorkspace.timezone) setTimezone(currentWorkspace.timezone);
       if (currentWorkspace.currency) setCurrency(currentWorkspace.currency);
     }
@@ -90,8 +82,6 @@ export const WorkspaceSettingsPage: React.FC = () => {
     currentWorkspace?.id,
     currentWorkspace?.name,
     currentWorkspace?.slug,
-    currentWorkspace?.description,
-    currentWorkspace?.website,
     currentWorkspace?.timezone,
     currentWorkspace?.currency,
   ]);
@@ -114,13 +104,6 @@ export const WorkspaceSettingsPage: React.FC = () => {
         if (!ignore && data) {
           setName(currentWorkspace.name || 'Onseclick Workspace');
           setSlug(currentWorkspace.slug || 'onseclick-workspace');
-          setDescription(currentWorkspace.description || 'Primary corporate CRM workspace');
-          setWebsite(currentWorkspace.website || 'https://onseclick.com');
-          if (data.general) {
-            setCompanyName(data.general.companyName || 'Onseclick Enterprise');
-            setIndustry(data.general.industry || 'Technology / Software');
-            setSupportEmail(data.general.supportEmail || 'support@onseclick.com');
-          }
 
           if (data.branding) {
             setLogoUrl(data.branding.logoUrl || '');
@@ -175,21 +158,10 @@ export const WorkspaceSettingsPage: React.FC = () => {
     setApiError(null);
 
     try {
-      // 1. Update Workspace metadata
+      // Update Workspace metadata
       await workspaceService.updateWorkspace(currentWorkspace.id, {
         name,
         slug,
-        description,
-        website,
-      });
-
-      // 2. Update General Settings
-      await workspaceService.updateSettings(currentWorkspace.id, {
-        general: {
-          companyName,
-          industry,
-          supportEmail,
-        },
       });
 
       await refreshCurrentWorkspace();
@@ -453,64 +425,6 @@ export const WorkspaceSettingsPage: React.FC = () => {
                     disabled={!canManageWorkspace || isSaving}
                     helperText="Used in workspace URLs and subdomains."
                   />
-
-                  <div className="form-field-group">
-                    <label htmlFor="ws-desc-edit" className="form-field-label">Workspace Description</label>
-                    <textarea
-                      id="ws-desc-edit"
-                      className="form-textarea"
-                      rows={3}
-                      value={description}
-                      onChange={(e) => setDescription(e.target.value)}
-                      disabled={!canManageWorkspace || isSaving}
-                    />
-                  </div>
-
-                  <div className="form-row-two-col">
-                    <FormField
-                      id="ws-company-edit"
-                      name="companyName"
-                      label="Company Name"
-                      placeholder="e.g. Acme Corporation"
-                      value={companyName}
-                      onChange={(e) => setCompanyName(e.target.value)}
-                      disabled={!canManageWorkspace || isSaving}
-                    />
-
-                    <FormField
-                      id="ws-industry-edit"
-                      name="industry"
-                      label="Industry Vertical"
-                      placeholder="e.g. Financial Software, SaaS"
-                      value={industry}
-                      onChange={(e) => setIndustry(e.target.value)}
-                      disabled={!canManageWorkspace || isSaving}
-                    />
-                  </div>
-
-                  <div className="form-row-two-col">
-                    <FormField
-                      id="ws-support-email-edit"
-                      name="supportEmail"
-                      type="email"
-                      label="Support Contact Email"
-                      placeholder="support@company.com"
-                      value={supportEmail}
-                      onChange={(e) => setSupportEmail(e.target.value)}
-                      icon={<MailIcon size={18} />}
-                      disabled={!canManageWorkspace || isSaving}
-                    />
-
-                    <FormField
-                      id="ws-website-edit"
-                      name="website"
-                      label="Official Website URL"
-                      placeholder="https://company.com"
-                      value={website}
-                      onChange={(e) => setWebsite(e.target.value)}
-                      disabled={!canManageWorkspace || isSaving}
-                    />
-                  </div>
 
                   {canManageWorkspace && (
                     <div className="form-action-row">
