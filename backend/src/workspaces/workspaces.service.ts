@@ -255,7 +255,7 @@ export class WorkspacesService {
         `SELECT "id" FROM "Workspace" WHERE "slug" = $1 OR "id"::text = $1 LIMIT 1`,
         idOrSlug,
       );
-      const rows: any[] = await Promise.race([queryPromise, timeoutPromise]);
+      const rows: any[] = (await Promise.race([queryPromise, timeoutPromise])) as any[];
       if (rows && rows.length > 0 && rows[0]?.id) {
         return rows[0].id;
       }
@@ -1425,6 +1425,57 @@ export class WorkspacesService {
   }
 
   /**
+   * Transfer ownership of a workspace to another member.
+   */
+  async transferOwnership(
+    workspaceId: string,
+    newOwnerMemberIdOrUserId: string,
+    currentUserId?: string,
+    userRole?: string,
+  ) {
+    const workspace: any = await this.findOne(workspaceId);
+    if (currentUserId && userRole !== 'ADMIN' && workspace.ownerId !== currentUserId) {
+      throw new ForbiddenException('Only the current workspace owner can transfer ownership');
+    }
+
+    const newOwnerMember = await this.getMember(workspaceId, newOwnerMemberIdOrUserId);
+    if (!newOwnerMember) {
+      throw new BadRequestException('Target user is not a member of this workspace');
+    }
+
+    if (newOwnerMember.userId === workspace.ownerId) {
+      throw new BadRequestException('User is already the workspace owner');
+    }
+
+    const now = new Date();
+
+    // 1. Update Workspace ownerId
+    await this.prisma.$queryRawUnsafe(
+      `UPDATE "Workspace" SET "ownerId" = $1, "updatedAt" = $2 WHERE "id" = $3`,
+      newOwnerMember.userId,
+      now,
+      workspaceId,
+    );
+
+    // 2. Set new owner's member role to OWNER
+    await this.prisma.$queryRawUnsafe(
+      `UPDATE "WorkspaceMember" SET "role" = 'OWNER', "updatedAt" = $1 WHERE "id" = $2`,
+      now,
+      newOwnerMember.id,
+    );
+
+    // 3. Set previous owner's member role to ADMIN
+    await this.prisma.$queryRawUnsafe(
+      `UPDATE "WorkspaceMember" SET "role" = 'ADMIN', "updatedAt" = $1 WHERE "workspaceId" = $2 AND "userId" = $3`,
+      now,
+      workspaceId,
+      workspace.ownerId,
+    );
+
+    return this.findOne(workspaceId);
+  }
+
+  /**
    * Assign a specific workspace role to a member.
    */
   async assignMemberRole(
@@ -2063,7 +2114,7 @@ export class WorkspacesService {
         const sql = `SELECT * FROM "WorkspaceSetting" WHERE "workspaceId" = $1 LIMIT 1`;
         const timeoutPromise = new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 1500));
         const queryPromise = this.prisma.$queryRawUnsafe(sql, resolvedId);
-        const rows: any[] = await Promise.race([queryPromise, timeoutPromise]);
+        const rows: any[] = (await Promise.race([queryPromise, timeoutPromise])) as any[];
 
         if (rows && rows.length > 0) {
           const s = rows[0];

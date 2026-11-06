@@ -247,6 +247,20 @@ export class WorkspacesController {
     return this.workspacesService.assignMemberRole(id, memberId, dto.roleId || dto.role, userId, roleName);
   }
 
+  @Post(':id/transfer-ownership')
+  @ApiOperation({ summary: 'Transfer ownership of a workspace to another member' })
+  @ApiParam({ name: 'id', description: 'Workspace UUID' })
+  @ApiResponse({ status: 200, description: 'Ownership transferred successfully' })
+  async transferOwnership(
+    @Param('id') id: string,
+    @Body('newOwnerId') newOwnerId: string,
+    @CurrentUser('id') userId: string,
+    @CurrentUser('role') userRole: any,
+  ) {
+    const roleName = typeof userRole === 'string' ? userRole : userRole?.name;
+    return this.workspacesService.transferOwnership(id, newOwnerId, userId, roleName);
+  }
+
   @Delete(':id/members/:memberId')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Remove a member from the workspace' })
