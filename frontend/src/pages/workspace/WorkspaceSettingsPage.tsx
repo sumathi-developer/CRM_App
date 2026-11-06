@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useWorkspace } from '../../context/useWorkspace';
 import { workspaceService } from '../../services/workspace.service';
@@ -14,18 +14,26 @@ import { SuccessMessage } from '../../components/auth/SuccessMessage';
 import {
   BuildingIcon,
   PaletteIcon,
-  GlobeIcon,
   SlidersIcon,
-  ShieldIcon,
   TrashIcon,
   CheckCircleIcon,
+  UploadIcon,
 } from '../../components/common/Icons';
+
+const AVATAR_COLOR_PALETTE: string[][] = [
+  ['#b4b4b4', '#8d8d8d', '#6647f0', '#3e63dd', '#0091ff', '#30a46c', '#ffc53d'],
+  ['#f76808', '#e5484d', '#e93d82', '#ab4aba', '#a18072', '#ffffff'],
+];
+
+const isHexColor = (val?: string | null): boolean => {
+  return !!val && /^#([0-9A-F]{3}){1,2}$/i.test(val);
+};
 
 export const WorkspaceSettingsPage: React.FC = () => {
   const navigate = useNavigate();
   const { currentWorkspace, canManageWorkspace, refreshCurrentWorkspace, refreshWorkspaces, isLoading: isWorkspaceContextLoading } = useWorkspace();
 
-  const [activeSection, setActiveSection] = useState<'general' | 'branding' | 'localization' | 'preferences' | 'security' | 'danger'>('general');
+  const [activeSection, setActiveSection] = useState<'general' | 'branding' | 'preferences' | 'danger'>('general');
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isDeletingWs, setIsDeletingWs] = useState(false);
@@ -36,30 +44,30 @@ export const WorkspaceSettingsPage: React.FC = () => {
   const [name, setName] = useState(currentWorkspace?.name || 'Onseclick Workspace');
   const [slug, setSlug] = useState(currentWorkspace?.slug || 'onseclick-workspace');
 
+  // Avatar State
+  const [avatarColor, setAvatarColor] = useState<string>(() => {
+    if (currentWorkspace?.avatar && isHexColor(currentWorkspace.avatar)) {
+      return currentWorkspace.avatar;
+    }
+    return '#12a594';
+  });
+  const [avatarImage, setAvatarImage] = useState<string>(() => {
+    if (currentWorkspace?.avatar && !isHexColor(currentWorkspace.avatar)) {
+      return currentWorkspace.avatar;
+    }
+    return '';
+  });
+  const [isAvatarPopoverOpen, setIsAvatarPopoverOpen] = useState(false);
+  const avatarPickerRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   // Branding Fields
   const [companyPortalUrl, setCompanyPortalUrl] = useState(settings?.branding?.companyPortalUrl || '');
-
-  // Localization Fields
-  const [timezone, setTimezone] = useState(settings?.localization?.timezone || currentWorkspace?.timezone || 'UTC');
-  const [currency, setCurrency] = useState(settings?.localization?.currency || currentWorkspace?.currency || 'USD');
-  const [language, setLanguage] = useState(settings?.localization?.language || 'en');
-  const [dateFormat, setDateFormat] = useState(settings?.localization?.dateFormat || 'YYYY-MM-DD');
-  const [timeFormat, setTimeFormat] = useState(settings?.localization?.timeFormat || '24h');
 
   // Preferences Fields
   const [emailNotifications, setEmailNotifications] = useState(settings?.preferences?.emailNotifications ?? true);
   const [autoAssignLeads, setAutoAssignLeads] = useState(settings?.preferences?.autoAssignLeads ?? false);
   const [weeklyDigest, setWeeklyDigest] = useState(settings?.preferences?.weeklyDigest ?? true);
-
-  // Security Fields
-  const [enforceTwoFactor, setEnforceTwoFactor] = useState(settings?.security?.enforceTwoFactor ?? false);
-  const [sessionTimeoutMinutes, setSessionTimeoutMinutes] = useState(settings?.security?.sessionTimeoutMinutes || 1440);
-  const [allowedEmailDomains, setAllowedEmailDomains] = useState(
-    Array.isArray(settings?.security?.allowedEmailDomains) ? settings.security.allowedEmailDomains.join(', ') : ''
-  );
-  const [ipAllowlist, setIpAllowlist] = useState(
-    Array.isArray(settings?.security?.ipAllowlist) ? settings.security.ipAllowlist.join(', ') : ''
-  );
 
   // Modals & Feedback
   const [isSwitcherOpen, setIsSwitcherOpen] = useState(false);
@@ -67,20 +75,107 @@ export const WorkspaceSettingsPage: React.FC = () => {
   const [apiError, setApiError] = useState<string | null>(null);
   const [apiSuccess, setApiSuccess] = useState<string | null>(null);
 
+  // Close avatar popover on click outside or Escape key
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        avatarPickerRef.current &&
+        !avatarPickerRef.current.contains(event.target as Node)
+      ) {
+        setIsAvatarPopoverOpen(false);
+      }
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsAvatarPopoverOpen(false);
+      }
+    };
+
+    if (isAvatarPopoverOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isAvatarPopoverOpen]);
+
   useEffect(() => {
     if (currentWorkspace) {
       setName(currentWorkspace.name || 'Onseclick Workspace');
       setSlug(currentWorkspace.slug || 'onseclick-workspace');
-      if (currentWorkspace.timezone) setTimezone(currentWorkspace.timezone);
-      if (currentWorkspace.currency) setCurrency(currentWorkspace.currency);
+      if (currentWorkspace.avatar) {
+        if (isHexColor(currentWorkspace.avatar)) {
+          setAvatarColor(currentWorkspace.avatar);
+          setAvatarImage('');
+        } else {
+          setAvatarImage(currentWorkspace.avatar);
+          setAvatarColor('#12a594');
+        }
+      }
     }
   }, [
     currentWorkspace?.id,
     currentWorkspace?.name,
     currentWorkspace?.slug,
-    currentWorkspace?.timezone,
-    currentWorkspace?.currency,
+    currentWorkspace?.avatar,
   ]);
+
+  const handleSelectColor = async (color: string) => {
+    setAvatarColor(color);
+    setAvatarImage('');
+    setIsAvatarPopoverOpen(false);
+
+    if (currentWorkspace?.id && canManageWorkspace) {
+      try {
+        await workspaceService.updateWorkspace(currentWorkspace.id, {
+          avatar: color,
+        });
+        await refreshCurrentWorkspace();
+      } catch (err: any) {
+        console.error('Failed to auto-save avatar color:', err);
+      }
+    }
+  };
+
+  const handleAvatarFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      setApiError('Please select a valid image file');
+      return;
+    }
+
+    if (file.size > 2 * 1024 * 1024) {
+      setApiError('Avatar image size must be less than 2MB');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = async () => {
+      const dataUrl = reader.result as string;
+      setAvatarImage(dataUrl);
+      setIsAvatarPopoverOpen(false);
+
+      if (currentWorkspace?.id && canManageWorkspace) {
+        try {
+          await workspaceService.updateWorkspace(currentWorkspace.id, {
+            avatar: dataUrl,
+          });
+          await refreshCurrentWorkspace();
+          setApiSuccess('Workspace avatar updated successfully!');
+          setTimeout(() => setApiSuccess(null), 3500);
+        } catch (err: any) {
+          setApiError(err.message || 'Failed to update avatar');
+        }
+      }
+    };
+    reader.readAsDataURL(file);
+  };
 
   useEffect(() => {
     let ignore = false;
@@ -105,25 +200,10 @@ export const WorkspaceSettingsPage: React.FC = () => {
             setCompanyPortalUrl(data.branding.companyPortalUrl || '');
           }
 
-          if (data.localization) {
-            setTimezone(data.localization.timezone || currentWorkspace.timezone || 'UTC');
-            setCurrency(data.localization.currency || currentWorkspace.currency || 'USD');
-            setLanguage(data.localization.language || 'en');
-            setDateFormat(data.localization.dateFormat || 'YYYY-MM-DD');
-            setTimeFormat(data.localization.timeFormat || '24h');
-          }
-
           if (data.preferences) {
             setEmailNotifications(data.preferences.emailNotifications ?? true);
             setAutoAssignLeads(data.preferences.autoAssignLeads ?? false);
             setWeeklyDigest(data.preferences.weeklyDigest ?? true);
-          }
-
-          if (data.security) {
-            setEnforceTwoFactor(data.security.enforceTwoFactor ?? false);
-            setSessionTimeoutMinutes(data.security.sessionTimeoutMinutes || 1440);
-            setAllowedEmailDomains(Array.isArray(data.security.allowedEmailDomains) ? data.security.allowedEmailDomains.join(', ') : '');
-            setIpAllowlist(Array.isArray(data.security.ipAllowlist) ? data.security.ipAllowlist.join(', ') : '');
           }
         }
       } catch (err: any) {
@@ -154,6 +234,7 @@ export const WorkspaceSettingsPage: React.FC = () => {
       await workspaceService.updateWorkspace(currentWorkspace.id, {
         name,
         slug,
+        avatar: avatarImage || avatarColor,
       });
 
       await refreshCurrentWorkspace();
@@ -187,32 +268,6 @@ export const WorkspaceSettingsPage: React.FC = () => {
     }
   };
 
-  // Save Localization
-  const handleSaveLocalization = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!currentWorkspace?.id) return;
-    setIsSaving(true);
-    setApiError(null);
-
-    try {
-      await workspaceService.updateLocalization(currentWorkspace.id, {
-        timezone,
-        currency,
-        language,
-        dateFormat,
-        timeFormat,
-      });
-
-      await refreshCurrentWorkspace();
-      setApiSuccess('Localization & currency updated!');
-      setTimeout(() => setApiSuccess(null), 4000);
-    } catch (err: any) {
-      setApiError(err.message || 'Failed to save localization');
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
   // Save Preferences
   const handleSavePreferences = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -231,40 +286,6 @@ export const WorkspaceSettingsPage: React.FC = () => {
       setTimeout(() => setApiSuccess(null), 4000);
     } catch (err: any) {
       setApiError(err.message || 'Failed to save preferences');
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
-  // Save Security
-  const handleSaveSecurity = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!currentWorkspace?.id) return;
-    setIsSaving(true);
-    setApiError(null);
-
-    const domains = allowedEmailDomains
-      .split(',')
-      .map((d) => d.trim())
-      .filter(Boolean);
-
-    const ips = ipAllowlist
-      .split(',')
-      .map((i) => i.trim())
-      .filter(Boolean);
-
-    try {
-      await workspaceService.updateSecurity(currentWorkspace.id, {
-        enforceTwoFactor,
-        sessionTimeoutMinutes: Number(sessionTimeoutMinutes) || 1440,
-        allowedEmailDomains: domains,
-        ipAllowlist: ips,
-      });
-
-      setApiSuccess('Workspace security policies updated!');
-      setTimeout(() => setApiSuccess(null), 4000);
-    } catch (err: any) {
-      setApiError(err.message || 'Failed to save security settings');
     } finally {
       setIsSaving(false);
     }
@@ -343,29 +364,11 @@ export const WorkspaceSettingsPage: React.FC = () => {
 
               <button
                 type="button"
-                className={`settings-nav-btn ${activeSection === 'localization' ? 'is-active' : ''}`}
-                onClick={() => setActiveSection('localization')}
-              >
-                <GlobeIcon size={18} />
-                <span>Localization & Currency</span>
-              </button>
-
-              <button
-                type="button"
                 className={`settings-nav-btn ${activeSection === 'preferences' ? 'is-active' : ''}`}
                 onClick={() => setActiveSection('preferences')}
               >
                 <SlidersIcon size={18} />
                 <span>Preferences & Automation</span>
-              </button>
-
-              <button
-                type="button"
-                className={`settings-nav-btn ${activeSection === 'security' ? 'is-active' : ''}`}
-                onClick={() => setActiveSection('security')}
-              >
-                <ShieldIcon size={18} />
-                <span>Security & Compliance</span>
               </button>
 
               <button
@@ -382,49 +385,105 @@ export const WorkspaceSettingsPage: React.FC = () => {
             <div className="settings-content-card">
               {/* 1. GENERAL SETTINGS */}
               {activeSection === 'general' && (
-                <form onSubmit={handleSaveGeneral} className="portal-form" id="form-general-settings">
-                  <div className="card-section-header">
-                    <div className="section-icon-badge">
-                      <BuildingIcon size={20} />
+                <form onSubmit={handleSaveGeneral} className="general-settings-form" id="form-general-settings">
+                  <h3 className="general-section-heading">General</h3>
+
+                  <div className="general-card-group">
+                    {/* Row 1: Avatar */}
+                    <div className="general-card-row">
+                      <span className="general-row-label">Avatar</span>
+                      <div className="general-avatar-picker-wrapper" ref={avatarPickerRef}>
+                        <button
+                          type="button"
+                          className="general-avatar-btn"
+                          onClick={() => setIsAvatarPopoverOpen((prev) => !prev)}
+                          style={{
+                            backgroundColor: avatarImage ? 'transparent' : avatarColor,
+                          }}
+                          aria-label="Change workspace avatar"
+                          title="Click to select color or upload avatar"
+                        >
+                          {avatarImage ? (
+                            <img src={avatarImage} alt="Workspace avatar" className="general-avatar-img" />
+                          ) : (
+                            <span className="general-avatar-letter">
+                              {name?.trim() ? name.trim()[0].toUpperCase() : 'W'}
+                            </span>
+                          )}
+                        </button>
+
+                        {/* Avatar Popover Menu */}
+                        {isAvatarPopoverOpen && (
+                          <div className="avatar-popover-card" role="dialog" aria-label="Avatar options">
+                            <div className="avatar-popover-title">Color</div>
+
+                            <div className="avatar-palette-grid">
+                              {AVATAR_COLOR_PALETTE.map((row, rowIdx) => (
+                                <div key={rowIdx} className="avatar-palette-row">
+                                  {row.map((color) => (
+                                    <button
+                                      key={color}
+                                      type="button"
+                                      className={`avatar-color-swatch ${avatarColor.toLowerCase() === color.toLowerCase() && !avatarImage ? 'is-selected' : ''}`}
+                                      style={{ backgroundColor: color }}
+                                      onClick={() => handleSelectColor(color)}
+                                      title={color}
+                                      aria-label={`Select color ${color}`}
+                                    />
+                                  ))}
+                                </div>
+                              ))}
+                            </div>
+
+                            <div className="avatar-popover-divider" />
+
+                            <button
+                              type="button"
+                              className="avatar-upload-btn"
+                              onClick={() => fileInputRef.current?.click()}
+                            >
+                              <UploadIcon size={16} />
+                              <span>Upload avatar</span>
+                            </button>
+                            <input
+                              ref={fileInputRef}
+                              type="file"
+                              accept="image/png, image/jpeg, image/webp, image/gif, image/svg+xml"
+                              style={{ display: 'none' }}
+                              onChange={handleAvatarFileUpload}
+                            />
+                          </div>
+                        )}
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="section-title">General Information</h3>
-                      <p className="section-desc">Workspace naming, routing slug, and organizational identity</p>
+
+                    {/* Row 2: Name */}
+                    <div className="general-card-row">
+                      <label htmlFor="ws-name-input" className="general-row-label">Name</label>
+                      <input
+                        id="ws-name-input"
+                        name="name"
+                        type="text"
+                        className="general-name-input"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        required
+                        disabled={!canManageWorkspace || isSaving}
+                      />
                     </div>
                   </div>
 
-                  <FormField
-                    id="ws-name-edit"
-                    name="name"
-                    label="Workspace Display Name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                    disabled={!canManageWorkspace || isSaving}
-                  />
-
-                  <FormField
-                    id="ws-slug-edit"
-                    name="slug"
-                    label="Routing Slug"
-                    value={slug}
-                    onChange={(e) => setSlug(e.target.value)}
-                    required
-                    disabled={!canManageWorkspace || isSaving}
-                    helperText="Used in workspace URLs and subdomains."
-                  />
-
                   {canManageWorkspace && (
-                    <div className="form-action-row">
+                    <div className="form-action-row" style={{ marginTop: '24px' }}>
                       <PrimaryButton
                         type="submit"
                         isLoading={isSaving}
-                        loadingText="Saving Settings..."
+                        loadingText="Saving Changes..."
                         icon={<CheckCircleIcon size={16} />}
                         fullWidth={false}
                         id="btn-save-general-settings"
                       >
-                        Save General Information
+                        Save Changes
                       </PrimaryButton>
                     </div>
                   )}
@@ -471,109 +530,7 @@ export const WorkspaceSettingsPage: React.FC = () => {
                 </form>
               )}
 
-              {/* 3. LOCALIZATION SETTINGS */}
-              {activeSection === 'localization' && (
-                <form onSubmit={handleSaveLocalization} className="portal-form" id="form-localization-settings">
-                  <div className="card-section-header">
-                    <div className="section-icon-badge">
-                      <GlobeIcon size={20} />
-                    </div>
-                    <div>
-                      <h3 className="section-title">Localization & Regional Standards</h3>
-                      <p className="section-desc">Timezone calculations, default currency, and date representations</p>
-                    </div>
-                  </div>
-
-                  <div className="form-row-two-col">
-                    <div className="form-field-group">
-                      <label htmlFor="loc-tz-select" className="form-field-label">Timezone</label>
-                      <select
-                        id="loc-tz-select"
-                        className="form-select"
-                        value={timezone}
-                        onChange={(e) => setTimezone(e.target.value)}
-                        disabled={!canManageWorkspace || isSaving}
-                      >
-                        <option value="UTC">UTC (Coordinated Universal Time)</option>
-                        <option value="America/New_York">America/New_York (EST/EDT)</option>
-                        <option value="America/Chicago">America/Chicago (CST/CDT)</option>
-                        <option value="America/Los_Angeles">America/Los_Angeles (PST/PDT)</option>
-                        <option value="Europe/London">Europe/London (GMT/BST)</option>
-                        <option value="Europe/Paris">Europe/Paris (CET/CEST)</option>
-                        <option value="Asia/Tokyo">Asia/Tokyo (JST)</option>
-                        <option value="Asia/Kolkata">Asia/Kolkata (IST)</option>
-                      </select>
-                    </div>
-
-                    <div className="form-field-group">
-                      <label htmlFor="loc-curr-select" className="form-field-label">Base Currency</label>
-                      <select
-                        id="loc-curr-select"
-                        className="form-select"
-                        value={currency}
-                        onChange={(e) => setCurrency(e.target.value)}
-                        disabled={!canManageWorkspace || isSaving}
-                      >
-                        <option value="USD">USD ($)</option>
-                        <option value="EUR">EUR (€)</option>
-                        <option value="GBP">GBP (£)</option>
-                        <option value="CAD">CAD ($)</option>
-                        <option value="AUD">AUD ($)</option>
-                        <option value="INR">INR (₹)</option>
-                        <option value="JPY">JPY (¥)</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="form-row-two-col">
-                    <div className="form-field-group">
-                      <label htmlFor="loc-date-select" className="form-field-label">Date Format</label>
-                      <select
-                        id="loc-date-select"
-                        className="form-select"
-                        value={dateFormat}
-                        onChange={(e) => setDateFormat(e.target.value)}
-                        disabled={!canManageWorkspace || isSaving}
-                      >
-                        <option value="YYYY-MM-DD">YYYY-MM-DD (2026-10-27)</option>
-                        <option value="MM/DD/YYYY">MM/DD/YYYY (10/27/2026)</option>
-                        <option value="DD/MM/YYYY">DD/MM/YYYY (27/10/2026)</option>
-                      </select>
-                    </div>
-
-                    <div className="form-field-group">
-                      <label htmlFor="loc-time-select" className="form-field-label">Time Format</label>
-                      <select
-                        id="loc-time-select"
-                        className="form-select"
-                        value={timeFormat}
-                        onChange={(e) => setTimeFormat(e.target.value)}
-                        disabled={!canManageWorkspace || isSaving}
-                      >
-                        <option value="24h">24-hour (14:30)</option>
-                        <option value="12h">12-hour (2:30 PM)</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  {canManageWorkspace && (
-                    <div className="form-action-row">
-                      <PrimaryButton
-                        type="submit"
-                        isLoading={isSaving}
-                        loadingText="Updating Localization..."
-                        icon={<CheckCircleIcon size={16} />}
-                        fullWidth={false}
-                        id="btn-save-localization-settings"
-                      >
-                        Save Localization
-                      </PrimaryButton>
-                    </div>
-                  )}
-                </form>
-              )}
-
-              {/* 4. PREFERENCES SETTINGS */}
+              {/* 3. PREFERENCES SETTINGS */}
               {activeSection === 'preferences' && (
                 <form onSubmit={handleSavePreferences} className="portal-form" id="form-preferences-settings">
                   <div className="card-section-header">
@@ -644,91 +601,7 @@ export const WorkspaceSettingsPage: React.FC = () => {
                 </form>
               )}
 
-              {/* 5. SECURITY SETTINGS */}
-              {activeSection === 'security' && (
-                <form onSubmit={handleSaveSecurity} className="portal-form" id="form-security-settings">
-                  <div className="card-section-header">
-                    <div className="section-icon-badge">
-                      <ShieldIcon size={20} />
-                    </div>
-                    <div>
-                      <h3 className="section-title">Security & Enterprise Governance</h3>
-                      <p className="section-desc">Enforce two-factor authentication, session timeouts, and IP whitelisting</p>
-                    </div>
-                  </div>
-
-                  <div className="settings-switches-stack">
-                    <label className="settings-toggle-card">
-                      <div className="toggle-text-wrap">
-                        <span className="toggle-title">Enforce Two-Factor Authentication (2FA)</span>
-                        <span className="toggle-sub">Mandate 2FA verification for all workspace members upon login</span>
-                      </div>
-                      <input
-                        type="checkbox"
-                        checked={enforceTwoFactor}
-                        onChange={(e) => setEnforceTwoFactor(e.target.checked)}
-                        disabled={!canManageWorkspace || isSaving}
-                      />
-                    </label>
-                  </div>
-
-                  <div className="form-field-group">
-                    <label htmlFor="sec-timeout-input" className="form-field-label">
-                      Session Inactivity Timeout (Minutes)
-                    </label>
-                    <input
-                      id="sec-timeout-input"
-                      type="number"
-                      className="form-input"
-                      min={15}
-                      max={10080}
-                      value={sessionTimeoutMinutes}
-                      onChange={(e) => setSessionTimeoutMinutes(Number(e.target.value))}
-                      disabled={!canManageWorkspace || isSaving}
-                    />
-                    <p className="form-field-helper">Default: 1440 minutes (24 hours). Minimum: 15 minutes.</p>
-                  </div>
-
-                  <FormField
-                    id="sec-domains-input"
-                    name="allowedEmailDomains"
-                    label="Allowed Email Domains (Comma Separated)"
-                    placeholder="company.com, globalpartners.com"
-                    value={allowedEmailDomains}
-                    onChange={(e) => setAllowedEmailDomains(e.target.value)}
-                    disabled={!canManageWorkspace || isSaving}
-                    helperText="Leave empty to permit any authorized email domain."
-                  />
-
-                  <FormField
-                    id="sec-ip-input"
-                    name="ipAllowlist"
-                    label="CIDR IP Allowlist (Comma Separated)"
-                    placeholder="192.168.1.0/24, 10.0.0.0/16"
-                    value={ipAllowlist}
-                    onChange={(e) => setIpAllowlist(e.target.value)}
-                    disabled={!canManageWorkspace || isSaving}
-                    helperText="Restricts workspace API queries to trusted network ranges."
-                  />
-
-                  {canManageWorkspace && (
-                    <div className="form-action-row">
-                      <PrimaryButton
-                        type="submit"
-                        isLoading={isSaving}
-                        loadingText="Applying Policies..."
-                        icon={<CheckCircleIcon size={16} />}
-                        fullWidth={false}
-                        id="btn-save-security-settings"
-                      >
-                        Apply Security Policies
-                      </PrimaryButton>
-                    </div>
-                  )}
-                </form>
-              )}
-
-              {/* 6. DANGER ZONE */}
+              {/* 4. DANGER ZONE */}
               {activeSection === 'danger' && (
                 <div className="danger-zone-container">
                   <div className="card-section-header">

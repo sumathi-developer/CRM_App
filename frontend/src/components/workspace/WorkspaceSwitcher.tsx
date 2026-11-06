@@ -177,8 +177,19 @@ export const WorkspaceSwitcher: React.FC<WorkspaceSwitcherProps> = ({
                   }
                 }}
               >
-                <div className="switcher-item-avatar">
-                  {getInitials(ws.name)}
+                <div
+                  className="switcher-item-avatar"
+                  style={
+                    ws.avatar && ws.avatar.startsWith('#')
+                      ? { backgroundColor: ws.avatar, background: ws.avatar, color: '#ffffff' }
+                      : undefined
+                  }
+                >
+                  {ws.avatar && !ws.avatar.startsWith('#') ? (
+                    <img src={ws.avatar} alt={ws.name} className="switcher-item-avatar-img" />
+                  ) : (
+                    getInitials(ws.name)
+                  )}
                 </div>
 
                 <div className="switcher-item-details">

@@ -99,8 +99,16 @@ export const WorkspaceHeader: React.FC<WorkspaceHeaderProps> = ({ onOpenCreate }
       <div className="workspace-header-wrapper" id="workspace-header">
         <div className="workspace-header-top">
           <div className="workspace-identity">
-            <div className="workspace-avatar-box" aria-hidden="true">
-              {currentWorkspace?.avatar ? (
+            <div
+              className="workspace-avatar-box"
+              aria-hidden="true"
+              style={
+                currentWorkspace?.avatar && currentWorkspace.avatar.startsWith('#')
+                  ? { backgroundColor: currentWorkspace.avatar, background: currentWorkspace.avatar }
+                  : undefined
+              }
+            >
+              {currentWorkspace?.avatar && !currentWorkspace.avatar.startsWith('#') ? (
                 <img src={currentWorkspace.avatar} alt={currentWorkspace.name} className="workspace-avatar-img" />
               ) : (
                 <span className="workspace-avatar-text">{getInitials(currentWorkspace?.name)}</span>
