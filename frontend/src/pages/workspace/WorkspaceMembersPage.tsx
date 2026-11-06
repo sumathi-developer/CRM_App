@@ -416,13 +416,20 @@ export const WorkspaceMembersPage: React.FC = () => {
         ) : activeTab === 'members' ? (
           <div className="table-responsive-container">
             <table className="enterprise-data-table" id="members-table">
+              <colgroup>
+                <col style={{ width: canManageWorkspace ? '26%' : '30%' }} />
+                <col style={{ width: canManageWorkspace ? '22%' : '25%' }} />
+                <col style={{ width: canManageWorkspace ? '18%' : '20%' }} />
+                <col style={{ width: canManageWorkspace ? '22%' : '25%' }} />
+                {canManageWorkspace && <col style={{ width: '12%' }} />}
+              </colgroup>
               <thead>
                 <tr>
                   <th>Member</th>
                   <th>Workspace Role</th>
                   <th>Status</th>
                   <th>Joined Date</th>
-                  {canManageWorkspace && <th className="text-right">Actions</th>}
+                  {canManageWorkspace && <th>Actions</th>}
                 </tr>
               </thead>
               <tbody>
@@ -468,7 +475,7 @@ export const WorkspaceMembersPage: React.FC = () => {
                       </td>
 
                       {canManageWorkspace && (
-                        <td className="text-right">
+                        <td>
                           <div className="table-action-btns">
                             <button
                               type="button"
@@ -509,13 +516,20 @@ export const WorkspaceMembersPage: React.FC = () => {
           /* Pending Invitations View */
           <div className="table-responsive-container">
             <table className="enterprise-data-table" id="invitations-table">
+              <colgroup>
+                <col style={{ width: canManageWorkspace ? '26%' : '30%' }} />
+                <col style={{ width: canManageWorkspace ? '22%' : '25%' }} />
+                <col style={{ width: canManageWorkspace ? '18%' : '20%' }} />
+                <col style={{ width: canManageWorkspace ? '22%' : '25%' }} />
+                {canManageWorkspace && <col style={{ width: '12%' }} />}
+              </colgroup>
               <thead>
                 <tr>
                   <th>Invited Recipient</th>
                   <th>Assigned Role</th>
                   <th>Status</th>
                   <th>Expires Date</th>
-                  {canManageWorkspace && <th className="text-right">Actions</th>}
+                  {canManageWorkspace && <th>Actions</th>}
                 </tr>
               </thead>
               <tbody>
@@ -554,7 +568,7 @@ export const WorkspaceMembersPage: React.FC = () => {
                     </td>
 
                     {canManageWorkspace && (
-                      <td className="text-right">
+                      <td>
                         <div className="table-action-btns">
                           {invite.status === 'PENDING' && (
                             <button

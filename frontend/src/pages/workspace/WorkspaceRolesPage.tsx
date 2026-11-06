@@ -317,7 +317,7 @@ export const WorkspaceRolesPage: React.FC = () => {
                     </div>
                   </div>
 
-                  {canManageWorkspace && (
+                  {canManageWorkspace && (canEdit || canDelete) && (
                     <div className="role-card-footer">
                       {canEdit && (
                         <button
@@ -342,12 +342,6 @@ export const WorkspaceRolesPage: React.FC = () => {
                         >
                           <TrashIcon size={15} />
                         </button>
-                      )}
-
-                      {r.isSystem && (
-                        <span className="system-protected-note">
-                          Protected default tier
-                        </span>
                       )}
                     </div>
                   )}

@@ -126,10 +126,11 @@
 .role-card-footer {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
+  gap: 0.5rem;
   padding: 0.875rem 1.25rem;
-  background: rgba(15, 23, 42, 0.6);
-  border-top: 1px solid var(--border-color, #1e293b);
+  background: transparent;
+  border-top: 1px solid var(--border-color, rgba(0, 0, 0, 0.08));
 }
 
 /* --------------------------------------------------------------------------

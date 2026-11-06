@@ -787,6 +787,7 @@ input.search-input:focus {
 
 .enterprise-data-table {
   width: 100%;
+  table-layout: fixed;
   border-collapse: collapse;
   text-align: left;
 }
@@ -800,6 +801,8 @@ input.search-input:focus {
   letter-spacing: 0.05em;
   border-bottom: 1px solid var(--border-subtle);
   background: rgba(15, 23, 42, 0.4);
+  text-align: left;
+  vertical-align: middle;
 }
 
 .enterprise-data-table td {
@@ -808,6 +811,17 @@ input.search-input:focus {
   border-bottom: 1px solid var(--border-subtle);
   color: var(--text-main);
   vertical-align: middle;
+  text-align: left;
+}
+
+.enterprise-data-table th:first-child,
+.enterprise-data-table td:first-child {
+  padding-left: 32px;
+}
+
+.enterprise-data-table th:last-child,
+.enterprise-data-table td:last-child {
+  padding-right: 28px;
 }
 
 .enterprise-data-table tr:hover td {
@@ -1109,15 +1123,15 @@ input.search-input:focus {
 .role-card-footer {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
+  gap: 8px;
   border-top: 1px solid var(--border-subtle);
   padding-top: 14px;
+  background: transparent;
 }
 
 .system-protected-note {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  font-style: italic;
+  display: none !important;
 }
 
 /* --------------------------------------------------------------------------
