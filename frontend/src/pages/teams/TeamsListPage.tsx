@@ -289,13 +289,6 @@ export const TeamsListPage: React.FC = () => {
 
               return (
                 <div key={team.id} className="team-grid-card" id={`team-card-${team.id}`}>
-                  {/* Color stripe */}
-                  <div
-                    className="team-card-color-stripe"
-                    style={{ backgroundColor: teamColor }}
-                    aria-hidden="true"
-                  />
-
                   <div className="team-card-header">
                     <div className="team-brand-group">
                       <div

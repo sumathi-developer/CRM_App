@@ -49,13 +49,6 @@ export const TeamHeader: React.FC<TeamHeaderProps> = ({ team, canEdit = true }) 
 
   return (
     <div className="team-detail-header-card" id="team-header">
-      {/* Accent Top Stripe */}
-      <div
-        className="team-header-accent-stripe"
-        style={{ backgroundColor: teamColor }}
-        aria-hidden="true"
-      />
-
       <div className="team-header-main-content">
         <div className="team-header-identity">
           <Link to="/teams" className="header-back-link" title="Return to All Teams">
