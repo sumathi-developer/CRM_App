@@ -27,43 +27,49 @@ export const WorkspaceSettingsPage: React.FC = () => {
   const { currentWorkspace, canManageWorkspace, refreshCurrentWorkspace, refreshWorkspaces, isLoading: isWorkspaceContextLoading } = useWorkspace();
 
   const [activeSection, setActiveSection] = useState<'general' | 'branding' | 'localization' | 'preferences' | 'security' | 'danger'>('general');
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isDeletingWs, setIsDeletingWs] = useState(false);
 
+  const settings = currentWorkspace?.settings;
+
   // General Fields
-  const [name, setName] = useState('');
-  const [slug, setSlug] = useState('');
-  const [description, setDescription] = useState('');
-  const [website, setWebsite] = useState('');
-  const [companyName, setCompanyName] = useState('');
-  const [industry, setIndustry] = useState('');
-  const [supportEmail, setSupportEmail] = useState('');
+  const [name, setName] = useState(currentWorkspace?.name || 'Onseclick Workspace');
+  const [slug, setSlug] = useState(currentWorkspace?.slug || 'onseclick-workspace');
+  const [description, setDescription] = useState(currentWorkspace?.description || 'Primary corporate CRM workspace');
+  const [website, setWebsite] = useState(currentWorkspace?.website || 'https://onseclick.com');
+  const [companyName, setCompanyName] = useState(settings?.general?.companyName || 'Onseclick Enterprise');
+  const [industry, setIndustry] = useState(settings?.general?.industry || 'Technology / Software');
+  const [supportEmail, setSupportEmail] = useState(settings?.general?.supportEmail || 'support@onseclick.com');
 
   // Branding Fields
-  const [logoUrl, setLogoUrl] = useState('');
-  const [faviconUrl, setFaviconUrl] = useState('');
-  const [primaryColor, setPrimaryColor] = useState('#3b82f6');
-  const [accentColor, setAccentColor] = useState('#10b981');
-  const [companyPortalUrl, setCompanyPortalUrl] = useState('');
+  const [logoUrl, setLogoUrl] = useState(settings?.branding?.logoUrl || '');
+  const [faviconUrl, setFaviconUrl] = useState(settings?.branding?.faviconUrl || '');
+  const [primaryColor, setPrimaryColor] = useState(settings?.branding?.primaryColor || '#10b981');
+  const [accentColor, setAccentColor] = useState(settings?.branding?.accentColor || '#062e03');
+  const [companyPortalUrl, setCompanyPortalUrl] = useState(settings?.branding?.companyPortalUrl || '');
 
   // Localization Fields
-  const [timezone, setTimezone] = useState('America/New_York');
-  const [currency, setCurrency] = useState('USD');
-  const [language, setLanguage] = useState('en');
-  const [dateFormat, setDateFormat] = useState('YYYY-MM-DD');
-  const [timeFormat, setTimeFormat] = useState('24h');
+  const [timezone, setTimezone] = useState(settings?.localization?.timezone || currentWorkspace?.timezone || 'UTC');
+  const [currency, setCurrency] = useState(settings?.localization?.currency || currentWorkspace?.currency || 'USD');
+  const [language, setLanguage] = useState(settings?.localization?.language || 'en');
+  const [dateFormat, setDateFormat] = useState(settings?.localization?.dateFormat || 'YYYY-MM-DD');
+  const [timeFormat, setTimeFormat] = useState(settings?.localization?.timeFormat || '24h');
 
   // Preferences Fields
-  const [emailNotifications, setEmailNotifications] = useState(true);
-  const [autoAssignLeads, setAutoAssignLeads] = useState(false);
-  const [weeklyDigest, setWeeklyDigest] = useState(true);
+  const [emailNotifications, setEmailNotifications] = useState(settings?.preferences?.emailNotifications ?? true);
+  const [autoAssignLeads, setAutoAssignLeads] = useState(settings?.preferences?.autoAssignLeads ?? false);
+  const [weeklyDigest, setWeeklyDigest] = useState(settings?.preferences?.weeklyDigest ?? true);
 
   // Security Fields
-  const [enforceTwoFactor, setEnforceTwoFactor] = useState(false);
-  const [sessionTimeoutMinutes, setSessionTimeoutMinutes] = useState(1440);
-  const [allowedEmailDomains, setAllowedEmailDomains] = useState('');
-  const [ipAllowlist, setIpAllowlist] = useState('');
+  const [enforceTwoFactor, setEnforceTwoFactor] = useState(settings?.security?.enforceTwoFactor ?? false);
+  const [sessionTimeoutMinutes, setSessionTimeoutMinutes] = useState(settings?.security?.sessionTimeoutMinutes || 1440);
+  const [allowedEmailDomains, setAllowedEmailDomains] = useState(
+    Array.isArray(settings?.security?.allowedEmailDomains) ? settings.security.allowedEmailDomains.join(', ') : ''
+  );
+  const [ipAllowlist, setIpAllowlist] = useState(
+    Array.isArray(settings?.security?.ipAllowlist) ? settings.security.ipAllowlist.join(', ') : ''
+  );
 
   // Modals & Feedback
   const [isSwitcherOpen, setIsSwitcherOpen] = useState(false);
@@ -71,67 +77,83 @@ export const WorkspaceSettingsPage: React.FC = () => {
   const [apiError, setApiError] = useState<string | null>(null);
   const [apiSuccess, setApiSuccess] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (currentWorkspace) {
+      setName(currentWorkspace.name || 'Onseclick Workspace');
+      setSlug(currentWorkspace.slug || 'onseclick-workspace');
+      setDescription(currentWorkspace.description || 'Primary corporate CRM workspace');
+      setWebsite(currentWorkspace.website || 'https://onseclick.com');
+      if (currentWorkspace.timezone) setTimezone(currentWorkspace.timezone);
+      if (currentWorkspace.currency) setCurrency(currentWorkspace.currency);
+    }
+  }, [
+    currentWorkspace?.id,
+    currentWorkspace?.name,
+    currentWorkspace?.slug,
+    currentWorkspace?.description,
+    currentWorkspace?.website,
+    currentWorkspace?.timezone,
+    currentWorkspace?.currency,
+  ]);
 
   useEffect(() => {
     let ignore = false;
     if (!currentWorkspace?.id) {
-      if (!isWorkspaceContextLoading) {
-        setIsLoading(false);
-      }
       return;
     }
 
     const fetchInitialSettings = async () => {
       try {
-        setIsLoading(true);
         const timeoutPromise = new Promise<never>((_, reject) =>
-          setTimeout(() => reject(new Error('Request timed out')), 2500)
+          setTimeout(() => reject(new Error('Request timed out')), 3000)
         );
         const data = await Promise.race([
           workspaceService.getSettings(currentWorkspace.id),
           timeoutPromise,
         ]);
-        if (!ignore) {
+        if (!ignore && data) {
           setName(currentWorkspace.name || 'Onseclick Workspace');
           setSlug(currentWorkspace.slug || 'onseclick-workspace');
           setDescription(currentWorkspace.description || 'Primary corporate CRM workspace');
           setWebsite(currentWorkspace.website || 'https://onseclick.com');
-          setCompanyName(data?.general?.companyName || 'Onseclick Enterprise');
-          setIndustry(data?.general?.industry || 'Technology / Software');
-          setSupportEmail(data?.general?.supportEmail || 'support@onseclick.com');
+          if (data.general) {
+            setCompanyName(data.general.companyName || 'Onseclick Enterprise');
+            setIndustry(data.general.industry || 'Technology / Software');
+            setSupportEmail(data.general.supportEmail || 'support@onseclick.com');
+          }
 
-          setLogoUrl(data?.branding?.logoUrl || '');
-          setFaviconUrl(data?.branding?.faviconUrl || '');
-          setPrimaryColor(data?.branding?.primaryColor || '#10b981');
-          setAccentColor(data?.branding?.accentColor || '#062e03');
-          setCompanyPortalUrl(data?.branding?.companyPortalUrl || '');
+          if (data.branding) {
+            setLogoUrl(data.branding.logoUrl || '');
+            setFaviconUrl(data.branding.faviconUrl || '');
+            setPrimaryColor(data.branding.primaryColor || '#10b981');
+            setAccentColor(data.branding.accentColor || '#062e03');
+            setCompanyPortalUrl(data.branding.companyPortalUrl || '');
+          }
 
-          setTimezone(data?.localization?.timezone || currentWorkspace.timezone || 'UTC');
-          setCurrency(data?.localization?.currency || currentWorkspace.currency || 'USD');
-          setLanguage(data?.localization?.language || 'en');
-          setDateFormat(data?.localization?.dateFormat || 'YYYY-MM-DD');
-          setTimeFormat(data?.localization?.timeFormat || '24h');
+          if (data.localization) {
+            setTimezone(data.localization.timezone || currentWorkspace.timezone || 'UTC');
+            setCurrency(data.localization.currency || currentWorkspace.currency || 'USD');
+            setLanguage(data.localization.language || 'en');
+            setDateFormat(data.localization.dateFormat || 'YYYY-MM-DD');
+            setTimeFormat(data.localization.timeFormat || '24h');
+          }
 
-          setEmailNotifications(data?.preferences?.emailNotifications ?? true);
-          setAutoAssignLeads(data?.preferences?.autoAssignLeads ?? false);
-          setWeeklyDigest(data?.preferences?.weeklyDigest ?? true);
+          if (data.preferences) {
+            setEmailNotifications(data.preferences.emailNotifications ?? true);
+            setAutoAssignLeads(data.preferences.autoAssignLeads ?? false);
+            setWeeklyDigest(data.preferences.weeklyDigest ?? true);
+          }
 
-          setEnforceTwoFactor(data?.security?.enforceTwoFactor ?? false);
-          setSessionTimeoutMinutes(data?.security?.sessionTimeoutMinutes || 1440);
-          setAllowedEmailDomains(Array.isArray(data?.security?.allowedEmailDomains) ? data.security.allowedEmailDomains.join(', ') : '');
-          setIpAllowlist(Array.isArray(data?.security?.ipAllowlist) ? data.security.ipAllowlist.join(', ') : '');
+          if (data.security) {
+            setEnforceTwoFactor(data.security.enforceTwoFactor ?? false);
+            setSessionTimeoutMinutes(data.security.sessionTimeoutMinutes || 1440);
+            setAllowedEmailDomains(Array.isArray(data.security.allowedEmailDomains) ? data.security.allowedEmailDomains.join(', ') : '');
+            setIpAllowlist(Array.isArray(data.security.ipAllowlist) ? data.security.ipAllowlist.join(', ') : '');
+          }
         }
       } catch (err: any) {
-        if (!ignore) {
-          setApiError(err.message || 'Loaded default workspace settings');
-          setName(currentWorkspace.name || 'Onseclick Workspace');
-          setSlug(currentWorkspace.slug || 'onseclick-workspace');
-          setDescription(currentWorkspace.description || 'Primary corporate CRM workspace');
-          setWebsite(currentWorkspace.website || 'https://onseclick.com');
-          setCompanyName('Onseclick Enterprise');
-          setIndustry('Technology / Software');
-          setSupportEmail('support@onseclick.com');
-        }
+        // Silent fallback without flashing banner to user on initial load
+        console.debug('Background settings fetch fallback active:', err?.message);
       } finally {
         if (!ignore) {
           setIsLoading(false);
@@ -143,7 +165,7 @@ export const WorkspaceSettingsPage: React.FC = () => {
     return () => {
       ignore = true;
     };
-  }, [currentWorkspace?.id, isWorkspaceContextLoading]);
+  }, [currentWorkspace?.id]);
 
   // Save General
   const handleSaveGeneral = async (e: React.FormEvent) => {

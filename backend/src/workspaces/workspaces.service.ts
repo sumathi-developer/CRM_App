@@ -250,10 +250,12 @@ export class WorkspacesService {
       return idOrSlug;
     }
     try {
-      const rows: any[] = await this.prisma.$queryRawUnsafe(
-        `SELECT "id" FROM "Workspace" WHERE "slug" = $1 LIMIT 1`,
+      const timeoutPromise = new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 1500));
+      const queryPromise = this.prisma.$queryRawUnsafe(
+        `SELECT "id" FROM "Workspace" WHERE "slug" = $1 OR "id"::text = $1 LIMIT 1`,
         idOrSlug,
       );
+      const rows: any[] = await Promise.race([queryPromise, timeoutPromise]);
       if (rows && rows.length > 0 && rows[0]?.id) {
         return rows[0].id;
       }
@@ -2059,7 +2061,9 @@ export class WorkspacesService {
       const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(resolvedId);
       if (isUuid) {
         const sql = `SELECT * FROM "WorkspaceSetting" WHERE "workspaceId" = $1 LIMIT 1`;
-        const rows: any[] = await this.prisma.$queryRawUnsafe(sql, resolvedId);
+        const timeoutPromise = new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 1500));
+        const queryPromise = this.prisma.$queryRawUnsafe(sql, resolvedId);
+        const rows: any[] = await Promise.race([queryPromise, timeoutPromise]);
 
         if (rows && rows.length > 0) {
           const s = rows[0];
