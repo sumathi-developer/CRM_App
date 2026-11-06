@@ -26,6 +26,7 @@ import {
   HomeIcon,
   BellIcon,
   DollarSignIcon,
+  DealsIcon,
   CalendarIcon,
   MailIcon,
   FileTextIcon,
@@ -100,7 +101,7 @@ const MAIN_MODULES: NavModuleItem[] = [
   {
     id: 'deals',
     label: 'Deals',
-    icon: <DollarSignIcon size={18} />,
+    icon: <DealsIcon size={18} />,
     basePath: '/deals',
   },
   {
@@ -230,7 +231,7 @@ const SEARCHABLE_ITEMS: SearchableModuleItem[] = [
     path: '/deals',
     keywords: ['deals', 'revenue', 'won', 'lost', 'opportunities', 'sales value'],
     description: 'Manage active sales opportunities, contracts, and revenue',
-    icon: <DollarSignIcon size={16} />,
+    icon: <DealsIcon size={16} />,
   },
   {
     id: 'lead-generation',

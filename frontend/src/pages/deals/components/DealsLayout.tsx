@@ -3,7 +3,7 @@ import { NavLink, Link, useLocation } from 'react-router-dom';
 import { Navbar } from '../../../components/common/Navbar';
 import { ErrorMessage } from '../../../components/auth/ErrorMessage';
 import { SuccessMessage } from '../../../components/auth/SuccessMessage';
-import { DollarSignIcon, ArrowLeftIcon } from '../../../components/common/Icons';
+import { DollarSignIcon, DealsIcon, ArrowLeftIcon } from '../../../components/common/Icons';
 import { Badge } from '../../lead-generation/components/Cards';
 import { formatCurrency } from '../../lead-generation/leadGenConstants';
 import { dealStatusTone, probabilityTone } from '../../pipelines/pipelineConstants';
@@ -176,7 +176,7 @@ export const DealsLayout: React.FC<DealsLayoutProps> = ({
           <div className="lg-header-text">
             {breadcrumbs && <div className="lg-breadcrumbs">{breadcrumbs}</div>}
             <h1 className="lg-title">
-              <span className="lg-title-icon">{icon || <DollarSignIcon size={22} />}</span>
+              <span className="lg-title-icon">{icon || <DealsIcon size={22} />}</span>
               <span>{title}</span>
             </h1>
             {subtitle && <p className="lg-subtitle">{subtitle}</p>}

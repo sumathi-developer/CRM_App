@@ -22,6 +22,7 @@ import {
   UserIcon,
   UsersIcon,
   DollarSignIcon,
+  DealsIcon,
   RefreshCwIcon,
 } from '../../components/common/Icons';
 
@@ -32,7 +33,7 @@ const ENTITY_CONFIG: Record<
   LEAD: { label: 'Leads', icon: <UserIcon size={16} />, color: '#3b82f6' },
   CONTACT: { label: 'Contacts', icon: <UsersIcon size={16} />, color: '#10b981' },
   COMPANY: { label: 'Companies', icon: <BuildingIcon size={16} />, color: '#8b5cf6' },
-  DEAL: { label: 'Deals', icon: <DollarSignIcon size={16} />, color: '#f59e0b' },
+  DEAL: { label: 'Deals', icon: <DealsIcon size={16} />, color: '#f59e0b' },
   ACTIVITY: { label: 'Activities', icon: <RefreshCwIcon size={16} />, color: '#ec4899' },
   DOCUMENT: { label: 'Documents', icon: <TagIcon size={16} />, color: '#06b6d4' },
 };

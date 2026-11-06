@@ -11,6 +11,7 @@ import {
   UserIcon,
   SlidersIcon,
   DollarSignIcon,
+  DealsIcon,
   ZapIcon,
   ShieldIcon,
   FileTextIcon,
@@ -109,7 +110,7 @@ const STATIC_SEARCHABLE_MODULES: SearchableItem[] = [
     path: '/deals',
     keywords: ['deals', 'revenue', 'won', 'lost', 'opportunities', 'sales value'],
     description: 'Manage active sales opportunities, contracts, and revenue targets',
-    icon: <DollarSignIcon size={18} />,
+    icon: <DealsIcon size={18} />,
   },
   {
     id: 'lead-generation',
