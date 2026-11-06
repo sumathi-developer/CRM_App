@@ -15,10 +15,10 @@
 }
 
 .team-card-color-stripe {
-  height: 4px;
-  width: 100%;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
+  display: none !important;
+  height: 0 !important;
+  width: 0 !important;
+  visibility: hidden !important;
 }
 
 /* --------------------------------------------------------------------------
@@ -295,8 +295,10 @@
 }
 
 .team-header-accent-stripe {
-  height: 6px;
-  width: 100%;
+  display: none !important;
+  height: 0 !important;
+  width: 0 !important;
+  visibility: hidden !important;
 }
 
 .team-header-main-content {
