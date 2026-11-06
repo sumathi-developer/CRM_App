@@ -450,9 +450,9 @@ export const UsersListPage: React.FC = () => {
 
             {/* Pagination Controls */}
             {totalPages > 1 && (
-              <div className="table-pagination-bar">
+              <div className="table-pagination-bar users-pagination">
                 <span className="pagination-info">
-                  Showing page {page} of {totalPages} ({totalCount} total)
+                  Showing page <strong>{page}</strong> of <strong>{totalPages}</strong> ({totalCount} total)
                 </span>
                 <div className="pagination-buttons">
                   <button

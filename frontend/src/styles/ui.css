@@ -4356,7 +4356,8 @@ main.ld-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
 
 /* Pagination */
 .lg-pagination,
-.users-pagination {
+.users-pagination,
+.table-pagination-bar {
   display: flex !important;
   justify-content: space-between !important;
   align-items: center !important;
@@ -4370,16 +4371,30 @@ main.ld-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
 }
 
 .lg-pagination strong,
-.users-pagination strong {
+.users-pagination strong,
+.table-pagination-bar strong,
+.table-pagination-bar .pagination-info {
   color: #000000 !important;
-  font-weight: 800 !important;
+  font-weight: 600 !important;
+  font-size: 0.8125rem !important;
+  line-height: 1.5 !important;
 }
 
-.lg-page-btn {
+.lg-pagination-controls,
+.table-pagination-bar .pagination-buttons {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.lg-page-btn,
+.table-pagination-bar .pagination-btn {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  padding: 0.35rem 0.75rem !important;
+  padding: 0.35rem 0.85rem !important;
   font-size: 0.75rem !important;
   font-weight: 700 !important;
   color: #000000 !important;
@@ -4388,26 +4403,50 @@ main.ld-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
   background: #FFFFFF !important;
   cursor: pointer !important;
   transition: all 150ms ease !important;
+  line-height: 1.4 !important;
+  margin: 0 !important;
 }
 
-.lg-page-btn:hover:not(:disabled) {
+.lg-page-btn:hover:not(:disabled),
+.table-pagination-bar .pagination-btn:hover:not(:disabled) {
   background: #EAF4ED !important;
   color: #000000 !important;
+  border-color: rgba(16, 185, 129, 0.45) !important;
 }
 
-.lg-page-num {
+.lg-page-btn:disabled,
+.table-pagination-bar .pagination-btn:disabled {
+  opacity: 0.45 !important;
+  cursor: not-allowed !important;
+  background: rgba(0, 0, 0, 0.04) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+  color: #888888 !important;
+}
+
+.lg-page-num,
+.table-pagination-bar .page-number-pill {
   width: 30px !important;
   height: 30px !important;
+  min-width: 30px !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
   border-radius: 8px !important;
   font-size: 0.78rem !important;
   font-weight: 700 !important;
+  color: #FFFFFF !important;
+  border: 1px solid #10B981 !important;
+  background: #10B981 !important;
+  cursor: pointer !important;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.3) !important;
+  margin: 0 !important;
+}
+
+.lg-page-num:not(.is-active) {
+  background: #FFFFFF !important;
   color: #000000 !important;
   border: 1px solid rgba(16, 185, 129, 0.18) !important;
-  background: #FFFFFF !important;
-  cursor: pointer !important;
+  box-shadow: none !important;
 }
 
 .lg-page-num.is-active,
@@ -4416,6 +4455,64 @@ main.ld-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
   color: #FFFFFF !important;
   border-color: #10B981 !important;
   box-shadow: 0 2px 6px rgba(16, 185, 129, 0.3) !important;
+}
+
+/* Dark mode pagination */
+html.dark .lg-pagination,
+html.dark .users-pagination,
+html.dark .table-pagination-bar,
+[data-theme="dark"] .lg-pagination,
+[data-theme="dark"] .users-pagination,
+[data-theme="dark"] .table-pagination-bar {
+  background: #0E1A12 !important;
+  border-top-color: rgba(16, 185, 129, 0.22) !important;
+  color: #E2E8F0 !important;
+}
+
+html.dark .lg-pagination strong,
+html.dark .users-pagination strong,
+html.dark .table-pagination-bar strong,
+html.dark .table-pagination-bar .pagination-info,
+[data-theme="dark"] .lg-pagination strong,
+[data-theme="dark"] .users-pagination strong,
+[data-theme="dark"] .table-pagination-bar strong,
+[data-theme="dark"] .table-pagination-bar .pagination-info {
+  color: #E2E8F0 !important;
+}
+
+html.dark .lg-page-btn,
+html.dark .table-pagination-bar .pagination-btn,
+[data-theme="dark"] .lg-page-btn,
+[data-theme="dark"] .table-pagination-bar .pagination-btn {
+  background: rgba(16, 185, 129, 0.08) !important;
+  color: #E2E8F0 !important;
+  border: 1px solid rgba(16, 185, 129, 0.28) !important;
+}
+
+html.dark .lg-page-btn:hover:not(:disabled),
+html.dark .table-pagination-bar .pagination-btn:hover:not(:disabled),
+[data-theme="dark"] .lg-page-btn:hover:not(:disabled),
+[data-theme="dark"] .table-pagination-bar .pagination-btn:hover:not(:disabled) {
+  background: rgba(16, 185, 129, 0.2) !important;
+  color: #FFFFFF !important;
+  border-color: #10B981 !important;
+}
+
+html.dark .lg-page-btn:disabled,
+html.dark .table-pagination-bar .pagination-btn:disabled,
+[data-theme="dark"] .lg-page-btn:disabled,
+[data-theme="dark"] .table-pagination-bar .pagination-btn:disabled {
+  opacity: 0.35 !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  color: #64748B !important;
+}
+
+html.dark .lg-page-num:not(.is-active),
+[data-theme="dark"] .lg-page-num:not(.is-active) {
+  background: rgba(16, 185, 129, 0.08) !important;
+  color: #E2E8F0 !important;
+  border-color: rgba(16, 185, 129, 0.28) !important;
 }
 
 /* ---------- 21.7 Section Cards & Generic Panels ---------- */

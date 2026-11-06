@@ -482,19 +482,16 @@ export const DealsIcon: React.FC<IconProps> = ({ size = 18, strokeWidth = 2, cla
     className={className}
     {...props}
   >
-    <circle cx="12" cy="5" r="3" />
-    <path d="m10.8 5 0.8 0.8 1.5-1.6" />
-    <path d="m3 14 3-3 2 2-3 3z" />
-    <path d="m21 14-3-3-2 2 3 3z" />
-    <path d="M8 12c1.2-.8 2.6-.9 3.8-.4a2 2 0 0 1 1.2 1.4l.6 1.4" />
-    <path d="M16 12c-1.2-.6-2.5-.4-3.5.3" />
-    <path d="M6.5 14.5c.5 1.2 1.6 1.8 2.7 1" />
-    <path d="M8.5 16c.5 1.2 1.6 1.8 2.7 1" />
-    <path d="M10.5 17.5c.5 1.2 1.6 1.8 2.7 1" />
-    <path d="M12.5 19c.8 1.4 2.4 1.5 3.5.3 1-1.1 1.6-2.4 2-4.3" />
+    <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+    <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+    <path d="M4 22h16" />
+    <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
+    <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
+    <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
   </svg>
 );
 
+export const TrophyIcon = DealsIcon;
 export const HandshakeDealIcon = DealsIcon;
 
 export const UploadIcon: React.FC<IconProps> = ({ size = 18, strokeWidth = 2, ...props }) => (
