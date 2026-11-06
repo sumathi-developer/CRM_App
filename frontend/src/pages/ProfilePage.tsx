@@ -15,12 +15,24 @@ import {
   ShieldIcon,
   KeyRoundIcon,
   MonitorIcon,
+  SunIcon,
+  MoonIcon,
   CheckCircleIcon,
   RefreshCwIcon,
   PaletteIcon,
   GlobeIcon,
   ClockIcon,
 } from '../components/common/Icons';
+import type { ThemeMode } from '../utils/theme';
+import {
+  COMMON_TIMEZONES,
+  applyTheme,
+  getStoredTheme,
+  getStoredTimezone,
+  setStoredTimezone,
+  formatDateWithTimezone,
+  getCurrentTimeInTimezone,
+} from '../utils/theme';
 
 export const ProfilePage: React.FC = () => {
   const { user, updateProfile, refreshProfile } = useAuth();
@@ -28,9 +40,10 @@ export const ProfilePage: React.FC = () => {
   const [name, setName] = useState(user?.name || '');
   const [phone, setPhone] = useState(user?.phone || '');
   const [avatar, setAvatar] = useState(user?.avatar || '');
-  const [theme, setTheme] = useState<'light' | 'dark' | 'system'>('dark');
+  const [theme, setTheme] = useState<ThemeMode>(() => getStoredTheme());
   const [language, setLanguage] = useState('en');
-  const [timezone, setTimezone] = useState('UTC');
+  const [timezone, setTimezone] = useState<string>(() => getStoredTimezone());
+  const [liveTime, setLiveTime] = useState<string>(() => getCurrentTimeInTimezone(getStoredTimezone()));
 
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -38,6 +51,16 @@ export const ProfilePage: React.FC = () => {
   const [apiError, setApiError] = useState<string | null>(null);
   const [apiSuccess, setApiSuccess] = useState<string | null>(null);
 
+  // Keep live time clock synchronized with the selected timezone
+  useEffect(() => {
+    setLiveTime(getCurrentTimeInTimezone(timezone));
+    const interval = setInterval(() => {
+      setLiveTime(getCurrentTimeInTimezone(timezone));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [timezone]);
+
+  // Load user data and backend preferences
   useEffect(() => {
     if (user) {
       setName(user.name || '');
@@ -45,14 +68,22 @@ export const ProfilePage: React.FC = () => {
       setAvatar(user.avatar || '');
     }
 
-    // Load user preference settings from backend
     const loadPreferences = async () => {
       try {
-        const pref = await api.get('/settings/profile');
+        const res = await api.get('/settings/profile');
+        const pref = (res as any)?.data || res;
         if (pref) {
-          if (pref.theme) setTheme(pref.theme);
-          if (pref.language) setLanguage(pref.language);
-          if (pref.timezone) setTimezone(pref.timezone);
+          if (pref.theme && (pref.theme === 'light' || pref.theme === 'dark' || pref.theme === 'system')) {
+            setTheme(pref.theme);
+            applyTheme(pref.theme);
+          }
+          if (pref.language) {
+            setLanguage(pref.language);
+          }
+          if (pref.timezone) {
+            setTimezone(pref.timezone);
+            setStoredTimezone(pref.timezone);
+          }
         }
       } catch {
         // Fallback to local default state
@@ -61,6 +92,46 @@ export const ProfilePage: React.FC = () => {
 
     void loadPreferences();
   }, [user]);
+
+  // Instant Theme Switcher Handler: switches whole app immediately and saves to backend
+  const handleThemeChange = async (newTheme: ThemeMode) => {
+    setTheme(newTheme);
+    applyTheme(newTheme);
+
+    try {
+      await api.patch('/settings/profile', { theme: newTheme });
+    } catch {
+      // Preference is saved in localStorage regardless of network state
+    }
+
+    const themeLabel =
+      newTheme === 'dark'
+        ? 'Dark Theme'
+        : newTheme === 'light'
+        ? 'Light Theme'
+        : 'System Default Settings';
+
+    setApiSuccess(`Applied ${themeLabel} across the application.`);
+    setTimeout(() => setApiSuccess(null), 3500);
+  };
+
+  // Instant Timezone Switcher Handler: applies timezone and saves to backend
+  const handleTimezoneChange = async (newTimezone: string) => {
+    setTimezone(newTimezone);
+    setStoredTimezone(newTimezone);
+
+    try {
+      await api.patch('/settings/profile', { timezone: newTimezone });
+    } catch {
+      // Preference is saved in localStorage regardless of network state
+    }
+
+    const matched = COMMON_TIMEZONES.find((tz) => tz.value === newTimezone);
+    const tzLabel = matched ? matched.label : newTimezone;
+
+    setApiSuccess(`Timezone set to ${tzLabel}.`);
+    setTimeout(() => setApiSuccess(null), 3500);
+  };
 
   const handleStartEditing = () => {
     setName(user?.name || '');
@@ -95,14 +166,18 @@ export const ProfilePage: React.FC = () => {
     setApiSuccess(null);
 
     try {
-      // 1. Update user profile information (own user access)
+      // 1. Update user profile information
       await updateProfile({
         name: name.trim(),
         phone: phone.trim() || undefined,
         avatar: avatar.trim() || undefined,
       });
 
-      // 2. Update preference settings (theme, language, timezone)
+      // 2. Apply theme & timezone immediately
+      applyTheme(theme);
+      setStoredTimezone(timezone);
+
+      // 3. Update preference settings on backend
       await api.patch('/settings/profile', {
         theme,
         language,
@@ -127,19 +202,6 @@ export const ProfilePage: React.FC = () => {
       .join('')
       .slice(0, 2)
       .toUpperCase();
-  };
-
-  const formatDate = (dateStr?: string) => {
-    if (!dateStr) return 'N/A';
-    try {
-      return new Date(dateStr).toLocaleDateString(undefined, {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      });
-    } catch {
-      return dateStr;
-    }
   };
 
   return (
@@ -182,7 +244,7 @@ export const ProfilePage: React.FC = () => {
           <div className="page-title-group">
             <h1 className="page-title">User Account &amp; Profile</h1>
             <p className="page-subtitle">
-              Manage personal identity, contact information, and regional preferences
+              Manage personal identity, contact information, theme, and timezone preferences
             </p>
           </div>
 
@@ -209,7 +271,7 @@ export const ProfilePage: React.FC = () => {
         <SuccessMessage
           message={apiSuccess}
           onDismiss={() => setApiSuccess(null)}
-          title="Changes Saved"
+          title="Updated Successfully"
         />
 
         {/* Profile Identity Banner Card */}
@@ -257,7 +319,9 @@ export const ProfilePage: React.FC = () => {
               )}
 
               <span className="member-since-pill">
-                <span>Member since {formatDate(user?.createdAt)}</span>
+                <span>
+                  Member since {formatDateWithTimezone(user?.createdAt, timezone)}
+                </span>
               </span>
             </div>
           </div>
@@ -340,7 +404,7 @@ export const ProfilePage: React.FC = () => {
                   helperText="Enter a direct link to an avatar image, or leave empty for letter initials."
                 />
 
-                {/* Regional & Interface Preferences */}
+                {/* Regional & Interface Preferences inside Form */}
                 <div className="profile-preferences-section">
                   <h4 className="preferences-section-title">
                     Preferences &amp; Localization
@@ -348,13 +412,17 @@ export const ProfilePage: React.FC = () => {
                   <div className="preferences-grid">
                     <div className="preference-field-group">
                       <label htmlFor="pref-theme" className="preference-field-label">
-                        <PaletteIcon size={14} className="text-indigo-400" />
+                        <PaletteIcon size={14} className="text-emerald-500" />
                         <span>Theme</span>
                       </label>
                       <select
                         id="pref-theme"
                         value={theme}
-                        onChange={(e) => setTheme(e.target.value as 'light' | 'dark' | 'system')}
+                        onChange={(e) => {
+                          const val = e.target.value as ThemeMode;
+                          setTheme(val);
+                          applyTheme(val);
+                        }}
                         disabled={isSaving}
                         className="preference-select-control"
                       >
@@ -366,7 +434,7 @@ export const ProfilePage: React.FC = () => {
 
                     <div className="preference-field-group">
                       <label htmlFor="pref-lang" className="preference-field-label">
-                        <GlobeIcon size={14} className="text-indigo-400" />
+                        <GlobeIcon size={14} className="text-emerald-500" />
                         <span>Language</span>
                       </label>
                       <select
@@ -386,24 +454,24 @@ export const ProfilePage: React.FC = () => {
 
                     <div className="preference-field-group">
                       <label htmlFor="pref-tz" className="preference-field-label">
-                        <ClockIcon size={14} className="text-indigo-400" />
+                        <ClockIcon size={14} className="text-emerald-500" />
                         <span>Timezone</span>
                       </label>
                       <select
                         id="pref-tz"
                         value={timezone}
-                        onChange={(e) => setTimezone(e.target.value)}
+                        onChange={(e) => {
+                          setTimezone(e.target.value);
+                          setStoredTimezone(e.target.value);
+                        }}
                         disabled={isSaving}
                         className="preference-select-control"
                       >
-                        <option value="UTC">UTC (Coordinated Universal Time)</option>
-                        <option value="America/New_York">Eastern Time (US / Canada)</option>
-                        <option value="America/Chicago">Central Time (US / Canada)</option>
-                        <option value="America/Los_Angeles">Pacific Time (US / Canada)</option>
-                        <option value="Europe/London">London (GMT / BST)</option>
-                        <option value="Europe/Paris">Paris / Berlin (CET / CEST)</option>
-                        <option value="Asia/Kolkata">India Standard Time (IST)</option>
-                        <option value="Asia/Tokyo">Tokyo / Japan (JST)</option>
+                        {COMMON_TIMEZONES.map((tz) => (
+                          <option key={tz.value} value={tz.value}>
+                            {tz.label} ({tz.offset})
+                          </option>
+                        ))}
                       </select>
                     </div>
                   </div>
@@ -463,13 +531,17 @@ export const ProfilePage: React.FC = () => {
                 </div>
 
                 <div className="detail-item">
-                  <span className="detail-label">Interface Theme</span>
-                  <span className="detail-value capitalize">{theme}</span>
+                  <span className="detail-label">Current Interface Theme</span>
+                  <span className="detail-value capitalize font-bold" id="profile-display-theme">
+                    {theme === 'dark' ? 'Dark Theme' : theme === 'light' ? 'Light Theme' : 'System Default'}
+                  </span>
                 </div>
 
                 <div className="detail-item">
                   <span className="detail-label">Active Timezone</span>
-                  <span className="detail-value text-xs">{timezone}</span>
+                  <span className="detail-value text-xs font-semibold" id="profile-display-timezone">
+                    {timezone}
+                  </span>
                 </div>
 
                 <div className="detail-item" style={{ gridColumn: 'span 2' }}>
@@ -478,6 +550,126 @@ export const ProfilePage: React.FC = () => {
                 </div>
               </div>
             )}
+
+            {/* Interactive Theme Switcher Section (Always accessible for instant one-click switching) */}
+            <div className="theme-selector-section" style={{ marginTop: '28px', paddingTop: '24px', borderTop: '1px solid rgba(16, 185, 129, 0.2)' }}>
+              <div className="card-section-header" style={{ marginBottom: '16px' }}>
+                <div className="section-icon-badge" aria-hidden="true">
+                  <PaletteIcon size={20} />
+                </div>
+                <div>
+                  <h4 className="section-title">Interface Appearance &amp; Theme</h4>
+                  <p className="section-desc">
+                    Click any theme to apply immediately across the entire CRM application.
+                  </p>
+                </div>
+              </div>
+
+              <div className="theme-options-grid" role="radiogroup" aria-label="Select application theme">
+                {/* Light Theme Card */}
+                <button
+                  type="button"
+                  className={`theme-option-card ${theme === 'light' ? 'is-active' : ''}`}
+                  onClick={() => handleThemeChange('light')}
+                  role="radio"
+                  aria-checked={theme === 'light'}
+                  id="theme-card-light"
+                >
+                  <div className="theme-active-indicator" aria-hidden="true">
+                    {theme === 'light' && <CheckCircleIcon size={12} />}
+                  </div>
+                  <div className="theme-option-icon-box">
+                    <SunIcon size={20} />
+                  </div>
+                  <span className="theme-option-name">Light Theme</span>
+                  <span className="theme-option-desc">
+                    Clean mint and crisp bright appearance for well-lit environments.
+                  </span>
+                </button>
+
+                {/* Dark Theme Card */}
+                <button
+                  type="button"
+                  className={`theme-option-card ${theme === 'dark' ? 'is-active' : ''}`}
+                  onClick={() => handleThemeChange('dark')}
+                  role="radio"
+                  aria-checked={theme === 'dark'}
+                  id="theme-card-dark"
+                >
+                  <div className="theme-active-indicator" aria-hidden="true">
+                    {theme === 'dark' && <CheckCircleIcon size={12} />}
+                  </div>
+                  <div className="theme-option-icon-box">
+                    <MoonIcon size={20} />
+                  </div>
+                  <span className="theme-option-name">Dark Theme</span>
+                  <span className="theme-option-desc">
+                    Deep obsidian and emerald dark mode that is gentle on your eyes.
+                  </span>
+                </button>
+
+                {/* System Default Card */}
+                <button
+                  type="button"
+                  className={`theme-option-card ${theme === 'system' ? 'is-active' : ''}`}
+                  onClick={() => handleThemeChange('system')}
+                  role="radio"
+                  aria-checked={theme === 'system'}
+                  id="theme-card-system"
+                >
+                  <div className="theme-active-indicator" aria-hidden="true">
+                    {theme === 'system' && <CheckCircleIcon size={12} />}
+                  </div>
+                  <div className="theme-option-icon-box">
+                    <MonitorIcon size={20} />
+                  </div>
+                  <span className="theme-option-name">System Default</span>
+                  <span className="theme-option-desc">
+                    Automatically synchronize with your operating system preference.
+                  </span>
+                </button>
+              </div>
+            </div>
+
+            {/* Interactive Timezone & Regional Localization Card */}
+            <div className="theme-selector-section" style={{ marginTop: '24px', paddingTop: '24px', borderTop: '1px solid rgba(16, 185, 129, 0.2)' }}>
+              <div className="card-section-header" style={{ marginBottom: '16px' }}>
+                <div className="section-icon-badge" aria-hidden="true">
+                  <ClockIcon size={20} />
+                </div>
+                <div>
+                  <h4 className="section-title">Timezone &amp; Regional Localization</h4>
+                  <p className="section-desc">
+                    Set your timezone to schedule activities, log timestamps, and display local time.
+                  </p>
+                </div>
+              </div>
+
+              <div className="timezone-card-wrapper">
+                <div className="preference-field-group">
+                  <label htmlFor="standalone-timezone-select" className="preference-field-label">
+                    <span>Active Timezone</span>
+                  </label>
+                  <select
+                    id="standalone-timezone-select"
+                    value={timezone}
+                    onChange={(e) => handleTimezoneChange(e.target.value)}
+                    className="preference-select-control"
+                  >
+                    {COMMON_TIMEZONES.map((tz) => (
+                      <option key={tz.value} value={tz.value}>
+                        {tz.label} ({tz.offset})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="timezone-live-clock-badge" id="timezone-live-clock">
+                  <span className="timezone-clock-dot" aria-hidden="true" />
+                  <span>Current local time: <strong>{liveTime}</strong></span>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Sidebar Quick Shortcuts */}
@@ -538,4 +730,5 @@ export const ProfilePage: React.FC = () => {
     </div>
   );
 };
+
 export default ProfilePage;
