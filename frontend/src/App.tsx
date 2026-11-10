@@ -167,7 +167,7 @@ export function App() {
 
       {/* Protected Routes (Guarded: redirect to login if unauthenticated) */}
       <Route element={<ProtectedRoute />}>
-        <Route path="/workspaces" element={<WorkspacePage />} />
+        <Route path="/workspaces" element={<Navigate to="/workspaces/members" replace />} />
         <Route path="/workspaces/switcher" element={<WorkspaceSwitcherPage />} />
         <Route path="/workspaces/members" element={<WorkspaceMembersPage />} />
         <Route path="/workspaces/roles" element={<WorkspaceRolesPage />} />

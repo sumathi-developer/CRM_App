@@ -69,12 +69,6 @@ const MAIN_MODULES: NavModuleItem[] = [
     basePath: '/analytics',
   },
   {
-    id: 'workspaces',
-    label: 'Workspace',
-    icon: <BriefcaseIcon size={18} />,
-    basePath: '/workspaces',
-  },
-  {
     id: 'users-teams',
     label: 'Users & Teams',
     icon: <UsersIcon size={18} />,
@@ -686,8 +680,24 @@ export const Navbar: React.FC = () => {
                 id="navbar-workspace-switcher-trigger"
                 aria-expanded={isWorkspaceDropdownOpen}
               >
-                <div className="ws-pill-icon">
-                  <BriefcaseIcon size={14} />
+                <div
+                  className="ws-pill-icon"
+                  style={
+                    currentWorkspace?.avatar && currentWorkspace.avatar.startsWith('#')
+                      ? { backgroundColor: currentWorkspace.avatar, background: currentWorkspace.avatar }
+                      : { backgroundColor: '#30a46c', background: '#30a46c' }
+                  }
+                >
+                  {currentWorkspace?.avatar && !currentWorkspace.avatar.startsWith('#') ? (
+                    <img
+                      src={currentWorkspace.avatar}
+                      alt={currentWorkspace.name}
+                    />
+                  ) : (
+                    <span>
+                      {(currentWorkspace?.name || 'O').trim().charAt(0).toUpperCase()}
+                    </span>
+                  )}
                 </div>
                 <div className="ws-pill-details">
                   <span className="ws-pill-label">WORKSPACE</span>

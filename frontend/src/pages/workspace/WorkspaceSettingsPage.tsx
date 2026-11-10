@@ -265,51 +265,36 @@ export const WorkspaceSettingsPage: React.FC = () => {
     };
   }, [currentWorkspace?.id]);
 
-  // Save General
-  const handleSaveGeneral = async (e: React.FormEvent) => {
-    e.preventDefault();
+  // Save All Settings (General & Preferences)
+  const handleSaveAll = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     if (!currentWorkspace?.id) return;
     setIsSaving(true);
     setApiError(null);
 
     try {
-      // Update Workspace metadata
-      await workspaceService.updateWorkspace(currentWorkspace.id, {
-        name,
-        slug,
-        avatar: avatarImage || avatarColor,
-      });
+      await Promise.all([
+        workspaceService.updateWorkspace(currentWorkspace.id, {
+          name,
+          slug,
+          avatar: avatarImage || avatarColor,
+        }),
+        workspaceService.updatePreferences(currentWorkspace.id, {
+          emailNotifications,
+          autoAssignLeads,
+          weeklyDigest,
+        }),
+      ]);
 
-      await refreshCurrentWorkspace();
-      setApiSuccess('General information updated successfully!');
-      setTimeout(() => setApiSuccess(null), 4000);
-    } catch (err: any) {
-      setApiError(err.message || 'Failed to save general settings');
-    } finally {
       setIsSaving(false);
-    }
-  };
+      setApiSuccess('Workspace settings saved successfully!');
+      setTimeout(() => setApiSuccess(null), 3000);
 
-  // Save Preferences
-  const handleSavePreferences = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!currentWorkspace?.id) return;
-    setIsSaving(true);
-    setApiError(null);
-
-    try {
-      await workspaceService.updatePreferences(currentWorkspace.id, {
-        emailNotifications,
-        autoAssignLeads,
-        weeklyDigest,
-      });
-
-      setApiSuccess('Workspace preferences saved!');
-      setTimeout(() => setApiSuccess(null), 4000);
+      // Refresh in background without blocking saving indicator
+      refreshCurrentWorkspace().catch(() => {});
     } catch (err: any) {
-      setApiError(err.message || 'Failed to save preferences');
-    } finally {
       setIsSaving(false);
+      setApiError(err.message || 'Failed to save settings');
     }
   };
 
@@ -404,11 +389,11 @@ export const WorkspaceSettingsPage: React.FC = () => {
           </div>
         ) : (
           <div className="settings-vertical-stack">
-            {/* 1. GENERAL */}
-            <section className="settings-card-section">
-              <h3 className="general-section-heading">General</h3>
+            <form onSubmit={handleSaveAll} className="general-settings-form" id="form-workspace-settings">
+              {/* 1. GENERAL */}
+              <section className="settings-card-section">
+                <h3 className="general-section-heading">General</h3>
 
-              <form onSubmit={handleSaveGeneral} className="general-settings-form" id="form-general-settings">
                 <div className="general-card-group">
                   {/* Row 1: Avatar */}
                   <div className="general-card-row">
@@ -493,29 +478,12 @@ export const WorkspaceSettingsPage: React.FC = () => {
                     />
                   </div>
                 </div>
+              </section>
 
-                {canManageWorkspace && (
-                  <div className="form-action-row" style={{ marginTop: '16px' }}>
-                    <PrimaryButton
-                      type="submit"
-                      isLoading={isSaving}
-                      loadingText="Saving Changes..."
-                      icon={<CheckCircleIcon size={16} />}
-                      fullWidth={false}
-                      id="btn-save-general-settings"
-                    >
-                      Save Changes
-                    </PrimaryButton>
-                  </div>
-                )}
-              </form>
-            </section>
+              {/* 2. PREFERENCES & AUTOMATION */}
+              <section className="settings-card-section">
+                <h3 className="general-section-heading">Preferences & Automation</h3>
 
-            {/* 2. PREFERENCES & AUTOMATION */}
-            <section className="settings-card-section">
-              <h3 className="general-section-heading">Preferences & Automation</h3>
-
-              <form onSubmit={handleSavePreferences} className="general-settings-form" id="form-preferences-settings">
                 <div className="general-card-group">
                   <div className="general-card-row">
                     <div className="toggle-text-wrap">
@@ -571,17 +539,17 @@ export const WorkspaceSettingsPage: React.FC = () => {
                     <PrimaryButton
                       type="submit"
                       isLoading={isSaving}
-                      loadingText="Saving Preferences..."
+                      loadingText="Saving Changes..."
                       icon={<CheckCircleIcon size={16} />}
                       fullWidth={false}
-                      id="btn-save-preferences-settings"
+                      id="btn-save-workspace-settings"
                     >
-                      Save Preferences
+                      Save Changes
                     </PrimaryButton>
                   </div>
                 )}
-              </form>
-            </section>
+              </section>
+            </form>
 
             {/* 3. DANGER ZONE */}
             <section className="settings-card-section">

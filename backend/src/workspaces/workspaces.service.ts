@@ -974,15 +974,29 @@ export class WorkspacesService {
   }
 
   /**
-   * Update workspace metadata.
+   * Update workspace metadata (optimized for low-latency).
    */
   async update(id: string, dto: UpdateWorkspaceDto, currentUserId?: string, userRole?: string) {
-    const existing: any = await this.findOne(id);
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+    const existingRows: any[] = await this.prisma.$queryRawUnsafe(
+      `SELECT "id", "slug", "ownerId", "name", "description", "avatar", "website", "timezone", "currency", "status", "plan"
+       FROM "Workspace"
+       WHERE ${isUuid ? '"id" = $1' : '"slug" = $1'}
+       LIMIT 1`,
+      id,
+    );
+
+    if (!existingRows || existingRows.length === 0) {
+      throw new NotFoundException(`Workspace '${id}' not found`);
+    }
+
+    const existing = existingRows[0];
+    const workspaceId = existing.id;
 
     if (currentUserId && userRole !== 'ADMIN' && existing.ownerId !== currentUserId) {
       const isWorkspaceAdmin: any[] = await this.prisma.$queryRawUnsafe(
-        `SELECT "id" FROM "WorkspaceMember" WHERE "workspaceId" = $1 AND "userId" = $2 AND "role" IN ('OWNER', 'ADMIN')`,
-        id,
+        `SELECT "id" FROM "WorkspaceMember" WHERE "workspaceId" = $1 AND "userId" = $2 AND "role" IN ('OWNER', 'ADMIN') LIMIT 1`,
+        workspaceId,
         currentUserId,
       );
       if (!isWorkspaceAdmin || isWorkspaceAdmin.length === 0) {
@@ -992,9 +1006,9 @@ export class WorkspacesService {
 
     let slug = existing.slug;
     if (dto.slug && dto.slug.trim().toLowerCase() !== existing.slug) {
-      slug = await this.ensureUniqueSlug(dto.slug.trim().toLowerCase(), id);
+      slug = await this.ensureUniqueSlug(dto.slug.trim().toLowerCase(), workspaceId);
     } else if (dto.name && !dto.slug && !existing.slug) {
-      slug = await this.ensureUniqueSlug(this.generateSlug(dto.name), id);
+      slug = await this.ensureUniqueSlug(this.generateSlug(dto.name), workspaceId);
     }
 
     const now = new Date();
@@ -1015,7 +1029,7 @@ export class WorkspacesService {
       RETURNING *
     `;
 
-    await this.prisma.$queryRawUnsafe(
+    const updatedRows: any[] = await this.prisma.$queryRawUnsafe(
       updateSql,
       dto.name !== undefined ? dto.name : null,
       slug,
@@ -1027,10 +1041,14 @@ export class WorkspacesService {
       dto.status !== undefined ? dto.status : null,
       dto.plan !== undefined ? dto.plan : null,
       now,
-      id,
+      workspaceId,
     );
 
-    return this.findOne(id);
+    const updatedWorkspace = updatedRows && updatedRows.length > 0 ? updatedRows[0] : { ...existing, ...dto, slug, updatedAt: now };
+    return {
+      ...updatedWorkspace,
+      ownerId: existing.ownerId,
+    };
   }
 
   /**
@@ -2108,13 +2126,11 @@ export class WorkspacesService {
    */
   async getSettings(workspaceId: string): Promise<WorkspaceSettingEntity> {
     try {
-      const resolvedId = (await this.resolveWorkspaceId(workspaceId)) || workspaceId;
-      const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(resolvedId);
-      if (isUuid) {
+      const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(workspaceId);
+      const resolvedId = isUuid ? workspaceId : (await this.resolveWorkspaceId(workspaceId)) || workspaceId;
+      if (resolvedId) {
         const sql = `SELECT * FROM "WorkspaceSetting" WHERE "workspaceId" = $1 LIMIT 1`;
-        const timeoutPromise = new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 1500));
-        const queryPromise = this.prisma.$queryRawUnsafe(sql, resolvedId);
-        const rows: any[] = (await Promise.race([queryPromise, timeoutPromise])) as any[];
+        const rows: any[] = (await this.prisma.$queryRawUnsafe(sql, resolvedId)) as any[];
 
         if (rows && rows.length > 0) {
           const s = rows[0];
@@ -2215,7 +2231,17 @@ export class WorkspacesService {
       workspaceId,
     );
 
-    return this.getSettings(workspaceId);
+    return {
+      id: current.id,
+      workspaceId,
+      general: updatedGeneral,
+      branding: updatedBranding,
+      localization: updatedLocalization,
+      preferences: updatedPreferences,
+      security: updatedSecurity,
+      createdAt: current.createdAt || now,
+      updatedAt: now,
+    };
   }
 
   /**
