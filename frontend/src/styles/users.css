@@ -1444,3 +1444,423 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ==========================================================================
+   Invite User Page - ClickUp-Style Alignment & Surface Polish
+   ========================================================================== */
+
+/* Breadcrumb Navigation */
+.breadcrumb-nav-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  margin-bottom: 1.25rem !important;
+  font-size: 0.8125rem !important;
+}
+
+.breadcrumb-back-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+  color: #10B981 !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  transition: color 150ms ease, transform 150ms ease !important;
+}
+
+.breadcrumb-back-link:hover {
+  color: #059669 !important;
+  text-decoration: underline !important;
+}
+
+.breadcrumb-sep {
+  color: #94A3B8 !important;
+  user-select: none !important;
+}
+
+.breadcrumb-current {
+  color: #475569 !important;
+  font-weight: 500 !important;
+}
+
+/* User Form Main Layout Grid */
+.user-form-layout-grid {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.8fr) minmax(320px, 1.2fr) !important;
+  gap: 1.75rem !important;
+  align-items: flex-start !important;
+  margin-bottom: 2.5rem !important;
+}
+
+@media (max-width: 992px) {
+  .user-form-layout-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Cards (Light Mode Defaults) */
+.form-main-card {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  border-radius: 18px !important;
+  padding: 2rem !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+}
+
+.form-sidebar-card {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  border-radius: 18px !important;
+  padding: 2rem !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1.25rem !important;
+}
+
+/* Card Section Header */
+.card-section-header {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.85rem !important;
+  padding-bottom: 1.25rem !important;
+  margin-bottom: 1.5rem !important;
+  border-bottom: 1px solid rgba(16, 185, 129, 0.12) !important;
+}
+
+.section-icon-badge {
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: rgba(16, 185, 129, 0.12) !important;
+  color: #10B981 !important;
+  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  flex-shrink: 0 !important;
+}
+
+.section-title {
+  margin: 0 !important;
+  font-size: 1.15rem !important;
+  font-weight: 700 !important;
+  color: #062E03 !important;
+  line-height: 1.3 !important;
+}
+
+.section-desc {
+  margin: 0.2rem 0 0 0 !important;
+  font-size: 0.8125rem !important;
+  color: #64748B !important;
+  line-height: 1.4 !important;
+}
+
+/* Form Stack & Rows */
+.form-fields-stack {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1.25rem !important;
+}
+
+.form-row-2col {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 1.25rem !important;
+}
+
+@media (max-width: 640px) {
+  .form-row-2col {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Form Field Group & Labels */
+.form-field-group {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.4rem !important;
+}
+
+.form-field-label {
+  font-size: 0.8125rem !important;
+  font-weight: 600 !important;
+  color: #0F172A !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.25rem !important;
+  margin: 0 !important;
+}
+
+.required-mark {
+  color: #EF4444 !important;
+  font-weight: 700 !important;
+}
+
+.form-field-helper {
+  font-size: 0.75rem !important;
+  color: #64748B !important;
+  margin: 0.25rem 0 0 0 !important;
+  line-height: 1.4 !important;
+}
+
+/* Inputs & Wrappers in Invite Form */
+#invite-user-page .form-input-wrapper {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  background-color: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
+  border-radius: 10px !important;
+  transition: all 150ms ease !important;
+  height: 44px !important;
+  box-sizing: border-box !important;
+}
+
+#invite-user-page .form-input-wrapper:hover:not(.is-disabled) {
+  border-color: rgba(16, 185, 129, 0.5) !important;
+}
+
+#invite-user-page .form-input-wrapper:focus-within:not(.is-disabled) {
+  border-color: #10B981 !important;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.18) !important;
+}
+
+#invite-user-page .form-input-icon.left {
+  position: absolute !important;
+  left: 14px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #10B981 !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
+}
+
+#invite-user-page .form-input {
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 14px !important;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  color: #0F172A !important;
+  font-size: 0.875rem !important;
+  border-radius: 10px !important;
+  box-sizing: border-box !important;
+}
+
+#invite-user-page .form-input-wrapper.has-left-icon .form-input,
+#invite-user-page .form-select-padded {
+  padding-left: 42px !important;
+}
+
+#invite-user-page select.form-input {
+  cursor: pointer !important;
+  appearance: auto !important;
+}
+
+/* Password Header Row & Generator Link */
+.password-header-row {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  width: 100% !important;
+}
+
+.btn-text-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+  background: transparent !important;
+  border: none !important;
+  color: #10B981 !important;
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: color 150ms ease !important;
+  padding: 0 !important;
+}
+
+.btn-text-link:hover {
+  color: #059669 !important;
+  text-decoration: underline !important;
+}
+
+/* Form Action Buttons Row */
+.form-action-row {
+  display: flex !important;
+  justify-content: flex-end !important;
+  align-items: center !important;
+  gap: 0.85rem !important;
+  padding-top: 1.5rem !important;
+  margin-top: 1.5rem !important;
+  border-top: 1px solid rgba(16, 185, 129, 0.12) !important;
+}
+
+/* Sidebar Role Preview */
+.role-preview-header {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.65rem !important;
+  padding-bottom: 0.85rem !important;
+  border-bottom: 1px solid rgba(16, 185, 129, 0.12) !important;
+}
+
+.preview-title {
+  margin: 0 !important;
+  font-size: 1.05rem !important;
+  font-weight: 700 !important;
+  color: #062E03 !important;
+}
+
+.preview-desc {
+  font-size: 0.8125rem !important;
+  color: #4B5563 !important;
+  line-height: 1.5 !important;
+  margin: 0 !important;
+}
+
+.permissions-preview-box {
+  background: rgba(16, 185, 129, 0.05) !important;
+  border: 1px solid rgba(16, 185, 129, 0.18) !important;
+  border-radius: 12px !important;
+  padding: 1rem !important;
+}
+
+.preview-label {
+  display: block !important;
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  color: #64748B !important;
+  margin-bottom: 0.35rem !important;
+}
+
+.role-tag {
+  display: inline-block !important;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  color: #059669 !important;
+  background: rgba(16, 185, 129, 0.14) !important;
+  padding: 0.2rem 0.65rem !important;
+  border-radius: 6px !important;
+  margin-bottom: 0.85rem !important;
+}
+
+.preview-checklist {
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.5rem !important;
+  font-size: 0.8125rem !important;
+  color: #374151 !important;
+}
+
+.preview-checklist li {
+  position: relative !important;
+  padding-left: 1.35rem !important;
+  line-height: 1.4 !important;
+}
+
+.preview-checklist li::before {
+  content: '✓' !important;
+  position: absolute !important;
+  left: 0 !important;
+  color: #10B981 !important;
+  font-weight: 800 !important;
+}
+
+.security-notice-box {
+  background: rgba(245, 158, 11, 0.07) !important;
+  border: 1px solid rgba(245, 158, 11, 0.25) !important;
+  border-radius: 12px !important;
+  padding: 0.85rem 1rem !important;
+}
+
+.notice-title {
+  display: block !important;
+  font-size: 0.78rem !important;
+  font-weight: 700 !important;
+  color: #D97706 !important;
+  margin-bottom: 0.25rem !important;
+}
+
+.notice-text {
+  font-size: 0.78rem !important;
+  color: #78350F !important;
+  margin: 0 !important;
+  line-height: 1.4 !important;
+}
+
+/* --------------------------------------------------------------------------
+   Dark Mode Overrides for Invite User Page
+   -------------------------------------------------------------------------- */
+html.dark #invite-user-page .form-main-card,
+html.dark #invite-user-page .form-sidebar-card,
+[data-theme="dark"] #invite-user-page .form-main-card,
+[data-theme="dark"] #invite-user-page .form-sidebar-card {
+  background: #0E1A12 !important;
+  border-color: rgba(16, 185, 129, 0.25) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35) !important;
+}
+
+html.dark #invite-user-page .section-title,
+html.dark #invite-user-page .preview-title,
+html.dark #invite-user-page .form-field-label,
+[data-theme="dark"] #invite-user-page .section-title,
+[data-theme="dark"] #invite-user-page .preview-title,
+[data-theme="dark"] #invite-user-page .form-field-label {
+  color: #FFFFFF !important;
+}
+
+html.dark #invite-user-page .section-desc,
+html.dark #invite-user-page .preview-desc,
+html.dark #invite-user-page .breadcrumb-current,
+[data-theme="dark"] #invite-user-page .section-desc,
+[data-theme="dark"] #invite-user-page .preview-desc,
+[data-theme="dark"] #invite-user-page .breadcrumb-current {
+  color: #94A3B8 !important;
+}
+
+html.dark #invite-user-page .form-input-wrapper,
+[data-theme="dark"] #invite-user-page .form-input-wrapper {
+  background-color: rgba(0, 0, 0, 0.4) !important;
+  border-color: rgba(16, 185, 129, 0.28) !important;
+}
+
+html.dark #invite-user-page .form-input,
+[data-theme="dark"] #invite-user-page .form-input {
+  color: #F8FAFC !important;
+}
+
+html.dark #invite-user-page .form-input option,
+[data-theme="dark"] #invite-user-page .form-input option {
+  background-color: #0E1A12 !important;
+  color: #F8FAFC !important;
+}
+
+html.dark #invite-user-page .preview-checklist,
+[data-theme="dark"] #invite-user-page .preview-checklist {
+  color: #E2E8F0 !important;
+}
+
+html.dark #invite-user-page .permissions-preview-box,
+[data-theme="dark"] #invite-user-page .permissions-preview-box {
+  background: rgba(16, 185, 129, 0.08) !important;
+  border-color: rgba(16, 185, 129, 0.22) !important;
+}
+
+html.dark #invite-user-page .security-notice-box,
+[data-theme="dark"] #invite-user-page .security-notice-box {
+  background: rgba(245, 158, 11, 0.1) !important;
+  border-color: rgba(245, 158, 11, 0.3) !important;
+}
+
+html.dark #invite-user-page .notice-text,
+[data-theme="dark"] #invite-user-page .notice-text {
+  color: #FCD34D !important;
+}
