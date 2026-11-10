@@ -18,6 +18,8 @@ import {
   CheckCircleIcon,
   MailIcon,
   LockIcon,
+  UserIcon,
+  PhoneIcon,
 } from '../../components/common/Icons';
 
 export const InviteUserPage: React.FC = () => {
@@ -154,17 +156,19 @@ export const InviteUserPage: React.FC = () => {
           <span className="breadcrumb-current">Invite & Onboard New User</span>
         </div>
 
-        <div className="page-intro-header">
-          <div className="intro-icon-badge">
-            <UserPlusIcon size={24} />
-          </div>
-          <div>
-            <h1 className="page-main-heading">Invite User</h1>
-            <p className="page-sub-heading">
+        <header className="lg-header" style={{ marginBottom: '1.75rem' }}>
+          <div className="lg-header-text">
+            <h1 className="lg-title">
+              <span className="lg-title-icon" aria-hidden="true">
+                <UserPlusIcon size={22} />
+              </span>
+              <span>Invite User</span>
+            </h1>
+            <p className="lg-subtitle">
               Provision account credentials, assign RBAC access tiers, and grant CRM permissions
             </p>
           </div>
-        </div>
+        </header>
 
         {apiError && <ErrorMessage error={apiError} />}
         {apiSuccess && <SuccessMessage message={apiSuccess} />}
@@ -189,60 +193,70 @@ export const InviteUserPage: React.FC = () => {
                 </div>
 
                 <div className="form-fields-stack">
-                  <FormField
-                    id="invite-name"
-                    name="name"
-                    label="Full Name"
-                    placeholder="e.g. Marcus Aurelius"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                    disabled={isSubmitting}
-                  />
+                  <div className="form-row-2col">
+                    <FormField
+                      id="invite-name"
+                      name="name"
+                      label="Full Name"
+                      placeholder="e.g. Marcus Aurelius"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      required
+                      disabled={isSubmitting}
+                      icon={<UserIcon size={16} />}
+                    />
 
-                  <FormField
-                    id="invite-email"
-                    name="email"
-                    type="email"
-                    label="Work Email Address"
-                    placeholder="e.g. marcus@crmportal.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    disabled={isSubmitting}
-                    helperText="This email will be used as the primary login credential."
-                  />
+                    <FormField
+                      id="invite-email"
+                      name="email"
+                      type="email"
+                      label="Work Email Address"
+                      placeholder="e.g. marcus@crmportal.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                      disabled={isSubmitting}
+                      helperText="This email will be used as the primary login credential."
+                      icon={<MailIcon size={16} />}
+                    />
+                  </div>
 
-                  <FormField
-                    id="invite-phone"
-                    name="phone"
-                    type="tel"
-                    label="Phone Number (Optional)"
-                    placeholder="+1 (555) 789-0123"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    disabled={isSubmitting}
-                  />
+                  <div className="form-row-2col">
+                    <FormField
+                      id="invite-phone"
+                      name="phone"
+                      type="tel"
+                      label="Phone Number (Optional)"
+                      placeholder="+1 (555) 789-0123"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      disabled={isSubmitting}
+                      icon={<PhoneIcon size={16} />}
+                    />
 
-                  <div className="form-field-group">
-                    <label htmlFor="invite-role-select" className="form-field-label">
-                      Assigned Role Tier
-                    </label>
-                    <div className="select-with-icon-container">
-                      <ShieldIcon size={16} className="select-icon" />
-                      <select
-                        id="invite-role-select"
-                        className="form-input form-select-padded"
-                        value={roleId}
-                        onChange={(e) => setRoleId(e.target.value)}
-                        disabled={isSubmitting}
-                      >
-                        {roles.map((r) => (
-                          <option key={r.id} value={r.id}>
-                            {r.name}
-                          </option>
-                        ))}
-                      </select>
+                    <div className="form-field-group">
+                      <label htmlFor="invite-role-select" className="form-field-label">
+                        <span>Assigned Role Tier</span>
+                        <span className="required-mark">*</span>
+                      </label>
+                      <div className="form-input-wrapper has-left-icon">
+                        <div className="form-input-icon left" aria-hidden="true">
+                          <ShieldIcon size={16} />
+                        </div>
+                        <select
+                          id="invite-role-select"
+                          className="form-input"
+                          value={roleId}
+                          onChange={(e) => setRoleId(e.target.value)}
+                          disabled={isSubmitting}
+                        >
+                          {roles.map((r) => (
+                            <option key={r.id} value={r.id}>
+                              {r.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                     </div>
                   </div>
 
@@ -261,12 +275,14 @@ export const InviteUserPage: React.FC = () => {
                         <span>Generate Random Password</span>
                       </button>
                     </div>
-                    <div className="select-with-icon-container">
-                      <LockIcon size={16} className="select-icon" />
+                    <div className="form-input-wrapper has-left-icon">
+                      <div className="form-input-icon left" aria-hidden="true">
+                        <LockIcon size={16} />
+                      </div>
                       <input
                         id="invite-password-input"
                         type="text"
-                        className="form-input form-select-padded font-mono"
+                        className="form-input font-mono"
                         placeholder="Leave blank to use 'Welcome@2026!'"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
@@ -282,16 +298,18 @@ export const InviteUserPage: React.FC = () => {
                     <label htmlFor="invite-status-select" className="form-field-label">
                       Initial Account Status
                     </label>
-                    <select
-                      id="invite-status-select"
-                      className="form-input"
-                      value={status}
-                      onChange={(e) => setStatus(e.target.value as 'ACTIVE' | 'INACTIVE')}
-                      disabled={isSubmitting}
-                    >
-                      <option value="ACTIVE">ACTIVE (Immediate Access)</option>
-                      <option value="INACTIVE">INACTIVE (Staged, Awaiting Activation)</option>
-                    </select>
+                    <div className="form-input-wrapper">
+                      <select
+                        id="invite-status-select"
+                        className="form-input"
+                        value={status}
+                        onChange={(e) => setStatus(e.target.value as 'ACTIVE' | 'INACTIVE')}
+                        disabled={isSubmitting}
+                      >
+                        <option value="ACTIVE">ACTIVE (Immediate Access)</option>
+                        <option value="INACTIVE">INACTIVE (Staged, Awaiting Activation)</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
 
