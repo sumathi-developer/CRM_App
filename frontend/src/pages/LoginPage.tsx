@@ -133,9 +133,9 @@ export const LoginPage: React.FC = () => {
         password,
       });
 
-      setApiSuccess('Authentication successful! Opening workspace...');
+      setApiSuccess('Authentication successful! Loading dashboard...');
 
-      const destination = (location.state as any)?.from?.pathname || '/workspaces';
+      const destination = (location.state as any)?.from?.pathname || '/dashboard';
       setTimeout(() => {
         navigate(destination, { replace: true });
       }, 400);

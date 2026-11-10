@@ -26,43 +26,64 @@ export class AnalyticsService {
   ): Promise<AnalyticsOverview> {
     const targetWorkspaceId = query.workspaceId || workspaceId;
 
-    const [salesAnalytics, leadAnalytics, leadSources, conversionFunnel, activityAnalytics, pipelineAnalytics] =
-      await Promise.all([
-        this.sales.getSalesAnalytics(query, organizationId),
-        this.leads.getLeadAnalytics(query, targetWorkspaceId),
-        this.leads.getLeadSourceAnalytics(query, targetWorkspaceId),
-        this.leads.getConversionAnalytics(query, targetWorkspaceId),
-        this.activities.getActivityAnalytics(query, organizationId),
-        this.sales.getPipelineAnalytics(query, organizationId),
-      ]);
+    const [
+      salesRes,
+      leadRes,
+      sourcesRes,
+      funnelRes,
+      activityRes,
+      pipelineRes,
+    ] = await Promise.allSettled([
+      this.sales.getSalesAnalytics(query, organizationId),
+      this.leads.getLeadAnalytics(query, targetWorkspaceId),
+      this.leads.getLeadSourceAnalytics(query, targetWorkspaceId),
+      this.leads.getConversionAnalytics(query, targetWorkspaceId),
+      this.activities.getActivityAnalytics(query, organizationId),
+      this.sales.getPipelineAnalytics(query, organizationId),
+    ]);
+
+    const salesAnalytics = salesRes.status === 'fulfilled' ? salesRes.value : null;
+    const leadAnalytics = leadRes.status === 'fulfilled' ? leadRes.value : null;
+    const leadSources = sourcesRes.status === 'fulfilled' ? sourcesRes.value : null;
+    const conversionFunnel = funnelRes.status === 'fulfilled' ? funnelRes.value : null;
+    const activityAnalytics = activityRes.status === 'fulfilled' ? activityRes.value : null;
+    const pipelineAnalytics = pipelineRes.status === 'fulfilled' ? pipelineRes.value : null;
+
+    const zeroMetric = {
+      current: 0,
+      previous: 0,
+      change: 0,
+      percentage: 0,
+      direction: 'FLAT' as const,
+    };
 
     return {
       period: {
-        startDate: salesAnalytics.dateRange.startDate,
-        endDate: salesAnalytics.dateRange.endDate,
+        startDate: salesAnalytics?.dateRange?.startDate || new Date(Date.now() - 30 * 86400000).toISOString(),
+        endDate: salesAnalytics?.dateRange?.endDate || new Date().toISOString(),
         timeframe: query.timeframe || 'LAST_30_DAYS',
-        interval: salesAnalytics.interval,
+        interval: salesAnalytics?.interval || 'DAILY',
       },
       kpis: {
-        totalRevenue: salesAnalytics.kpis.totalRevenue,
-        dealsWon: salesAnalytics.kpis.wonDeals,
-        winRate: salesAnalytics.kpis.winRate,
-        avgDealSize: salesAnalytics.kpis.avgDealSize,
-        newLeads: leadAnalytics.kpis.totalLeads,
-        leadConversionRate: leadAnalytics.kpis.conversionRate,
+        totalRevenue: salesAnalytics?.kpis?.totalRevenue || zeroMetric,
+        dealsWon: salesAnalytics?.kpis?.wonDeals || zeroMetric,
+        winRate: salesAnalytics?.kpis?.winRate || zeroMetric,
+        avgDealSize: salesAnalytics?.kpis?.avgDealSize || zeroMetric,
+        newLeads: leadAnalytics?.kpis?.totalLeads || zeroMetric,
+        leadConversionRate: leadAnalytics?.kpis?.conversionRate || zeroMetric,
         activePipelineValue: {
-          current: pipelineAnalytics.totalPipelineValue,
+          current: pipelineAnalytics?.totalPipelineValue || 0,
           previous: 0,
           change: 0,
           percentage: 0,
           direction: 'FLAT',
         },
-        activitiesCompleted: activityAnalytics.kpis.completedActivities,
+        activitiesCompleted: activityAnalytics?.kpis?.completedActivities || zeroMetric,
       },
-      revenueTimeSeries: salesAnalytics.timeSeries,
-      leadsTimeSeries: leadAnalytics.timeSeries,
-      topLeadSources: leadSources.sources.slice(0, 5),
-      funnelSummary: conversionFunnel.stages,
+      revenueTimeSeries: salesAnalytics?.timeSeries || [],
+      leadsTimeSeries: leadAnalytics?.timeSeries || [],
+      topLeadSources: (leadSources?.sources || []).slice(0, 5),
+      funnelSummary: conversionFunnel?.stages || [],
     };
   }
 

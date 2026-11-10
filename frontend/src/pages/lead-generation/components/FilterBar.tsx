@@ -118,6 +118,7 @@ interface FilterBarProps {
   onReset?: () => void;
   hasActiveFilters?: boolean;
   title?: string;
+  className?: string;
 }
 
 /** Standardized CRM Filter Bar with header controls and responsive grid. */
@@ -127,9 +128,10 @@ export const FilterBar: React.FC<FilterBarProps> = ({
   onReset,
   hasActiveFilters,
   title = 'Filters & Search Controls',
+  className = '',
 }) => (
   <section
-    className="crm-filter-bar lg-card lg-filter-bar"
+    className={`crm-filter-bar lg-card lg-filter-bar ${className}`.trim()}
     aria-label="Filters and search controls"
   >
     <div className="crm-filter-header">
@@ -151,7 +153,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
         {hasActiveFilters && onReset && (
           <button
             type="button"
-            className="auth-btn btn-secondary btn-size-small lg-link-btn"
+            className="crm-filter-action-btn crm-filter-reset-btn"
             onClick={onReset}
             title="Reset filters"
           >
@@ -162,7 +164,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
         {onRefresh && (
           <button
             type="button"
-            className="auth-btn btn-secondary btn-size-small lg-icon-btn"
+            className="crm-filter-action-btn crm-filter-refresh-btn"
             onClick={onRefresh}
             title="Refresh"
             aria-label="Refresh"

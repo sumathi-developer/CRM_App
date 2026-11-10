@@ -76,42 +76,67 @@ class DashboardApiService {
   async getOverviewAnalytics(
     filters?: DashboardQueryFilters,
   ): Promise<OverviewAnalyticsResponse> {
-    const res = await api.get<any>(
-      `/analytics/overview${buildQuery(filters as Record<string, unknown>)}`,
-    );
-    const data = unwrap<any>(res);
-    const kpis = data?.kpis || {};
+    try {
+      const res = await api.get<any>(
+        `/analytics/overview${buildQuery(filters as Record<string, unknown>)}`,
+      );
+      const data = unwrap<any>(res);
+      const kpis = data?.kpis || {};
 
-    return {
-      period: {
-        startDate: data?.period?.startDate || '',
-        endDate: data?.period?.endDate || '',
-        timeframe: data?.period?.timeframe || filters?.timeframe || 'LAST_30_DAYS',
-        interval: data?.period?.interval || filters?.interval || 'DAILY',
-      },
-      kpis: {
-        totalRevenue: normalizeMetric(kpis.totalRevenue),
-        dealsWon: normalizeMetric(kpis.dealsWon),
-        winRate: normalizeMetric(kpis.winRate),
-        avgDealSize: normalizeMetric(kpis.avgDealSize),
-        newLeads: normalizeMetric(kpis.newLeads),
-        leadConversionRate: normalizeMetric(kpis.leadConversionRate),
-        activePipelineValue: normalizeMetric(kpis.activePipelineValue),
-        activitiesCompleted: normalizeMetric(kpis.activitiesCompleted),
-      },
-      revenueTimeSeries: Array.isArray(data?.revenueTimeSeries)
-        ? data.revenueTimeSeries
-        : [],
-      leadsTimeSeries: Array.isArray(data?.leadsTimeSeries)
-        ? data.leadsTimeSeries
-        : [],
-      topLeadSources: Array.isArray(data?.topLeadSources)
-        ? data.topLeadSources
-        : [],
-      funnelSummary: Array.isArray(data?.funnelSummary)
-        ? data.funnelSummary
-        : [],
-    };
+      return {
+        period: {
+          startDate: data?.period?.startDate || '',
+          endDate: data?.period?.endDate || '',
+          timeframe: data?.period?.timeframe || filters?.timeframe || 'LAST_30_DAYS',
+          interval: data?.period?.interval || filters?.interval || 'DAILY',
+        },
+        kpis: {
+          totalRevenue: normalizeMetric(kpis.totalRevenue),
+          dealsWon: normalizeMetric(kpis.dealsWon),
+          winRate: normalizeMetric(kpis.winRate),
+          avgDealSize: normalizeMetric(kpis.avgDealSize),
+          newLeads: normalizeMetric(kpis.newLeads),
+          leadConversionRate: normalizeMetric(kpis.leadConversionRate),
+          activePipelineValue: normalizeMetric(kpis.activePipelineValue),
+          activitiesCompleted: normalizeMetric(kpis.activitiesCompleted),
+        },
+        revenueTimeSeries: Array.isArray(data?.revenueTimeSeries)
+          ? data.revenueTimeSeries
+          : [],
+        leadsTimeSeries: Array.isArray(data?.leadsTimeSeries)
+          ? data.leadsTimeSeries
+          : [],
+        topLeadSources: Array.isArray(data?.topLeadSources)
+          ? data.topLeadSources
+          : [],
+        funnelSummary: Array.isArray(data?.funnelSummary)
+          ? data.funnelSummary
+          : [],
+      };
+    } catch {
+      return {
+        period: {
+          startDate: '',
+          endDate: '',
+          timeframe: filters?.timeframe || 'LAST_30_DAYS',
+          interval: filters?.interval || 'DAILY',
+        },
+        kpis: {
+          totalRevenue: normalizeMetric(0),
+          dealsWon: normalizeMetric(0),
+          winRate: normalizeMetric(0),
+          avgDealSize: normalizeMetric(0),
+          newLeads: normalizeMetric(0),
+          leadConversionRate: normalizeMetric(0),
+          activePipelineValue: normalizeMetric(0),
+          activitiesCompleted: normalizeMetric(0),
+        },
+        revenueTimeSeries: [],
+        leadsTimeSeries: [],
+        topLeadSources: [],
+        funnelSummary: [],
+      };
+    }
   }
 
   /**

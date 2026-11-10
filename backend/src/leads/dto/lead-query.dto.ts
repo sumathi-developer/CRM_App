@@ -36,4 +36,9 @@ export class LeadQueryDto {
   @IsOptional()
   @IsString()
   ownerId?: string;
+
+  @ApiPropertyOptional({ description: 'Filter leads by workspace UUID' })
+  @IsOptional()
+  @IsString()
+  workspaceId?: string;
 }
