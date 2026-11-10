@@ -1,44 +1,109 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { Navbar } from '../../../components/common/Navbar';
 import { ErrorMessage } from '../../../components/auth/ErrorMessage';
 import { SuccessMessage } from '../../../components/auth/SuccessMessage';
-import { TrendingUpIcon, ArrowLeftIcon } from '../../../components/common/Icons';
+import {
+  TrendingUpIcon,
+  ArrowLeftIcon,
+  ChevronDownIcon,
+  CheckIcon,
+} from '../../../components/common/Icons';
 import { Badge } from '../../lead-generation/components/Cards';
 import type { Pipeline } from '../../../types/pipeline.types';
 
-interface NavGroup {
+interface PipelineNavLink {
+  to: string;
   label: string;
-  links: Array<{ to: string; label: string; end?: boolean }>;
+  end?: boolean;
+  isActive?: (pathname: string) => boolean;
 }
 
-const PIPELINES_NAV_GROUPS: NavGroup[] = [
-  {
-    label: 'Pipeline Views',
-    links: [
-      { to: '/pipelines', label: 'Pipeline Overview', end: true },
-      { to: '/pipelines/board', label: 'Pipeline Board' },
-      { to: '/pipelines/list', label: 'Pipeline List' },
-      { to: '/pipelines/table', label: 'Pipeline Table' },
-      { to: '/pipelines/selector', label: 'Pipeline Selector' },
-    ],
-  },
-  {
-    label: 'Stages & Probability',
-    links: [
-      { to: '/pipelines/stages', label: 'Pipeline Stages' },
-      { to: '/pipelines/stage-management', label: 'Stage Management' },
-      { to: '/pipelines/probability', label: 'Stage Probability' },
-    ],
-  },
-  {
-    label: 'Configuration',
-    links: [
-      { to: '/pipelines/create', label: 'Create Pipeline' },
-      { to: '/pipelines/settings', label: 'Pipeline Settings' },
-    ],
-  },
-];
+interface PipelineNavGroup {
+  id: string;
+  label: string;
+  links: PipelineNavLink[];
+}
+
+const getPipelinesNavGroups = (activePipeline?: Pipeline | null): PipelineNavGroup[] => {
+  const pId = activePipeline?.id;
+  return [
+    {
+      id: 'views',
+      label: 'Pipeline Views',
+      links: [
+        {
+          to: pId ? `/pipelines/${pId}` : '/pipelines',
+          label: 'Pipeline Overview',
+          end: true,
+          isActive: (path) =>
+            path === '/pipelines' ||
+            path === '/pipelines/' ||
+            (Boolean(pId) && (path === `/pipelines/${pId}` || path === `/pipelines/${pId}/`)),
+        },
+        {
+          to: pId ? `/pipelines/${pId}/board` : '/pipelines/board',
+          label: 'Pipeline Board',
+          isActive: (path) => path === '/pipelines/board' || path.endsWith('/board'),
+        },
+        {
+          to: pId ? `/pipelines/${pId}/list` : '/pipelines/list',
+          label: 'Pipeline List',
+          isActive: (path) => path === '/pipelines/list' || path.endsWith('/list'),
+        },
+        {
+          to: pId ? `/pipelines/${pId}/table` : '/pipelines/table',
+          label: 'Pipeline Table',
+          isActive: (path) => path === '/pipelines/table' || path.endsWith('/table'),
+        },
+        {
+          to: '/pipelines/selector',
+          label: 'Pipeline Selector',
+          isActive: (path) => path.startsWith('/pipelines/selector'),
+        },
+      ],
+    },
+    {
+      id: 'stages',
+      label: 'Stages & Probability',
+      links: [
+        {
+          to: pId ? `/pipelines/${pId}/stages` : '/pipelines/stages',
+          label: 'Pipeline Stages',
+          isActive: (path) =>
+            (path === '/pipelines/stages' || path.endsWith('/stages')) &&
+            !path.includes('stage-management'),
+        },
+        {
+          to: pId ? `/pipelines/${pId}/stage-management` : '/pipelines/stage-management',
+          label: 'Stage Management',
+          isActive: (path) => path.includes('stage-management'),
+        },
+        {
+          to: pId ? `/pipelines/${pId}/probability` : '/pipelines/probability',
+          label: 'Stage Probability',
+          isActive: (path) => path.includes('probability'),
+        },
+      ],
+    },
+    {
+      id: 'config',
+      label: 'Configuration',
+      links: [
+        {
+          to: '/pipelines/create',
+          label: 'Create Pipeline',
+          isActive: (path) => path.startsWith('/pipelines/create'),
+        },
+        {
+          to: '/pipelines/settings',
+          label: 'Pipeline Settings',
+          isActive: (path) => path.startsWith('/pipelines/settings') || path.endsWith('/edit'),
+        },
+      ],
+    },
+  ];
+};
 
 interface PipelinesLayoutProps {
   title: string;
@@ -76,30 +141,114 @@ export const PipelinesLayout: React.FC<PipelinesLayoutProps> = ({
   const [flashDismissed, setFlashDismissed] = useState(false);
   const successMessage = success || (flashDismissed ? null : flash) || null;
 
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const navRef = useRef<HTMLElement>(null);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(event.target as Node)) {
+        setOpenDropdown(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  // Close dropdown on Escape key
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setOpenDropdown(null);
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+  // Close dropdown on route change
+  useEffect(() => {
+    setOpenDropdown(null);
+  }, [location.pathname]);
+
+  const navGroups = getPipelinesNavGroups(activePipeline);
+
+  const checkLinkActive = (link: PipelineNavLink) => {
+    if (link.isActive) {
+      return link.isActive(location.pathname);
+    }
+    if (link.end) {
+      return location.pathname === link.to;
+    }
+    return location.pathname === link.to || location.pathname.startsWith(`${link.to}/`);
+  };
+
   return (
     <div className="app-layout" id="pipelines-module-shell">
       <Navbar />
 
       <main className="app-main-content lg-page ld-page">
-        {/* Top Module Sub-Navigation */}
-        <nav className="lg-subnav ld-subnav" aria-label="Sales Pipeline module navigation">
-          {PIPELINES_NAV_GROUPS.map((group) => (
-            <div key={group.label} className="lg-subnav-group">
-              <span className="lg-subnav-label">{group.label}</span>
-              <div className="lg-subnav-links">
-                {group.links.map((link) => (
-                  <NavLink
-                    key={link.to}
-                    to={link.to}
-                    end={link.end}
-                    className={({ isActive }) => `lg-subnav-link ${isActive ? 'is-active' : ''}`}
-                  >
-                    {link.label}
-                  </NavLink>
-                ))}
+        {/* Top Module Sub-Navigation: Horizontal Dropdown Navigation */}
+        <nav
+          ref={navRef}
+          className="lg-subnav ld-subnav ld-dropdown-nav"
+          aria-label="Sales Pipeline module navigation"
+        >
+          {navGroups.map((group) => {
+            const activeItem = group.links.find((l) => checkLinkActive(l));
+            const isGroupActive = Boolean(activeItem);
+            const isOpen = openDropdown === group.id;
+
+            return (
+              <div key={group.id} className="ld-nav-dropdown-wrapper">
+                <button
+                  type="button"
+                  className={`ld-nav-dropdown-trigger ${isGroupActive ? 'is-active' : ''} ${isOpen ? 'is-open' : ''}`}
+                  onClick={() => setOpenDropdown(isOpen ? null : group.id)}
+                  aria-expanded={isOpen}
+                  aria-haspopup="true"
+                >
+                  <span className="ld-nav-dropdown-label">{group.label}</span>
+                  {activeItem && (
+                    <span className="ld-nav-dropdown-active-badge">
+                      {activeItem.label}
+                    </span>
+                  )}
+                  <ChevronDownIcon
+                    size={14}
+                    className={`ld-nav-dropdown-chevron ${isOpen ? 'is-open' : ''}`}
+                  />
+                </button>
+
+                {isOpen && (
+                  <div className="ld-nav-dropdown-menu" role="menu">
+                    {group.links.map((link) => {
+                      const isActive = checkLinkActive(link);
+                      return (
+                        <NavLink
+                          key={link.to}
+                          to={link.to}
+                          end={link.end}
+                          className={`ld-nav-dropdown-item ${isActive ? 'is-active' : ''}`}
+                          onClick={() => setOpenDropdown(null)}
+                          role="menuitem"
+                        >
+                          <span className="ld-nav-dropdown-item-label">{link.label}</span>
+                          {isActive && (
+                            <CheckIcon size={14} className="ld-nav-dropdown-check" />
+                          )}
+                        </NavLink>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
-            </div>
-          ))}
+            );
+          })}
         </nav>
 
         {/* Active Pipeline Context & Selector Strip */}

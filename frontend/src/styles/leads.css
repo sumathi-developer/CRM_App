@@ -1815,9 +1815,11 @@ html.dark .ld-bant-card.is-checked .lg-field-hint,
   animation: ldDropdownFadeIn 140ms ease-out;
 }
 
-.ld-nav-dropdown-wrapper:last-child .ld-nav-dropdown-menu {
-  left: auto;
-  right: 0;
+.ld-nav-dropdown-wrapper:last-child .ld-nav-dropdown-menu,
+.ld-nav-dropdown-menu {
+  left: 0 !important;
+  right: auto !important;
+  max-width: calc(100vw - 2rem);
 }
 
 @keyframes ldDropdownFadeIn {

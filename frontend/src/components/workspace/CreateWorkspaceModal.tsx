@@ -17,6 +17,7 @@ export const CreateWorkspaceModal: React.FC<CreateWorkspaceModalProps> = ({
   onClose,
   onCreated,
 }) => {
+  
   const { createWorkspace } = useWorkspace();
 
   const [name, setName] = useState('');
