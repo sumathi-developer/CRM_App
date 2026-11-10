@@ -47,6 +47,7 @@ import {
   TrendingUpIcon,
   UserIcon,
   UsersIcon,
+  ChevronDownIcon,
 } from '../../components/common/Icons';
 
 export const LeadsExplorerPage: React.FC = () => {
@@ -436,92 +437,104 @@ export const LeadsExplorerPage: React.FC = () => {
 
       {/* Search, Filter & Sort Bar */}
       <FilterBar
+        className="ld-two-tier"
         onRefresh={fetchLeads}
         onReset={handleResetFilters}
         hasActiveFilters={hasActiveFilters}
       >
-        <SearchInput
-          id="leads-search-input"
-          value={search}
-          onChange={(val) => {
-            setSearch(val);
-            setPage(1);
-          }}
-          placeholder="Search title, contact name, email, or company..."
-        />
-
-        <FilterSelect
-          id="leads-status-filter"
-          label="Status"
-          value={statusFilter}
-          options={LEAD_STATUS_OPTIONS}
-          allLabel="All Statuses"
-          onChange={(val) => {
-            setStatusFilter(val);
-            setPage(1);
-          }}
-        />
-
-        <FilterSelect
-          id="leads-source-filter"
-          label="Source"
-          value={sourceFilter}
-          options={LEAD_SOURCE_OPTIONS}
-          allLabel="All Sources"
-          onChange={(val) => {
-            setSourceFilter(val);
-            setPage(1);
-          }}
-        />
-
-        {scope === 'all' && (
-          <FilterSelect
-            id="leads-owner-filter"
-            label="Owner"
-            value={ownerFilter}
-            options={users.map((u) => ({ value: u.id, label: u.name }))}
-            allLabel="All Owners"
+        <div className="ld-filter-search-row">
+          <SearchInput
+            id="leads-search-input"
+            value={search}
             onChange={(val) => {
-              setOwnerFilter(val);
+              setSearch(val);
+              setPage(1);
+            }}
+            placeholder="Search title, contact name, email, or company..."
+          />
+        </div>
+
+        <div className="ld-filter-dropdowns-row">
+          <FilterSelect
+            id="leads-status-filter"
+            label="Status"
+            value={statusFilter}
+            options={LEAD_STATUS_OPTIONS}
+            allLabel="All Statuses"
+            onChange={(val) => {
+              setStatusFilter(val);
               setPage(1);
             }}
           />
-        )}
 
-        <FilterSelect
-          id="leads-score-tier-filter"
-          label="Score"
-          value={scoreTier}
-          options={SCORE_TIER_OPTIONS}
-          allLabel="All Tiers"
-          onChange={(val) => setScoreTier(val as ScoreTier)}
-        />
+          <FilterSelect
+            id="leads-source-filter"
+            label="Source"
+            value={sourceFilter}
+            options={LEAD_SOURCE_OPTIONS}
+            allLabel="All Sources"
+            onChange={(val) => {
+              setSourceFilter(val);
+              setPage(1);
+            }}
+          />
 
-        <label className="lg-filter-select" htmlFor="leads-sort-select">
-          <span className="lg-filter-label">Sort by</span>
-          <select
-            id="leads-sort-select"
-            className="lg-select"
-            value={sortField}
-            onChange={(e) => setSortField(e.target.value as LeadSortField)}
-          >
-            {LEAD_SORT_OPTIONS.map((o) => (
-              <option key={o.value} value={o.value}>
-                {o.label}
-              </option>
-            ))}
-          </select>
-        </label>
+          {scope === 'all' && (
+            <FilterSelect
+              id="leads-owner-filter"
+              label="Owner"
+              value={ownerFilter}
+              options={users.map((u) => ({ value: u.id, label: u.name }))}
+              allLabel="All Owners"
+              onChange={(val) => {
+                setOwnerFilter(val);
+                setPage(1);
+              }}
+            />
+          )}
 
-        <button
-          type="button"
-          className="lg-icon-btn ld-sort-dir-btn"
-          onClick={() => setSortDirection((d) => (d === 'asc' ? 'desc' : 'asc'))}
-          title={`Sort order: ${sortDirection.toUpperCase()}`}
-          aria-label={`Sort order: ${sortDirection}`}
-        >
-          {sortDirection === 'asc' ? '↑ ASC' : '↓ DESC'}
-        </button>
+          <FilterSelect
+            id="leads-score-tier-filter"
+            label="Score"
+            value={scoreTier}
+            options={SCORE_TIER_OPTIONS}
+            allLabel="All Tiers"
+            onChange={(val) => setScoreTier(val as ScoreTier)}
+          />
+
+          <div className="crm-filter-control lg-filter-control ld-sort-filter-control">
+            <label className="crm-filter-label lg-filter-label" htmlFor="leads-sort-select">
+              Sort by
+            </label>
+            <div className="ld-sort-control-group">
+              <div className="crm-filter-select-wrap">
+                <select
+                  id="leads-sort-select"
+                  className="crm-filter-select lg-select"
+                  value={sortField}
+                  onChange={(e) => setSortField(e.target.value as LeadSortField)}
+                >
+                  {LEAD_SORT_OPTIONS.map((o) => (
+                    <option key={o.value} value={o.value}>
+                      {o.label}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDownIcon size={14} className="crm-filter-chevron" />
+              </div>
+
+              <button
+                type="button"
+                className="lg-icon-btn ld-sort-dir-btn"
+                onClick={() => setSortDirection((d) => (d === 'asc' ? 'desc' : 'asc'))}
+                title={`Sort order: ${sortDirection.toUpperCase()}`}
+                aria-label={`Sort order: ${sortDirection}`}
+              >
+                {sortDirection === 'asc' ? '↑ ASC' : '↓ DESC'}
+              </button>
+            </div>
+          </div>
+        </div>
       </FilterBar>
 
       {/* Active View Area (Table / List / Board share exact same state & handlers) */}

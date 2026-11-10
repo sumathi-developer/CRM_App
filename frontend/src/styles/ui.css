@@ -3993,6 +3993,9 @@ main.ld-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
 .lg-filter-bar,
 .users-filter-bar,
 .audit-filters-bar {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1.15rem !important;
   background: #FFFFFF !important;
   border: 1px solid rgba(16, 185, 129, 0.22) !important;
   border-radius: 20px !important;
@@ -4004,13 +4007,14 @@ main.ld-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
 }
 
 .crm-filter-header {
+  width: 100% !important;
   display: flex !important;
   justify-content: space-between !important;
   align-items: center !important;
   gap: 1rem !important;
-  margin-bottom: 1.15rem !important;
+  margin-bottom: 0 !important;
   padding-bottom: 0.9rem !important;
-  border-bottom: 1px solid rgba(16, 185, 129, 0.12) !important;
+  border-bottom: 1px solid rgba(16, 185, 129, 0.15) !important;
   flex-wrap: wrap !important;
 }
 
@@ -4054,17 +4058,65 @@ main.ld-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
 .lg-filter-controls {
   display: grid !important;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
-  gap: 1rem !important;
+  gap: 1.15rem 1.25rem !important;
   align-items: end !important;
   width: 100% !important;
+}
+
+/* Two-tier layout: Search row first, Dropdowns row strictly below */
+.ld-two-tier .crm-filter-grid,
+.ld-two-tier .lg-filter-controls,
+.ld-page .crm-filter-grid,
+.ld-page .lg-filter-controls {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1.25rem !important;
+  width: 100% !important;
+}
+
+.ld-filter-search-row {
+  grid-column: 1 / -1 !important;
+  width: 100% !important;
+}
+
+.ld-filter-search-row .crm-filter-control,
+.ld-filter-search-row .crm-filter-search-wrap,
+.ld-filter-search-row .lg-search {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+}
+
+.ld-filter-dropdowns-row {
+  grid-column: 1 / -1 !important;
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  gap: 1.15rem 1.25rem !important;
+  align-items: end !important;
+  width: 100% !important;
+}
+
+@media (max-width: 1100px) {
+  .ld-filter-dropdowns-row {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
+  }
 }
 
 .crm-filter-control,
 .lg-filter-control {
   display: flex !important;
   flex-direction: column !important;
-  gap: 0.4rem !important;
+  gap: 0.45rem !important;
   min-width: 0 !important;
+  width: 100% !important;
+}
+
+.crm-filter-search-wrap,
+.crm-filter-search-wrap.lg-search,
+.lg-search {
+  min-width: 0 !important;
+  max-width: none !important;
+  width: 100% !important;
 }
 
 .crm-filter-label,
