@@ -13,12 +13,11 @@ import { ErrorMessage } from '../../components/auth/ErrorMessage';
 import { SuccessMessage } from '../../components/auth/SuccessMessage';
 import {
   ShieldIcon,
-  PlusIcon,
   CrownIcon,
-  DollarSignIcon,
   PaletteIcon,
   UsersIcon,
   ArrowLeftIcon,
+  CheckCircleIcon,
 } from '../../components/common/Icons';
 
 const PRESET_COLORS = [
@@ -178,42 +177,49 @@ export const CreateTeamPage: React.FC = () => {
 
       <main className="authenticated-container">
         {/* Navigation Breadcrumb */}
-        <div className="breadcrumb-nav">
-          <Link to="/teams" className="breadcrumb-link">
-            <ArrowLeftIcon size={14} />
-            <span>Back to Teams</span>
+        <div className="ct-breadcrumb-row">
+          <Link to="/teams" className="ct-breadcrumb-link">
+            <ArrowLeftIcon size={15} />
+            <span>All Teams</span>
           </Link>
+          <span className="ct-breadcrumb-sep">/</span>
+          <span className="ct-breadcrumb-current">Create New Team</span>
         </div>
 
         {/* Header */}
-        <div className="module-header-strip">
-          <div className="module-title-area">
-            <h1 className="module-main-heading">Create New Team</h1>
-            <p className="module-sub-heading">
+        <header className="lg-header" style={{ marginBottom: '1.75rem' }}>
+          <div className="lg-header-text">
+            <h1 className="lg-title">
+              <span className="lg-title-icon" aria-hidden="true">
+                <UsersIcon size={22} />
+              </span>
+              <span>Create New Team</span>
+            </h1>
+            <p className="lg-subtitle">
               Establish a sales, marketing, or support team with dedicated quotas and enrolled members.
             </p>
           </div>
-        </div>
+        </header>
 
         {/* Global Feedback */}
         {apiError && <ErrorMessage error={apiError} />}
         {apiSuccess && <SuccessMessage message={apiSuccess} />}
 
         <form onSubmit={handleSubmit} id="form-create-team">
-          <div className="team-form-grid">
-            {/* Main Details Card */}
-            <div className="form-main-card">
-              <div className="card-section-header">
-                <div className="section-icon-badge primary">
+          <div className="ct-form-grid">
+            {/* ═══════ Left Column: Main Details Card ═══════ */}
+            <div className="ct-main-card">
+              <div className="ct-card-header">
+                <div className="ct-header-icon">
                   <ShieldIcon size={18} />
                 </div>
                 <div>
-                  <h3 className="section-title">Team Identity & Quota</h3>
-                  <p className="section-desc">Define the team designation, slug, branding color, and revenue targets</p>
+                  <h3 className="ct-card-title">Team Identity & Quota</h3>
+                  <p className="ct-card-desc">Define the team designation, slug, branding color, and revenue targets</p>
                 </div>
               </div>
 
-              <div className="form-fields-stack">
+              <div className="ct-fields-stack">
                 <FormField
                   id="team-name"
                   label="Team Name"
@@ -234,13 +240,13 @@ export const CreateTeamPage: React.FC = () => {
                   helperText="Unique URL identifier for this team across CRM workflows."
                 />
 
-                <div className="form-group">
-                  <label htmlFor="team-description" className="form-label">
+                <div className="ct-field-group">
+                  <label htmlFor="team-description" className="ct-field-label">
                     Description & Scope
                   </label>
                   <textarea
                     id="team-description"
-                    className="form-textarea"
+                    className="ct-textarea"
                     rows={3}
                     placeholder="Describe the responsibilities, account focus, or geography of this team..."
                     value={description}
@@ -248,48 +254,49 @@ export const CreateTeamPage: React.FC = () => {
                   />
                 </div>
 
-                <div className="form-row-duo">
+                <div className="ct-row-2col">
                   <FormField
                     id="team-target-revenue"
-                    label="Revenue Quota Target ($)"
+                    label="Revenue Quota Target"
                     type="number"
                     min="0"
                     step="1000"
                     value={targetRevenue}
                     onChange={(e) => setTargetRevenue(e.target.value)}
-                    icon={<DollarSignIcon size={16} />}
                     helperText="Quarterly or annual revenue milestone for quota attainment."
                   />
 
-                  <div className="form-group">
-                    <label htmlFor="team-status" className="form-label">
+                  <div className="ct-field-group">
+                    <label htmlFor="team-status" className="ct-field-label">
                       Operational Status
                     </label>
-                    <select
-                      id="team-status"
-                      className="form-select"
-                      value={status}
-                      onChange={(e) => setStatus(e.target.value as TeamStatus)}
-                    >
-                      <option value="ACTIVE">Active (Enrolled in pipeline)</option>
-                      <option value="INACTIVE">Inactive (Paused operations)</option>
-                      <option value="ARCHIVED">Archived (Read-only reference)</option>
-                    </select>
+                    <div className="form-input-wrapper">
+                      <select
+                        id="team-status"
+                        className="form-input"
+                        value={status}
+                        onChange={(e) => setStatus(e.target.value as TeamStatus)}
+                      >
+                        <option value="ACTIVE">Active (Enrolled in pipeline)</option>
+                        <option value="INACTIVE">Inactive (Paused operations)</option>
+                        <option value="ARCHIVED">Archived (Read-only reference)</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
 
                 {/* Team Branding Color */}
-                <div className="form-group">
-                  <label className="form-label">
-                    <PaletteIcon size={16} />
+                <div className="ct-field-group">
+                  <label className="ct-field-label">
+                    <PaletteIcon size={15} />
                     <span>Team Branding Color</span>
                   </label>
-                  <div className="color-palette-picker">
+                  <div className="ct-color-palette">
                     {PRESET_COLORS.map((hex) => (
                       <button
                         type="button"
                         key={hex}
-                        className={`color-swatch-circle ${color === hex ? 'is-selected' : ''}`}
+                        className={`ct-color-swatch ${color === hex ? 'is-active' : ''}`}
                         style={{ backgroundColor: hex }}
                         onClick={() => setColor(hex)}
                         title={`Select color ${hex}`}
@@ -299,77 +306,79 @@ export const CreateTeamPage: React.FC = () => {
                       type="color"
                       value={color}
                       onChange={(e) => setColor(e.target.value)}
-                      className="custom-color-input"
+                      className="ct-color-custom"
                       title="Custom hex color"
                     />
-                    <code className="color-hex-tag">{color}</code>
+                    <code className="ct-color-code">{color}</code>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Sidebar / Member Assignment Card */}
-            <div className="form-sidebar-stack">
+            {/* ═══════ Right Column: Sidebar Cards ═══════ */}
+            <div className="ct-sidebar-stack">
               {/* Leader Selection */}
-              <div className="form-sidebar-card">
-                <div className="card-section-header">
-                  <div className="section-icon-badge warning">
+              <div className="ct-sidebar-card">
+                <div className="ct-card-header">
+                  <div className="ct-header-icon ct-icon-amber">
                     <CrownIcon size={18} />
                   </div>
                   <div>
-                    <h3 className="section-title">Team Leader</h3>
-                    <p className="section-desc">Assign team owner & supervisory role</p>
+                    <h3 className="ct-card-title">Team Leader</h3>
+                    <p className="ct-card-desc">Assign team owner & supervisory role</p>
                   </div>
                 </div>
 
-                <div className="form-group" style={{ marginTop: '1rem' }}>
-                  <select
-                    id="team-owner-select"
-                    className="form-select"
-                    value={ownerId}
-                    onChange={(e) => setOwnerId(e.target.value)}
-                    disabled={isLoadingUsers}
-                  >
-                    {availableUsers.map((u) => (
-                      <option key={u.id} value={u.id}>
-                        {u.name} ({u.email})
-                      </option>
-                    ))}
-                  </select>
+                <div className="ct-field-group" style={{ marginTop: '1rem' }}>
+                  <div className="form-input-wrapper">
+                    <select
+                      id="team-owner-select"
+                      className="form-input"
+                      value={ownerId}
+                      onChange={(e) => setOwnerId(e.target.value)}
+                      disabled={isLoadingUsers}
+                    >
+                      {availableUsers.map((u) => (
+                        <option key={u.id} value={u.id}>
+                          {u.name} ({u.role?.name || 'Member'}) ({u.email})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
               </div>
 
               {/* Initial Members Selection */}
-              <div className="form-sidebar-card">
-                <div className="card-section-header">
-                  <div className="section-icon-badge primary">
+              <div className="ct-sidebar-card">
+                <div className="ct-card-header">
+                  <div className="ct-header-icon">
                     <UsersIcon size={18} />
                   </div>
                   <div>
-                    <h3 className="section-title">Enroll Members</h3>
-                    <p className="section-desc">Select users to add ({selectedMemberIds.length} selected)</p>
+                    <h3 className="ct-card-title">Enroll Members</h3>
+                    <p className="ct-card-desc">Select users to add ({selectedMemberIds.length} selected)</p>
                   </div>
                 </div>
 
-                <div className="members-checkbox-scroll" style={{ maxHeight: '240px', overflowY: 'auto', marginTop: '1rem' }}>
+                <div className="ct-members-scroll">
                   {availableUsers
                     .filter((u) => u.id !== ownerId)
                     .map((user) => {
                       const isSelected = selectedMemberIds.includes(user.id);
                       return (
-                        <label key={user.id} className={`member-select-row ${isSelected ? 'is-checked' : ''}`}>
+                        <label key={user.id} className={`ct-member-row ${isSelected ? 'is-checked' : ''}`}>
                           <input
                             type="checkbox"
                             checked={isSelected}
                             onChange={() => toggleMemberSelection(user.id)}
-                            className="member-checkbox-input"
+                            className="ct-member-checkbox"
                           />
-                          <div className="member-avatar-chip">
+                          <div className="ct-member-avatar">
                             {user.name.slice(0, 2).toUpperCase()}
                           </div>
-                          <div className="member-info-text">
-                            <span className="member-name">{user.name}</span>
-                            <span className="member-email">{user.email}</span>
+                          <div className="ct-member-info">
+                            <span className="ct-member-name">{user.name}</span>
+                            <span className="ct-member-email">{user.email}</span>
                           </div>
                         </label>
                       );
@@ -378,16 +387,16 @@ export const CreateTeamPage: React.FC = () => {
               </div>
 
               {/* Submit CTA */}
-              <div className="form-action-buttons">
+              <div className="ct-action-row">
                 <PrimaryButton
                   type="submit"
                   isLoading={isSubmitting}
                   loadingText="Creating Team..."
-                  icon={<PlusIcon size={16} />}
+                  icon={<CheckCircleIcon size={16} />}
                 >
                   Create Team
                 </PrimaryButton>
-                <Link to="/teams" className="auth-btn btn-ghost">
+                <Link to="/teams" className="auth-btn btn-secondary">
                   Cancel
                 </Link>
               </div>
