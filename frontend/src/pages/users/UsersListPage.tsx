@@ -184,39 +184,32 @@ export const UsersListPage: React.FC = () => {
           style={{ marginBottom: '1.5rem' }}
         >
           <div className="lg-subnav-group">
-            <span className="lg-subnav-label">Users & Teams</span>
             <div className="lg-subnav-links">
               <NavLink to="/users" end className={({ isActive }) => `lg-subnav-link ${isActive ? 'is-active' : ''}`}>
                 All Users
               </NavLink>
-              <NavLink to="/users/invite" className={({ isActive }) => `lg-subnav-link ${isActive ? 'is-active' : ''}`}>
-                Invite User
-              </NavLink>
               <NavLink to="/teams" end className={({ isActive }) => `lg-subnav-link ${isActive ? 'is-active' : ''}`}>
                 Teams
-              </NavLink>
-              <NavLink to="/teams/create" className={({ isActive }) => `lg-subnav-link ${isActive ? 'is-active' : ''}`}>
-                Create Team
               </NavLink>
             </div>
           </div>
         </nav>
 
         {/* Module Header */}
-        <div className="module-title-bar">
-          <div className="title-section">
-            <div className="module-icon-badge" aria-hidden="true">
-              <UsersIcon size={24} />
-            </div>
-            <div>
-              <h1 className="module-page-title">Users & Team Management</h1>
-              <p className="module-page-desc">
-                View, onboard, manage permissions, and inspect activities for all team members
-              </p>
-            </div>
+        <header className="lg-header" style={{ marginBottom: '1.5rem' }}>
+          <div className="lg-header-text">
+            <h1 className="lg-title">
+              <span className="lg-title-icon" aria-hidden="true">
+                <UsersIcon size={22} />
+              </span>
+              <span>Users & Team Management</span>
+            </h1>
+            <p className="lg-subtitle">
+              View, onboard, manage permissions, and inspect activities for all team members
+            </p>
           </div>
 
-          <div className="title-action-buttons">
+          <div className="lg-header-actions">
             {canManage && (
               <Link
                 to="/users/invite"
@@ -228,7 +221,7 @@ export const UsersListPage: React.FC = () => {
               </Link>
             )}
           </div>
-        </div>
+        </header>
 
         {/* Global Notifications */}
         {apiError && <ErrorMessage error={apiError} />}

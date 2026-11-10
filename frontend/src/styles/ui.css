@@ -3745,6 +3745,19 @@ main.ld-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
   flex-wrap: wrap !important;
 }
 
+.count-pill {
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 0.2rem 0.65rem !important;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  border-radius: 999px !important;
+  background: rgba(16, 185, 129, 0.12) !important;
+  color: #10B981 !important;
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
+  vertical-align: middle !important;
+}
+
 /* ---------- 21.2 Universal KPI Stat Cards & Deck Standardization ---------- */
 .lg-stat-grid,
 .lg-stats-grid {

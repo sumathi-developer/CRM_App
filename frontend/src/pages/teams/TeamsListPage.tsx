@@ -43,6 +43,7 @@ export const TeamsListPage: React.FC = () => {
   // Delete Modal
   const [teamToDelete, setTeamToDelete] = useState<TeamEntity | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [brokenAvatars, setBrokenAvatars] = useState<Record<string, boolean>>({});
 
   const canManageTeams =
     currentUser?.role?.name === 'ADMIN' ||
@@ -137,37 +138,33 @@ export const TeamsListPage: React.FC = () => {
           style={{ marginBottom: '1.5rem' }}
         >
           <div className="lg-subnav-group">
-            <span className="lg-subnav-label">Users & Teams</span>
             <div className="lg-subnav-links">
               <NavLink to="/users" end className={({ isActive }) => `lg-subnav-link ${isActive ? 'is-active' : ''}`}>
                 All Users
               </NavLink>
-              <NavLink to="/users/invite" className={({ isActive }) => `lg-subnav-link ${isActive ? 'is-active' : ''}`}>
-                Invite User
-              </NavLink>
               <NavLink to="/teams" end className={({ isActive }) => `lg-subnav-link ${isActive ? 'is-active' : ''}`}>
                 Teams
-              </NavLink>
-              <NavLink to="/teams/create" className={({ isActive }) => `lg-subnav-link ${isActive ? 'is-active' : ''}`}>
-                Create Team
               </NavLink>
             </div>
           </div>
         </nav>
 
         {/* Module Header Strip */}
-        <div className="module-header-strip">
-          <div className="module-title-area">
-            <div className="module-title-with-badge">
-              <h1 className="module-main-heading">Teams</h1>
+        <header className="lg-header" style={{ marginBottom: '1.5rem' }}>
+          <div className="lg-header-text">
+            <h1 className="lg-title">
+              <span className="lg-title-icon" aria-hidden="true">
+                <ShieldIcon size={22} />
+              </span>
+              <span>Teams</span>
               <span className="count-pill">{totalCount} Total</span>
-            </div>
-            <p className="module-sub-heading">
+            </h1>
+            <p className="lg-subtitle">
               Organize members, align revenue targets, monitor team activities, and measure quota attainment.
             </p>
           </div>
 
-          <div className="module-header-actions">
+          <div className="lg-header-actions">
             {canManageTeams && (
               <Link to="/teams/create" className="auth-btn btn-primary" id="btn-create-team">
                 <PlusIcon size={16} />
@@ -175,7 +172,7 @@ export const TeamsListPage: React.FC = () => {
               </Link>
             )}
           </div>
-        </div>
+        </header>
 
         {/* Global Feedback */}
         {apiError && <ErrorMessage error={apiError} />}
@@ -296,14 +293,19 @@ export const TeamsListPage: React.FC = () => {
                         style={{ backgroundColor: teamColor }}
                         aria-label={team.name}
                       >
-                        {team.avatar ? (
-                          <img src={team.avatar} alt={team.name} className="avatar-img-fit" />
+                        {team.avatar && !brokenAvatars[team.id] ? (
+                          <img
+                            src={team.avatar}
+                            alt={team.name}
+                            className="avatar-img-fit"
+                            onError={() => setBrokenAvatars((prev) => ({ ...prev, [team.id]: true }))}
+                          />
                         ) : (
                           <span>{getInitials(team.name)}</span>
                         )}
                       </div>
-                      <div>
-                        <h2 className="team-name-title">
+                      <div className="team-title-wrap">
+                        <h2 className="team-name-title" title={team.name}>
                           <Link to={`/teams/${team.id}`}>{team.name}</Link>
                         </h2>
                         {team.slug && <span className="team-slug-label">/{team.slug}</span>}
@@ -313,7 +315,7 @@ export const TeamsListPage: React.FC = () => {
                   </div>
 
                   <div className="team-card-body">
-                    <p className="team-card-desc">
+                    <p className="team-card-desc" title={team.description || undefined}>
                       {team.description || 'No description provided for this team.'}
                     </p>
 
