@@ -19,7 +19,6 @@ import {
   EditIcon,
   TrashIcon,
   TrendingUpIcon,
-  DollarSignIcon,
   TargetIcon,
   CheckCircleIcon,
 } from '../../components/common/Icons';
@@ -215,17 +214,17 @@ export const TeamsListPage: React.FC = () => {
               <TargetIcon size={20} />
             </div>
             <div className="kpi-details">
-              <span className="kpi-value">${totalCombinedTarget.toLocaleString()}</span>
+              <span className="kpi-value">{totalCombinedTarget.toLocaleString()}</span>
               <span className="kpi-label">Total Quota Target</span>
             </div>
           </div>
 
           <div className="kpi-mini-card">
             <div className="kpi-icon-wrap success">
-              <DollarSignIcon size={20} />
+              <TrendingUpIcon size={20} />
             </div>
             <div className="kpi-details">
-              <span className="kpi-value">${totalCombinedWon.toLocaleString()}</span>
+              <span className="kpi-value">{totalCombinedWon.toLocaleString()}</span>
               <span className="kpi-label">Combined Won Revenue</span>
             </div>
           </div>
@@ -324,7 +323,7 @@ export const TeamsListPage: React.FC = () => {
                       <div className="quota-meta-row">
                         <span className="quota-label">Quota Attainment</span>
                         <span className="quota-values">
-                          ${wonRev.toLocaleString()} / ${targetRev.toLocaleString()} ({attainment}%)
+                          {wonRev.toLocaleString()} / {targetRev.toLocaleString()} ({attainment}%)
                         </span>
                       </div>
                       <div className="quota-bar-track">
