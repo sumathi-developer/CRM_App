@@ -4756,6 +4756,88 @@ html.dark .lg-page-num:not(.is-active),
   color: #000000 !important;
 }
 
+.auth-btn.btn-danger,
+.btn-danger,
+.lg-btn-danger {
+  background: #FFFFFF !important;
+  color: #DC2626 !important;
+  font-weight: 600 !important;
+  border-radius: 10px !important;
+  padding: 0.55rem 1.25rem !important;
+  border: 1px solid rgba(239, 68, 68, 0.35) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.45rem !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  font-size: 0.85rem !important;
+  min-height: 38px !important;
+  transition: all 150ms ease !important;
+}
+
+.auth-btn.btn-danger:hover,
+.btn-danger:hover,
+.lg-btn-danger:hover {
+  background: #FEE2E2 !important;
+  border-color: #EF4444 !important;
+  color: #991B1B !important;
+  box-shadow: 0 4px 10px rgba(239, 68, 68, 0.16) !important;
+}
+
+.auth-btn.btn-danger:active,
+.btn-danger:active,
+.lg-btn-danger:active {
+  transform: translateY(1px) !important;
+}
+
+.auth-btn.btn-danger svg,
+.btn-danger svg,
+.lg-btn-danger svg {
+  color: #DC2626 !important;
+  flex-shrink: 0 !important;
+}
+
+.auth-btn.btn-danger:hover svg,
+.btn-danger:hover svg,
+.lg-btn-danger:hover svg {
+  color: #991B1B !important;
+}
+
+/* Dark mode for danger buttons */
+html.dark .auth-btn.btn-danger,
+html.dark .btn-danger,
+html.dark .lg-btn-danger,
+[data-theme="dark"] .auth-btn.btn-danger,
+[data-theme="dark"] .btn-danger,
+[data-theme="dark"] .lg-btn-danger {
+  background: rgba(239, 68, 68, 0.12) !important;
+  border: 1px solid rgba(239, 68, 68, 0.35) !important;
+  color: #FCA5A5 !important;
+}
+
+html.dark .auth-btn.btn-danger:hover,
+html.dark .btn-danger:hover,
+html.dark .lg-btn-danger:hover,
+[data-theme="dark"] .auth-btn.btn-danger:hover,
+[data-theme="dark"] .btn-danger:hover,
+[data-theme="dark"] .lg-btn-danger:hover {
+  background: rgba(239, 68, 68, 0.25) !important;
+  border-color: #EF4444 !important;
+  color: #FFFFFF !important;
+}
+
+html.dark .auth-btn.btn-danger svg,
+[data-theme="dark"] .auth-btn.btn-danger svg {
+  color: #FCA5A5 !important;
+}
+
+html.dark .auth-btn.btn-danger:hover svg,
+[data-theme="dark"] .auth-btn.btn-danger:hover svg {
+  color: #FFFFFF !important;
+}
+
 .auth-btn.btn-size-small,
 .btn-size-small {
   padding: 0.35rem 0.85rem !important;
@@ -5141,6 +5223,8 @@ body.modal-open {
   overflow-x: hidden !important;
   overflow-y: hidden !important;
   scrollbar-gutter: auto !important;
+  padding-right: 0 !important;
+  margin: 0 !important;
 }
 
 html.modal-open::-webkit-scrollbar,
@@ -5159,11 +5243,17 @@ body.modal-open::-webkit-scrollbar {
   left: 0 !important;
   right: 0 !important;
   bottom: 0 !important;
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
   width: 100vw !important;
   min-width: 100vw !important;
   max-width: 100vw !important;
   width: 100dvw !important;
   min-width: 100dvw !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  max-height: 100% !important;
   height: 100vh !important;
   min-height: 100vh !important;
   max-height: 100vh !important;
@@ -5180,4 +5270,110 @@ body.modal-open::-webkit-scrollbar {
   margin: 0 !important;
   padding: 20px !important;
   box-sizing: border-box !important;
+}
+
+/* Modal Box Container & Body - Remove Scrollbars completely */
+.modal-container {
+  overflow: hidden !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.modal-container,
+.modal-container *,
+.modal-body,
+.lg-modal,
+.lg-modal-body {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.modal-container::-webkit-scrollbar,
+.modal-container *::-webkit-scrollbar,
+.modal-body::-webkit-scrollbar,
+.lg-modal::-webkit-scrollbar,
+.lg-modal-body::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* CRM Theme for Lead Qualification Cards and Boxes */
+.ld-drawer-box {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+
+.ld-drawer-section-label {
+  color: #334155 !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+}
+
+.ld-drawer-big-value {
+  color: #0F172A !important;
+  font-weight: 700 !important;
+}
+
+.ld-drawer-box .lg-muted {
+  color: #64748B !important;
+}
+
+.ld-status-option-card {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+
+.ld-status-option-card:hover {
+  background: #F8FCF9 !important;
+  border-color: rgba(16, 185, 129, 0.5) !important;
+}
+
+.ld-status-option-card.is-selected {
+  background: #EAF4ED !important;
+  border-color: #10B981 !important;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25) !important;
+}
+
+.ld-status-option-desc {
+  color: #475569 !important;
+}
+
+.ld-bant-card {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+
+.ld-bant-card:hover {
+  background: #F8FCF9 !important;
+  border-color: rgba(16, 185, 129, 0.5) !important;
+}
+
+.ld-bant-card strong {
+  color: #0F172A !important;
+}
+
+.ld-bant-card .lg-field-hint {
+  color: #475569 !important;
+}
+
+.ld-bant-card.is-checked {
+  background: #EAF4ED !important;
+  border-color: #10B981 !important;
+  box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.2) !important;
+}
+
+.ld-bant-card.is-checked strong {
+  color: #064E3B !important;
+}
+
+.ld-bant-card.is-checked .lg-field-hint {
+  color: #065F46 !important;
 }

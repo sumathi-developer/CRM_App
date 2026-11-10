@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useParams, Link } from 'react-router-dom';
 import { teamService } from '../../services/team.service';
 import { userService } from '../../services/user.service';
@@ -90,6 +91,38 @@ export const TeamMembersPage: React.FC = () => {
       ignore = true;
     };
   }, [id, refreshTrigger]);
+
+  useEffect(() => {
+    if (!isAddModalOpen) return;
+    const prevBodyOverflow = document.body.style.overflow;
+    const prevHtmlOverflow = document.documentElement.style.overflow;
+
+    document.documentElement.classList.add('modal-open');
+    document.body.classList.add('modal-open');
+    document.documentElement.style.setProperty('overflow', 'hidden', 'important');
+    document.body.style.setProperty('overflow', 'hidden', 'important');
+    document.documentElement.style.setProperty('scrollbar-gutter', 'auto', 'important');
+    document.body.style.setProperty('scrollbar-gutter', 'auto', 'important');
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && !isSubmitting) {
+        setIsAddModalOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.documentElement.classList.remove('modal-open');
+      document.body.classList.remove('modal-open');
+      document.documentElement.style.removeProperty('overflow');
+      document.body.style.removeProperty('overflow');
+      document.documentElement.style.removeProperty('scrollbar-gutter');
+      document.body.style.removeProperty('scrollbar-gutter');
+      if (prevBodyOverflow) document.body.style.overflow = prevBodyOverflow;
+      if (prevHtmlOverflow) document.documentElement.style.overflow = prevHtmlOverflow;
+    };
+  }, [isAddModalOpen, isSubmitting]);
 
   // Handle Role Update
   const handleRoleChange = async (member: TeamMemberEntity, newRole: TeamMemberRole) => {
@@ -373,95 +406,109 @@ export const TeamMembersPage: React.FC = () => {
       </main>
 
       {/* Add Member Modal */}
-      {isAddModalOpen && (
-        <div className="modal-backdrop" role="dialog" aria-modal="true">
-          <div className="modal-container">
-            <div className="modal-header">
-              <div className="modal-header-icon primary">
-                <UserPlusIcon size={20} />
-              </div>
-              <div className="modal-header-text">
-                <h3 className="modal-title">Add Member to Team</h3>
-                <p className="modal-subtitle">Enroll an existing workspace user into {team.name}</p>
-              </div>
-              <button
-                type="button"
-                className="modal-close-btn"
-                onClick={() => setIsAddModalOpen(false)}
-                aria-label="Close dialog"
-              >
-                <XIcon size={18} />
-              </button>
-            </div>
-
-            <form onSubmit={handleAddMember}>
-              <div className="modal-body">
-                {availableUsersToEnroll.length === 0 ? (
-                  <p className="text-muted" style={{ padding: '1rem 0' }}>
-                    All workspace users are already enrolled in this team.
-                  </p>
-                ) : (
-                  <div className="form-fields-stack">
-                    <div className="form-group">
-                      <label htmlFor="select-user-to-add" className="form-label">
-                        Select Workspace User
-                      </label>
-                      <select
-                        id="select-user-to-add"
-                        className="form-select"
-                        value={selectedUserId}
-                        onChange={(e) => setSelectedUserId(e.target.value)}
-                        required
-                      >
-                        <option value="">-- Choose User to Enroll --</option>
-                        {availableUsersToEnroll.map((user) => (
-                          <option key={user.id} value={user.id}>
-                            {user.name} ({user.email})
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div className="form-group">
-                      <label htmlFor="select-member-role" className="form-label">
-                        Team Member Role
-                      </label>
-                      <select
-                        id="select-member-role"
-                        className="form-select"
-                        value={selectedRole}
-                        onChange={(e) => setSelectedRole(e.target.value as TeamMemberRole)}
-                      >
-                        <option value="MEMBER">Member (Contributor)</option>
-                        <option value="LEADER">Team Leader (Supervisory)</option>
-                      </select>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <div className="modal-footer">
+      {isAddModalOpen &&
+        typeof document !== 'undefined' &&
+        createPortal(
+          <div
+            className="modal-backdrop"
+            role="dialog"
+            aria-modal="true"
+            onClick={(e) => {
+              if (e.target === e.currentTarget && !isAdding) {
+                setIsAddModalOpen(false);
+              }
+            }}
+          >
+            <div className="modal-container" onClick={(e) => e.stopPropagation()}>
+              <div className="modal-header">
+                <div className="modal-header-icon primary">
+                  <UserPlusIcon size={20} />
+                </div>
+                <div className="modal-header-text">
+                  <h3 className="modal-title">Add Member to Team</h3>
+                  <p className="modal-subtitle">Enroll an existing workspace user into {team.name}</p>
+                </div>
                 <button
                   type="button"
-                  className="auth-btn btn-ghost"
+                  className="modal-close-btn"
                   onClick={() => setIsAddModalOpen(false)}
+                  disabled={isAdding}
+                  aria-label="Close dialog"
                 >
-                  Cancel
+                  <XIcon size={18} />
                 </button>
-                {availableUsersToEnroll.length > 0 && (
-                  <button
-                    type="submit"
-                    className="auth-btn btn-primary"
-                    disabled={isAdding || !selectedUserId}
-                  >
-                    {isAdding ? 'Adding Member...' : 'Enroll Member'}
-                  </button>
-                )}
               </div>
-            </form>
-          </div>
-        </div>
-      )}
+
+              <form onSubmit={handleAddMember}>
+                <div className="modal-body">
+                  {availableUsersToEnroll.length === 0 ? (
+                    <p className="text-muted" style={{ padding: '1rem 0' }}>
+                      All workspace users are already enrolled in this team.
+                    </p>
+                  ) : (
+                    <div className="form-fields-stack">
+                      <div className="form-group">
+                        <label htmlFor="select-user-to-add" className="form-label">
+                          Select Workspace User
+                        </label>
+                        <select
+                          id="select-user-to-add"
+                          className="form-select"
+                          value={selectedUserId}
+                          onChange={(e) => setSelectedUserId(e.target.value)}
+                          required
+                        >
+                          <option value="">-- Choose User to Enroll --</option>
+                          {availableUsersToEnroll.map((user) => (
+                            <option key={user.id} value={user.id}>
+                              {user.name} ({user.email})
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div className="form-group">
+                        <label htmlFor="select-member-role" className="form-label">
+                          Team Member Role
+                        </label>
+                        <select
+                          id="select-member-role"
+                          className="form-select"
+                          value={selectedRole}
+                          onChange={(e) => setSelectedRole(e.target.value as TeamMemberRole)}
+                        >
+                          <option value="MEMBER">Member (Contributor)</option>
+                          <option value="LEADER">Team Leader (Supervisory)</option>
+                        </select>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="modal-footer">
+                  <button
+                    type="button"
+                    className="auth-btn btn-ghost"
+                    onClick={() => setIsAddModalOpen(false)}
+                    disabled={isAdding}
+                  >
+                    Cancel
+                  </button>
+                  {availableUsersToEnroll.length > 0 && (
+                    <button
+                      type="submit"
+                      className="auth-btn btn-primary"
+                      disabled={isAdding || !selectedUserId}
+                    >
+                      {isAdding ? 'Adding Member...' : 'Enroll Member'}
+                    </button>
+                  )}
+                </div>
+              </form>
+            </div>
+          </div>,
+          document.body
+        )}
 
       {/* Remove Member Confirmation Modal */}
       <ConfirmDeleteModal

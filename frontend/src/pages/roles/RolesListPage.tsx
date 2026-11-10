@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Link, NavLink } from 'react-router-dom';
 import { roleService } from '../../services/role.service';
 import { useAuth } from '../../context/AuthContext';
@@ -85,6 +86,38 @@ export const RolesListPage: React.FC = () => {
       ignore = true;
     };
   }, [refreshTrigger]);
+
+  useEffect(() => {
+    if (!isCatalogOpen) return;
+    const prevBodyOverflow = document.body.style.overflow;
+    const prevHtmlOverflow = document.documentElement.style.overflow;
+
+    document.documentElement.classList.add('modal-open');
+    document.body.classList.add('modal-open');
+    document.documentElement.style.setProperty('overflow', 'hidden', 'important');
+    document.body.style.setProperty('overflow', 'hidden', 'important');
+    document.documentElement.style.setProperty('scrollbar-gutter', 'auto', 'important');
+    document.body.style.setProperty('scrollbar-gutter', 'auto', 'important');
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsCatalogOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.documentElement.classList.remove('modal-open');
+      document.body.classList.remove('modal-open');
+      document.documentElement.style.removeProperty('overflow');
+      document.body.style.removeProperty('overflow');
+      document.documentElement.style.removeProperty('scrollbar-gutter');
+      document.body.style.removeProperty('scrollbar-gutter');
+      if (prevBodyOverflow) document.body.style.overflow = prevBodyOverflow;
+      if (prevHtmlOverflow) document.documentElement.style.overflow = prevHtmlOverflow;
+    };
+  }, [isCatalogOpen]);
 
   const handleDeleteConfirm = async () => {
     if (!roleToDelete) return;
@@ -412,61 +445,77 @@ export const RolesListPage: React.FC = () => {
       </main>
 
       {/* Global Permissions Catalog Modal */}
-      {isCatalogOpen && (
-        <div className="modal-backdrop" role="dialog" aria-modal="true">
-          <div className="modal-container" style={{ maxWidth: '850px', maxHeight: '90vh' }}>
-            <div className="modal-header">
-              <div className="modal-header-icon primary">
-                <ShieldIcon size={20} />
+      {isCatalogOpen &&
+        typeof document !== 'undefined' &&
+        createPortal(
+          <div
+            className="modal-backdrop"
+            role="dialog"
+            aria-modal="true"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) {
+                setIsCatalogOpen(false);
+              }
+            }}
+          >
+            <div
+              className="modal-container"
+              style={{ maxWidth: '850px', maxHeight: '90vh' }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="modal-header">
+                <div className="modal-header-icon primary">
+                  <ShieldIcon size={20} />
+                </div>
+                <div className="modal-header-text">
+                  <h3 className="modal-title">System Permissions Catalog</h3>
+                  <p className="modal-subtitle">
+                    Complete registry of all {permissions.length} granular capabilities enforced in the CRM
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  className="modal-close-btn"
+                  onClick={() => setIsCatalogOpen(false)}
+                  aria-label="Close catalog"
+                >
+                  <XIcon size={18} />
+                </button>
               </div>
-              <div className="modal-header-text">
-                <h3 className="modal-title">System Permissions Catalog</h3>
-                <p className="modal-subtitle">
-                  Complete registry of all {permissions.length} granular capabilities enforced in the CRM
-                </p>
-              </div>
-              <button
-                type="button"
-                className="modal-close-btn"
-                onClick={() => setIsCatalogOpen(false)}
-                aria-label="Close catalog"
-              >
-                <XIcon size={18} />
-              </button>
-            </div>
 
-            <div className="modal-body" style={{ overflowY: 'auto', maxHeight: '65vh' }}>
-              <div className="filter-search-box" style={{ marginBottom: '1rem' }}>
-                <SearchIcon size={16} className="search-box-icon" />
-                <input
-                  type="text"
-                  placeholder="Filter catalog by permission, resource, or action..."
-                  value={catalogSearch}
-                  onChange={(e) => setCatalogSearch(e.target.value)}
-                  className="search-input-field"
+              <div className="modal-body" style={{ overflowY: 'auto', maxHeight: '65vh' }}>
+                <div className="filter-search-box" style={{ marginBottom: '1rem' }}>
+                  <SearchIcon size={16} className="search-box-icon" />
+                  <input
+                    type="text"
+                    placeholder="Filter catalog by permission, resource, or action..."
+                    value={catalogSearch}
+                    onChange={(e) => setCatalogSearch(e.target.value)}
+                    className="search-input-field"
+                  />
+                </div>
+
+                <PermissionsMatrix
+                  permissions={permissions}
+                  selectedPermissionIds={permissions.map((p) => p.id)}
+                  readOnly
+                  search={catalogSearch}
                 />
               </div>
 
-              <PermissionsMatrix
-                permissions={permissions}
-                selectedPermissionIds={permissions.map((p) => p.id)}
-                readOnly
-                search={catalogSearch}
-              />
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="auth-btn btn-primary"
+                  onClick={() => setIsCatalogOpen(false)}
+                >
+                  Close Catalog
+                </button>
+              </div>
             </div>
-
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="auth-btn btn-primary"
-                onClick={() => setIsCatalogOpen(false)}
-              >
-                Close Catalog
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body
+        )}
 
       {/* Delete Confirmation Modal */}
       <ConfirmDeleteModal

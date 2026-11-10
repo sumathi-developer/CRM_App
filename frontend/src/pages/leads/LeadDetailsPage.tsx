@@ -202,8 +202,10 @@ export const LeadDetailsPage: React.FC = () => {
               className="auth-btn btn-danger"
               onClick={() => setIsDeleteOpen(true)}
               aria-label="Delete Lead"
+              id="btn-delete-lead"
             >
               <TrashIcon size={15} />
+              <span>Delete</span>
             </button>
           </>
         )

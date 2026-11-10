@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { customFieldService } from '../../services/custom-field.service';
 import type {
   CustomFieldEntityType,
@@ -62,11 +63,56 @@ export const LayoutPreviewModal: React.FC<LayoutPreviewModalProps> = ({
     };
   }, [isOpen, selectedEntity]);
 
+  useEffect(() => {
+    if (!isOpen) return;
+    const prevBodyOverflow = document.body.style.overflow;
+    const prevHtmlOverflow = document.documentElement.style.overflow;
+
+    document.documentElement.classList.add('modal-open');
+    document.body.classList.add('modal-open');
+    document.documentElement.style.setProperty('overflow', 'hidden', 'important');
+    document.body.style.setProperty('overflow', 'hidden', 'important');
+    document.documentElement.style.setProperty('scrollbar-gutter', 'auto', 'important');
+    document.body.style.setProperty('scrollbar-gutter', 'auto', 'important');
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.documentElement.classList.remove('modal-open');
+      document.body.classList.remove('modal-open');
+      document.documentElement.style.removeProperty('overflow');
+      document.body.style.removeProperty('overflow');
+      document.documentElement.style.removeProperty('scrollbar-gutter');
+      document.body.style.removeProperty('scrollbar-gutter');
+      if (prevBodyOverflow) document.body.style.overflow = prevBodyOverflow;
+      if (prevHtmlOverflow) document.documentElement.style.overflow = prevHtmlOverflow;
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
-  return (
-    <div className="modal-backdrop" role="dialog" aria-modal="true">
-      <div className="modal-container" style={{ maxWidth: '850px', maxHeight: '90vh' }}>
+  const modalContent = (
+    <div
+      className="modal-backdrop"
+      role="dialog"
+      aria-modal="true"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          onClose();
+        }
+      }}
+    >
+      <div
+        className="modal-container"
+        style={{ maxWidth: '850px', maxHeight: '90vh' }}
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="modal-header">
           <div className="modal-header-icon primary">
             <SlidersIcon size={20} />
@@ -188,4 +234,8 @@ export const LayoutPreviewModal: React.FC<LayoutPreviewModalProps> = ({
       </div>
     </div>
   );
+
+  return typeof document !== 'undefined'
+    ? createPortal(modalContent, document.body)
+    : modalContent;
 };

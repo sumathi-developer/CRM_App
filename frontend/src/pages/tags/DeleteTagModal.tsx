@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import type { TagEntity } from '../../types/tag.types';
 import { TagBadge } from './TagBadge';
@@ -31,6 +32,38 @@ export const DeleteTagModal: React.FC<DeleteTagModalProps> = ({
   const [confirmForceDetach, setConfirmForceDetach] = useState(false);
   const [localError, setLocalError] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (!isOpen) return;
+    const prevBodyOverflow = document.body.style.overflow;
+    const prevHtmlOverflow = document.documentElement.style.overflow;
+
+    document.documentElement.classList.add('modal-open');
+    document.body.classList.add('modal-open');
+    document.documentElement.style.setProperty('overflow', 'hidden', 'important');
+    document.body.style.setProperty('overflow', 'hidden', 'important');
+    document.documentElement.style.setProperty('scrollbar-gutter', 'auto', 'important');
+    document.body.style.setProperty('scrollbar-gutter', 'auto', 'important');
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && !isLoading) {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.documentElement.classList.remove('modal-open');
+      document.body.classList.remove('modal-open');
+      document.documentElement.style.removeProperty('overflow');
+      document.body.style.removeProperty('overflow');
+      document.documentElement.style.removeProperty('scrollbar-gutter');
+      document.body.style.removeProperty('scrollbar-gutter');
+      if (prevBodyOverflow) document.body.style.overflow = prevBodyOverflow;
+      if (prevHtmlOverflow) document.documentElement.style.overflow = prevHtmlOverflow;
+    };
+  }, [isOpen, isLoading, onClose]);
+
   if (!isOpen || !tag) return null;
 
   const isProtected = tag.isProtected;
@@ -55,9 +88,22 @@ export const DeleteTagModal: React.FC<DeleteTagModalProps> = ({
     }
   };
 
-  return (
-    <div className="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="delete-tag-title">
-      <div className="modal-container modal-danger tag-delete-modal-container">
+  const modalContent = (
+    <div
+      className="modal-backdrop"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="delete-tag-title"
+      onClick={(e) => {
+        if (e.target === e.currentTarget && !isLoading) {
+          onClose();
+        }
+      }}
+    >
+      <div
+        className="modal-container modal-danger tag-delete-modal-container"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Header */}
         <div className="modal-header">
           <div className={`modal-header-icon ${isProtected ? 'warning' : 'danger'}`}>
@@ -260,4 +306,8 @@ export const DeleteTagModal: React.FC<DeleteTagModalProps> = ({
       </div>
     </div>
   );
+
+  return typeof document !== 'undefined'
+    ? createPortal(modalContent, document.body)
+    : modalContent;
 };
