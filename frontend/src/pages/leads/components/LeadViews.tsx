@@ -150,7 +150,7 @@ export const LeadsTableView: React.FC<SharedLeadViewProps> = ({
     },
     {
       key: 'value',
-      header: renderSortHeader('Est. Value', 'estimatedValue'),
+      header: renderSortHeader('Est.\u00A0Value', 'estimatedValue'),
       align: 'right',
       render: (l) => <strong>{formatCurrency(l.estimatedValue)}</strong>,
     },

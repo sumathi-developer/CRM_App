@@ -178,20 +178,25 @@
 /* ---------- Table Sortable Headers & Avatars ---------- */
 
 .ld-th-sort-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--text-muted, #64748b);
-  cursor: pointer;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.25rem !important;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  color: var(--text-muted, #64748b) !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+}
+
+.ld-th-sort-btn span {
+  white-space: nowrap !important;
 }
 
 .ld-th-sort-btn:hover,
 .ld-th-sort-btn.is-active {
-  color: var(--primary-400, #60a5fa);
+  color: #10B981 !important;
 }
 
 .ld-table-lead-cell {
@@ -255,11 +260,12 @@
 .ld-score-widget {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  padding: 0.85rem 1rem;
-  background: rgba(15, 23, 42, 0.55);
-  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
-  border-radius: var(--radius-md, 10px);
+  gap: 0.55rem;
+  padding: 0.75rem 1rem;
+  background: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.28) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
 }
 
 .ld-score-widget-top {
@@ -272,19 +278,20 @@
 .ld-score-big-number {
   font-size: 1.5rem;
   font-weight: 800;
-  color: var(--text-main, #f8fafc);
+  color: #000000 !important;
 }
 
 .ld-score-max {
   font-size: 0.8125rem;
-  color: var(--text-muted, #64748b);
+  font-weight: 600;
+  color: #64748B !important;
   margin-left: 0.25rem;
 }
 
 .ld-score-bar-track {
   width: 100%;
   height: 8px;
-  background: rgba(255, 255, 255, 0.06);
+  background: #E2E8F0 !important;
   border-radius: 999px;
   overflow: hidden;
 }
@@ -302,7 +309,29 @@
   background: linear-gradient(90deg, #f59e0b, #fbbf24);
 }
 .ld-score-bar-fill.tone-slate {
-  background: linear-gradient(90deg, #475569, #94a3b8);
+  background: linear-gradient(90deg, #94a3b8, #cbd5e1);
+}
+
+html.dark .ld-score-widget,
+[data-theme="dark"] .ld-score-widget {
+  background: rgba(15, 23, 42, 0.85) !important;
+  border-color: rgba(16, 185, 129, 0.28) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+}
+
+html.dark .ld-score-big-number,
+[data-theme="dark"] .ld-score-big-number {
+  color: #FFFFFF !important;
+}
+
+html.dark .ld-score-max,
+[data-theme="dark"] .ld-score-max {
+  color: #94A3B8 !important;
+}
+
+html.dark .ld-score-bar-track,
+[data-theme="dark"] .ld-score-bar-track {
+  background: rgba(255, 255, 255, 0.1) !important;
 }
 
 .ld-qualification-stepper {

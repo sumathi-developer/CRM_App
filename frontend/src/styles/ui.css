@@ -4393,6 +4393,7 @@ main.ld-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
   color: #000000 !important;
   background: #F4FAF6 !important;
   border-bottom: 1px solid rgba(16, 185, 129, 0.18) !important;
+  white-space: nowrap !important;
 }
 
 .lg-table td,
