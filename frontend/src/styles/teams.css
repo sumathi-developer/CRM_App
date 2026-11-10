@@ -378,29 +378,44 @@ html.dark .teams-metrics-strip .kpi-label,
   flex-shrink: 0;
 }
 
-.team-actions-group .table-action-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
-  color: #64748B;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  transition: all 150ms ease;
-  text-decoration: none;
+.team-actions-group .table-action-btn,
+.table-action-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 8px !important;
+  color: #059669 !important;
+  background: rgba(16, 185, 129, 0.08) !important;
+  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  cursor: pointer !important;
+  transition: all 150ms ease !important;
+  text-decoration: none !important;
 }
 
-.team-actions-group .table-action-btn:hover {
-  background: rgba(16, 185, 129, 0.12);
-  color: #10B981;
+.team-actions-group .table-action-btn:hover,
+.table-action-btn:hover {
+  background: rgba(16, 185, 129, 0.18) !important;
+  color: #062E03 !important;
+  border-color: #10B981 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.15) !important;
 }
 
-.team-actions-group .table-action-btn.btn-action-danger:hover {
-  background: rgba(239, 68, 68, 0.12);
-  color: #EF4444;
+.team-actions-group .table-action-btn.btn-action-danger,
+.table-action-btn.btn-action-danger {
+  background: rgba(239, 68, 68, 0.08) !important;
+  border-color: rgba(239, 68, 68, 0.22) !important;
+  color: #DC2626 !important;
+}
+
+.team-actions-group .table-action-btn.btn-action-danger:hover,
+.table-action-btn.btn-action-danger:hover {
+  background: rgba(239, 68, 68, 0.18) !important;
+  color: #991B1B !important;
+  border-color: #EF4444 !important;
+  box-shadow: 0 2px 6px rgba(239, 68, 68, 0.15) !important;
 }
 
 /* Dark Mode Overrides for Team Cards */
@@ -470,14 +485,39 @@ html.dark .leader-name-text,
 }
 
 html.dark .team-actions-group .table-action-btn,
-[data-theme="dark"] .team-actions-group .table-action-btn {
-  color: #94A3B8 !important;
+html.dark .table-action-btn,
+[data-theme="dark"] .team-actions-group .table-action-btn,
+[data-theme="dark"] .table-action-btn {
+  background: rgba(16, 185, 129, 0.12) !important;
+  border-color: rgba(16, 185, 129, 0.3) !important;
+  color: #34D399 !important;
 }
 
 html.dark .team-actions-group .table-action-btn:hover,
-[data-theme="dark"] .team-actions-group .table-action-btn:hover {
-  background: rgba(16, 185, 129, 0.2) !important;
+html.dark .table-action-btn:hover,
+[data-theme="dark"] .team-actions-group .table-action-btn:hover,
+[data-theme="dark"] .table-action-btn:hover {
+  background: rgba(16, 185, 129, 0.25) !important;
   color: #FFFFFF !important;
+  border-color: #10B981 !important;
+}
+
+html.dark .team-actions-group .table-action-btn.btn-action-danger,
+html.dark .table-action-btn.btn-action-danger,
+[data-theme="dark"] .team-actions-group .table-action-btn.btn-action-danger,
+[data-theme="dark"] .table-action-btn.btn-action-danger {
+  background: rgba(239, 68, 68, 0.12) !important;
+  border-color: rgba(239, 68, 68, 0.3) !important;
+  color: #F87171 !important;
+}
+
+html.dark .team-actions-group .table-action-btn.btn-action-danger:hover,
+html.dark .table-action-btn.btn-action-danger:hover,
+[data-theme="dark"] .team-actions-group .table-action-btn.btn-action-danger,
+[data-theme="dark"] .table-action-btn.btn-action-danger:hover {
+  background: rgba(239, 68, 68, 0.25) !important;
+  color: #FFFFFF !important;
+  border-color: #EF4444 !important;
 }
 
 /* --------------------------------------------------------------------------
