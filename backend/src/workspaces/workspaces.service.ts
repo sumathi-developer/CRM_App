@@ -251,7 +251,7 @@ export class WorkspacesService {
     }
     try {
       const timeoutPromise = new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 1500));
-      const queryPromise = this.prisma.$queryRawUnsafe(
+      const queryPromise = this.prisma.$queryRawUnsafe<any[]>(
         `SELECT "id" FROM "Workspace" WHERE "slug" = $1 OR "id"::text = $1 LIMIT 1`,
         idOrSlug,
       );
@@ -2062,7 +2062,7 @@ export class WorkspacesService {
       if (isUuid) {
         const sql = `SELECT * FROM "WorkspaceSetting" WHERE "workspaceId" = $1 LIMIT 1`;
         const timeoutPromise = new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 1500));
-        const queryPromise = this.prisma.$queryRawUnsafe(sql, resolvedId);
+        const queryPromise = this.prisma.$queryRawUnsafe<any[]>(sql, resolvedId);
         const rows: any[] = await Promise.race([queryPromise, timeoutPromise]);
 
         if (rows && rows.length > 0) {
