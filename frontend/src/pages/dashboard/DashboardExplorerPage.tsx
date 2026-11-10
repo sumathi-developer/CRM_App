@@ -181,21 +181,27 @@ export const DashboardExplorerPage: React.FC<DashboardExplorerPageProps> = ({
 
     try {
       if (screen === 'overview') {
-        const [overview, pipeline, revenue, deals, leads, activities] =
-          await Promise.all([
-            dashboardService.getOverviewAnalytics(activeFilters),
-            dashboardService.getPipelineAnalytics(activeFilters),
-            dashboardService.getRevenueAnalytics(activeFilters),
-            dashboardService.getRecentDeals({ ...activeFilters, limit: 5 }),
-            dashboardService.getRecentLeads({ ...activeFilters, limit: 5 }),
-            dashboardService.getRecentActivities({ ...activeFilters, limit: 5 }),
-          ]);
-        setOverviewData(overview);
-        setPipelineData(pipeline);
-        setRevenueData(revenue);
-        setRecentDeals(deals);
-        setRecentLeads(leads);
-        setRecentActivities(activities);
+        const [
+          overviewRes,
+          pipelineRes,
+          revenueRes,
+          dealsRes,
+          leadsRes,
+          activitiesRes,
+        ] = await Promise.allSettled([
+          dashboardService.getOverviewAnalytics(activeFilters),
+          dashboardService.getPipelineAnalytics(activeFilters),
+          dashboardService.getRevenueAnalytics(activeFilters),
+          dashboardService.getRecentDeals({ ...activeFilters, limit: 5 }),
+          dashboardService.getRecentLeads({ ...activeFilters, limit: 5 }),
+          dashboardService.getRecentActivities({ ...activeFilters, limit: 5 }),
+        ]);
+        if (overviewRes.status === 'fulfilled') setOverviewData(overviewRes.value);
+        if (pipelineRes.status === 'fulfilled') setPipelineData(pipelineRes.value);
+        if (revenueRes.status === 'fulfilled') setRevenueData(revenueRes.value);
+        if (dealsRes.status === 'fulfilled') setRecentDeals(dealsRes.value);
+        if (leadsRes.status === 'fulfilled') setRecentLeads(leadsRes.value);
+        if (activitiesRes.status === 'fulfilled') setRecentActivities(activitiesRes.value);
       } else if (screen === 'sales') {
         const [sales, pipeline, revenue, deals, leads, activities] =
           await Promise.all([

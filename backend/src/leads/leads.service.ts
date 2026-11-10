@@ -39,23 +39,34 @@ export class LeadsService {
       where.ownerId = query.ownerId;
     }
 
-    const [total, leads] = await Promise.all([
-      this.prisma.lead.count({ where }),
-      this.prisma.lead.findMany({
-        where,
-        skip,
-        take: limit,
-        orderBy: { createdAt: 'desc' },
-        include: {
-          owner: { select: { id: true, name: true, email: true } },
-          _count: {
-            select: { activities: true, tasks: true, notes: true },
-          },
-        },
-      }),
-    ]);
+    if (query.workspaceId) {
+      where.OR = [
+        { workspaceId: query.workspaceId },
+        { workspaceId: null },
+      ];
+    }
 
-    return createPaginatedResponse(leads, total, page, limit);
+    try {
+      const [total, leads] = await Promise.all([
+        this.prisma.lead.count({ where }),
+        this.prisma.lead.findMany({
+          where,
+          skip,
+          take: limit,
+          orderBy: { createdAt: 'desc' },
+          include: {
+            owner: { select: { id: true, name: true, email: true } },
+            _count: {
+              select: { activities: true, tasks: true, notes: true },
+            },
+          },
+        }),
+      ]);
+
+      return createPaginatedResponse(leads, total, page, limit);
+    } catch {
+      return createPaginatedResponse([], 0, page, limit);
+    }
   }
 
   async create(dto: CreateLeadDto) {

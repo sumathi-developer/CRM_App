@@ -149,7 +149,7 @@ export function App() {
               <span className="auth-loading-msg">Loading CRM Portal...</span>
             </div>
           ) : isAuthenticated ? (
-            <Navigate to="/workspaces" replace />
+            <Navigate to="/dashboard" replace />
           ) : (
             <Navigate to="/login" replace />
           )
@@ -351,7 +351,8 @@ export function App() {
         <Route path="/search/notes" element={<GlobalSearchPage scope="notes" />} />
         <Route path="/search/users" element={<GlobalSearchPage scope="users" />} />
 
-        {/* Dashboard Module Routes */}
+        {/* Dashboard / Home Module Routes */}
+        <Route path="/home" element={<Navigate to="/dashboard" replace />} />
         <Route path="/dashboard" element={<DashboardExplorerPage screen="overview" />} />
         <Route path="/dashboard/overview" element={<DashboardExplorerPage screen="overview" />} />
         <Route path="/dashboard/sales" element={<DashboardExplorerPage screen="sales" />} />

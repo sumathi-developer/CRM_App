@@ -30,7 +30,7 @@ export class AnalyticsController {
     @Req() req: any,
   ) {
     const orgId = user?.organizationId;
-    const workspaceId = req.workspace?.id || user?.activeWorkspaceId;
+    const workspaceId = query.workspaceId || req.workspace?.id || user?.activeWorkspaceId;
     return this.analyticsService.getOverview(query, orgId, workspaceId);
   }
 
@@ -80,7 +80,7 @@ export class AnalyticsController {
     @CurrentUser() user: any,
     @Req() req: any,
   ) {
-    const workspaceId = req.workspace?.id || user?.activeWorkspaceId;
+    const workspaceId = query.workspaceId || req.workspace?.id || user?.activeWorkspaceId;
     return this.analyticsService.getLeadAnalytics(query, workspaceId);
   }
 
@@ -94,7 +94,7 @@ export class AnalyticsController {
     @CurrentUser() user: any,
     @Req() req: any,
   ) {
-    const workspaceId = req.workspace?.id || user?.activeWorkspaceId;
+    const workspaceId = query.workspaceId || req.workspace?.id || user?.activeWorkspaceId;
     return this.analyticsService.getLeadSourceAnalytics(query, workspaceId);
   }
 
@@ -108,7 +108,7 @@ export class AnalyticsController {
     @CurrentUser() user: any,
     @Req() req: any,
   ) {
-    const workspaceId = req.workspace?.id || user?.activeWorkspaceId;
+    const workspaceId = query.workspaceId || req.workspace?.id || user?.activeWorkspaceId;
     return this.analyticsService.getConversionAnalytics(query, workspaceId);
   }
 
