@@ -67,6 +67,10 @@ export const workspaceService = {
     return api.delete<{ message: string }>(`/workspaces/${workspaceId}/members/${memberId}`);
   },
 
+  async transferOwnership(workspaceId: string, newOwnerId: string): Promise<Workspace> {
+    return api.post<Workspace>(`/workspaces/${workspaceId}/transfer-ownership`, { newOwnerId });
+  },
+
   // 3. Invitations
   async getInvites(workspaceId: string, status?: string): Promise<WorkspaceInvite[]> {
     const query = status ? `?status=${status}` : '';

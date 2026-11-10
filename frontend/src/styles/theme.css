@@ -1484,6 +1484,70 @@ html.dark .danger-btn-secondary:hover:not(:disabled),
   background: rgba(255, 255, 255, 0.08) !important;
 }
 
+/* Roles & Permissions Button (Dark Mode) */
+html.dark .btn-roles-permissions,
+[data-theme="dark"] .btn-roles-permissions {
+  background-color: #122217 !important;
+  border: 1.5px solid rgba(52, 211, 153, 0.35) !important;
+  color: #34D399 !important;
+}
+
+html.dark .btn-roles-permissions:hover,
+[data-theme="dark"] .btn-roles-permissions:hover {
+  background-color: rgba(16, 185, 129, 0.2) !important;
+  border-color: #34D399 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.3) !important;
+}
+
+html.dark .btn-roles-permissions:active,
+[data-theme="dark"] .btn-roles-permissions:active {
+  background-color: rgba(16, 185, 129, 0.3) !important;
+  border-color: #34D399 !important;
+  color: #FFFFFF !important;
+}
+
+/* Owner Selection Popover (Dark Mode) */
+html.dark .owner-dropdown-popover,
+[data-theme="dark"] .owner-dropdown-popover {
+  background: #111A13 !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6) !important;
+}
+
+html.dark .owner-dropdown-search,
+[data-theme="dark"] .owner-dropdown-search {
+  background: rgba(0, 0, 0, 0.35) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  color: #FFFFFF !important;
+}
+
+html.dark .owner-dropdown-search:focus,
+[data-theme="dark"] .owner-dropdown-search:focus {
+  border-color: #10B981 !important;
+}
+
+html.dark .owner-dropdown-divider,
+[data-theme="dark"] .owner-dropdown-divider {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+html.dark .owner-dropdown-item,
+[data-theme="dark"] .owner-dropdown-item {
+  color: #F8FAFC !important;
+}
+
+html.dark .owner-dropdown-item:hover:not(:disabled),
+[data-theme="dark"] .owner-dropdown-item:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+html.dark .owner-dropdown-avatar,
+[data-theme="dark"] .owner-dropdown-avatar {
+  background: #FFFFFF !important;
+  color: #000000 !important;
+}
+
 html.dark .danger-btn-outline-danger,
 [data-theme="dark"] .danger-btn-outline-danger {
   border-color: rgba(229, 72, 77, 0.55) !important;
@@ -1550,8 +1614,26 @@ html.dark .delete-ws-submit-btn:hover:not(:disabled),
   background: #B91C1C !important;
 }
 
-html.dark .settings-section-separator,
-[data-theme="dark"] .settings-section-separator {
-  background: rgba(16, 185, 129, 0.15) !important;
+html.dark .danger-btn-solid-danger,
+[data-theme="dark"] .danger-btn-solid-danger {
+  background: #DC2626 !important;
+  border-color: #DC2626 !important;
+  color: #FFFFFF !important;
+}
+
+html.dark .danger-btn-solid-danger:hover:not(:disabled),
+[data-theme="dark"] .danger-btn-solid-danger:hover:not(:disabled) {
+  background: #B91C1C !important;
+  border-color: #B91C1C !important;
+}
+
+html.dark .switch-toggle-slider,
+[data-theme="dark"] .switch-toggle-slider {
+  background-color: rgba(255, 255, 255, 0.18) !important;
+}
+
+html.dark .switch-toggle-label input:checked + .switch-toggle-slider,
+[data-theme="dark"] .switch-toggle-label input:checked + .switch-toggle-slider {
+  background-color: #10B981 !important;
 }
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useWorkspace } from '../../context/useWorkspace';
 import { useAuth } from '../../context/useAuth';
 import { workspaceService } from '../../services/workspace.service';
@@ -26,8 +27,9 @@ import {
 } from '../../components/common/Icons';
 
 export const WorkspaceMembersPage: React.FC = () => {
+  const navigate = useNavigate();
   const { user } = useAuth();
-  const { currentWorkspace, canManageWorkspace, isLoading: isWorkspaceContextLoading } = useWorkspace();
+  const { currentWorkspace, canManageWorkspace } = useWorkspace();
 
   const [activeTab, setActiveTab] = useState<'members' | 'invitations'>('members');
 
@@ -319,6 +321,17 @@ export const WorkspaceMembersPage: React.FC = () => {
             >
               <RefreshCwIcon size={16} className={isRefreshing ? 'animate-spin' : ''} />
               <span>{isRefreshing ? 'Refreshing...' : 'Refresh'}</span>
+            </button>
+
+            <button
+              type="button"
+              className="btn-roles-permissions"
+              onClick={() => navigate('/workspaces/roles')}
+              id="btn-nav-roles-permissions"
+              title="Roles & Permissions"
+            >
+              <ShieldIcon size={16} />
+              <span>Roles & Permissions</span>
             </button>
 
             {canManageWorkspace && (
