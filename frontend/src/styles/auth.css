@@ -473,14 +473,12 @@
 }
 
 .form-input-wrapper:hover:not(.is-disabled) {
-  border-color: rgba(255, 255, 255, 0.25);
-  background-color: rgba(30, 41, 59, 0.7);
+  border-color: rgba(16, 185, 129, 0.5);
 }
 
 .form-input-wrapper:focus-within:not(.is-disabled) {
-  border-color: var(--border-focus);
-  background-color: var(--bg-input-focus);
-  box-shadow: 0 0 0 3px var(--border-glow);
+  border-color: #10B981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.22);
 }
 
 .form-field-group.has-error .form-input-wrapper {

@@ -1815,13 +1815,34 @@ html.dark .ld-sort-dir-btn:hover,
   color: #047857 !important;
 }
 
-/* Two-tier layout: Search row on top, Dropdowns row below */
-.crm-filter-grid,
-.lg-filter-controls {
+/* Two-tier layout: Search row on top, Dropdowns row below (only for .ld-two-tier) */
+.ld-two-tier .crm-filter-grid,
+.ld-two-tier .lg-filter-controls {
   display: flex !important;
   flex-direction: column !important;
   gap: 1.15rem !important;
   width: 100% !important;
+}
+
+/* Horizontal Filter Bar: Search bar, Status, and Ownership in a single straight horizontal line */
+.ld-assignment-filter-bar .crm-filter-grid,
+.ld-assignment-filter-bar .lg-filter-controls,
+.ld-horizontal-filter-bar .crm-filter-grid,
+.ld-horizontal-filter-bar .lg-filter-controls {
+  display: grid !important;
+  grid-template-columns: minmax(260px, 1.8fr) minmax(180px, 1fr) minmax(180px, 1fr) !important;
+  gap: 1.15rem 1.25rem !important;
+  align-items: end !important;
+  width: 100% !important;
+}
+
+@media (max-width: 860px) {
+  .ld-assignment-filter-bar .crm-filter-grid,
+  .ld-assignment-filter-bar .lg-filter-controls,
+  .ld-horizontal-filter-bar .crm-filter-grid,
+  .ld-horizontal-filter-bar .lg-filter-controls {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
+  }
 }
 
 .ld-filter-search-row {

@@ -272,16 +272,14 @@ textarea {
 select:hover:not(:disabled),
 input:hover:not(:disabled),
 textarea:hover:not(:disabled) {
-  border-color: rgba(255, 255, 255, 0.28);
-  background-color: rgba(30, 41, 59, 0.8);
+  border-color: rgba(16, 185, 129, 0.5);
 }
 
 select:focus,
 input:focus,
 textarea:focus {
-  border-color: var(--border-focus, #3b82f6);
-  background-color: var(--bg-input-focus, #1e293b);
-  box-shadow: 0 0 0 3px var(--border-glow, rgba(59, 130, 246, 0.3));
+  border-color: #10B981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.22);
 }
 
 select:disabled,
