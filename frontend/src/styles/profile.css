@@ -1239,14 +1239,14 @@ main.ld-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
 }
 
 .preference-select-control:hover:not(:disabled) {
-  border-color: rgba(255, 255, 255, 0.28);
-  background-color: rgba(30, 41, 59, 0.8);
+  border-color: rgba(16, 185, 129, 0.65);
+  background-color: #F8FCF9;
 }
 
 .preference-select-control:focus {
-  border-color: var(--border-focus, #3b82f6);
-  background-color: var(--bg-input-focus, #1e293b);
-  box-shadow: 0 0 0 3px var(--border-glow, rgba(59, 130, 246, 0.35));
+  border-color: #10B981;
+  background-color: #FFFFFF;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.22);
 }
 
 .preference-select-control option {

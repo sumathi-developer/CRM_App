@@ -305,6 +305,7 @@ export const LeadAssignmentPage: React.FC = () => {
       </SectionCard>
 
       <FilterBar
+        className="ld-assignment-filter-bar ld-horizontal-filter-bar"
         onRefresh={loadData}
         onReset={() => {
           setSearch('');

@@ -3400,28 +3400,88 @@ select,
 }
 
 select:hover:not(:disabled),
+input:hover:not(:disabled),
+textarea:hover:not(:disabled),
 .crm-select:hover:not(:disabled),
+.crm-input:hover:not(:disabled),
 .crm-filter-select:hover:not(:disabled),
 .lg-select:hover:not(:disabled),
+.lg-input:hover:not(:disabled),
+.lg-textarea:hover:not(:disabled),
 .filter-select:hover:not(:disabled),
 .form-select:hover:not(:disabled),
+.form-input:hover:not(:disabled),
 .preference-select-control:hover:not(:disabled) {
   border-color: rgba(16, 185, 129, 0.65) !important;
-  background-color: #F8FCF9 !important;
-  background: #F8FCF9 !important;
+  background-color: #FFFFFF !important;
+  background: #FFFFFF !important;
+  color: #000000 !important;
 }
 
 select:focus,
+input:focus,
+textarea:focus,
 .crm-select:focus,
+.crm-input:focus,
 .crm-filter-select:focus,
 .lg-select:focus,
+.lg-input:focus,
+.lg-textarea:focus,
 .filter-select:focus,
 .form-select:focus,
+.form-input:focus,
 .preference-select-control:focus {
   border-color: #10B981 !important;
   background-color: #FFFFFF !important;
   background: #FFFFFF !important;
+  color: #000000 !important;
   box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.22) !important;
+}
+
+/* Dark mode input hover & focus */
+html.dark select:hover:not(:disabled),
+html.dark input:hover:not(:disabled),
+html.dark textarea:hover:not(:disabled),
+html.dark .crm-select:hover:not(:disabled),
+html.dark .crm-input:hover:not(:disabled),
+html.dark .lg-select:hover:not(:disabled),
+html.dark .lg-input:hover:not(:disabled),
+html.dark .lg-textarea:hover:not(:disabled),
+[data-theme="dark"] select:hover:not(:disabled),
+[data-theme="dark"] input:hover:not(:disabled),
+[data-theme="dark"] textarea:hover:not(:disabled),
+[data-theme="dark"] .crm-select:hover:not(:disabled),
+[data-theme="dark"] .crm-input:hover:not(:disabled),
+[data-theme="dark"] .lg-select:hover:not(:disabled),
+[data-theme="dark"] .lg-input:hover:not(:disabled),
+[data-theme="dark"] .lg-textarea:hover:not(:disabled) {
+  background-color: rgba(15, 23, 42, 0.85) !important;
+  background: rgba(15, 23, 42, 0.85) !important;
+  border-color: rgba(16, 185, 129, 0.5) !important;
+  color: #FFFFFF !important;
+}
+
+html.dark select:focus,
+html.dark input:focus,
+html.dark textarea:focus,
+html.dark .crm-select:focus,
+html.dark .crm-input:focus,
+html.dark .lg-select:focus,
+html.dark .lg-input:focus,
+html.dark .lg-textarea:focus,
+[data-theme="dark"] select:focus,
+[data-theme="dark"] input:focus,
+[data-theme="dark"] textarea:focus,
+[data-theme="dark"] .crm-select:focus,
+[data-theme="dark"] .crm-input:focus,
+[data-theme="dark"] .lg-select:focus,
+[data-theme="dark"] .lg-input:focus,
+[data-theme="dark"] .lg-textarea:focus {
+  background-color: rgba(15, 23, 42, 0.95) !important;
+  background: rgba(15, 23, 42, 0.95) !important;
+  border-color: #10B981 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25) !important;
 }
 
 select:disabled,
@@ -4076,15 +4136,34 @@ main.ld-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
   width: 100% !important;
 }
 
-/* Two-tier layout: Search row first, Dropdowns row strictly below */
+/* Two-tier layout: Search row first, Dropdowns row strictly below (only for .ld-two-tier) */
 .ld-two-tier .crm-filter-grid,
-.ld-two-tier .lg-filter-controls,
-.ld-page .crm-filter-grid,
-.ld-page .lg-filter-controls {
+.ld-two-tier .lg-filter-controls {
   display: flex !important;
   flex-direction: column !important;
   gap: 1.25rem !important;
   width: 100% !important;
+}
+
+/* Horizontal Filter Bar: Search bar, Status, and Ownership in a single straight horizontal line */
+.ld-assignment-filter-bar .crm-filter-grid,
+.ld-assignment-filter-bar .lg-filter-controls,
+.ld-horizontal-filter-bar .crm-filter-grid,
+.ld-horizontal-filter-bar .lg-filter-controls {
+  display: grid !important;
+  grid-template-columns: minmax(260px, 1.8fr) minmax(180px, 1fr) minmax(180px, 1fr) !important;
+  gap: 1.15rem 1.25rem !important;
+  align-items: end !important;
+  width: 100% !important;
+}
+
+@media (max-width: 860px) {
+  .ld-assignment-filter-bar .crm-filter-grid,
+  .ld-assignment-filter-bar .lg-filter-controls,
+  .ld-horizontal-filter-bar .crm-filter-grid,
+  .ld-horizontal-filter-bar .lg-filter-controls {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
+  }
 }
 
 .ld-filter-search-row {
