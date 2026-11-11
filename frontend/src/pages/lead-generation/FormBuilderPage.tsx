@@ -63,12 +63,12 @@ export const FormBuilderPage: React.FC = () => {
   // Fields state
   const [fields, setFields] = useState<FormField[]>(DEFAULT_FIELDS);
 
-  // Styling state
-  const [primaryColor, setPrimaryColor] = useState('#2563eb');
-  const [backgroundColor, setBackgroundColor] = useState('#0f172a');
+  // Styling state - using brand-matching tones (#10B981 Emerald & #062E03 Forest)
+  const [primaryColor, setPrimaryColor] = useState('#10B981');
+  const [backgroundColor, setBackgroundColor] = useState('#062E03');
   const [borderRadius, setBorderRadius] = useState('8px');
   const [buttonText, setButtonText] = useState('Submit');
-  const [darkMode, setDarkMode] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
 
   // Settings state
   const [successMessage, setSuccessMessage] = useState('Thank you! Your information has been received.');
@@ -115,11 +115,23 @@ export const FormBuilderPage: React.FC = () => {
         setFields(existingForm.fields);
       }
       if (existingForm.styling) {
-        if (existingForm.styling.primaryColor) setPrimaryColor(existingForm.styling.primaryColor);
-        if (existingForm.styling.backgroundColor) setBackgroundColor(existingForm.styling.backgroundColor);
+        if (existingForm.styling.primaryColor) {
+          setPrimaryColor(
+            existingForm.styling.primaryColor === '#2563eb'
+              ? '#10B981'
+              : existingForm.styling.primaryColor,
+          );
+        }
+        if (existingForm.styling.backgroundColor) {
+          setBackgroundColor(
+            existingForm.styling.backgroundColor === '#0f172a'
+              ? '#062E03'
+              : existingForm.styling.backgroundColor,
+          );
+        }
         if (existingForm.styling.borderRadius) setBorderRadius(existingForm.styling.borderRadius);
         if (existingForm.styling.buttonText) setButtonText(existingForm.styling.buttonText);
-        setDarkMode(existingForm.styling.darkMode ?? true);
+        setDarkMode(existingForm.styling.darkMode ?? false);
       }
       if (existingForm.settings) {
         if (existingForm.settings.successMessage) setSuccessMessage(existingForm.settings.successMessage);
@@ -187,7 +199,7 @@ export const FormBuilderPage: React.FC = () => {
     }
 
     if (primaryColor && !HEX_REGEX.test(primaryColor)) {
-      errs.primaryColor = 'Invalid hex color (e.g. #2563eb).';
+      errs.primaryColor = 'Invalid hex color (e.g. #10B981).';
     }
 
     if (notifyEmails.trim()) {
@@ -303,7 +315,7 @@ export const FormBuilderPage: React.FC = () => {
       <form onSubmit={handleSubmit} noValidate>
         <div className="lg-grid-2">
           {/* Left Column: Form Configuration */}
-          <div className="lg-cell-stack">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             {/* 1. Basic Info */}
             <div className="lg-card lg-section-card">
               <h2 className="lg-section-title">General Information</h2>
@@ -318,13 +330,13 @@ export const FormBuilderPage: React.FC = () => {
                   />
                 </Field>
 
-                <Field label="URL Slug" htmlFor="lg-fb-slug" hint="Used for public links (auto-generated if empty)">
+                <Field label="URL Slug" htmlFor="lg-fb-slug">
                   <input
                     id="lg-fb-slug"
                     className="lg-input"
                     value={slug}
                     onChange={(e) => setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9_-]/g, '-'))}
-                    placeholder="demo-request"
+                    placeholder="demo-request (auto-generated if empty)"
                   />
                 </Field>
 
@@ -439,9 +451,19 @@ export const FormBuilderPage: React.FC = () => {
                 </div>
               )}
 
-              <div className="lg-cell-stack">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 {fields.map((f, idx) => (
-                  <div key={idx} className="lg-card lg-field-builder-row">
+                  <div
+                    key={idx}
+                    className="lg-card lg-field-builder-row"
+                    style={{
+                      borderLeft: '3px solid #10B981',
+                      border: '1px solid rgba(16, 185, 129, 0.22)',
+                      borderLeftWidth: '3px',
+                      borderLeftColor: '#10B981',
+                      boxShadow: '0 2px 8px rgba(6, 46, 3, 0.04)',
+                    }}
+                  >
                     <div className="lg-grid-2">
                       <Field label="Field Identifier (Code)" required>
                         <input
@@ -596,7 +618,7 @@ export const FormBuilderPage: React.FC = () => {
           </div>
 
           {/* Right Column: Styling & Live Preview */}
-          <div className="lg-cell-stack">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             {/* Styling Config */}
             <div className="lg-card lg-section-card">
               <h2 className="lg-section-title">Form Appearance</h2>
@@ -607,14 +629,58 @@ export const FormBuilderPage: React.FC = () => {
                       type="color"
                       value={primaryColor}
                       onChange={(e) => setPrimaryColor(e.target.value)}
-                      style={{ width: '40px', height: '36px', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                      style={{
+                        width: '44px',
+                        height: '42px',
+                        padding: '2px',
+                        border: '1px solid rgba(16, 185, 129, 0.3)',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        backgroundColor: '#ffffff',
+                        flexShrink: 0,
+                        boxSizing: 'border-box',
+                      }}
                     />
                     <input
                       className="lg-input"
                       value={primaryColor}
                       onChange={(e) => setPrimaryColor(e.target.value)}
-                      placeholder="#2563eb"
+                      placeholder="#10B981"
                     />
+                  </div>
+                  <div style={{ display: 'flex', gap: '0.4rem', marginTop: '0.45rem', alignItems: 'center' }}>
+                    <span style={{ fontSize: '0.72rem', color: '#64748B', fontWeight: 600 }}>Palette:</span>
+                    {[
+                      { color: '#10B981', label: 'Emerald Green (Brand)' },
+                      { color: '#062E03', label: 'Forest Obsidian' },
+                      { color: '#059669', label: 'Vibrant Green' },
+                      { color: '#0D9488', label: 'Teal Mint' },
+                      { color: '#1E293B', label: 'Dark Slate' },
+                    ].map((preset) => (
+                      <button
+                        key={preset.color}
+                        type="button"
+                        title={preset.label}
+                        onClick={() => setPrimaryColor(preset.color)}
+                        style={{
+                          width: '18px',
+                          height: '18px',
+                          borderRadius: '50%',
+                          backgroundColor: preset.color,
+                          border:
+                            primaryColor.toLowerCase() === preset.color.toLowerCase()
+                              ? '2px solid #FFFFFF'
+                              : '1px solid rgba(0,0,0,0.15)',
+                          boxShadow:
+                            primaryColor.toLowerCase() === preset.color.toLowerCase()
+                              ? '0 0 0 2px #10B981'
+                              : 'none',
+                          cursor: 'pointer',
+                          padding: 0,
+                          flexShrink: 0,
+                        }}
+                      />
+                    ))}
                   </div>
                 </Field>
 
@@ -640,14 +706,16 @@ export const FormBuilderPage: React.FC = () => {
                   </select>
                 </Field>
 
-                <div style={{ alignSelf: 'center' }}>
-                  <Toggle
-                    label="Dark Theme Container"
-                    checked={darkMode}
-                    onChange={setDarkMode}
-                    id="lg-fb-darkmode"
-                  />
-                </div>
+                <Field label="Container Theme">
+                  <div style={{ display: 'flex', alignItems: 'center', height: '42px' }}>
+                    <Toggle
+                      label="Dark Theme Container"
+                      checked={darkMode}
+                      onChange={setDarkMode}
+                      id="lg-fb-darkmode"
+                    />
+                  </div>
+                </Field>
               </div>
             </div>
 
@@ -666,27 +734,29 @@ export const FormBuilderPage: React.FC = () => {
               <div
                 className="lg-preview-container"
                 style={{
-                  backgroundColor: darkMode ? backgroundColor : '#ffffff',
-                  color: darkMode ? '#f8fafc' : '#0f172a',
+                  backgroundColor: darkMode ? (backgroundColor === '#0f172a' ? '#062E03' : backgroundColor) : '#FFFFFF',
+                  color: darkMode ? '#EAF4ED' : '#062E03',
                   padding: '24px',
                   borderRadius: borderRadius,
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  boxShadow: '0 10px 25px rgba(0, 0, 0, 0.3)',
+                  border: darkMode ? '1px solid rgba(16, 185, 129, 0.25)' : '1px solid rgba(16, 185, 129, 0.22)',
+                  boxShadow: darkMode
+                    ? '0 10px 25px rgba(6, 46, 3, 0.25)'
+                    : '0 4px 16px rgba(6, 46, 3, 0.05)',
                 }}
               >
-                <h3 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '0.25rem' }}>
+                <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.35rem', color: darkMode ? '#FFFFFF' : '#062E03' }}>
                   {title || 'Form Title'}
                 </h3>
                 {description && (
-                  <p style={{ fontSize: '0.875rem', opacity: 0.8, marginBottom: '1.25rem' }}>
+                  <p style={{ fontSize: '0.875rem', opacity: 0.85, marginBottom: '1.25rem', color: darkMode ? '#EAF4ED' : '#475569' }}>
                     {description}
                   </p>
                 )}
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
                   {fields.map((f, i) => (
-                    <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                      <label style={{ fontSize: '0.8rem', fontWeight: 500 }}>
+                    <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+                      <label style={{ fontSize: '0.8125rem', fontWeight: 600, color: darkMode ? '#EAF4ED' : '#1E293B' }}>
                         {f.label || f.name} {f.required && <span style={{ color: '#ef4444' }}>*</span>}
                       </label>
                       {f.type === 'textarea' ? (
@@ -694,11 +764,26 @@ export const FormBuilderPage: React.FC = () => {
                           placeholder={f.placeholder}
                           rows={2}
                           className="lg-input"
-                          style={{ borderRadius, resize: 'none' }}
+                          style={{
+                            borderRadius,
+                            resize: 'none',
+                            backgroundColor: darkMode ? '#0B2414' : '#FFFFFF',
+                            borderColor: darkMode ? 'rgba(16, 185, 129, 0.3)' : 'rgba(16, 185, 129, 0.25)',
+                            color: darkMode ? '#FFFFFF' : '#1E293B',
+                          }}
                           disabled
                         />
                       ) : f.type === 'select' ? (
-                        <select className="lg-select" style={{ borderRadius }} disabled>
+                        <select
+                          className="lg-select"
+                          style={{
+                            borderRadius,
+                            backgroundColor: darkMode ? '#0B2414' : '#FFFFFF',
+                            borderColor: darkMode ? 'rgba(16, 185, 129, 0.3)' : 'rgba(16, 185, 129, 0.25)',
+                            color: darkMode ? '#FFFFFF' : '#1E293B',
+                          }}
+                          disabled
+                        >
                           <option>Select an option...</option>
                           {f.options?.map((opt, oi) => (
                             <option key={oi}>{opt}</option>
@@ -709,7 +794,12 @@ export const FormBuilderPage: React.FC = () => {
                           type={f.type}
                           placeholder={f.placeholder}
                           className="lg-input"
-                          style={{ borderRadius }}
+                          style={{
+                            borderRadius,
+                            backgroundColor: darkMode ? '#0B2414' : '#FFFFFF',
+                            borderColor: darkMode ? 'rgba(16, 185, 129, 0.3)' : 'rgba(16, 185, 129, 0.25)',
+                            color: darkMode ? '#FFFFFF' : '#1E293B',
+                          }}
                           disabled
                         />
                       )}
@@ -724,10 +814,12 @@ export const FormBuilderPage: React.FC = () => {
                       color: '#ffffff',
                       border: 'none',
                       borderRadius: borderRadius,
-                      padding: '0.625rem 1.25rem',
-                      fontWeight: 600,
+                      padding: '0.65rem 1.25rem',
+                      fontWeight: 700,
                       cursor: 'default',
                       width: '100%',
+                      boxShadow: '0 2px 8px rgba(16, 185, 129, 0.35)',
+                      transition: 'all 150ms ease',
                     }}
                   >
                     {buttonText || 'Submit'}
