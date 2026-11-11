@@ -69,6 +69,26 @@ export const DealsExplorerPage: React.FC<DealsExplorerPageProps> = ({
     }
   }, [forcedView]);
 
+  // Ensure Deals page opens cleanly at the top when mounted or switching views/scope
+  useEffect(() => {
+    const resetTop = () => {
+      try {
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+      } catch {
+        window.scrollTo(0, 0);
+      }
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      const mainEl = document.querySelector('.app-main-content');
+      if (mainEl) {
+        mainEl.scrollTop = 0;
+      }
+    };
+    resetTop();
+    const rafId = requestAnimationFrame(resetTop);
+    return () => cancelAnimationFrame(rafId);
+  }, [viewMode, scope]);
+
   const [pipelines, setPipelines] = useState<Pipeline[]>([]);
   const [organizations, setOrganizations] = useState<DealOrganizationOption[]>([]);
   const [users, setUsers] = useState<DealUserOption[]>([]);
