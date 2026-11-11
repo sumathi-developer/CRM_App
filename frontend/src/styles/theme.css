@@ -468,6 +468,7 @@ html.dark .settings-search-input,
   background: #122217 !important;
   border: 1.5px solid rgba(16, 185, 129, 0.35) !important;
   color: #FFFFFF !important;
+  padding-left: 38px !important;
 }
 
 html.dark .settings-search-input::placeholder,

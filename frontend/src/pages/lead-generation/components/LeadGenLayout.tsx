@@ -1,10 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { Navbar } from '../../../components/common/Navbar';
 import { ErrorMessage } from '../../../components/auth/ErrorMessage';
 import { SuccessMessage } from '../../../components/auth/SuccessMessage';
 import { TargetIcon, ChevronDownIcon, CheckIcon } from '../../../components/common/Icons';
 import { CHANNELS } from '../leadGenConstants';
+import { prefetchLeadGenRoute } from '../leadGenHooks';
+import { leadGenerationService } from '../../../services/lead-generation.service';
 
 interface NavLinkItem {
   to: string;
@@ -55,6 +57,18 @@ const NAV_GROUPS: NavGroup[] = [
   },
 ];
 
+const PREFETCH_MAP: Record<string, () => Promise<any>> = {
+  '/lead-generation': () => leadGenerationService.getOverview(),
+  '/lead-generation/sources': () => leadGenerationService.getSources(),
+  '/lead-generation/forms': () => leadGenerationService.getForms(),
+  '/lead-generation/capture-forms': () => leadGenerationService.getSubmissions(),
+  '/lead-generation/scoring': () => leadGenerationService.getScoringRules(),
+  '/lead-generation/qualification': () => leadGenerationService.getQualificationRules(),
+  '/lead-generation/assignment-rules': () => leadGenerationService.getAssignmentRules(),
+  '/lead-generation/analytics': () => leadGenerationService.getGenerationAnalytics(),
+  '/lead-generation/analytics/sources': () => leadGenerationService.getSourceAnalytics(),
+};
+
 interface LeadGenLayoutProps {
   title: string;
   subtitle?: string;
@@ -82,12 +96,53 @@ export const LeadGenLayout: React.FC<LeadGenLayoutProps> = ({
   children,
 }) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const flash = (location.state as { flash?: string } | null)?.flash;
   const [flashDismissed, setFlashDismissed] = useState(false);
   const successMessage = success || (flashDismissed ? null : flash) || null;
 
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const navRef = useRef<HTMLElement>(null);
+  const hoverTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleMouseEnterGroup = (group: NavGroup) => {
+    if (hoverTimerRef.current) {
+      clearTimeout(hoverTimerRef.current);
+      hoverTimerRef.current = null;
+    }
+    setOpenDropdown(group.id);
+
+    // Warm up the first link of the group so it loads instantly
+    const firstTarget = group.links[0]?.to;
+    if (firstTarget && PREFETCH_MAP[firstTarget]) {
+      prefetchLeadGenRoute(firstTarget, PREFETCH_MAP[firstTarget]);
+    }
+  };
+
+  const handleMouseLeaveGroup = () => {
+    if (hoverTimerRef.current) {
+      clearTimeout(hoverTimerRef.current);
+    }
+    hoverTimerRef.current = setTimeout(() => {
+      setOpenDropdown(null);
+    }, 180);
+  };
+
+  const handleTriggerClick = (group: NavGroup) => {
+    // If the user directly clicks the group header, immediately navigate to the active or primary page
+    const activeItem = group.links.find((l) => isLinkActive(l.to, l.end));
+    const target = activeItem ? activeItem.to : group.links[0]?.to;
+    if (target && location.pathname !== target) {
+      navigate(target);
+    }
+    setOpenDropdown(null);
+  };
+
+  const handleLinkHover = (to: string) => {
+    if (PREFETCH_MAP[to]) {
+      prefetchLeadGenRoute(to, PREFETCH_MAP[to]);
+    }
+  };
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -180,11 +235,17 @@ export const LeadGenLayout: React.FC<LeadGenLayoutProps> = ({
             const isOpen = openDropdown === group.id;
 
             return (
-              <div key={group.id} className="ld-nav-dropdown-wrapper">
+              <div
+                key={group.id}
+                className="ld-nav-dropdown-wrapper"
+                onMouseEnter={() => handleMouseEnterGroup(group)}
+                onMouseLeave={handleMouseLeaveGroup}
+              >
                 <button
                   type="button"
                   className={`ld-nav-dropdown-trigger ${isGroupActive ? 'is-active' : ''} ${isOpen ? 'is-open' : ''}`}
-                  onClick={() => setOpenDropdown(isOpen ? null : group.id)}
+                  onClick={() => handleTriggerClick(group)}
+                  onFocus={() => handleMouseEnterGroup(group)}
                   aria-expanded={isOpen}
                   aria-haspopup="true"
                 >
@@ -201,7 +262,17 @@ export const LeadGenLayout: React.FC<LeadGenLayoutProps> = ({
                 </button>
 
                 {isOpen && (
-                  <div className="ld-nav-dropdown-menu" role="menu">
+                  <div
+                    className="ld-nav-dropdown-menu"
+                    role="menu"
+                    onMouseEnter={() => {
+                      if (hoverTimerRef.current) {
+                        clearTimeout(hoverTimerRef.current);
+                        hoverTimerRef.current = null;
+                      }
+                    }}
+                    onMouseLeave={handleMouseLeaveGroup}
+                  >
                     {group.links.map((link) => {
                       const isActive = isLinkActive(link.to, link.end);
                       return (
@@ -211,6 +282,7 @@ export const LeadGenLayout: React.FC<LeadGenLayoutProps> = ({
                           end={link.end}
                           className={`ld-nav-dropdown-item ${isActive ? 'is-active' : ''}`}
                           onClick={() => setOpenDropdown(null)}
+                          onMouseEnter={() => handleLinkHover(link.to)}
                           role="menuitem"
                         >
                           <span className="ld-nav-dropdown-item-label">{link.label}</span>
