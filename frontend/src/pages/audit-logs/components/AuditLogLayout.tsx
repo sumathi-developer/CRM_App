@@ -73,21 +73,36 @@ export const AuditLogLayout: React.FC<AuditLogLayoutProps> = ({
         </nav>
 
         {/* Page Header */}
-        <header className="lg-header">
+        <header className="lg-header" style={{ marginBottom: '20px' }}>
           <div className="lg-header-text">
-            <div className="flex items-center gap-2">
-              <h1 className="lg-title">
-                <span className="lg-title-icon">
+            <div className="flex items-center gap-2.5 flex-wrap">
+              <h1 className="lg-title" style={{ display: 'flex', alignItems: 'center', gap: '8px', margin: 0 }}>
+                <span className="lg-title-icon" style={{ display: 'flex', alignItems: 'center', color: '#10B981' }}>
                   <ShieldIcon size={22} />
                 </span>
                 <span>{currentMeta.label}</span>
               </h1>
-              <span className="inline-flex items-center gap-1 rounded-full border border-purple-200 bg-purple-50 px-2.5 py-0.5 text-xs font-semibold text-purple-700">
-                <LockIcon size={11} />
+              <span
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '5px',
+                  borderRadius: '9999px',
+                  border: '1px solid rgba(16, 185, 129, 0.35)',
+                  backgroundColor: '#EAF4ED',
+                  padding: '3px 12px',
+                  fontSize: '11px',
+                  fontWeight: 600,
+                  color: '#062E03',
+                }}
+              >
+                <LockIcon size={11} style={{ color: '#10B981' }} />
                 <span>Read-Only Compliance</span>
               </span>
             </div>
-            <p className="lg-subtitle">{currentMeta.description}</p>
+            <p className="lg-subtitle" style={{ marginTop: '6px', color: '#475569' }}>
+              {currentMeta.description}
+            </p>
           </div>
         </header>
 
@@ -114,7 +129,7 @@ export const AuditLogLayout: React.FC<AuditLogLayoutProps> = ({
         />
 
         {/* Main Content Area */}
-        <div className="space-y-4">{children}</div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>{children}</div>
       </main>
     </div>
   );

@@ -37,17 +37,28 @@ export const AuditLogPagination: React.FC<AuditLogPaginationProps> = ({
   if (total === 0) return null;
 
   return (
-    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between py-4 px-1 text-sm text-gray-700">
+    <div
+      style={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: '12px',
+        padding: '12px 4px 6px 4px',
+        fontSize: '13px',
+        color: '#062E03',
+      }}
+    >
       {/* Items count & page size */}
-      <div className="flex items-center gap-3">
-        <span className="text-xs text-gray-500">
-          Showing <span className="font-semibold text-gray-900">{startItem}</span> to{' '}
-          <span className="font-semibold text-gray-900">{endItem}</span> of{' '}
-          <span className="font-semibold text-gray-900">{total.toLocaleString()}</span> logs
+      <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
+        <span style={{ fontSize: '12px', color: '#475569' }}>
+          Showing <span style={{ fontWeight: 700, color: '#062E03' }}>{startItem}</span> to{' '}
+          <span style={{ fontWeight: 700, color: '#062E03' }}>{endItem}</span> of{' '}
+          <span style={{ fontWeight: 700, color: '#062E03' }}>{total.toLocaleString()}</span> logs
         </span>
 
-        <div className="flex items-center gap-1.5 text-xs text-gray-500">
-          <label htmlFor="audit-page-size" className="font-medium">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#475569' }}>
+          <label htmlFor="audit-page-size" style={{ fontWeight: 600, color: '#062E03' }}>
             Per page:
           </label>
           <select
@@ -55,7 +66,19 @@ export const AuditLogPagination: React.FC<AuditLogPaginationProps> = ({
             value={limit}
             onChange={(e) => onLimitChange(Number(e.target.value))}
             disabled={isLoading}
-            className="rounded border border-gray-300 bg-white py-1 px-2 text-xs font-medium text-gray-800 focus:border-purple-500 focus:outline-none"
+            style={{
+              backgroundColor: '#FFFFFF',
+              color: '#062E03',
+              border: '1px solid rgba(16, 185, 129, 0.3)',
+              borderRadius: '8px',
+              padding: '4px 10px',
+              fontSize: '12px',
+              fontWeight: 600,
+              height: '32px',
+              cursor: isLoading ? 'not-allowed' : 'pointer',
+              outline: 'none',
+              boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)',
+            }}
           >
             <option value={10}>10</option>
             <option value={20}>20</option>
@@ -66,41 +89,107 @@ export const AuditLogPagination: React.FC<AuditLogPaginationProps> = ({
       </div>
 
       {/* Pagination buttons */}
-      <div className="flex items-center gap-1">
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
         {/* Previous Button */}
         <button
           type="button"
           onClick={() => onPageChange(page - 1)}
           disabled={page <= 1 || isLoading}
-          className="inline-flex items-center gap-1 rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-40 disabled:hover:bg-white"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            height: '34px',
+            padding: '0 14px',
+            borderRadius: '8px',
+            border: '1px solid rgba(16, 185, 129, 0.25)',
+            backgroundColor: '#FFFFFF',
+            color: '#062E03',
+            fontSize: '12px',
+            fontWeight: 600,
+            cursor: page <= 1 || isLoading ? 'not-allowed' : 'pointer',
+            opacity: page <= 1 || isLoading ? 0.45 : 1,
+            transition: 'all 0.15s ease',
+          }}
+          onMouseEnter={(e) => {
+            if (page > 1 && !isLoading) {
+              e.currentTarget.style.backgroundColor = '#EAF4ED';
+              e.currentTarget.style.borderColor = '#10B981';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (page > 1 && !isLoading) {
+              e.currentTarget.style.backgroundColor = '#FFFFFF';
+              e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.25)';
+            }
+          }}
         >
           <ArrowLeftIcon size={13} />
           <span>Prev</span>
         </button>
 
         {/* Page Number Buttons */}
-        {getVisiblePages().map((pageNum) => (
-          <button
-            key={pageNum}
-            type="button"
-            onClick={() => onPageChange(pageNum)}
-            disabled={isLoading}
-            className={`min-w-[28px] rounded-lg border px-2 py-1 text-xs font-semibold transition ${
-              pageNum === page
-                ? 'border-purple-600 bg-purple-600 text-white'
-                : 'border-gray-200 bg-white text-gray-700 hover:bg-gray-50'
-            }`}
-          >
-            {pageNum}
-          </button>
-        ))}
+        {getVisiblePages().map((pageNum) => {
+          const isActive = pageNum === page;
+          return (
+            <button
+              key={pageNum}
+              type="button"
+              onClick={() => onPageChange(pageNum)}
+              disabled={isLoading}
+              style={{
+                minWidth: '34px',
+                height: '34px',
+                padding: '0 10px',
+                borderRadius: '8px',
+                border: isActive ? '1px solid #10B981' : '1px solid rgba(16, 185, 129, 0.2)',
+                backgroundColor: isActive ? '#10B981' : '#FFFFFF',
+                color: isActive ? '#FFFFFF' : '#062E03',
+                fontSize: '12px',
+                fontWeight: 700,
+                cursor: isLoading ? 'not-allowed' : 'pointer',
+                boxShadow: isActive ? '0 2px 6px rgba(16, 185, 129, 0.3)' : 'none',
+                transition: 'all 0.15s ease',
+              }}
+            >
+              {pageNum}
+            </button>
+          );
+        })}
 
         {/* Next Button */}
         <button
           type="button"
           onClick={() => onPageChange(page + 1)}
           disabled={page >= totalPages || isLoading}
-          className="inline-flex items-center gap-1 rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-40 disabled:hover:bg-white"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            height: '34px',
+            padding: '0 14px',
+            borderRadius: '8px',
+            border: '1px solid rgba(16, 185, 129, 0.25)',
+            backgroundColor: '#FFFFFF',
+            color: '#062E03',
+            fontSize: '12px',
+            fontWeight: 600,
+            cursor: page >= totalPages || isLoading ? 'not-allowed' : 'pointer',
+            opacity: page >= totalPages || isLoading ? 0.45 : 1,
+            transition: 'all 0.15s ease',
+          }}
+          onMouseEnter={(e) => {
+            if (page < totalPages && !isLoading) {
+              e.currentTarget.style.backgroundColor = '#EAF4ED';
+              e.currentTarget.style.borderColor = '#10B981';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (page < totalPages && !isLoading) {
+              e.currentTarget.style.backgroundColor = '#FFFFFF';
+              e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.25)';
+            }
+          }}
         >
           <span>Next</span>
           <ArrowRightIcon size={13} />

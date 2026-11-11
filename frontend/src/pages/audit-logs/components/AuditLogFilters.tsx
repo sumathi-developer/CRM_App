@@ -46,9 +46,11 @@ export const AuditLogFilters: React.FC<AuditLogFiltersProps> = ({
 }) => {
   const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
   const [isExportMenuOpen, setIsExportMenuOpen] = useState(false);
+  const [activePreset, setActivePreset] = useState<'all' | 'today' | '7days' | '30days'>('all');
 
   // Quick date presets
   const handleDatePreset = (preset: 'today' | '7days' | '30days' | 'all') => {
+    setActivePreset(preset);
     if (preset === 'all') {
       onFilterChange({ startDate: undefined, endDate: undefined, page: 1 });
       return;
@@ -87,13 +89,36 @@ export const AuditLogFilters: React.FC<AuditLogFiltersProps> = ({
   );
 
   return (
-    <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm mb-6">
+    <div
+      className="lg-card"
+      style={{
+        backgroundColor: '#FFFFFF',
+        border: '1px solid rgba(16, 185, 129, 0.22)',
+        borderRadius: '14px',
+        padding: '16px 20px',
+        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.04)',
+        boxSizing: 'border-box',
+      }}
+    >
       {/* Top Row: Search Input + Quick Actions */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         {/* Search Bar */}
-        <div className="relative flex-1">
-          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-            <SearchIcon size={16} />
+        <div style={{ position: 'relative', flex: 1, minWidth: '260px' }}>
+          <div
+            style={{
+              position: 'absolute',
+              left: '14px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              pointerEvents: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#10B981',
+              zIndex: 2,
+            }}
+          >
+            <SearchIcon size={17} />
           </div>
           <input
             type="text"
@@ -102,13 +127,47 @@ export const AuditLogFilters: React.FC<AuditLogFiltersProps> = ({
               onFilterChange({ search: e.target.value, page: 1 })
             }
             placeholder="Search by user name, email, action, or entity..."
-            className="w-full rounded-lg border border-gray-300 bg-white py-2 pl-9 pr-9 text-sm text-gray-900 placeholder-gray-400 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
+            style={{
+              width: '100%',
+              height: '42px',
+              paddingLeft: '42px',
+              paddingRight: filters.search ? '38px' : '14px',
+              borderRadius: '10px',
+              border: '1px solid rgba(16, 185, 129, 0.28)',
+              backgroundColor: '#FFFFFF',
+              color: '#062E03',
+              fontSize: '13px',
+              outline: 'none',
+              boxSizing: 'border-box',
+              transition: 'border-color 0.15s ease, box-shadow 0.15s ease',
+            }}
+            onFocus={(e) => {
+              e.currentTarget.style.borderColor = '#10B981';
+              e.currentTarget.style.boxShadow = '0 0 0 3px rgba(16, 185, 129, 0.15)';
+            }}
+            onBlur={(e) => {
+              e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.28)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
           />
           {filters.search && (
             <button
               type="button"
               onClick={() => onFilterChange({ search: '', page: 1 })}
-              className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600"
+              style={{
+                position: 'absolute',
+                right: '12px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                color: '#64748B',
+                padding: '4px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
               aria-label="Clear search"
             >
               <XIcon size={14} />
@@ -117,21 +176,46 @@ export const AuditLogFilters: React.FC<AuditLogFiltersProps> = ({
         </div>
 
         {/* Action Controls */}
-        <div className="flex flex-wrap items-center gap-2">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
           {/* Advanced Filter Toggle */}
           <button
             type="button"
             onClick={() => setIsAdvancedOpen(!isAdvancedOpen)}
-            className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-medium transition ${
-              isAdvancedOpen || hasActiveFilters
-                ? 'border-purple-400 bg-purple-50 text-purple-700'
-                : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
-            }`}
+            style={{
+              height: '42px',
+              padding: '0 16px',
+              borderRadius: '10px',
+              border: isAdvancedOpen || hasActiveFilters
+                ? '1px solid #10B981'
+                : '1px solid rgba(16, 185, 129, 0.28)',
+              backgroundColor: isAdvancedOpen || hasActiveFilters ? '#EAF4ED' : '#FFFFFF',
+              color: '#062E03',
+              fontWeight: 600,
+              fontSize: '13px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              cursor: 'pointer',
+              transition: 'all 0.15s ease',
+            }}
           >
-            <SlidersIcon size={14} />
+            <SlidersIcon size={14} style={{ color: '#10B981' }} />
             <span>Filters</span>
             {hasActiveFilters && (
-              <span className="flex h-4 w-4 items-center justify-center rounded-full bg-purple-600 text-[10px] font-bold text-white">
+              <span
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '18px',
+                  height: '18px',
+                  borderRadius: '9999px',
+                  backgroundColor: '#10B981',
+                  color: '#FFFFFF',
+                  fontSize: '11px',
+                  fontWeight: 700,
+                }}
+              >
                 !
               </span>
             )}
@@ -142,23 +226,54 @@ export const AuditLogFilters: React.FC<AuditLogFiltersProps> = ({
             type="button"
             onClick={onRefresh}
             disabled={isLoading}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+            style={{
+              height: '42px',
+              padding: '0 16px',
+              borderRadius: '10px',
+              border: '1px solid rgba(16, 185, 129, 0.28)',
+              backgroundColor: '#FFFFFF',
+              color: '#062E03',
+              fontWeight: 600,
+              fontSize: '13px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              cursor: isLoading ? 'not-allowed' : 'pointer',
+              opacity: isLoading ? 0.6 : 1,
+              transition: 'all 0.15s ease',
+            }}
             title="Refresh logs"
           >
             <RefreshCwIcon
               size={14}
-              className={isLoading ? 'animate-spin text-purple-600' : ''}
+              className={isLoading ? 'animate-spin' : ''}
+              style={{ color: '#10B981' }}
             />
             <span className="hidden sm:inline">Refresh</span>
           </button>
 
           {/* Export Dropdown */}
-          <div className="relative">
+          <div style={{ position: 'relative' }}>
             <button
               type="button"
               onClick={() => setIsExportMenuOpen(!isExportMenuOpen)}
               disabled={isExporting}
-              className="inline-flex items-center gap-1.5 rounded-lg bg-purple-600 px-3 py-2 text-sm font-medium text-white shadow-sm hover:bg-purple-700 disabled:opacity-50"
+              style={{
+                height: '42px',
+                padding: '0 18px',
+                borderRadius: '10px',
+                border: 'none',
+                backgroundColor: '#10B981',
+                color: '#FFFFFF',
+                fontWeight: 600,
+                fontSize: '13px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                cursor: isExporting ? 'not-allowed' : 'pointer',
+                boxShadow: '0 2px 8px rgba(16, 185, 129, 0.32)',
+                transition: 'all 0.15s ease',
+              }}
             >
               <span>{isExporting ? 'Exporting...' : 'Export'}</span>
               <ChevronDownIcon size={14} />
@@ -170,14 +285,44 @@ export const AuditLogFilters: React.FC<AuditLogFiltersProps> = ({
                   className="fixed inset-0 z-10"
                   onClick={() => setIsExportMenuOpen(false)}
                 />
-                <div className="absolute right-0 z-20 mt-1 w-44 rounded-lg border border-gray-200 bg-white py-1 shadow-lg">
+                <div
+                  style={{
+                    position: 'absolute',
+                    right: 0,
+                    marginTop: '6px',
+                    width: '180px',
+                    borderRadius: '10px',
+                    border: '1px solid rgba(16, 185, 129, 0.25)',
+                    backgroundColor: '#FFFFFF',
+                    boxShadow: '0 10px 25px rgba(0, 0, 0, 0.12)',
+                    padding: '4px',
+                    zIndex: 20,
+                  }}
+                >
                   <button
                     type="button"
                     onClick={() => {
                       setIsExportMenuOpen(false);
                       onExport('CSV');
                     }}
-                    className="flex w-full items-center px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+                    style={{
+                      width: '100%',
+                      textAlign: 'left',
+                      padding: '8px 12px',
+                      fontSize: '13px',
+                      borderRadius: '6px',
+                      border: 'none',
+                      background: 'transparent',
+                      color: '#062E03',
+                      cursor: 'pointer',
+                      fontWeight: 500,
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = '#EAF4ED';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = 'transparent';
+                    }}
                   >
                     Export as CSV (.csv)
                   </button>
@@ -187,7 +332,24 @@ export const AuditLogFilters: React.FC<AuditLogFiltersProps> = ({
                       setIsExportMenuOpen(false);
                       onExport('JSON');
                     }}
-                    className="flex w-full items-center px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+                    style={{
+                      width: '100%',
+                      textAlign: 'left',
+                      padding: '8px 12px',
+                      fontSize: '13px',
+                      borderRadius: '6px',
+                      border: 'none',
+                      background: 'transparent',
+                      color: '#062E03',
+                      cursor: 'pointer',
+                      fontWeight: 500,
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = '#EAF4ED';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = 'transparent';
+                    }}
                   >
                     Export as JSON (.json)
                   </button>
@@ -198,47 +360,89 @@ export const AuditLogFilters: React.FC<AuditLogFiltersProps> = ({
         </div>
       </div>
 
-      {/* Date Presets Row */}
-      <div className="mt-3 flex flex-wrap items-center gap-1.5 border-t border-gray-100 pt-3 text-xs">
-        <span className="font-semibold text-gray-500 mr-1">Date Range:</span>
-        <button
-          type="button"
-          onClick={() => handleDatePreset('all')}
-          className={`rounded-full px-2.5 py-1 font-medium transition ${
-            !filters.startDate && !filters.endDate
-              ? 'bg-purple-100 text-purple-800'
-              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-          }`}
-        >
-          All Time
-        </button>
-        <button
-          type="button"
-          onClick={() => handleDatePreset('today')}
-          className="rounded-full bg-gray-100 px-2.5 py-1 font-medium text-gray-600 hover:bg-gray-200"
-        >
-          Today
-        </button>
-        <button
-          type="button"
-          onClick={() => handleDatePreset('7days')}
-          className="rounded-full bg-gray-100 px-2.5 py-1 font-medium text-gray-600 hover:bg-gray-200"
-        >
-          Last 7 Days
-        </button>
-        <button
-          type="button"
-          onClick={() => handleDatePreset('30days')}
-          className="rounded-full bg-gray-100 px-2.5 py-1 font-medium text-gray-600 hover:bg-gray-200"
-        >
-          Last 30 Days
-        </button>
+      {/* Date Presets Row (Clean pills without black blobs) */}
+      <div
+        style={{
+          marginTop: '12px',
+          paddingTop: '12px',
+          borderTop: '1px solid rgba(16, 185, 129, 0.14)',
+          display: 'flex',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          gap: '8px',
+          fontSize: '12px',
+        }}
+      >
+        <span style={{ fontWeight: 600, color: '#062E03', marginRight: '4px' }}>
+          Date Range:
+        </span>
+        {(
+          [
+            { key: 'all', label: 'All Time' },
+            { key: 'today', label: 'Today' },
+            { key: '7days', label: 'Last 7 Days' },
+            { key: '30days', label: 'Last 30 Days' },
+          ] as const
+        ).map((item) => {
+          const isPresetActive =
+            item.key === 'all'
+              ? !filters.startDate && !filters.endDate
+              : activePreset === item.key && Boolean(filters.startDate);
+
+          return (
+            <button
+              key={item.key}
+              type="button"
+              onClick={() => handleDatePreset(item.key)}
+              style={{
+                borderRadius: '9999px',
+                padding: '4px 14px',
+                fontSize: '12px',
+                fontWeight: 600,
+                border: isPresetActive
+                  ? '1px solid #10B981'
+                  : '1px solid rgba(16, 185, 129, 0.25)',
+                backgroundColor: isPresetActive ? '#10B981' : '#F1F8F3',
+                color: isPresetActive ? '#FFFFFF' : '#062E03',
+                cursor: 'pointer',
+                boxShadow: isPresetActive
+                  ? '0 2px 6px rgba(16, 185, 129, 0.28)'
+                  : 'none',
+                transition: 'all 0.15s ease',
+              }}
+            >
+              {item.label}
+            </button>
+          );
+        })}
 
         {hasActiveFilters && (
           <button
             type="button"
-            onClick={onResetFilters}
-            className="ml-auto inline-flex items-center gap-1 text-xs font-semibold text-purple-600 hover:text-purple-800"
+            onClick={() => {
+              setActivePreset('all');
+              onResetFilters();
+            }}
+            style={{
+              marginLeft: 'auto',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '4px',
+              fontSize: '12px',
+              fontWeight: 600,
+              color: '#10B981',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              padding: '4px 8px',
+              borderRadius: '6px',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = '#EAF4ED';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'transparent';
+            }}
           >
             <XIcon size={12} />
             <span>Clear all filters</span>
@@ -248,13 +452,27 @@ export const AuditLogFilters: React.FC<AuditLogFiltersProps> = ({
 
       {/* Collapsible Filter Panel */}
       {isAdvancedOpen && (
-        <div className="mt-4 border-t border-gray-200 pt-4">
+        <div
+          style={{
+            marginTop: '16px',
+            paddingTop: '16px',
+            borderTop: '1px solid rgba(16, 185, 129, 0.18)',
+          }}
+        >
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {/* User Filter */}
             <div>
               <label
                 htmlFor="audit-filter-user"
-                className="block text-xs font-semibold uppercase text-gray-500 mb-1"
+                style={{
+                  display: 'block',
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                  color: '#062E03',
+                  marginBottom: '6px',
+                }}
               >
                 User / Actor
               </label>
@@ -264,7 +482,17 @@ export const AuditLogFilters: React.FC<AuditLogFiltersProps> = ({
                 onChange={(e) =>
                   onFilterChange({ userId: e.target.value || undefined, page: 1 })
                 }
-                className="w-full rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs text-gray-800 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
+                style={{
+                  width: '100%',
+                  height: '36px',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(16, 185, 129, 0.28)',
+                  backgroundColor: '#FFFFFF',
+                  color: '#062E03',
+                  padding: '0 10px',
+                  fontSize: '12px',
+                  outline: 'none',
+                }}
               >
                 <option value="">All Users & System</option>
                 {users.map((u) => (
@@ -279,7 +507,15 @@ export const AuditLogFilters: React.FC<AuditLogFiltersProps> = ({
             <div>
               <label
                 htmlFor="audit-filter-action"
-                className="block text-xs font-semibold uppercase text-gray-500 mb-1"
+                style={{
+                  display: 'block',
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                  color: '#062E03',
+                  marginBottom: '6px',
+                }}
               >
                 Event Type
               </label>
@@ -292,7 +528,17 @@ export const AuditLogFilters: React.FC<AuditLogFiltersProps> = ({
                     page: 1,
                   })
                 }
-                className="w-full rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs text-gray-800 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
+                style={{
+                  width: '100%',
+                  height: '36px',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(16, 185, 129, 0.28)',
+                  backgroundColor: '#FFFFFF',
+                  color: '#062E03',
+                  padding: '0 10px',
+                  fontSize: '12px',
+                  outline: 'none',
+                }}
               >
                 <option value="">All Event Types</option>
                 {AUDIT_ACTIONS_LIST.map((act) => (
@@ -307,7 +553,15 @@ export const AuditLogFilters: React.FC<AuditLogFiltersProps> = ({
             <div>
               <label
                 htmlFor="audit-filter-entity"
-                className="block text-xs font-semibold uppercase text-gray-500 mb-1"
+                style={{
+                  display: 'block',
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                  color: '#062E03',
+                  marginBottom: '6px',
+                }}
               >
                 Record Category
               </label>
@@ -320,7 +574,17 @@ export const AuditLogFilters: React.FC<AuditLogFiltersProps> = ({
                     page: 1,
                   })
                 }
-                className="w-full rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs text-gray-800 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
+                style={{
+                  width: '100%',
+                  height: '36px',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(16, 185, 129, 0.28)',
+                  backgroundColor: '#FFFFFF',
+                  color: '#062E03',
+                  padding: '0 10px',
+                  fontSize: '12px',
+                  outline: 'none',
+                }}
               >
                 <option value="">All Categories</option>
                 {AUDIT_ENTITIES_LIST.map((ent) => (
@@ -335,7 +599,15 @@ export const AuditLogFilters: React.FC<AuditLogFiltersProps> = ({
             <div>
               <label
                 htmlFor="audit-filter-status"
-                className="block text-xs font-semibold uppercase text-gray-500 mb-1"
+                style={{
+                  display: 'block',
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                  color: '#062E03',
+                  marginBottom: '6px',
+                }}
               >
                 Execution Status
               </label>
@@ -348,7 +620,17 @@ export const AuditLogFilters: React.FC<AuditLogFiltersProps> = ({
                     page: 1,
                   })
                 }
-                className="w-full rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs text-gray-800 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
+                style={{
+                  width: '100%',
+                  height: '36px',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(16, 185, 129, 0.28)',
+                  backgroundColor: '#FFFFFF',
+                  color: '#062E03',
+                  padding: '0 10px',
+                  fontSize: '12px',
+                  outline: 'none',
+                }}
               >
                 <option value="">All Statuses</option>
                 <option value="SUCCESS">Success Only</option>
@@ -361,7 +643,15 @@ export const AuditLogFilters: React.FC<AuditLogFiltersProps> = ({
             <div>
               <label
                 htmlFor="audit-filter-start-date"
-                className="block text-xs font-semibold uppercase text-gray-500 mb-1"
+                style={{
+                  display: 'block',
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                  color: '#062E03',
+                  marginBottom: '6px',
+                }}
               >
                 From Date
               </label>
@@ -379,7 +669,17 @@ export const AuditLogFilters: React.FC<AuditLogFiltersProps> = ({
                     page: 1,
                   })
                 }
-                className="w-full rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs text-gray-800 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
+                style={{
+                  width: '100%',
+                  height: '36px',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(16, 185, 129, 0.28)',
+                  backgroundColor: '#FFFFFF',
+                  color: '#062E03',
+                  padding: '0 10px',
+                  fontSize: '12px',
+                  outline: 'none',
+                }}
               />
             </div>
 
@@ -387,7 +687,15 @@ export const AuditLogFilters: React.FC<AuditLogFiltersProps> = ({
             <div>
               <label
                 htmlFor="audit-filter-end-date"
-                className="block text-xs font-semibold uppercase text-gray-500 mb-1"
+                style={{
+                  display: 'block',
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                  color: '#062E03',
+                  marginBottom: '6px',
+                }}
               >
                 To Date
               </label>
@@ -405,7 +713,17 @@ export const AuditLogFilters: React.FC<AuditLogFiltersProps> = ({
                     page: 1,
                   })
                 }
-                className="w-full rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs text-gray-800 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
+                style={{
+                  width: '100%',
+                  height: '36px',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(16, 185, 129, 0.28)',
+                  backgroundColor: '#FFFFFF',
+                  color: '#062E03',
+                  padding: '0 10px',
+                  fontSize: '12px',
+                  outline: 'none',
+                }}
               />
             </div>
 
@@ -413,7 +731,15 @@ export const AuditLogFilters: React.FC<AuditLogFiltersProps> = ({
             <div className="sm:col-span-2">
               <label
                 htmlFor="audit-filter-record-id"
-                className="block text-xs font-semibold uppercase text-gray-500 mb-1"
+                style={{
+                  display: 'block',
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                  color: '#062E03',
+                  marginBottom: '6px',
+                }}
               >
                 Specific Entity / Record ID
               </label>
@@ -428,7 +754,17 @@ export const AuditLogFilters: React.FC<AuditLogFiltersProps> = ({
                   })
                 }
                 placeholder="Target entity UUID (e.g. 550e8400-e29b-41d4-a716-446655440000)"
-                className="w-full rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs text-gray-800 placeholder-gray-400 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
+                style={{
+                  width: '100%',
+                  height: '36px',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(16, 185, 129, 0.28)',
+                  backgroundColor: '#FFFFFF',
+                  color: '#062E03',
+                  padding: '0 10px',
+                  fontSize: '12px',
+                  outline: 'none',
+                }}
               />
             </div>
           </div>

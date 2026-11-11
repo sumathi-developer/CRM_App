@@ -75,7 +75,7 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
         {/* Modal Header */}
         <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4 bg-gray-50/80">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-purple-100 text-purple-700">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700">
               <ShieldIcon size={20} />
             </div>
             <div>
@@ -123,7 +123,7 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
             onClick={() => setActiveTab('overview')}
             className={`py-3 px-3 border-b-2 transition ${
               activeTab === 'overview'
-                ? 'border-purple-600 text-purple-600'
+                ? 'border-emerald-600 text-emerald-600'
                 : 'border-transparent text-gray-500 hover:text-gray-700'
             }`}
           >
@@ -135,7 +135,7 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
               onClick={() => setActiveTab('changes')}
               className={`py-3 px-3 border-b-2 transition ${
                 activeTab === 'changes'
-                  ? 'border-purple-600 text-purple-600'
+                  ? 'border-emerald-600 text-emerald-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
             >
@@ -147,7 +147,7 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
             onClick={() => setActiveTab('raw')}
             className={`py-3 px-3 border-b-2 transition ${
               activeTab === 'raw'
-                ? 'border-purple-600 text-purple-600'
+                ? 'border-emerald-600 text-emerald-600'
                 : 'border-transparent text-gray-500 hover:text-gray-700'
             }`}
           >
@@ -195,7 +195,7 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
                 {/* Actor Card */}
                 <div className="rounded-xl border border-gray-200 p-4 bg-white">
                   <div className="flex items-center gap-2 mb-3 text-xs font-bold uppercase tracking-wider text-gray-500">
-                    <UserIcon size={14} className="text-purple-600" />
+                    <UserIcon size={14} className="text-emerald-600" />
                     <span>Responsible User</span>
                   </div>
                   <div className="space-y-1.5">
@@ -294,7 +294,7 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
                 {/* Workspace Context */}
                 <div className="rounded-xl border border-gray-200 p-4 bg-white">
                   <div className="flex items-center gap-2 mb-3 text-xs font-bold uppercase tracking-wider text-gray-500">
-                    <LockIcon size={14} className="text-slate-600" />
+                    <LockIcon size={14} className="text-emerald-600" />
                     <span>Security & Workspace</span>
                   </div>
                   <div className="space-y-1.5">

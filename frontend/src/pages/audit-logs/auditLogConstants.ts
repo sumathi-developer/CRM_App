@@ -220,9 +220,9 @@ export function getActionBadgeClass(action?: string): string {
     case 'DELETE':
       return 'bg-rose-50 text-rose-700 border-rose-200';
     case 'LOGIN':
-      return 'bg-purple-50 text-purple-700 border-purple-200';
+      return 'bg-emerald-50 text-emerald-700 border-emerald-200';
     case 'LOGOUT':
-      return 'bg-slate-100 text-slate-700 border-slate-300';
+      return 'bg-slate-50 text-slate-700 border-slate-200';
     case 'EXPORT':
       return 'bg-amber-50 text-amber-700 border-amber-200';
     case 'IMPORT':
@@ -232,7 +232,7 @@ export function getActionBadgeClass(action?: string): string {
     case 'ASSIGN':
       return 'bg-cyan-50 text-cyan-700 border-cyan-200';
     default:
-      return 'bg-gray-100 text-gray-700 border-gray-300';
+      return 'bg-slate-50 text-slate-700 border-slate-200';
   }
 }
 
@@ -264,9 +264,9 @@ export function getEntityBadgeClass(entityType?: string): string {
     case 'SETTING':
       return 'bg-cyan-50 text-cyan-800 border-cyan-200';
     case 'SYSTEM':
-      return 'bg-slate-100 text-slate-800 border-slate-300';
+      return 'bg-slate-50 text-slate-800 border-slate-200';
     default:
-      return 'bg-gray-100 text-gray-800 border-gray-300';
+      return 'bg-slate-50 text-slate-800 border-slate-200';
   }
 }
 
