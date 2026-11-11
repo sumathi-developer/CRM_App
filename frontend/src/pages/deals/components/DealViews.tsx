@@ -59,7 +59,18 @@ export const DealStageStepper: React.FC<DealStageStepperProps> = ({
   const currentOrder = currentStage?.order ?? -1;
 
   return (
-    <div className="ld-qual-pipeline" role="group" aria-label="Deal pipeline stages">
+    <div
+      className="ld-qualification-stepper"
+      role="group"
+      aria-label="Deal pipeline stages"
+      style={{
+        display: 'grid',
+        gridTemplateColumns: `repeat(${stages.length}, minmax(130px, 1fr))`,
+        gap: '0.65rem',
+        overflowX: 'auto',
+        paddingBottom: '4px',
+      }}
+    >
       {stages.map((stage) => {
         const isCurrent = stage.id === currentStageId;
         const isPassed = currentOrder > stage.order && currentOrder !== -1;
@@ -71,14 +82,49 @@ export const DealStageStepper: React.FC<DealStageStepperProps> = ({
             type="button"
             disabled={disabled || !onSelectStage}
             onClick={() => onSelectStage?.(stage.id)}
-            className={`ld-qual-step ${isCurrent ? 'is-current' : ''} ${
-              isPassed ? 'is-passed' : ''
-            }`}
+            className={`ld-step-pill ${isCurrent ? 'is-current' : ''} ${
+              isPassed ? 'is-completed' : ''
+            } tone-${tone}`}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.65rem',
+              padding: '0.65rem 0.85rem',
+              cursor: disabled || !onSelectStage ? 'default' : 'pointer',
+              minWidth: 0,
+            }}
+            title={`${stage.name} (${stage.winProbability}% win probability)`}
           >
-            <span className="ld-qual-step-index">{stage.order}</span>
-            <div className="ld-qual-step-text">
-              <strong>{stage.name}</strong>
-              <span>Win Probability: {stage.winProbability}%</span>
+            <span className="ld-step-index" style={{ flexShrink: 0 }}>
+              {isPassed ? <CheckCircleIcon size={12} /> : stage.order}
+            </span>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+                minWidth: 0,
+                gap: '2px',
+                textAlign: 'left',
+              }}
+            >
+              <span className="ld-step-label" style={{ fontWeight: 700, fontSize: '0.8125rem' }}>
+                {stage.name}
+              </span>
+              <span
+                style={{
+                  fontSize: '0.7rem',
+                  lineHeight: 1.25,
+                  opacity: 0.8,
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  maxWidth: '100%',
+                  color: 'inherit',
+                }}
+              >
+                {stage.winProbability}% Win
+              </span>
             </div>
           </button>
         );

@@ -209,12 +209,26 @@ export const DealForm: React.FC<DealFormProps> = ({
   };
 
   return (
-    <form className="lg-card ld-form-card" onSubmit={handleSubmit} noValidate>
-      <div className="ld-form-section">
-        <h3 className="ld-form-section-title">Deal Opportunity Details</h3>
-        <p className="ld-form-section-sub">
-          Enter the core commercial details, valuation, and expected close date for this deal.
-        </p>
+    <form
+      className="lg-card lg-form-card"
+      onSubmit={handleSubmit}
+      noValidate
+      style={{
+        padding: '2rem',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '2rem',
+      }}
+    >
+      <div className="ld-form-section" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+        <div style={{ borderBottom: '1px solid rgba(16, 185, 129, 0.2)', paddingBottom: '0.75rem' }}>
+          <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#0F172A', margin: 0 }}>
+            1. Deal Opportunity Details
+          </h2>
+          <p style={{ fontSize: '0.8125rem', color: '#64748B', marginTop: '4px', marginBottom: 0 }}>
+            Enter the core commercial details, valuation, and expected close date for this deal.
+          </p>
+        </div>
 
         {serverError && <ErrorMessage error={serverError} />}
 
@@ -291,14 +305,27 @@ export const DealForm: React.FC<DealFormProps> = ({
         </div>
       </div>
 
-      <div className="ld-form-section">
-        <h3 className="ld-form-section-title">Pipeline, Stage & Win Probability</h3>
-        <p className="ld-form-section-sub">
-          Assign this deal to a sales pipeline stage and configure its win likelihood.
-        </p>
+      <div
+        className="ld-form-section"
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '1.25rem',
+          paddingTop: '0.75rem',
+          borderTop: '1px solid rgba(16, 185, 129, 0.15)',
+        }}
+      >
+        <div style={{ borderBottom: '1px solid rgba(16, 185, 129, 0.2)', paddingBottom: '0.75rem' }}>
+          <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#0F172A', margin: 0 }}>
+            2. Pipeline, Stage & Win Probability
+          </h2>
+          <p style={{ fontSize: '0.8125rem', color: '#64748B', marginTop: '4px', marginBottom: 0 }}>
+            Assign this deal to a sales pipeline stage and configure its win likelihood.
+          </p>
+        </div>
 
         {availableStages.length > 0 && (
-          <div style={{ marginBottom: '1rem' }}>
+          <div style={{ marginTop: '0.25rem', marginBottom: '0.5rem' }}>
             <DealStageStepper
               stages={availableStages}
               currentStageId={stageId}
@@ -343,8 +370,16 @@ export const DealForm: React.FC<DealFormProps> = ({
             htmlFor="deal-probability"
             error={errors.probability}
             hint={`Weighted Value: ${formatCurrency(weightedValue)}`}
+            className={mode === 'create' ? 'lg-span-2' : ''}
           >
-            <div className="lg-badge-row" style={{ alignItems: 'center', gap: '0.75rem' }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '1rem',
+                padding: '0.5rem 0',
+              }}
+            >
               <input
                 id="deal-probability"
                 type="range"
@@ -353,22 +388,25 @@ export const DealForm: React.FC<DealFormProps> = ({
                 step={5}
                 value={probability}
                 onChange={(e) => setProbability(Number(e.target.value))}
-                style={{ flex: 1 }}
+                style={{ flex: 1, accentColor: '#10B981', cursor: 'pointer' }}
               />
-              <input
-                type="number"
-                min={0}
-                max={100}
-                className="lg-input"
-                style={{ width: '82px' }}
-                value={probability}
-                onChange={(e) =>
-                  setProbability(
-                    Math.min(100, Math.max(0, Number(e.target.value) || 0)),
-                  )
-                }
-                aria-label="Probability percentage"
-              />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                <input
+                  type="number"
+                  min={0}
+                  max={100}
+                  className="lg-input"
+                  style={{ width: '84px', textAlign: 'center', fontWeight: 600 }}
+                  value={probability}
+                  onChange={(e) =>
+                    setProbability(
+                      Math.min(100, Math.max(0, Number(e.target.value) || 0)),
+                    )
+                  }
+                  aria-label="Probability percentage"
+                />
+                <span style={{ fontSize: '0.875rem', fontWeight: 600, color: '#64748B' }}>%</span>
+              </div>
             </div>
           </Field>
 
@@ -389,11 +427,24 @@ export const DealForm: React.FC<DealFormProps> = ({
         </div>
       </div>
 
-      <div className="ld-form-section">
-        <h3 className="ld-form-section-title">Account, Contact & Ownership</h3>
-        <p className="ld-form-section-sub">
-          Link this deal to an organization, primary stakeholder contact, and deal owner.
-        </p>
+      <div
+        className="ld-form-section"
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '1.25rem',
+          paddingTop: '0.75rem',
+          borderTop: '1px solid rgba(16, 185, 129, 0.15)',
+        }}
+      >
+        <div style={{ borderBottom: '1px solid rgba(16, 185, 129, 0.2)', paddingBottom: '0.75rem' }}>
+          <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#0F172A', margin: 0 }}>
+            3. Account, Contact & Ownership
+          </h2>
+          <p style={{ fontSize: '0.8125rem', color: '#64748B', marginTop: '4px', marginBottom: 0 }}>
+            Link this deal to an organization, primary stakeholder contact, and deal owner.
+          </p>
+        </div>
 
         <div className="lg-form-grid">
           <Field label="Organization / Account" htmlFor="deal-organization">
@@ -446,7 +497,18 @@ export const DealForm: React.FC<DealFormProps> = ({
         </div>
       </div>
 
-      <div className="ld-form-actions">
+      <div
+        className="lg-form-actions"
+        style={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          gap: '0.75rem',
+          paddingTop: '1.25rem',
+          borderTop: '1px solid rgba(16, 185, 129, 0.2)',
+          marginTop: '0.5rem',
+        }}
+      >
         <button
           type="button"
           className="auth-btn btn-secondary"
@@ -459,6 +521,7 @@ export const DealForm: React.FC<DealFormProps> = ({
           type="submit"
           className="auth-btn btn-primary"
           disabled={isSubmitting}
+          style={{ minWidth: '140px' }}
         >
           {isSubmitting
             ? mode === 'create'
