@@ -24,13 +24,14 @@ export const CreateRolePage: React.FC = () => {
   const { user: currentUser } = useAuth();
   const { userRoleInWorkspace } = useWorkspace();
 
+  const cachedPerms = roleService.getCachedPermissions();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [selectedPermissionIds, setSelectedPermissionIds] = useState<string[]>([]);
-  const [allPermissions, setAllPermissions] = useState<SystemPermission[]>([]);
+  const [allPermissions, setAllPermissions] = useState<SystemPermission[]>(cachedPerms || []);
   const [permSearch, setPermSearch] = useState('');
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(!cachedPerms?.length);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
   const [apiSuccess, setApiSuccess] = useState<string | null>(null);
@@ -44,7 +45,9 @@ export const CreateRolePage: React.FC = () => {
     let ignore = false;
 
     const loadPermissions = async () => {
-      setIsLoading(true);
+      if (!cachedPerms?.length) {
+        setIsLoading(true);
+      }
       setApiError(null);
       try {
         const perms = await roleService.getPermissions();
@@ -52,7 +55,7 @@ export const CreateRolePage: React.FC = () => {
           setAllPermissions(perms);
         }
       } catch (err: any) {
-        if (!ignore) {
+        if (!ignore && !cachedPerms?.length) {
           setApiError(err.message || 'Failed to load system permissions catalog');
         }
       } finally {

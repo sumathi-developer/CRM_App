@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import { roleService } from '../../services/role.service';
 import { useAuth } from '../../context/AuthContext';
 import { useWorkspace } from '../../context/useWorkspace';
@@ -22,12 +22,17 @@ import {
 
 export const RoleDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const location = useLocation();
   const { user: currentUser } = useAuth();
   const { userRoleInWorkspace } = useWorkspace();
 
-  const [role, setRole] = useState<RoleEntity | null>(null);
-  const [allPermissions, setAllPermissions] = useState<SystemPermission[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const stateData = location.state as { role?: RoleEntity; permissions?: SystemPermission[] } | undefined;
+  const initialRole = stateData?.role || roleService.getCachedRole(id);
+  const initialPermissions = stateData?.permissions || roleService.getCachedPermissions();
+
+  const [role, setRole] = useState<RoleEntity | null>(initialRole || null);
+  const [allPermissions, setAllPermissions] = useState<SystemPermission[]>(initialPermissions || []);
+  const [isLoading, setIsLoading] = useState(!initialRole);
   const [apiError, setApiError] = useState<string | null>(null);
 
   // Active view tab
@@ -44,7 +49,10 @@ export const RoleDetailsPage: React.FC = () => {
     if (!id) return;
 
     const loadData = async () => {
-      setIsLoading(true);
+      // Only trigger full-screen loading spinner if no cached role data is available
+      if (!initialRole) {
+        setIsLoading(true);
+      }
       setApiError(null);
       try {
         const [roleData, permsData] = await Promise.all([
@@ -57,7 +65,7 @@ export const RoleDetailsPage: React.FC = () => {
           setAllPermissions(permsData);
         }
       } catch (err: any) {
-        if (!ignore) {
+        if (!ignore && !initialRole) {
           setApiError(err.message || 'Failed to load role details');
         }
       } finally {

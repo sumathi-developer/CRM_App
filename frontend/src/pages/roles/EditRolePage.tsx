@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import { roleService } from '../../services/role.service';
 import { useAuth } from '../../context/AuthContext';
 import { useWorkspace } from '../../context/useWorkspace';
@@ -24,17 +24,24 @@ import {
 export const EditRolePage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   const { user: currentUser } = useAuth();
   const { userRoleInWorkspace } = useWorkspace();
 
-  const [role, setRole] = useState<RoleEntity | null>(null);
-  const [allPermissions, setAllPermissions] = useState<SystemPermission[]>([]);
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [selectedPermissionIds, setSelectedPermissionIds] = useState<string[]>([]);
+  const stateData = location.state as { role?: RoleEntity; permissions?: SystemPermission[] } | undefined;
+  const initialRole = stateData?.role || roleService.getCachedRole(id);
+  const initialPermissions = stateData?.permissions || roleService.getCachedPermissions();
+
+  const [role, setRole] = useState<RoleEntity | null>(initialRole || null);
+  const [allPermissions, setAllPermissions] = useState<SystemPermission[]>(initialPermissions || []);
+  const [name, setName] = useState(initialRole?.name || '');
+  const [description, setDescription] = useState(initialRole?.description || '');
+  const [selectedPermissionIds, setSelectedPermissionIds] = useState<string[]>(
+    (initialRole?.permissions || []).map((rp) => rp.permissionId || rp.permission?.id).filter(Boolean) as string[]
+  );
   const [permSearch, setPermSearch] = useState('');
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(!initialRole);
   const [isSaving, setIsSaving] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
   const [apiSuccess, setApiSuccess] = useState<string | null>(null);
@@ -49,7 +56,9 @@ export const EditRolePage: React.FC = () => {
     if (!id) return;
 
     const loadData = async () => {
-      setIsLoading(true);
+      if (!initialRole) {
+        setIsLoading(true);
+      }
       setApiError(null);
       try {
         const [roleData, permsData] = await Promise.all([
@@ -69,7 +78,7 @@ export const EditRolePage: React.FC = () => {
           setSelectedPermissionIds(initialPermIds);
         }
       } catch (err: any) {
-        if (!ignore) {
+        if (!ignore && !initialRole) {
           setApiError(err.message || 'Failed to load role for editing');
         }
       } finally {

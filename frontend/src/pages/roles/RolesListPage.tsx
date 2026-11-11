@@ -186,18 +186,21 @@ export const RolesListPage: React.FC = () => {
         </nav>
 
         {/* Module Header Strip */}
-        <div className="module-header-strip">
-          <div className="module-title-area">
-            <div className="module-title-with-badge">
-              <h1 className="module-main-heading">Roles & Permissions</h1>
+        <header className="lg-header module-header-strip" style={{ marginBottom: '1.5rem' }}>
+          <div className="lg-header-text module-title-area">
+            <h1 className="lg-title module-title-with-badge">
+              <span className="lg-title-icon" aria-hidden="true">
+                <ShieldIcon size={22} />
+              </span>
+              <span>Roles &amp; Permissions</span>
               <span className="count-pill">{totalRoles} Roles</span>
-            </div>
-            <p className="module-sub-heading">
+            </h1>
+            <p className="lg-subtitle module-sub-heading">
               Manage role-based access control (RBAC), govern resource permissions, and audit granted capabilities across the CRM.
             </p>
           </div>
 
-          <div className="module-header-actions">
+          <div className="lg-header-actions module-header-actions">
             <button
               type="button"
               className="auth-btn btn-secondary"
@@ -215,7 +218,7 @@ export const RolesListPage: React.FC = () => {
               </Link>
             )}
           </div>
-        </div>
+        </header>
 
         {/* Global Feedback */}
         {apiError && <ErrorMessage error={apiError} />}
@@ -413,7 +416,7 @@ export const RolesListPage: React.FC = () => {
                       </div>
                       <div>
                         <h2 className="role-title-heading">
-                          <Link to={`/roles/${role.id}`}>{role.name}</Link>
+                          <Link to={`/roles/${role.id}`} state={{ role, permissions }}>{role.name}</Link>
                         </h2>
                         <span style={{ fontSize: '0.75rem', color: 'var(--text-muted, #94a3b8)' }}>
                           {role.isSystem ? 'Default System RBAC' : 'Custom Configured RBAC'}
@@ -445,6 +448,7 @@ export const RolesListPage: React.FC = () => {
                   <div className="role-card-footer">
                     <Link
                       to={`/roles/${role.id}`}
+                      state={{ role, permissions }}
                       className="auth-btn btn-secondary"
                       style={{ fontSize: '0.8125rem', padding: '0.375rem 0.75rem' }}
                       title="View Role Matrix & Details"
@@ -456,6 +460,7 @@ export const RolesListPage: React.FC = () => {
                       {canManageRoles && (
                         <Link
                           to={`/roles/${role.id}/edit`}
+                          state={{ role, permissions }}
                           className="table-action-btn"
                           title="Edit Role & Permissions"
                         >

@@ -8,21 +8,98 @@ import type {
 } from '../types/role.types';
 
 class RoleService {
+  private permissionsCache: SystemPermission[] | null = null;
+  private rolesCache = new Map<string, { role: RoleEntity; timestamp: number }>();
+  private readonly CACHE_TTL_MS = 2 * 60 * 1000; // 2 minutes
+
+  /**
+   * Get cached permissions from memory or sessionStorage
+   */
+  getCachedPermissions(): SystemPermission[] | null {
+    if (this.permissionsCache && this.permissionsCache.length > 0) {
+      return this.permissionsCache;
+    }
+    try {
+      const stored = sessionStorage.getItem('crm_cached_permissions');
+      if (stored) {
+        this.permissionsCache = JSON.parse(stored);
+        return this.permissionsCache;
+      }
+    } catch {}
+    return null;
+  }
+
+  /**
+   * Cache permissions in memory and sessionStorage
+   */
+  setCachedPermissions(perms: SystemPermission[]) {
+    if (Array.isArray(perms) && perms.length > 0) {
+      this.permissionsCache = perms;
+      try {
+        sessionStorage.setItem('crm_cached_permissions', JSON.stringify(perms));
+      } catch {}
+    }
+  }
+
+  /**
+   * Get cached role by ID if fresh
+   */
+  getCachedRole(id?: string): RoleEntity | null {
+    if (!id) return null;
+    const entry = this.rolesCache.get(id);
+    if (entry && Date.now() - entry.timestamp < this.CACHE_TTL_MS) {
+      return entry.role;
+    }
+    return null;
+  }
+
+  /**
+   * Store role in cache
+   */
+  setCachedRole(role: RoleEntity) {
+    if (role && role.id) {
+      this.rolesCache.set(role.id, { role, timestamp: Date.now() });
+    }
+  }
+
+  /**
+   * Clear role cache
+   */
+  clearCache() {
+    this.rolesCache.clear();
+    this.permissionsCache = null;
+    try {
+      sessionStorage.removeItem('crm_cached_permissions');
+    } catch {}
+  }
+
   /**
    * List all user roles with permission and user counts
    */
   async getRoles(): Promise<RoleEntity[]> {
     const response = await api.get<any>('/roles');
     const data = response?.data || response;
-    return Array.isArray(data) ? data : [];
+    const roles = Array.isArray(data) ? data : [];
+    for (const r of roles) {
+      this.setCachedRole(r);
+    }
+    return roles;
   }
 
   /**
    * Get role details, assigned permissions, and enrolled users
    */
-  async getRoleById(id: string): Promise<RoleEntity> {
+  async getRoleById(id: string, allowCache = true): Promise<RoleEntity> {
+    if (allowCache) {
+      const cached = this.getCachedRole(id);
+      if (cached && cached.permissions && cached.permissions.length > 0) {
+        return cached;
+      }
+    }
     const response = await api.get<any>(`/roles/${id}`);
-    return (response?.data || response) as RoleEntity;
+    const role = (response?.data || response) as RoleEntity;
+    this.setCachedRole(role);
+    return role;
   }
 
   /**
@@ -30,7 +107,9 @@ class RoleService {
    */
   async createRole(payload: CreateRolePayload): Promise<RoleEntity> {
     const response = await api.post<any>('/roles', payload);
-    return (response?.data || response) as RoleEntity;
+    const role = (response?.data || response) as RoleEntity;
+    this.setCachedRole(role);
+    return role;
   }
 
   /**
@@ -38,7 +117,9 @@ class RoleService {
    */
   async updateRole(id: string, payload: UpdateRolePayload): Promise<RoleEntity> {
     const response = await api.patch<any>(`/roles/${id}`, payload);
-    return (response?.data || response) as RoleEntity;
+    const role = (response?.data || response) as RoleEntity;
+    this.setCachedRole(role);
+    return role;
   }
 
   /**
@@ -46,16 +127,25 @@ class RoleService {
    */
   async deleteRole(id: string): Promise<{ message: string }> {
     const response = await api.delete<any>(`/roles/${id}`);
+    this.rolesCache.delete(id);
     return (response?.data || response) as { message: string };
   }
 
   /**
    * List all available system permissions ordered by resource & action
    */
-  async getPermissions(): Promise<SystemPermission[]> {
+  async getPermissions(allowCache = true): Promise<SystemPermission[]> {
+    if (allowCache) {
+      const cached = this.getCachedPermissions();
+      if (cached && cached.length > 0) {
+        return cached;
+      }
+    }
     const response = await api.get<any>('/permissions');
     const data = response?.data || response;
-    return Array.isArray(data) ? data : [];
+    const perms = Array.isArray(data) ? data : [];
+    this.setCachedPermissions(perms);
+    return perms;
   }
 
   /**
@@ -76,6 +166,7 @@ class RoleService {
   ): Promise<SystemPermission[]> {
     const response = await api.put<any>(`/roles/${roleId}/permissions`, payload);
     const data = response?.data || response;
+    this.rolesCache.delete(roleId);
     return Array.isArray(data) ? data : [];
   }
 }
