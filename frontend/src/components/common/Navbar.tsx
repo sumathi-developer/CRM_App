@@ -974,41 +974,6 @@ export const Navbar: React.FC = () => {
               )}
             </div>
           </div>
-
-          {/* Right Header Section: Quick Search trigger + Notification Quick Trigger */}
-          <div className="navbar-right-section">
-            {/* Quick Search trigger button at top (focuses inline search area) */}
-            <button
-              type="button"
-              className="topbar-search-trigger"
-              onClick={() => {
-                setIsMobileSidebarOpen(true);
-                searchInputRef.current?.focus();
-                searchInputRef.current?.select();
-                if (sidebarSearchQuery.trim()) {
-                  setIsSearchDropdownOpen(true);
-                }
-              }}
-              title="Search modules (Ctrl+K)"
-              aria-label="Search"
-              id="topbar-global-search-btn"
-            >
-              <SearchIcon size={16} />
-              <span className="topbar-search-text">Search...</span>
-              <kbd className="topbar-search-kbd">Ctrl K</kbd>
-            </button>
-
-            {/* Topbar Notification Bell */}
-            <Link
-              to="/settings/notifications"
-              className="topbar-icon-action-btn"
-              title="Notifications"
-              aria-label="View notifications"
-            >
-              <BellIcon size={17} />
-              <span className="topbar-unread-badge" aria-hidden="true" />
-            </Link>
-          </div>
         </div>
       </header>
 
