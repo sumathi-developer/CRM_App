@@ -409,6 +409,7 @@ export const DealsListView: React.FC<SharedDealsViewProps> = ({
             <PipelineDealCard
               deal={deal}
               stages={stages}
+              layout="row"
               showWeightedValue={showWeightedValue}
               canManageDeals={canManageDeals}
               onMoveStage={onMoveDealStage}

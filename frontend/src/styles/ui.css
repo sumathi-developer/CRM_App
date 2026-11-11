@@ -3674,7 +3674,7 @@ main.ld-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
   padding: 0.85rem 1.35rem !important;
   background: #FFFFFF !important;
   border: 1px solid rgba(16, 185, 129, 0.22) !important;
-  border-radius: 18px !important;
+  border-radius: 20px !important;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
   margin-bottom: 4px !important;
 }
@@ -4511,6 +4511,37 @@ main.ld-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
   text-decoration: none !important;
 }
 
+.ld-card-top {
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+  gap: 0.75rem !important;
+  width: 100% !important;
+}
+
+.ld-card-titles {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.25rem !important;
+  flex: 1 !important;
+  min-width: 0 !important;
+}
+
+.ld-card-grid {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.35rem !important;
+  width: 100% !important;
+}
+
+.ld-card-meta-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.4rem !important;
+  font-size: 0.8rem !important;
+  color: #1E293B !important;
+}
+
 .ld-card-subtitle,
 .ld-card-meta-grid {
   font-size: 0.78rem !important;
@@ -4539,7 +4570,7 @@ main.ld-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
 .ld-card-footer .ld-compact-select {
   flex: 1 !important;
   min-width: 0 !important;
-  max-width: calc(100% - 95px) !important;
+  max-width: 220px !important;
   font-size: 0.75rem !important;
   height: 32px !important;
   min-height: 32px !important;
@@ -4551,6 +4582,201 @@ main.ld-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
   align-items: center !important;
   gap: 0.25rem !important;
   flex-shrink: 0 !important;
+}
+
+/* ============================================================================
+   Pipeline Deal List View — Multi-Column Row Layout
+   ============================================================================ */
+
+.ld-deal-list-table-header {
+  display: grid !important;
+  grid-template-columns: minmax(260px, 2.2fr) minmax(180px, 1.4fr) minmax(180px, 1.4fr) minmax(280px, 1.8fr) !important;
+  gap: 1.25rem !important;
+  padding: 0.65rem 1.25rem !important;
+  font-size: 0.72rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  color: #047857 !important;
+  background: rgba(16, 185, 129, 0.06) !important;
+  border: 1px solid rgba(16, 185, 129, 0.15) !important;
+  border-radius: 12px !important;
+  margin-bottom: 0.75rem !important;
+  align-items: center !important;
+  box-sizing: border-box !important;
+}
+
+.ld-card.ld-deal-row-card {
+  display: grid !important;
+  grid-template-columns: minmax(260px, 2.2fr) minmax(180px, 1.4fr) minmax(180px, 1.4fr) minmax(280px, 1.8fr) !important;
+  gap: 1.25rem !important;
+  align-items: center !important;
+  padding: 1rem 1.25rem !important;
+  background: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02) !important;
+  transition: all 150ms ease !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  margin-bottom: 0.75rem !important;
+}
+
+.ld-card.ld-deal-row-card:hover {
+  transform: translateY(-1px) !important;
+  border-color: #10B981 !important;
+  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.12) !important;
+}
+
+.ld-deal-row-col {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  min-width: 0 !important;
+}
+
+.ld-deal-col-identity {
+  gap: 0.35rem !important;
+}
+
+.ld-deal-row-title-wrap {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.6rem !important;
+  flex-wrap: wrap !important;
+}
+
+.ld-deal-row-title-wrap .ld-card-title-link {
+  font-size: 0.95rem !important;
+  font-weight: 800 !important;
+  color: #0F172A !important;
+  text-decoration: none !important;
+}
+
+.ld-deal-row-title-wrap .ld-card-title-link:hover {
+  color: #10B981 !important;
+  text-decoration: underline !important;
+}
+
+.ld-deal-col-identity .ld-card-subtitle {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.45rem !important;
+  font-size: 0.8rem !important;
+  color: #475569 !important;
+  flex-wrap: wrap !important;
+}
+
+.ld-deal-col-identity .ld-company-inline,
+.ld-deal-col-identity .ld-contact-inline {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.3rem !important;
+}
+
+.ld-deal-col-financials {
+  gap: 0.35rem !important;
+}
+
+.ld-deal-val-wrap {
+  display: flex !important;
+  align-items: baseline !important;
+  gap: 0.45rem !important;
+  flex-wrap: wrap !important;
+}
+
+.ld-deal-val-amount {
+  font-size: 1.05rem !important;
+  font-weight: 800 !important;
+  color: #047857 !important;
+}
+
+.ld-deal-weighted-amount {
+  font-size: 0.78rem !important;
+  color: #64748B !important;
+  font-weight: 600 !important;
+}
+
+.ld-deal-prob-pill {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.ld-deal-col-schedule {
+  gap: 0.35rem !important;
+}
+
+.ld-deal-meta-line {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.4rem !important;
+  font-size: 0.8rem !important;
+  color: #334155 !important;
+  font-weight: 600 !important;
+}
+
+.ld-deal-col-actions {
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 0.75rem !important;
+  width: 100% !important;
+}
+
+.ld-deal-stage-select {
+  flex: 1 !important;
+  max-width: 200px !important;
+  min-width: 130px !important;
+  height: 34px !important;
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+  background-color: #FFFFFF !important;
+  color: #0F172A !important;
+  padding: 0 0.55rem !important;
+}
+
+.ld-deal-stage-select:focus {
+  border-color: #10B981 !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15) !important;
+}
+
+.ld-deal-col-actions .ld-card-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+  flex-shrink: 0 !important;
+}
+
+@media (max-width: 1024px) {
+  .ld-deal-list-table-header {
+    display: none !important;
+  }
+  .ld-card.ld-deal-row-card {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 1rem !important;
+  }
+  .ld-deal-col-actions {
+    grid-column: span 2 !important;
+    justify-content: space-between !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .ld-card.ld-deal-row-card {
+    grid-template-columns: 1fr !important;
+    gap: 0.75rem !important;
+  }
+  .ld-deal-col-actions {
+    grid-column: span 1 !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  .ld-deal-stage-select {
+    max-width: 100% !important;
+  }
 }
 
 /* ---------- 21.6 Data Tables & Pagination Across All Modules ---------- */
@@ -4569,9 +4795,32 @@ main.ld-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
 .lg-table,
 .users-table {
   width: 100% !important;
-  border-collapse: collapse !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
   text-align: left !important;
   font-size: 0.875rem !important;
+}
+
+.lg-table-scroll {
+  overflow-x: auto !important;
+  width: 100% !important;
+  -webkit-overflow-scrolling: touch !important;
+  border-radius: 20px !important;
+}
+
+.lg-table th.align-right,
+.lg-table td.align-right {
+  text-align: right !important;
+}
+
+.lg-table th.align-left,
+.lg-table td.align-left {
+  text-align: left !important;
+}
+
+.lg-table th.align-center,
+.lg-table td.align-center {
+  text-align: center !important;
 }
 
 .lg-table th,
@@ -4587,6 +4836,26 @@ main.ld-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
   white-space: nowrap !important;
 }
 
+.lg-table th:first-child,
+.users-table th:first-child {
+  border-top-left-radius: 20px !important;
+}
+
+.lg-table th:last-child,
+.users-table th:last-child {
+  border-top-right-radius: 20px !important;
+}
+
+.lg-table tr:last-child td:first-child,
+.users-table tr:last-child td:first-child {
+  border-bottom-left-radius: 20px !important;
+}
+
+.lg-table tr:last-child td:last-child,
+.users-table tr:last-child td:last-child {
+  border-bottom-right-radius: 20px !important;
+}
+
 .lg-table td,
 .users-table td {
   padding: 1rem 1.25rem !important;
@@ -4594,6 +4863,359 @@ main.ld-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
   border-bottom: 1px solid rgba(16, 185, 129, 0.08) !important;
   vertical-align: middle !important;
   font-weight: 500 !important;
+}
+
+/* Pipeline Table View Alignment & Sizing */
+.ld-col-deal { min-width: 190px !important; }
+.ld-col-stage { min-width: 160px !important; }
+.ld-col-val { min-width: 95px !important; white-space: nowrap !important; }
+.ld-col-status { min-width: 75px !important; white-space: nowrap !important; }
+.ld-col-prob { min-width: 120px !important; }
+.ld-col-wval { min-width: 110px !important; white-space: nowrap !important; }
+.ld-col-owner { min-width: 105px !important; white-space: nowrap !important; }
+.ld-col-close { min-width: 115px !important; white-space: nowrap !important; }
+.ld-col-actions { min-width: 75px !important; width: 75px !important; white-space: nowrap !important; }
+
+.ld-table-deal-cell {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.25rem !important;
+  min-width: 180px !important;
+}
+
+.ld-table-deal-title {
+  font-size: 0.9rem !important;
+  font-weight: 800 !important;
+  color: #0F172A !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+}
+
+.ld-table-deal-title:hover {
+  color: #10B981 !important;
+  text-decoration: underline !important;
+}
+
+.ld-table-deal-sub {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+  font-size: 0.78rem !important;
+  color: #64748B !important;
+  white-space: nowrap !important;
+}
+
+.ld-table-org,
+.ld-table-contact {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.3rem !important;
+}
+
+.ld-table-stage-select {
+  width: 100% !important;
+  min-width: 150px !important;
+  max-width: 185px !important;
+  height: 34px !important;
+  border-radius: 8px !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+  background-color: #FFFFFF !important;
+  color: #0F172A !important;
+  font-size: 0.8125rem !important;
+  font-weight: 600 !important;
+  padding: 0 0.6rem !important;
+  box-sizing: border-box !important;
+}
+
+.ld-table-stage-select:focus {
+  border-color: #10B981 !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15) !important;
+}
+
+.ld-table-prob-cell {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.35rem !important;
+  min-width: 110px !important;
+}
+
+.ld-table-prob-bar {
+  width: 90px !important;
+  height: 4px !important;
+  border-radius: 2px !important;
+  background: rgba(16, 185, 129, 0.15) !important;
+  overflow: hidden !important;
+}
+
+.ld-table-deal-value {
+  font-size: 0.95rem !important;
+  font-weight: 800 !important;
+  color: #047857 !important;
+  white-space: nowrap !important;
+}
+
+.ld-table-weighted-value {
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  color: #64748B !important;
+  white-space: nowrap !important;
+}
+
+.ld-table-owner-name {
+  font-size: 0.85rem !important;
+  color: #334155 !important;
+  font-weight: 600 !important;
+  white-space: nowrap !important;
+}
+
+.ld-table-close-date {
+  font-size: 0.85rem !important;
+  color: #64748B !important;
+  white-space: nowrap !important;
+}
+
+.lg-row-actions {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 0.35rem !important;
+  white-space: nowrap !important;
+}
+
+/* ============================================================================
+   Column Picker Dropdown & Deal Row Actions (Three Dots)
+   ============================================================================ */
+
+.ld-col-picker-container {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+}
+
+.ld-col-picker-trigger-btn {
+  width: 32px !important;
+  height: 32px !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+  border-radius: 8px !important;
+  color: #047857 !important;
+  cursor: pointer !important;
+  transition: all 120ms ease !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+
+.ld-col-picker-trigger-btn:hover,
+.ld-col-picker-trigger-btn.is-active {
+  background: #ECFDF5 !important;
+  border-color: #10B981 !important;
+  color: #065F46 !important;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.2) !important;
+}
+
+.ld-col-picker-dropdown {
+  position: fixed !important;
+  width: 270px !important;
+  max-width: calc(100vw - 32px) !important;
+  max-height: calc(100vh - 40px) !important;
+  background: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.28) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.18), 0 6px 16px -4px rgba(16, 185, 129, 0.12) !important;
+  z-index: 999999 !important;
+  padding: 0.95rem 1rem !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.65rem !important;
+  text-align: left !important;
+  box-sizing: border-box !important;
+}
+
+.ld-col-picker-dropdown.is-above {
+  box-shadow: 0 -12px 36px -4px rgba(0, 0, 0, 0.16), 0 4px 16px rgba(16, 185, 129, 0.1) !important;
+}
+
+.ld-col-picker-head {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.15rem !important;
+  border-bottom: 1px solid rgba(16, 185, 129, 0.12) !important;
+  padding-bottom: 0.5rem !important;
+}
+
+.ld-col-picker-title {
+  font-size: 0.85rem !important;
+  font-weight: 800 !important;
+  color: #0F172A !important;
+}
+
+.ld-col-picker-hint {
+  font-size: 0.72rem !important;
+  color: #64748B !important;
+  font-weight: 500 !important;
+}
+
+.ld-col-picker-list {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.35rem !important;
+  max-height: 240px !important;
+  overflow-y: auto !important;
+}
+
+.ld-col-picker-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.55rem !important;
+  padding: 0.35rem 0.45rem !important;
+  border-radius: 6px !important;
+  cursor: pointer !important;
+  transition: background 100ms ease !important;
+  font-size: 0.8125rem !important;
+  color: #1E293B !important;
+  font-weight: 600 !important;
+}
+
+.ld-col-picker-row:hover:not(.is-disabled) {
+  background: #F0FDF4 !important;
+}
+
+.ld-col-picker-row.is-disabled {
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+}
+
+.ld-col-picker-checkbox {
+  accent-color: #10B981 !important;
+  width: 15px !important;
+  height: 15px !important;
+  cursor: pointer !important;
+}
+
+.ld-col-picker-item-label {
+  flex: 1 !important;
+}
+
+.ld-col-picker-required-tag {
+  font-size: 0.68rem !important;
+  font-weight: 700 !important;
+  color: #059669 !important;
+  background: #ECFDF5 !important;
+  padding: 0.1rem 0.35rem !important;
+  border-radius: 4px !important;
+}
+
+.ld-col-picker-actions {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding-top: 0.5rem !important;
+  border-top: 1px solid rgba(16, 185, 129, 0.12) !important;
+}
+
+.ld-col-picker-reset-btn {
+  background: transparent !important;
+  border: none !important;
+  color: #64748B !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  padding: 0 !important;
+  text-decoration: underline !important;
+}
+
+.ld-col-picker-reset-btn:hover {
+  color: #0F172A !important;
+}
+
+.ld-col-picker-close-btn {
+  padding: 0.35rem 0.75rem !important;
+  font-size: 0.75rem !important;
+}
+
+/* Deal Row Actions Menu (Three Dots in Row) */
+.ld-row-action-menu-wrap {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+}
+
+.ld-row-action-btn {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 8px !important;
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
+  background: #FFFFFF !important;
+  color: #334155 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 120ms ease !important;
+}
+
+.ld-row-action-btn:hover,
+.ld-row-action-btn.is-active {
+  background: #ECFDF5 !important;
+  border-color: #10B981 !important;
+  color: #047857 !important;
+}
+
+.ld-row-action-dropdown {
+  position: fixed !important;
+  min-width: 150px !important;
+  background: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.28) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.18), 0 4px 12px rgba(16, 185, 129, 0.12) !important;
+  z-index: 999999 !important;
+  padding: 0.4rem !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.2rem !important;
+  text-align: left !important;
+  box-sizing: border-box !important;
+}
+
+.ld-row-action-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  width: 100% !important;
+  padding: 0.45rem 0.65rem !important;
+  border-radius: 6px !important;
+  background: transparent !important;
+  border: none !important;
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  color: #1E293B !important;
+  cursor: pointer !important;
+  transition: all 100ms ease !important;
+  text-align: left !important;
+}
+
+.ld-row-action-item:hover {
+  background: #F0FDF4 !important;
+  color: #065F46 !important;
+}
+
+.ld-row-action-item.danger {
+  color: #DC2626 !important;
+}
+
+.ld-row-action-item.danger:hover {
+  background: #FEF2F2 !important;
+  color: #B91C1C !important;
+}
+
+.ld-row-action-item .tone-green {
+  color: #10B981 !important;
 }
 
 .lg-table tr:hover td,
@@ -4978,7 +5600,7 @@ html.dark .auth-btn.btn-danger:hover svg,
   background: #FFFFFF !important;
   border: 1px solid rgba(16, 185, 129, 0.22) !important;
   border-left: 4px solid #10B981 !important;
-  border-radius: 14px !important;
+  border-radius: 20px !important;
   padding: 0.95rem 1.35rem !important;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
 }

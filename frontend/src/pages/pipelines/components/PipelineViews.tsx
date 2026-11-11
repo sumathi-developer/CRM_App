@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
 import type {
   DealStatus,
@@ -21,6 +22,7 @@ import {
   BuildingIcon,
   CheckCircleIcon,
   EditIcon,
+  MoreVerticalIcon,
   PlusIcon,
   SlidersIcon,
   TrashIcon,
@@ -377,14 +379,23 @@ export const PipelineListView: React.FC<SharedPipelineViewProps> = ({
             }
           >
             {stageDeals.length === 0 ? (
-              <p className="lg-muted">No deals currently in {stage.name}.</p>
+              <p className="lg-muted" style={{ padding: '0.75rem 0', margin: 0 }}>
+                No deals currently in {stage.name}.
+              </p>
             ) : (
               <div className="ld-cards-stack">
+                <div className="ld-deal-list-table-header" aria-hidden="true">
+                  <span>Deal & Account</span>
+                  <span>Financials & Win Prob</span>
+                  <span>Timeline & Owner</span>
+                  <span style={{ textAlign: 'right' }}>Move Stage & Actions</span>
+                </div>
                 {stageDeals.map((deal) => (
                   <PipelineDealCard
                     key={deal.id}
                     deal={deal}
                     stages={stages}
+                    layout="row"
                     showWeightedValue={showWeightedValue}
                     canManageDeals={canManageDeals}
                     onMoveStage={onMoveDealStage}
@@ -403,8 +414,288 @@ export const PipelineListView: React.FC<SharedPipelineViewProps> = ({
 };
 
 /* ============================================================================
-   4. PIPELINE TABLE VIEW (REUSING DATATABLE)
+   4. PIPELINE TABLE VIEW WITH DYNAMIC COLUMN VISIBILITY ("THREE DOTS")
    ============================================================================ */
+
+const STORAGE_KEY_PIPELINE_TABLE_COLUMNS = 'crm_pipeline_table_visible_columns_v2';
+const DEFAULT_PIPELINE_TABLE_COLUMNS = ['deal', 'stage', 'value', 'status', 'actions'];
+
+const ALL_AVAILABLE_TABLE_COLUMNS: { id: string; label: string; isMandatory?: boolean }[] = [
+  { id: 'deal', label: 'Deal & Account', isMandatory: true },
+  { id: 'stage', label: 'Pipeline Stage' },
+  { id: 'value', label: 'Deal Value' },
+  { id: 'status', label: 'Status' },
+  { id: 'probability', label: 'Stage Probability' },
+  { id: 'weighted', label: 'Weighted Value' },
+  { id: 'owner', label: 'Owner' },
+  { id: 'closeDate', label: 'Expected Close' },
+  { id: 'actions', label: 'Actions', isMandatory: true },
+];
+
+const ColumnPickerHeader: React.FC<{
+  visibleColumns: string[];
+  onToggleColumn: (colId: string) => void;
+  onResetColumns: () => void;
+}> = ({ visibleColumns, onToggleColumn, onResetColumns }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [coords, setCoords] = useState<{ bottom: number; right: number }>({ bottom: 0, right: 0 });
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const updatePosition = () => {
+    if (triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect();
+      const bottomDistance = Math.max(16, window.innerHeight - rect.top + 8);
+      setCoords({
+        bottom: bottomDistance,
+        right: Math.max(16, window.innerWidth - rect.right),
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    updatePosition();
+
+    const handleDocClick = (e: MouseEvent) => {
+      const target = e.target as Node;
+      if (
+        triggerRef.current &&
+        !triggerRef.current.contains(target) &&
+        dropdownRef.current &&
+        !dropdownRef.current.contains(target)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsOpen(false);
+    };
+
+    document.addEventListener('mousedown', handleDocClick);
+    document.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('resize', updatePosition);
+    window.addEventListener('scroll', updatePosition, true);
+
+    return () => {
+      document.removeEventListener('mousedown', handleDocClick);
+      document.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('resize', updatePosition);
+      window.removeEventListener('scroll', updatePosition, true);
+    };
+  }, [isOpen]);
+
+  return (
+    <div className="ld-col-picker-container">
+      <button
+        ref={triggerRef}
+        type="button"
+        className={`ld-col-picker-trigger-btn ${isOpen ? 'is-active' : ''}`}
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsOpen((prev) => !prev);
+        }}
+        title="Customize columns"
+        aria-label="Customize columns"
+      >
+        <MoreVerticalIcon size={18} />
+      </button>
+
+      {isOpen &&
+        createPortal(
+          <div
+            ref={dropdownRef}
+            className="ld-col-picker-dropdown is-above"
+            style={{
+              position: 'fixed',
+              bottom: `${coords.bottom}px`,
+              right: `${coords.right}px`,
+            }}
+          >
+            <div className="ld-col-picker-head">
+              <span className="ld-col-picker-title">Add / Remove Columns</span>
+              <span className="ld-col-picker-hint">Check columns to show or uncheck to hide</span>
+            </div>
+
+            <div className="ld-col-picker-list">
+              {ALL_AVAILABLE_TABLE_COLUMNS.map((col) => {
+                const isChecked = visibleColumns.includes(col.id);
+                return (
+                  <label
+                    key={col.id}
+                    className={`ld-col-picker-row ${col.isMandatory ? 'is-disabled' : ''}`}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={isChecked}
+                      disabled={col.isMandatory}
+                      onChange={() => onToggleColumn(col.id)}
+                      className="ld-col-picker-checkbox"
+                    />
+                    <span className="ld-col-picker-item-label">{col.label}</span>
+                    {col.isMandatory && (
+                      <span className="ld-col-picker-required-tag">Required</span>
+                    )}
+                  </label>
+                );
+              })}
+            </div>
+
+            <div className="ld-col-picker-actions">
+              <button
+                type="button"
+                className="ld-col-picker-reset-btn"
+                onClick={onResetColumns}
+              >
+                Reset to default
+              </button>
+              <button
+                type="button"
+                className="auth-btn btn-primary btn-size-small ld-col-picker-close-btn"
+                onClick={() => setIsOpen(false)}
+              >
+                Done
+              </button>
+            </div>
+          </div>,
+          document.body
+        )}
+    </div>
+  );
+};
+
+const DealRowActionsMenu: React.FC<{
+  deal: PipelineDeal;
+  canManageDeals: boolean;
+  onStatusChange?: (deal: PipelineDeal, nextStatus: DealStatus) => void;
+  onEditDeal?: (deal: PipelineDeal) => void;
+  onDeleteDeal?: (deal: PipelineDeal) => void;
+}> = ({ deal, canManageDeals, onStatusChange, onEditDeal, onDeleteDeal }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [coords, setCoords] = useState<{ top: number; right: number }>({ top: 0, right: 0 });
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const updatePosition = () => {
+    if (triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect();
+      setCoords({
+        top: rect.bottom + 4,
+        right: Math.max(16, window.innerWidth - rect.right),
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    updatePosition();
+
+    const handleDocClick = (e: MouseEvent) => {
+      const target = e.target as Node;
+      if (
+        triggerRef.current &&
+        !triggerRef.current.contains(target) &&
+        dropdownRef.current &&
+        !dropdownRef.current.contains(target)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsOpen(false);
+    };
+
+    document.addEventListener('mousedown', handleDocClick);
+    document.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('resize', updatePosition);
+    window.addEventListener('scroll', updatePosition, true);
+
+    return () => {
+      document.removeEventListener('mousedown', handleDocClick);
+      document.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('resize', updatePosition);
+      window.removeEventListener('scroll', updatePosition, true);
+    };
+  }, [isOpen]);
+
+  if (!canManageDeals) return null;
+
+  return (
+    <div className="ld-row-action-menu-wrap">
+      <button
+        ref={triggerRef}
+        type="button"
+        className={`lg-icon-btn ld-row-action-btn ${isOpen ? 'is-active' : ''}`}
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsOpen((prev) => !prev);
+        }}
+        title="Deal actions"
+        aria-label={`Actions for ${deal.title}`}
+      >
+        <MoreVerticalIcon size={18} />
+      </button>
+
+      {isOpen &&
+        createPortal(
+          <div
+            ref={dropdownRef}
+            className="ld-row-action-dropdown"
+            style={{
+              position: 'fixed',
+              top: `${coords.top}px`,
+              right: `${coords.right}px`,
+            }}
+          >
+            {deal.status !== 'WON' && onStatusChange && (
+              <button
+                type="button"
+                className="ld-row-action-item"
+                onClick={() => {
+                  setIsOpen(false);
+                  onStatusChange(deal, 'WON');
+                }}
+              >
+                <CheckCircleIcon size={14} className="tone-green" />
+                <span>Mark as WON</span>
+              </button>
+            )}
+            {onEditDeal && (
+              <button
+                type="button"
+                className="ld-row-action-item"
+                onClick={() => {
+                  setIsOpen(false);
+                  onEditDeal(deal);
+                }}
+              >
+                <EditIcon size={14} />
+                <span>Edit Deal</span>
+              </button>
+            )}
+            {onDeleteDeal && (
+              <button
+                type="button"
+                className="ld-row-action-item danger"
+                onClick={() => {
+                  setIsOpen(false);
+                  onDeleteDeal(deal);
+                }}
+              >
+                <TrashIcon size={14} />
+                <span>Delete Deal</span>
+              </button>
+            )}
+          </div>,
+          document.body
+        )}
+    </div>
+  );
+};
 
 export const PipelineTableView: React.FC<SharedPipelineViewProps> = ({
   pipeline,
@@ -421,35 +712,88 @@ export const PipelineTableView: React.FC<SharedPipelineViewProps> = ({
 }) => {
   const stages = pipeline.stages || [];
 
-  const columns: Column<PipelineDeal>[] = [
-    {
+  const [visibleColumns, setVisibleColumns] = useState<string[]>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY_PIPELINE_TABLE_COLUMNS);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
+      }
+    } catch {}
+    return DEFAULT_PIPELINE_TABLE_COLUMNS;
+  });
+
+  const handleToggleColumn = (colId: string) => {
+    if (colId === 'deal' || colId === 'actions') return;
+    setVisibleColumns((prev) => {
+      const next = prev.includes(colId)
+        ? prev.filter((id) => id !== colId)
+        : [...prev, colId];
+      try {
+        localStorage.setItem(STORAGE_KEY_PIPELINE_TABLE_COLUMNS, JSON.stringify(next));
+      } catch {}
+      return next;
+    });
+  };
+
+  const handleResetColumns = () => {
+    setVisibleColumns(DEFAULT_PIPELINE_TABLE_COLUMNS);
+    try {
+      localStorage.setItem(
+        STORAGE_KEY_PIPELINE_TABLE_COLUMNS,
+        JSON.stringify(DEFAULT_PIPELINE_TABLE_COLUMNS)
+      );
+    } catch {}
+  };
+
+  const allColumnsMap: Record<string, Column<PipelineDeal>> = {
+    deal: {
       key: 'deal',
       header: 'Deal & Account',
-      render: (deal) => (
-        <div className="lg-cell-stack">
-          <strong>{deal.title}</strong>
-          <span className="lg-cell-sub">
-            {deal.organization?.name && (
-              <>
-                <BuildingIcon size={12} /> {deal.organization.name}{' '}
-              </>
-            )}
-            {deal.contact && (
-              <>
-                · <UserIcon size={12} /> {deal.contact.firstName} {deal.contact.lastName}
-              </>
-            )}
-          </span>
-        </div>
-      ),
+      className: 'ld-col-deal',
+      render: (deal) => {
+        const contactName = deal.contact
+          ? `${deal.contact.firstName || ''} ${deal.contact.lastName || ''}`.trim()
+          : '';
+        return (
+          <div className="ld-table-deal-cell">
+            <Link to={`/deals/${deal.id}`} className="ld-table-deal-title">
+              {deal.title}
+            </Link>
+            <div className="ld-table-deal-sub">
+              {deal.organization?.name && (
+                <span className="ld-table-org">
+                  <BuildingIcon size={12} />
+                  <span>{deal.organization.name}</span>
+                </span>
+              )}
+              {contactName && (
+                <>
+                  {deal.organization?.name && <span className="ld-dot">·</span>}
+                  <span className="ld-table-contact">
+                    <UserIcon size={12} />
+                    <span>{contactName}</span>
+                  </span>
+                </>
+              )}
+              {!deal.organization?.name && !contactName && (
+                <span className="lg-muted">No account linked</span>
+              )}
+            </div>
+          </div>
+        );
+      },
     },
-    {
+    stage: {
       key: 'stage',
       header: 'Pipeline Stage',
+      className: 'ld-col-stage',
       render: (deal) =>
         canManageDeals && stages.length > 0 ? (
           <select
-            className="lg-select ld-compact-select"
+            className="lg-select ld-table-stage-select"
             value={deal.stageId || ''}
             onChange={(e) => onMoveDealStage(deal, e.target.value)}
             aria-label={`Change stage for ${deal.title}`}
@@ -464,104 +808,112 @@ export const PipelineTableView: React.FC<SharedPipelineViewProps> = ({
           <Badge tone="blue">{deal.stage?.name || 'Unstaged'}</Badge>
         ),
     },
-    {
+    value: {
+      key: 'value',
+      header: 'Deal Value',
+      className: 'ld-col-val',
+      align: 'left',
+      render: (deal) => (
+        <strong className="ld-table-deal-value">{formatCurrency(deal.value)}</strong>
+      ),
+    },
+    status: {
+      key: 'status',
+      header: 'Status',
+      className: 'ld-col-status',
+      render: (deal) => <Badge tone={dealStatusTone(deal.status)}>{deal.status}</Badge>,
+    },
+    probability: {
       key: 'probability',
       header: 'Stage Probability',
+      className: 'ld-col-prob',
       render: (deal) => {
         const st = stages.find((s) => s.id === deal.stageId) || deal.stage;
         const prob = deal.probability ?? st?.winProbability ?? 0;
+        const tone = probabilityTone(prob);
         return (
-          <StageProbabilityBadge
-            probability={prob}
-            showBar={showStageProbabilityBar}
-            color={st?.color}
-          />
+          <div className="ld-table-prob-cell" title={`Win Probability: ${prob}%`}>
+            <Badge tone={tone}>{prob}% WIN PROB</Badge>
+            {showStageProbabilityBar && (
+              <div className="ld-score-bar-track ld-table-prob-bar" aria-hidden="true">
+                <div
+                  className={`ld-score-bar-fill tone-${tone}`}
+                  style={{
+                    width: `${prob}%`,
+                    backgroundColor: st?.color || undefined,
+                  }}
+                />
+              </div>
+            )}
+          </div>
         );
       },
     },
-    {
-      key: 'value',
-      header: 'Deal Value',
-      align: 'right',
-      render: (deal) => <strong>{formatCurrency(deal.value)}</strong>,
+    weighted: {
+      key: 'weighted',
+      header: 'Weighted Value',
+      className: 'ld-col-wval',
+      align: 'left',
+      render: (deal: PipelineDeal) => {
+        const st = stages.find((s) => s.id === deal.stageId) || deal.stage;
+        return (
+          <span className="ld-table-weighted-value">
+            {formatCurrency(computeWeightedDealValue(deal, st?.winProbability))}
+          </span>
+        );
+      },
     },
-    ...(showWeightedValue
-      ? [
-          {
-            key: 'weighted',
-            header: 'Weighted Value',
-            align: 'right' as const,
-            render: (deal: PipelineDeal) => {
-              const st = stages.find((s) => s.id === deal.stageId) || deal.stage;
-              return (
-                <span className="lg-muted">
-                  {formatCurrency(computeWeightedDealValue(deal, st?.winProbability))}
-                </span>
-              );
-            },
-          },
-        ]
-      : []),
-    {
-      key: 'status',
-      header: 'Status',
-      render: (deal) => <Badge tone={dealStatusTone(deal.status)}>{deal.status}</Badge>,
-    },
-    {
+    owner: {
       key: 'owner',
       header: 'Owner',
+      className: 'ld-col-owner',
       render: (deal) => (
-        <span className="lg-muted">{deal.owner?.name || 'Unassigned'}</span>
+        <span className="ld-table-owner-name">{deal.owner?.name || 'Unassigned'}</span>
       ),
     },
-    {
+    closeDate: {
       key: 'closeDate',
       header: 'Expected Close',
+      className: 'ld-col-close',
       render: (deal) => (
-        <span className="lg-muted">
+        <span className="ld-table-close-date">
           {deal.expectedCloseDate ? formatDate(deal.expectedCloseDate) : '—'}
         </span>
       ),
     },
-    {
+    actions: {
       key: 'actions',
-      header: 'Actions',
+      header: (
+        <ColumnPickerHeader
+          visibleColumns={visibleColumns}
+          onToggleColumn={handleToggleColumn}
+          onResetColumns={handleResetColumns}
+        />
+      ),
+      className: 'ld-col-actions',
       align: 'right',
       render: (deal) => (
-        <div className="lg-row-actions">
-          {canManageDeals && deal.status !== 'WON' && (
-            <button
-              type="button"
-              className="lg-icon-btn ld-convert-icon-btn"
-              title="Mark as WON"
-              onClick={() => onStatusChange(deal, 'WON')}
-            >
-              <CheckCircleIcon size={15} />
-            </button>
-          )}
-          {canManageDeals && (
-            <button
-              type="button"
-              className="lg-icon-btn"
-              title="Edit Deal"
-              onClick={() => onEditDeal(deal)}
-            >
-              <EditIcon size={15} />
-            </button>
-          )}
-          {canManageDeals && (
-            <button
-              type="button"
-              className="lg-icon-btn danger"
-              title="Delete Deal"
-              onClick={() => onDeleteDeal(deal)}
-            >
-              <TrashIcon size={15} />
-            </button>
-          )}
-        </div>
+        <DealRowActionsMenu
+          deal={deal}
+          canManageDeals={canManageDeals}
+          onStatusChange={onStatusChange}
+          onEditDeal={onEditDeal}
+          onDeleteDeal={onDeleteDeal}
+        />
       ),
     },
+  };
+
+  const columns: Column<PipelineDeal>[] = [
+    allColumnsMap.deal,
+    ...(visibleColumns.includes('stage') ? [allColumnsMap.stage] : []),
+    ...(visibleColumns.includes('value') ? [allColumnsMap.value] : []),
+    ...(visibleColumns.includes('status') ? [allColumnsMap.status] : []),
+    ...(visibleColumns.includes('probability') ? [allColumnsMap.probability] : []),
+    ...(visibleColumns.includes('weighted') && showWeightedValue ? [allColumnsMap.weighted] : []),
+    ...(visibleColumns.includes('owner') ? [allColumnsMap.owner] : []),
+    ...(visibleColumns.includes('closeDate') ? [allColumnsMap.closeDate] : []),
+    allColumnsMap.actions,
   ];
 
   return (

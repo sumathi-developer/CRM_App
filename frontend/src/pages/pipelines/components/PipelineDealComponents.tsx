@@ -189,6 +189,7 @@ interface PipelineDealCardProps {
   deal: PipelineDeal;
   stages: PipelineStage[];
   compact?: boolean;
+  layout?: 'card' | 'row';
   showWeightedValue?: boolean;
   draggable?: boolean;
   canManageDeals?: boolean;
@@ -203,6 +204,7 @@ export const PipelineDealCard: React.FC<PipelineDealCardProps> = ({
   deal,
   stages,
   compact = false,
+  layout = 'card',
   showWeightedValue = true,
   draggable = false,
   canManageDeals = true,
@@ -219,6 +221,129 @@ export const PipelineDealCard: React.FC<PipelineDealCardProps> = ({
     ? `${deal.contact.firstName || ''} ${deal.contact.lastName || ''}`.trim()
     : '';
 
+  if (layout === 'row') {
+    return (
+      <div
+        className="ld-card ld-deal-row-card"
+        draggable={draggable && canManageDeals}
+        onDragStart={(e) => onDragStart?.(e, deal)}
+      >
+        {/* Column 1: Deal & Account */}
+        <div className="ld-deal-row-col ld-deal-col-identity">
+          <div className="ld-deal-row-title-wrap">
+            <Link to={`/deals/${deal.id}`} className="ld-card-title-link">
+              {deal.title}
+            </Link>
+            <Badge tone={dealStatusTone(deal.status)}>{deal.status}</Badge>
+          </div>
+          <div className="ld-card-subtitle">
+            {deal.organization?.name && (
+              <span className="ld-company-inline">
+                <BuildingIcon size={12} />
+                {deal.organization.name}
+              </span>
+            )}
+            {contactName && (
+              <>
+                {deal.organization?.name && <span className="ld-dot">·</span>}
+                <span className="ld-contact-inline">
+                  <UserIcon size={12} /> {contactName}
+                </span>
+              </>
+            )}
+            {!deal.organization?.name && !contactName && (
+              <span className="lg-muted">No account linked</span>
+            )}
+          </div>
+        </div>
+
+        {/* Column 2: Financials & Win Probability */}
+        <div className="ld-deal-row-col ld-deal-col-financials">
+          <div className="ld-deal-val-wrap">
+            <strong className="ld-deal-val-amount">{formatCurrency(deal.value)}</strong>
+            {showWeightedValue && (
+              <span className="ld-deal-weighted-amount">
+                Forecast: {formatCurrency(weighted)}
+              </span>
+            )}
+          </div>
+          <div className="ld-deal-prob-pill">
+            <Badge tone={probabilityTone(prob)}>{prob}% WIN PROB</Badge>
+          </div>
+        </div>
+
+        {/* Column 3: Timeline & Owner */}
+        <div className="ld-deal-row-col ld-deal-col-schedule">
+          <div className="ld-deal-meta-line" title="Expected Close Date">
+            <CalendarIcon size={13} />
+            <span>
+              {deal.expectedCloseDate
+                ? `Close: ${formatDate(deal.expectedCloseDate)}`
+                : 'No close date'}
+            </span>
+          </div>
+          <div className="ld-deal-meta-line" title="Deal Owner">
+            <UserIcon size={13} />
+            <span>{deal.owner?.name || 'Unassigned'}</span>
+          </div>
+        </div>
+
+        {/* Column 4: Move Stage & Actions */}
+        <div className="ld-deal-row-col ld-deal-col-actions">
+          {canManageDeals && onMoveStage && stages.length > 0 ? (
+            <select
+              className="lg-select ld-deal-stage-select"
+              value={deal.stageId || ''}
+              onChange={(e) => onMoveStage(deal, e.target.value)}
+              aria-label={`Move ${deal.title} to stage`}
+            >
+              {stages.map((st) => (
+                <option key={st.id} value={st.id}>
+                  {st.name} ({st.winProbability}%)
+                </option>
+              ))}
+            </select>
+          ) : (
+            <span className="lg-muted ld-deal-stage-label">{stageObj?.name || 'Unstaged'}</span>
+          )}
+
+          <div className="ld-card-actions">
+            {canManageDeals && onStatusChange && deal.status !== 'WON' && (
+              <button
+                type="button"
+                className="lg-icon-btn ld-convert-icon-btn"
+                title="Mark Deal as WON"
+                onClick={() => onStatusChange(deal, 'WON')}
+              >
+                <CheckCircleIcon size={14} />
+              </button>
+            )}
+            {canManageDeals && onEditDeal && (
+              <button
+                type="button"
+                className="lg-icon-btn"
+                title="Edit Deal"
+                onClick={() => onEditDeal(deal)}
+              >
+                <EditIcon size={14} />
+              </button>
+            )}
+            {canManageDeals && onDeleteDeal && (
+              <button
+                type="button"
+                className="lg-icon-btn danger"
+                title="Delete Deal"
+                onClick={() => onDeleteDeal(deal)}
+              >
+                <TrashIcon size={14} />
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       className={`ld-card ${compact ? 'is-compact' : ''}`}
@@ -227,7 +352,9 @@ export const PipelineDealCard: React.FC<PipelineDealCardProps> = ({
     >
       <div className="ld-card-top">
         <div className="ld-card-titles">
-          <strong className="ld-card-title-link">{deal.title}</strong>
+          <Link to={`/deals/${deal.id}`} className="ld-card-title-link">
+            {deal.title}
+          </Link>
           <div className="ld-card-subtitle">
             {deal.organization?.name && (
               <span className="ld-company-inline">

@@ -32,7 +32,7 @@
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
-  border-radius: var(--radius-lg, 14px);
+  border-radius: 20px;
   overflow-x: auto;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
 }
@@ -148,7 +148,7 @@
   background: var(--bg-card, rgba(15, 23, 42, 0.75));
   backdrop-filter: blur(12px);
   border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
-  border-radius: var(--radius-lg, 14px);
+  border-radius: 20px;
   transition: border-color var(--transition-fast, 150ms ease);
 }
 
@@ -397,12 +397,14 @@
 /* ---------- Data Tables ---------- */
 
 .lg-table-card {
+  border-radius: 20px;
   overflow: hidden;
 }
 
 .lg-table-scroll {
   width: 100%;
   overflow-x: auto;
+  border-radius: 20px;
 }
 
 .lg-table {

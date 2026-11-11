@@ -2196,6 +2196,7 @@ html.dark .ld-bant-card.is-checked .lg-field-hint,
   padding: 0.6rem 0.85rem !important;
   position: relative !important;
   z-index: 60 !important;
+  border-radius: 20px !important;
 }
 
 .ld-nav-dropdown-wrapper {
