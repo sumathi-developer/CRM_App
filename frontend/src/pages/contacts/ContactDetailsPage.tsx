@@ -253,7 +253,7 @@ export const ContactDetailsPage: React.FC = () => {
       ) : (
         <>
           {/* Lifecycle Stage Pipeline Card */}
-          <div className="lg-card ld-details-stage-card">
+          <div className="lg-card ld-details-stage-card" style={{ marginBottom: '24px' }}>
             <div className="ld-stage-card-head">
               <div>
                 <span className="lg-stat-label">Contact Lifecycle Stage</span>
@@ -317,57 +317,69 @@ export const ContactDetailsPage: React.FC = () => {
           </section>
 
           {/* Details Inner Section Tabs */}
-          <div className="ld-details-tabs" role="tablist" aria-label="Contact detail sections">
+          <div
+            className="lg-card ld-details-tabs-bar"
+            role="tablist"
+            aria-label="Contact detail sections"
+            style={{ marginBottom: '24px' }}
+          >
             <button
               type="button"
               role="tab"
               aria-selected={activeTab === 'overview'}
-              className={`ld-details-tab ${activeTab === 'overview' ? 'is-active' : ''}`}
+              className={`ld-pill-tab ${activeTab === 'overview' ? 'is-active' : ''}`}
               onClick={() => setActiveTab('overview')}
             >
-              Overview & Timeline
+              <span>Overview & Timeline</span>
             </button>
             <button
               type="button"
               role="tab"
               aria-selected={activeTab === 'activities'}
-              className={`ld-details-tab ${activeTab === 'activities' ? 'is-active' : ''}`}
+              className={`ld-pill-tab ${activeTab === 'activities' ? 'is-active' : ''}`}
               onClick={() => setActiveTab('activities')}
             >
-              Activities ({contact._count?.activities ?? contact.activities?.length ?? 0})
+              <span>Activities</span>
+              <span className="ld-pill-badge">
+                {contact._count?.activities ?? contact.activities?.length ?? 0}
+              </span>
             </button>
             <button
               type="button"
               role="tab"
               aria-selected={activeTab === 'notes'}
-              className={`ld-details-tab ${activeTab === 'notes' ? 'is-active' : ''}`}
+              className={`ld-pill-tab ${activeTab === 'notes' ? 'is-active' : ''}`}
               onClick={() => setActiveTab('notes')}
             >
-              Notes ({contact._count?.notes ?? contact.notes?.length ?? 0})
+              <span>Notes</span>
+              <span className="ld-pill-badge">
+                {contact._count?.notes ?? contact.notes?.length ?? 0}
+              </span>
             </button>
             <button
               type="button"
               role="tab"
               aria-selected={activeTab === 'documents'}
-              className={`ld-details-tab ${activeTab === 'documents' ? 'is-active' : ''}`}
+              className={`ld-pill-tab ${activeTab === 'documents' ? 'is-active' : ''}`}
               onClick={() => setActiveTab('documents')}
             >
-              Documents
+              <span>Documents</span>
             </button>
             <button
               type="button"
               role="tab"
               aria-selected={activeTab === 'deals'}
-              className={`ld-details-tab ${activeTab === 'deals' ? 'is-active' : ''}`}
+              className={`ld-pill-tab ${activeTab === 'deals' ? 'is-active' : ''}`}
               onClick={() => setActiveTab('deals')}
             >
-              Linked Deals ({deals.length})
+              <span>Linked Deals</span>
+              <span className="ld-pill-badge">{deals.length}</span>
             </button>
           </div>
 
           {activeTab === 'overview' && (
             <>
-              <div className="lg-two-col">
+              <div className="lg-grid-2" style={{ marginBottom: '24px' }}>
                 {/* Left Column: Contact & Organization Profile */}
                 <SectionCard
                   title="Contact & Organization Information"

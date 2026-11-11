@@ -55,7 +55,16 @@ export const ContactStagePipeline: React.FC<ContactStagePipelineProps> = ({
   const currentIdx = stageOrder.indexOf(normalized);
 
   return (
-    <div className="ld-qual-pipeline" role="group" aria-label="Contact lifecycle stage pipeline">
+    <div
+      className="ld-qualification-stepper"
+      role="group"
+      aria-label="Contact lifecycle stage pipeline"
+      style={{
+        display: 'grid',
+        gridTemplateColumns: `repeat(${CONTACT_STAGE_OPTIONS.length}, minmax(130px, 1fr))`,
+        gap: '0.75rem',
+      }}
+    >
       {CONTACT_STAGE_OPTIONS.map((step, idx) => {
         const isCurrent = normalized === step.value;
         const isPassed =
@@ -70,15 +79,49 @@ export const ContactStagePipeline: React.FC<ContactStagePipelineProps> = ({
             type="button"
             disabled={disabled || !onSelectStage}
             onClick={() => onSelectStage?.(step.value)}
-            className={`ld-qual-step tone-${step.tone} ${isCurrent ? 'is-current' : ''} ${
-              isPassed ? 'is-passed' : ''
-            }`}
+            className={`ld-step-pill ${isCurrent ? 'is-current' : ''} ${
+              isPassed ? 'is-completed' : ''
+            } tone-${step.tone}`}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.65rem',
+              padding: '0.75rem 1rem',
+              cursor: disabled || !onSelectStage ? 'default' : 'pointer',
+              minWidth: 0,
+            }}
             title={step.description}
           >
-            <span className="ld-qual-step-index">{idx + 1}</span>
-            <div className="ld-qual-step-text">
-              <strong>{step.label}</strong>
-              <span>{step.description}</span>
+            <span className="ld-step-index" style={{ flexShrink: 0 }}>
+              {isPassed ? <CheckCircleIcon size={12} /> : idx + 1}
+            </span>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+                minWidth: 0,
+                gap: '2px',
+                textAlign: 'left',
+              }}
+            >
+              <span className="ld-step-label" style={{ fontWeight: 700, fontSize: '0.85rem' }}>
+                {step.label}
+              </span>
+              <span
+                style={{
+                  fontSize: '0.72rem',
+                  lineHeight: 1.25,
+                  opacity: 0.8,
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  maxWidth: '100%',
+                  color: 'inherit',
+                }}
+              >
+                {step.description}
+              </span>
             </div>
           </button>
         );

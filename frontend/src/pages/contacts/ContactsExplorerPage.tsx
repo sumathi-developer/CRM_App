@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { contactService } from '../../services/contact.service';
 import type {
@@ -51,6 +51,7 @@ export const ContactsExplorerPage: React.FC = () => {
   const { user: currentUser } = useAuth();
   const { users } = useUserOptions();
   const location = useLocation();
+  const navigate = useNavigate();
   const permissions = useMemo(() => getContactPermissions(currentUser), [currentUser]);
 
   // Derive default view and scope from current route path so all 4 views
@@ -378,16 +379,17 @@ export const ContactsExplorerPage: React.FC = () => {
       </section>
 
       {/* Scope Switcher (All Contacts vs My Contacts) & View Switcher (Table / List) */}
-      <div className="lg-card ld-ControlDeck">
+      <div className="lg-card ld-view-switcher-bar">
         <div className="ld-scope-tabs" role="tablist" aria-label="Contact ownership scope">
           <button
             type="button"
             role="tab"
             aria-selected={scope === 'all'}
-            className={`ld-scope-tab ${scope === 'all' ? 'is-active' : ''}`}
+            className={`ld-pill-tab ${scope === 'all' ? 'is-active' : ''}`}
             onClick={() => {
               setManualScope('all');
               setPage(1);
+              if (location.pathname === '/contacts/my') navigate('/contacts');
             }}
           >
             <UsersIcon size={15} />
@@ -397,10 +399,11 @@ export const ContactsExplorerPage: React.FC = () => {
             type="button"
             role="tab"
             aria-selected={scope === 'my'}
-            className={`ld-scope-tab ${scope === 'my' ? 'is-active' : ''}`}
+            className={`ld-pill-tab ${scope === 'my' ? 'is-active' : ''}`}
             onClick={() => {
               setManualScope('my');
               setPage(1);
+              if (location.pathname === '/contacts') navigate('/contacts/my');
             }}
           >
             <UserIcon size={15} />
@@ -412,14 +415,22 @@ export const ContactsExplorerPage: React.FC = () => {
           <button
             type="button"
             className={`ld-view-btn ${viewMode === 'table' ? 'is-active' : ''}`}
-            onClick={() => setManualViewMode('table')}
+            onClick={() => {
+              setManualViewMode('table');
+              if (location.pathname === '/contacts/list') navigate('/contacts');
+            }}
           >
             Table View
           </button>
           <button
             type="button"
             className={`ld-view-btn ${viewMode === 'list' ? 'is-active' : ''}`}
-            onClick={() => setManualViewMode('list')}
+            onClick={() => {
+              setManualViewMode('list');
+              if (location.pathname === '/contacts' || location.pathname === '/contacts/table') {
+                navigate('/contacts/list');
+              }
+            }}
           >
             List View
           </button>

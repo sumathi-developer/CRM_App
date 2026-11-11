@@ -12,6 +12,7 @@ import { triggerFileDownload } from '../leads/leadConstants';
 import {
   SAMPLE_CONTACTS_CSV,
   SAMPLE_CONTACTS_JSON,
+  contactStageTone,
   getContactPermissions,
   parseAndValidateContactImportText,
 } from './contactConstants';
@@ -220,13 +221,13 @@ export const ContactImportPage: React.FC = () => {
             />
           </section>
 
-          <div className="lg-two-col">
+          <div className="lg-grid-2" style={{ marginBottom: '24px' }}>
             {/* Step 1: Upload or Paste CSV/JSON */}
             <SectionCard
               title="1. Upload File or Paste CSV / JSON Data"
               subtitle="Required columns: firstName, lastName, email. Optional: phone, jobTitle, department, stage, organizationId."
             >
-              <div className="ld-form-stack">
+              <div className="ld-form-stack" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                 <div className="lg-form-grid">
                   <Field label="Upload CSV or JSON File" htmlFor="import-contact-file-input">
                     <input
@@ -293,39 +294,52 @@ export const ContactImportPage: React.FC = () => {
                   <textarea
                     id="import-contact-raw-textarea"
                     className="lg-textarea ld-code-textarea"
-                    rows={10}
+                    rows={9}
                     value={rawText}
                     onChange={(e) => setRawText(e.target.value)}
                     placeholder="Paste CSV or JSON array of contacts here..."
+                    style={{ fontFamily: 'monospace', fontSize: '0.8125rem' }}
                   />
                 </Field>
 
-                <div className="lg-form-footer">
-                  <button
-                    type="button"
-                    className="auth-btn btn-secondary"
-                    onClick={() => setRawText(SAMPLE_CONTACTS_CSV)}
-                  >
-                    Load Sample CSV
-                  </button>
-                  <button
-                    type="button"
-                    className="auth-btn btn-secondary"
-                    onClick={() => setRawText(SAMPLE_CONTACTS_JSON)}
-                  >
-                    Load Sample JSON
-                  </button>
-                  <div className="ld-submit-btn-wrap">
-                    <PrimaryButton
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: '0.75rem',
+                    flexWrap: 'wrap',
+                    paddingTop: '0.75rem',
+                    borderTop: '1px solid rgba(16, 185, 129, 0.15)',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    <button
                       type="button"
-                      disabled={validRows.length === 0}
-                      isLoading={isImporting}
-                      onClick={() => setIsConfirmOpen(true)}
+                      className="auth-btn btn-secondary"
+                      onClick={() => setRawText(SAMPLE_CONTACTS_CSV)}
                     >
-                      Import {validRows.length} Valid Contact
-                      {validRows.length === 1 ? '' : 's'}
-                    </PrimaryButton>
+                      Load Sample CSV
+                    </button>
+                    <button
+                      type="button"
+                      className="auth-btn btn-secondary"
+                      onClick={() => setRawText(SAMPLE_CONTACTS_JSON)}
+                    >
+                      Load Sample JSON
+                    </button>
                   </div>
+                  <PrimaryButton
+                    type="button"
+                    fullWidth={false}
+                    disabled={validRows.length === 0}
+                    isLoading={isImporting}
+                    loadingText="Importing..."
+                    onClick={() => setIsConfirmOpen(true)}
+                    icon={<CheckCircleIcon size={15} />}
+                  >
+                    Import {validRows.length} Valid Contact{validRows.length === 1 ? '' : 's'}
+                  </PrimaryButton>
                 </div>
               </div>
             </SectionCard>
@@ -334,11 +348,16 @@ export const ContactImportPage: React.FC = () => {
             <SectionCard
               title={`2. Validation Preview (${parsedRows.length} Rows)`}
               subtitle="Verify mapped fields and fix any validation errors before importing."
+              actions={
+                validRows.length > 0 ? (
+                  <Badge tone="green">{validRows.length} Valid Ready</Badge>
+                ) : undefined
+              }
             >
               {failedRows.length > 0 && (
-                <div className="lg-inline-alert">
+                <div className="lg-inline-alert" style={{ marginBottom: '1rem' }}>
                   <strong>Some rows could not be imported:</strong>
-                  <ul className="ld-compact-list">
+                  <ul className="ld-compact-list" style={{ marginTop: '0.5rem', paddingLeft: '1.25rem' }}>
                     {failedRows.map((f) => (
                       <li key={f.row}>
                         Row #{f.row}: {f.reason}
@@ -348,50 +367,106 @@ export const ContactImportPage: React.FC = () => {
                 </div>
               )}
 
-              <div className="ld-import-preview-list">
-                {parsedRows.map((row) => (
-                  <div
-                    key={row.rowNumber}
-                    className={`ld-subcard ${row.isValid ? '' : 'ld-subcard-error'}`}
-                  >
-                    <div className="ld-subcard-top">
-                      <div className="lg-badge-row">
-                        <Badge tone={row.isValid ? 'green' : 'red'}>
-                          {row.isValid ? 'Valid' : 'Invalid'} · Row #{row.rowNumber}
+              {parsedRows.length === 0 ? (
+                <EmptyState
+                  title="No Data to Preview"
+                  description="Upload a CSV/JSON file or paste rows above to preview."
+                />
+              ) : (
+                <div
+                  className="ld-items-stack"
+                  style={{ maxHeight: '560px', overflowY: 'auto', paddingRight: '4px' }}
+                >
+                  {parsedRows.map((row) => (
+                    <div
+                      key={row.rowNumber}
+                      className="ld-item-card"
+                      style={{
+                        borderLeft: row.isValid
+                          ? '3px solid #10B981'
+                          : '3px solid #EF4444',
+                      }}
+                    >
+                      <div className="ld-item-card-top">
+                        <div
+                          className="lg-badge-row"
+                          style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+                        >
+                          <Badge tone={row.isValid ? 'green' : 'red'}>
+                            {row.isValid ? 'VALID' : 'INVALID'} · ROW #{row.rowNumber}
+                          </Badge>
+                          <strong style={{ fontSize: '0.925rem', color: '#0F172A' }}>
+                            {row.payload.firstName} {row.payload.lastName}
+                          </strong>
+                        </div>
+                        <Badge tone={contactStageTone(row.payload.stage as any)}>
+                          {row.payload.stage || 'LEAD'}
                         </Badge>
-                        <strong>
-                          {row.payload.firstName} {row.payload.lastName}
-                        </strong>
                       </div>
-                      <Badge tone="blue">{row.payload.stage}</Badge>
-                    </div>
-                    <div className="ld-subcard-meta">
-                      <span>{row.payload.email || 'No email'}</span>
-                      {row.payload.jobTitle && (
-                        <>
-                          <span>·</span>
-                          <span>{row.payload.jobTitle}</span>
-                        </>
-                      )}
-                      {row.payload.department && (
-                        <>
-                          <span>·</span>
-                          <span>{row.payload.department}</span>
-                        </>
-                      )}
-                    </div>
-                    {!row.isValid && (
-                      <div className="ld-row-errors">
-                        {row.errors.map((errMsg, idx) => (
-                          <span key={idx} className="ld-error-pill">
-                            {errMsg}
-                          </span>
-                        ))}
+
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.45rem',
+                          fontSize: '0.8125rem',
+                          color: '#64748B',
+                          flexWrap: 'wrap',
+                        }}
+                      >
+                        <span>{row.payload.email || 'No email'}</span>
+                        {row.payload.jobTitle && (
+                          <>
+                            <span style={{ opacity: 0.5 }}>·</span>
+                            <span>{row.payload.jobTitle}</span>
+                          </>
+                        )}
+                        {row.payload.department && (
+                          <>
+                            <span style={{ opacity: 0.5 }}>·</span>
+                            <span>{row.payload.department}</span>
+                          </>
+                        )}
+                        {row.organizationName && (
+                          <>
+                            <span style={{ opacity: 0.5 }}>·</span>
+                            <span style={{ color: '#059669', fontWeight: 600 }}>
+                              {row.organizationName}
+                            </span>
+                          </>
+                        )}
                       </div>
-                    )}
-                  </div>
-                ))}
-              </div>
+
+                      {!row.isValid && row.errors.length > 0 && (
+                        <div
+                          style={{
+                            display: 'flex',
+                            flexWrap: 'wrap',
+                            gap: '0.35rem',
+                            marginTop: '0.35rem',
+                          }}
+                        >
+                          {row.errors.map((errMsg, idx) => (
+                            <span
+                              key={idx}
+                              style={{
+                                fontSize: '0.72rem',
+                                fontWeight: 600,
+                                color: '#DC2626',
+                                background: '#FEE2E2',
+                                padding: '0.15rem 0.5rem',
+                                borderRadius: '6px',
+                              }}
+                            >
+                              {errMsg}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
             </SectionCard>
           </div>
         </>
