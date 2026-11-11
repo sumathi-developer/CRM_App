@@ -1215,8 +1215,23 @@ export const Navbar: React.FC = () => {
 
             {/* Neat Search input */}
             <div className="settings-flyout-search">
-              <div className="settings-search-input-box">
-                <SearchIcon size={14} className="settings-search-icon" />
+              <div className="settings-search-input-box" style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                <SearchIcon
+                  size={15}
+                  className="settings-search-icon"
+                  style={{
+                    position: 'absolute',
+                    left: '12px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    color: '#10B981',
+                    pointerEvents: 'none',
+                    zIndex: 2,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                />
                 <input
                   type="text"
                   placeholder="Search settings..."
@@ -1224,6 +1239,10 @@ export const Navbar: React.FC = () => {
                   onChange={(e) => setSettingsSearchQuery(e.target.value)}
                   className="settings-search-input"
                   aria-label="Search settings modules"
+                  style={{
+                    paddingLeft: '38px',
+                    paddingRight: settingsSearchQuery ? '32px' : '12px',
+                  }}
                 />
                 {settingsSearchQuery && (
                   <button
@@ -1231,6 +1250,12 @@ export const Navbar: React.FC = () => {
                     onClick={() => setSettingsSearchQuery('')}
                     className="settings-search-clear-btn"
                     title="Clear search"
+                    style={{
+                      position: 'absolute',
+                      right: '10px',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                    }}
                   >
                     <XIcon size={12} />
                   </button>
