@@ -195,10 +195,7 @@ export const PipelineSelectorPage: React.FC = () => {
                     {stages.map((st) => (
                       <div
                         key={st.id}
-                        className={`ld-qual-step tone-${probabilityTone(st.winProbability)}`}
-                        style={{
-                          borderLeft: st.color ? `4px solid ${st.color}` : undefined,
-                        }}
+                        className="ld-qual-step"
                       >
                         <span className="ld-qual-step-index">{st.order}</span>
                         <div className="ld-qual-step-text">

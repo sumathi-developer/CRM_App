@@ -923,7 +923,11 @@ html.dark .ld-drawer-kv,
   padding: 1.25rem 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 1.15rem;
+  background: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
 }
 
 .ld-stage-card-head {
@@ -932,6 +936,210 @@ html.dark .ld-drawer-kv,
   align-items: flex-start;
   gap: 1rem;
   flex-wrap: wrap;
+}
+
+.ld-stage-card-head .lg-stat-label {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #1E293B;
+  display: block;
+}
+
+.ld-stage-card-head .lg-field-hint {
+  font-size: 0.8125rem;
+  color: #64748B;
+  margin-top: 0.2rem;
+  margin-bottom: 0;
+}
+
+/* Pipeline Stage Funnel Grid & Cards */
+.ld-qual-pipeline {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+  gap: 0.65rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (min-width: 992px) {
+  .ld-qual-pipeline {
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  }
+}
+
+.ld-qual-step {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.7rem 0.85rem;
+  background: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 150ms ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+.ld-qual-step:hover:not(:disabled) {
+  border-color: rgba(16, 185, 129, 0.45) !important;
+  background: #F8FCF9 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
+}
+
+.ld-qual-step.is-current {
+  background: #EAF4ED !important;
+  border-color: #10B981 !important;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25) !important;
+}
+
+.ld-qual-step.is-passed {
+  border-color: rgba(16, 185, 129, 0.35) !important;
+  background: rgba(16, 185, 129, 0.04);
+}
+
+.ld-qual-step-index {
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  border-radius: 50%;
+  background: rgba(16, 185, 129, 0.12) !important;
+  color: #047857 !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.ld-qual-step.is-current .ld-qual-step-index {
+  background: #10B981 !important;
+  color: #FFFFFF !important;
+}
+
+.ld-qual-step-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.ld-qual-step-name,
+.ld-qual-step-text strong {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #1E293B;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ld-qual-step-name strong {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ld-qual-prob-badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #059669;
+  background: rgba(16, 185, 129, 0.1);
+  padding: 0.08rem 0.35rem;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.ld-qual-step-meta,
+.ld-qual-step-text span:not(.ld-qual-prob-badge) {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: #64748B;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.ld-qual-step-meta .ld-qual-sep {
+  color: #94A3B8;
+}
+
+.ld-qual-step-meta .ld-qual-wval {
+  color: #059669;
+  font-weight: 600;
+}
+
+/* Uniform emerald step index (tone variants neutralized) */
+.ld-qual-step .ld-qual-step-index {
+  background: rgba(16, 185, 129, 0.12) !important;
+  color: #047857 !important;
+}
+
+/* Dark mode support */
+html.dark .ld-details-stage-card,
+[data-theme="dark"] .ld-details-stage-card {
+  background: rgba(15, 23, 42, 0.7) !important;
+  border-color: rgba(16, 185, 129, 0.2) !important;
+}
+
+html.dark .ld-stage-card-head .lg-stat-label,
+[data-theme="dark"] .ld-stage-card-head .lg-stat-label {
+  color: #F1F5F9 !important;
+}
+
+html.dark .ld-stage-card-head .lg-field-hint,
+[data-theme="dark"] .ld-stage-card-head .lg-field-hint {
+  color: #94A3B8 !important;
+}
+
+html.dark .ld-qual-step,
+[data-theme="dark"] .ld-qual-step {
+  background: rgba(15, 23, 42, 0.65) !important;
+  border-color: rgba(16, 185, 129, 0.2) !important;
+}
+
+html.dark .ld-qual-step:hover:not(:disabled),
+[data-theme="dark"] .ld-qual-step:hover:not(:disabled) {
+  background: rgba(16, 185, 129, 0.1) !important;
+  border-color: rgba(16, 185, 129, 0.45) !important;
+}
+
+html.dark .ld-qual-step.is-current,
+[data-theme="dark"] .ld-qual-step.is-current {
+  background: rgba(16, 185, 129, 0.18) !important;
+  border-color: #10B981 !important;
+}
+
+html.dark .ld-qual-step-name,
+html.dark .ld-qual-step-text strong,
+[data-theme="dark"] .ld-qual-step-name,
+[data-theme="dark"] .ld-qual-step-text strong {
+  color: #F1F5F9 !important;
+}
+
+html.dark .ld-qual-step-meta,
+html.dark .ld-qual-step-text span:not(.ld-qual-prob-badge),
+[data-theme="dark"] .ld-qual-step-meta,
+[data-theme="dark"] .ld-qual-step-text span:not(.ld-qual-prob-badge) {
+  color: #94A3B8 !important;
 }
 
 .ld-details-tabs-bar {
