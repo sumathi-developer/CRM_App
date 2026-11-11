@@ -2739,3 +2739,170 @@ html.dark .auth-btn.btn-danger:hover svg,
 [data-theme="dark"] .auth-btn.btn-danger:hover svg {
   color: #FFFFFF !important;
 }
+
+/* ==========================================================================
+   Activity & Calendar Entity Forms Alignment (.ld-form-card)
+   ========================================================================== */
+
+.ld-form-card {
+  padding: 2.25rem 2.5rem !important;
+  background: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2rem !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  margin-bottom: 2rem !important;
+}
+
+.ld-form-section {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1.25rem !important;
+}
+
+.ld-form-section-header {
+  border-bottom: 1px solid rgba(16, 185, 129, 0.18) !important;
+  padding-bottom: 0.85rem !important;
+}
+
+.ld-form-section-title {
+  margin: 0 !important;
+  font-size: 1.15rem !important;
+  font-weight: 700 !important;
+  color: #062E03 !important;
+  letter-spacing: -0.01em !important;
+  line-height: 1.3 !important;
+}
+
+.ld-form-section-sub {
+  margin: 0.35rem 0 0 0 !important;
+  font-size: 0.8125rem !important;
+  color: #64748B !important;
+  line-height: 1.4 !important;
+}
+
+/* Ensure Field labels and hints have crisp layout */
+.ld-form-card .lg-field {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.4rem !important;
+}
+
+.ld-form-card .lg-label {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.25rem !important;
+  font-size: 0.8125rem !important;
+  font-weight: 600 !important;
+  color: #0F172A !important;
+}
+
+.ld-form-card .lg-input,
+.ld-form-card .lg-select {
+  height: 44px !important;
+  padding: 0 0.95rem !important;
+  background-color: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
+  border-radius: 10px !important;
+  color: #0F172A !important;
+  font-size: 0.875rem !important;
+  box-sizing: border-box !important;
+  transition: all 150ms ease !important;
+}
+
+.ld-form-card .lg-select {
+  cursor: pointer !important;
+  appearance: auto !important;
+}
+
+.ld-form-card .lg-input:focus,
+.ld-form-card .lg-select:focus,
+.ld-form-card .lg-textarea:focus {
+  border-color: #10B981 !important;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.18) !important;
+  outline: none !important;
+}
+
+.ld-form-card .lg-textarea {
+  min-height: 100px !important;
+  padding: 0.85rem 1rem !important;
+  background-color: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
+  border-radius: 10px !important;
+  color: #0F172A !important;
+  font-size: 0.875rem !important;
+  font-family: inherit !important;
+  resize: vertical !important;
+  box-sizing: border-box !important;
+  line-height: 1.5 !important;
+}
+
+.ld-form-card .lg-field-hint {
+  font-size: 0.75rem !important;
+  color: #64748B !important;
+  margin-top: 0.25rem !important;
+  line-height: 1.35 !important;
+}
+
+/* Actions Row at bottom of form */
+.ld-form-actions {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 1rem !important;
+  padding-top: 1.5rem !important;
+  border-top: 1px solid rgba(16, 185, 129, 0.15) !important;
+  margin-top: 0.5rem !important;
+}
+
+.ld-form-actions .auth-btn {
+  height: 44px !important;
+  padding: 0 1.5rem !important;
+  border-radius: 10px !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+}
+
+.ld-form-actions .auth-btn.btn-secondary {
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+  background: #FFFFFF !important;
+  color: #475569 !important;
+}
+
+.ld-form-actions .auth-btn.btn-secondary:hover {
+  background: rgba(16, 185, 129, 0.08) !important;
+  border-color: rgba(16, 185, 129, 0.5) !important;
+  color: #062E03 !important;
+}
+
+/* Dark mode overrides for ld-form-card */
+html.dark .ld-form-card,
+[data-theme="dark"] .ld-form-card {
+  background: rgba(15, 23, 42, 0.85) !important;
+  border-color: rgba(16, 185, 129, 0.28) !important;
+}
+
+html.dark .ld-form-section-title,
+[data-theme="dark"] .ld-form-section-title {
+  color: #E2E8F0 !important;
+}
+
+html.dark .ld-form-card .lg-label,
+[data-theme="dark"] .ld-form-card .lg-label {
+  color: #E2E8F0 !important;
+}
+
+html.dark .ld-form-card .lg-input,
+html.dark .ld-form-card .lg-select,
+html.dark .ld-form-card .lg-textarea,
+[data-theme="dark"] .ld-form-card .lg-input,
+[data-theme="dark"] .ld-form-card .lg-select,
+[data-theme="dark"] .ld-form-card .lg-textarea {
+  background-color: rgba(15, 23, 42, 0.6) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: #F8FAFC !important;
+}

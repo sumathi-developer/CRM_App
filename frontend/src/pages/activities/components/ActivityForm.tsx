@@ -149,10 +149,12 @@ export const ActivityForm: React.FC<ActivityFormProps> = ({
   return (
     <form className="lg-card ld-form-card" onSubmit={handleSubmit} noValidate>
       <div className="ld-form-section">
-        <h3 className="ld-form-section-title">Activity Details & Classification</h3>
-        <p className="ld-form-section-sub">
-          Specify the activity type, subject, priority, status, and due/scheduled date.
-        </p>
+        <div className="ld-form-section-header">
+          <h3 className="ld-form-section-title">Activity Details & Classification</h3>
+          <p className="ld-form-section-sub">
+            Specify the activity type, subject, priority, status, and due/scheduled date.
+          </p>
+        </div>
 
         {serverError && <ErrorMessage error={serverError} />}
 
@@ -257,12 +259,14 @@ export const ActivityForm: React.FC<ActivityFormProps> = ({
       </div>
 
       <div className="ld-form-section">
-        <h3 className="ld-form-section-title">Related CRM Records</h3>
-        <p className="ld-form-section-sub">
-          Link this activity to a Lead, Contact, or Deal so it appears on their unified timeline.
-        </p>
+        <div className="ld-form-section-header">
+          <h3 className="ld-form-section-title">Related CRM Records</h3>
+          <p className="ld-form-section-sub">
+            Link this activity to a Lead, Contact, or Deal so it appears on their unified timeline.
+          </p>
+        </div>
 
-        <div className="lg-form-grid">
+        <div className="lg-form-grid-3">
           <Field label="Related Deal" htmlFor="act-form-deal">
             <select
               id="act-form-deal"
@@ -314,7 +318,12 @@ export const ActivityForm: React.FC<ActivityFormProps> = ({
       </div>
 
       <div className="ld-form-section">
-        <h3 className="ld-form-section-title">Description, Agenda & Outcome Notes</h3>
+        <div className="ld-form-section-header">
+          <h3 className="ld-form-section-title">Description, Agenda & Outcome Notes</h3>
+          <p className="ld-form-section-sub">
+            Record meeting agenda, call talking points, action items, or follow-up notes.
+          </p>
+        </div>
         <Field label="Activity Description / Notes" htmlFor="act-form-desc">
           <textarea
             id="act-form-desc"

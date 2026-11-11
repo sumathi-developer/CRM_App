@@ -160,10 +160,12 @@ export const CalendarEventForm: React.FC<CalendarEventFormProps> = ({
   return (
     <form className="lg-card ld-form-card" onSubmit={handleSubmit} noValidate>
       <div className="ld-form-section">
-        <h3 className="ld-form-section-title">Calendar Event Schedule</h3>
-        <p className="ld-form-section-sub">
-          Configure the event type, title, scheduled time window, priority, and reminder alert.
-        </p>
+        <div className="ld-form-section-header">
+          <h3 className="ld-form-section-title">Calendar Event Schedule</h3>
+          <p className="ld-form-section-sub">
+            Configure the event type, title, scheduled time window, priority, and reminder alert.
+          </p>
+        </div>
 
         {serverError && <ErrorMessage error={serverError} />}
 
@@ -308,12 +310,14 @@ export const CalendarEventForm: React.FC<CalendarEventFormProps> = ({
       </div>
 
       <div className="ld-form-section">
-        <h3 className="ld-form-section-title">Related CRM Records</h3>
-        <p className="ld-form-section-sub">
-          Link this calendar event to a Deal, Contact, or Lead.
-        </p>
+        <div className="ld-form-section-header">
+          <h3 className="ld-form-section-title">Related CRM Records</h3>
+          <p className="ld-form-section-sub">
+            Link this calendar event to a Deal, Contact, or Lead.
+          </p>
+        </div>
 
-        <div className="lg-form-grid">
+        <div className="lg-form-grid-3">
           <Field label="Related Deal" htmlFor="cal-form-deal">
             <select
               id="cal-form-deal"
@@ -365,7 +369,12 @@ export const CalendarEventForm: React.FC<CalendarEventFormProps> = ({
       </div>
 
       <div className="ld-form-section">
-        <h3 className="ld-form-section-title">Agenda, Location & Notes</h3>
+        <div className="ld-form-section-header">
+          <h3 className="ld-form-section-title">Agenda, Location & Notes</h3>
+          <p className="ld-form-section-sub">
+            Specify location, meeting link, and agenda description.
+          </p>
+        </div>
         <Field label="Event Description / Meeting Agenda" htmlFor="cal-form-desc">
           <textarea
             id="cal-form-desc"

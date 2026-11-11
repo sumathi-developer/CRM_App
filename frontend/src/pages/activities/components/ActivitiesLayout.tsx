@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { Navbar } from '../../../components/common/Navbar';
 import { ErrorMessage } from '../../../components/auth/ErrorMessage';
 import { SuccessMessage } from '../../../components/auth/SuccessMessage';
-import { ActivityIcon, ArrowLeftIcon } from '../../../components/common/Icons';
+import {
+  ActivityIcon,
+  ArrowLeftIcon,
+  ChevronDownIcon,
+  CheckIcon,
+} from '../../../components/common/Icons';
 import { Badge } from '../../lead-generation/components/Cards';
 import { formatDateTime, humanize } from '../../lead-generation/leadGenConstants';
 import type { ActivityRecord } from '../../../types/activity.types';
@@ -14,20 +19,29 @@ import {
   isActivityOverdue,
 } from '../activityConstants';
 
-interface NavGroup {
+interface NavLinkItem {
+  to: string;
   label: string;
-  links: Array<{ to: string; label: string; end?: boolean }>;
+  end?: boolean;
+}
+
+interface NavGroup {
+  id: string;
+  label: string;
+  links: NavLinkItem[];
 }
 
 const ACTIVITIES_NAV_GROUPS: NavGroup[] = [
   {
-    label: 'Scopes',
+    id: 'scope',
+    label: 'Scope',
     links: [
       { to: '/activities', label: 'All Activities', end: true },
       { to: '/activities/my', label: 'My Activities' },
     ],
   },
   {
+    id: 'types',
     label: 'Activity Types',
     links: [
       { to: '/activities/tasks', label: 'Tasks' },
@@ -38,6 +52,7 @@ const ACTIVITIES_NAV_GROUPS: NavGroup[] = [
     ],
   },
   {
+    id: 'status',
     label: 'Status & Schedule',
     links: [
       { to: '/activities/completed', label: 'Completed' },
@@ -45,6 +60,7 @@ const ACTIVITIES_NAV_GROUPS: NavGroup[] = [
     ],
   },
   {
+    id: 'actions',
     label: 'Actions',
     links: [{ to: '/activities/create', label: 'Create Activity' }],
   },
@@ -82,6 +98,47 @@ export const ActivitiesLayout: React.FC<ActivitiesLayoutProps> = ({
   const [flashDismissed, setFlashDismissed] = useState(false);
   const successMessage = success || (flashDismissed ? null : flash) || null;
 
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const navRef = useRef<HTMLElement>(null);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(event.target as Node)) {
+        setOpenDropdown(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  // Close dropdown on Escape key
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setOpenDropdown(null);
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+  // Close dropdown on route change
+  useEffect(() => {
+    setOpenDropdown(null);
+  }, [location.pathname]);
+
+  const isLinkActive = (to: string, end?: boolean) => {
+    if (end) {
+      return location.pathname === to;
+    }
+    return location.pathname === to || location.pathname.startsWith(`${to}/`);
+  };
+
   const overdue = activeActivity ? isActivityOverdue(activeActivity) : false;
 
   return (
@@ -89,27 +146,63 @@ export const ActivitiesLayout: React.FC<ActivitiesLayoutProps> = ({
       <Navbar />
 
       <main className="app-main-content lg-page ld-page">
-        {/* Top Module Sub-Navigation */}
-        <nav className="lg-subnav ld-subnav" aria-label="Activities module navigation">
-          {ACTIVITIES_NAV_GROUPS.map((group) => (
-            <div key={group.label} className="lg-subnav-group">
-              <span className="lg-subnav-label">{group.label}</span>
-              <div className="lg-subnav-links">
-                {group.links.map((link) => (
-                  <NavLink
-                    key={link.to}
-                    to={link.to}
-                    end={link.end}
-                    className={({ isActive }) =>
-                      `lg-subnav-link ${isActive ? 'is-active' : ''}`
-                    }
-                  >
-                    {link.label}
-                  </NavLink>
-                ))}
+        {/* Top Module Sub-Navigation: Horizontal Dropdown Navigation */}
+        <nav
+          ref={navRef}
+          className="lg-subnav ld-subnav ld-dropdown-nav"
+          aria-label="Activities module navigation"
+        >
+          {ACTIVITIES_NAV_GROUPS.map((group) => {
+            const activeItem = group.links.find((l) => isLinkActive(l.to, l.end));
+            const isGroupActive = Boolean(activeItem);
+            const isOpen = openDropdown === group.id;
+
+            return (
+              <div key={group.id} className="ld-nav-dropdown-wrapper">
+                <button
+                  type="button"
+                  className={`ld-nav-dropdown-trigger ${isGroupActive ? 'is-active' : ''} ${isOpen ? 'is-open' : ''}`}
+                  onClick={() => setOpenDropdown(isOpen ? null : group.id)}
+                  aria-expanded={isOpen}
+                  aria-haspopup="true"
+                >
+                  <span className="ld-nav-dropdown-label">{group.label}</span>
+                  {activeItem && (
+                    <span className="ld-nav-dropdown-active-badge">
+                      {activeItem.label}
+                    </span>
+                  )}
+                  <ChevronDownIcon
+                    size={14}
+                    className={`ld-nav-dropdown-chevron ${isOpen ? 'is-open' : ''}`}
+                  />
+                </button>
+
+                {isOpen && (
+                  <div className="ld-nav-dropdown-menu" role="menu">
+                    {group.links.map((link) => {
+                      const isActive = isLinkActive(link.to, link.end);
+                      return (
+                        <NavLink
+                          key={link.to}
+                          to={link.to}
+                          end={link.end}
+                          className={`ld-nav-dropdown-item ${isActive ? 'is-active' : ''}`}
+                          onClick={() => setOpenDropdown(null)}
+                          role="menuitem"
+                        >
+                          <span className="ld-nav-dropdown-item-label">{link.label}</span>
+                          {isActive && (
+                            <CheckIcon size={14} className="ld-nav-dropdown-check" />
+                          )}
+                        </NavLink>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
-            </div>
-          ))}
+            );
+          })}
         </nav>
 
         {/* Active Activity Context Strip */}

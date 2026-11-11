@@ -199,13 +199,20 @@ export const EditRolePage: React.FC = () => {
         {/* Module Header */}
         <div className="module-header-strip">
           <div className="module-title-area">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <h1 className="module-main-heading">Configure {role.name}</h1>
-              <SystemRoleBadge isSystem={role.isSystem} />
+            <div className="module-title-with-icon">
+              <div className="lg-title-icon" style={{ width: 44, height: 44 }}>
+                <ShieldIcon size={22} />
+              </div>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+                  <h1 className="module-main-heading">Configure {role.name}</h1>
+                  <SystemRoleBadge isSystem={role.isSystem} />
+                </div>
+                <p className="module-sub-heading">
+                  Update role designation and reconfigure the granular permissions granted to this role.
+                </p>
+              </div>
             </div>
-            <p className="module-sub-heading">
-              Update role designation and reconfigure the granular permissions granted to this role.
-            </p>
           </div>
         </div>
 
@@ -244,14 +251,14 @@ export const EditRolePage: React.FC = () => {
                     required
                   />
 
-                  <div className="form-group">
-                    <label htmlFor="edit-role-desc" className="form-label">
+                  <div className="form-field-group">
+                    <label htmlFor="edit-role-desc" className="form-field-label">
                       Description
                     </label>
                     <textarea
                       id="edit-role-desc"
                       className="form-textarea"
-                      rows={2}
+                      rows={3}
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
                     />
@@ -298,12 +305,13 @@ export const EditRolePage: React.FC = () => {
             </div>
 
             {/* Submit Action Buttons */}
-            <div className="form-action-buttons" style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
-              <Link to={`/roles/${id}`} className="auth-btn btn-ghost">
+            <div className="form-action-buttons">
+              <Link to={`/roles/${id}`} className="auth-btn btn-secondary">
                 Cancel
               </Link>
               <PrimaryButton
                 type="submit"
+                fullWidth={false}
                 isLoading={isSaving}
                 loadingText="Saving Changes..."
                 icon={<CheckCircleIcon size={16} />}

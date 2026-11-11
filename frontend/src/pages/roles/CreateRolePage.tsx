@@ -136,10 +136,17 @@ export const CreateRolePage: React.FC = () => {
         {/* Module Header */}
         <div className="module-header-strip">
           <div className="module-title-area">
-            <h1 className="module-main-heading">Create Custom Role</h1>
-            <p className="module-sub-heading">
-              Define a new access role and select granular permissions to authorize CRM operations.
-            </p>
+            <div className="module-title-with-icon">
+              <div className="lg-title-icon" style={{ width: 44, height: 44 }}>
+                <ShieldIcon size={22} />
+              </div>
+              <div>
+                <h1 className="module-main-heading">Create Custom Role</h1>
+                <p className="module-sub-heading">
+                  Define a new access role and select granular permissions to authorize CRM operations.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -179,14 +186,14 @@ export const CreateRolePage: React.FC = () => {
                       helperText="Standard uppercase identifier (auto-formatted on save)."
                     />
 
-                    <div className="form-group">
-                      <label htmlFor="role-description-input" className="form-label">
+                    <div className="form-field-group">
+                      <label htmlFor="role-description-input" className="form-field-label">
                         Description
                       </label>
                       <textarea
                         id="role-description-input"
                         className="form-textarea"
-                        rows={2}
+                        rows={3}
                         placeholder="Describe the operational scope and intended responsibilities for this role..."
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
@@ -234,12 +241,13 @@ export const CreateRolePage: React.FC = () => {
               </div>
 
               {/* Form Action Controls */}
-              <div className="form-action-buttons" style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
-                <Link to="/roles" className="auth-btn btn-ghost">
+              <div className="form-action-buttons">
+                <Link to="/roles" className="auth-btn btn-secondary">
                   Cancel
                 </Link>
                 <PrimaryButton
                   type="submit"
+                  fullWidth={false}
                   isLoading={isSubmitting}
                   loadingText="Creating Role..."
                   icon={<PlusIcon size={16} />}
