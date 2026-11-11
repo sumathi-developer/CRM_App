@@ -12,6 +12,7 @@ import {
   DEFAULT_STARTER_STAGES,
   STAGE_COLOR_PRESETS,
 } from '../pipelineConstants';
+import { StageColorSelector } from './StageColorSelector';
 import { PlusIcon, TrashIcon } from '../../../components/common/Icons';
 
 interface PipelineFormProps {
@@ -241,29 +242,22 @@ export const PipelineForm: React.FC<PipelineFormProps> = ({
                         htmlFor={`draft-stage-color-${idx}`}
                         className="lg-span-2"
                       >
-                        <select
+                        <StageColorSelector
                           id={`draft-stage-color-${idx}`}
-                          className="lg-select"
                           value={stage.color || '#3b82f6'}
-                          onChange={(e) =>
-                            handleUpdateDraftStage(idx, { color: e.target.value })
+                          onChange={(color) =>
+                            handleUpdateDraftStage(idx, { color })
                           }
-                        >
-                          {STAGE_COLOR_PRESETS.map((c) => (
-                            <option key={c.value} value={c.value}>
-                              {c.label}
-                            </option>
-                          ))}
-                        </select>
+                        />
                       </Field>
                     </div>
                   </div>
                 ))}
 
-                <div>
+                <div className="ld-add-stage-btn-wrap">
                   <button
                     type="button"
-                    className="auth-btn btn-secondary"
+                    className="auth-btn btn-secondary ld-add-stage-btn"
                     onClick={handleAddDraftStage}
                   >
                     <PlusIcon size={15} />
@@ -276,12 +270,17 @@ export const PipelineForm: React.FC<PipelineFormProps> = ({
         </>
       )}
 
-      <div className="lg-form-footer">
-        <Link to={cancelPath} className="auth-btn btn-secondary">
+      <div className="lg-form-footer ld-pipeline-form-footer">
+        <Link to={cancelPath} className="auth-btn btn-secondary ld-cancel-btn">
           Cancel
         </Link>
         <div className="ld-submit-btn-wrap">
-          <PrimaryButton type="submit" isLoading={isSubmitting}>
+          <PrimaryButton
+            type="submit"
+            isLoading={isSubmitting}
+            fullWidth={false}
+            className="ld-submit-pipeline-btn"
+          >
             {submitLabel}
           </PrimaryButton>
         </div>

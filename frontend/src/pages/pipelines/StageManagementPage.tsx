@@ -20,6 +20,7 @@ import {
 } from './pipelineConstants';
 import { PipelinesLayout } from './components/PipelinesLayout';
 import { StageProbabilityBadge } from './components/PipelineDealComponents';
+import { StageColorSelector } from './components/StageColorSelector';
 import {
   ArrowLeftIcon,
   AwardIcon,
@@ -500,18 +501,11 @@ export const StageManagementPage: React.FC = () => {
           </Field>
 
           <Field label="Stage Color" htmlFor="stage-modal-color" className="lg-span-2">
-            <select
+            <StageColorSelector
               id="stage-modal-color"
-              className="lg-select"
               value={stageColor}
-              onChange={(e) => setStageColor(e.target.value)}
-            >
-              {STAGE_COLOR_PRESETS.map((c) => (
-                <option key={c.value} value={c.value}>
-                  {c.label}
-                </option>
-              ))}
-            </select>
+              onChange={setStageColor}
+            />
           </Field>
         </div>
       </FormModal>

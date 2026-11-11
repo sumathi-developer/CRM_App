@@ -24,6 +24,8 @@ import {
   RefreshCwIcon,
   CheckCircleIcon,
   XIcon,
+  FilterIcon,
+  ChevronDownIcon,
 } from '../../components/common/Icons';
 
 export const RolesListPage: React.FC = () => {
@@ -223,118 +225,154 @@ export const RolesListPage: React.FC = () => {
         <div className="roles-metrics-strip">
           <div className="kpi-mini-card">
             <div className="kpi-icon-wrap primary">
-              <ShieldIcon size={20} />
+              <ShieldIcon size={18} />
             </div>
             <div className="kpi-details">
               <span className="kpi-value">{totalRoles}</span>
-              <span className="kpi-label">Configured Roles</span>
+              <span className="kpi-label" title="Configured Roles">Configured Roles</span>
             </div>
           </div>
 
           <div className="kpi-mini-card">
             <div className="kpi-icon-wrap warning">
-              <LockIcon size={20} />
+              <LockIcon size={18} />
             </div>
             <div className="kpi-details">
               <span className="kpi-value">{systemRolesCount}</span>
-              <span className="kpi-label">System Protected Roles</span>
+              <span className="kpi-label" title="System Protected Roles">System Roles</span>
             </div>
           </div>
 
           <div className="kpi-mini-card">
             <div className="kpi-icon-wrap success">
-              <CheckCircleIcon size={20} />
+              <CheckCircleIcon size={18} />
             </div>
             <div className="kpi-details">
               <span className="kpi-value">{customRolesCount}</span>
-              <span className="kpi-label">Custom Roles</span>
+              <span className="kpi-label" title="Custom Workspace Roles">Custom Roles</span>
             </div>
           </div>
 
           <div className="kpi-mini-card">
             <div className="kpi-icon-wrap primary">
-              <LockIcon size={20} />
+              <LockIcon size={18} />
             </div>
             <div className="kpi-details">
               <span className="kpi-value">{permissions.length}</span>
-              <span className="kpi-label">System Permissions</span>
+              <span className="kpi-label" title="System Granular Permissions">System Permissions</span>
             </div>
           </div>
 
           <div className="kpi-mini-card">
             <div className="kpi-icon-wrap success">
-              <UsersIcon size={20} />
+              <UsersIcon size={18} />
             </div>
             <div className="kpi-details">
               <span className="kpi-value">{totalUsersAssigned}</span>
-              <span className="kpi-label">Assigned Users</span>
+              <span className="kpi-label" title="Users Assigned to Roles">Assigned Users</span>
             </div>
           </div>
         </div>
 
         {/* Filter Bar */}
-        <div className="users-filter-bar" style={{ marginBottom: '1.5rem' }}>
-          <div className="filter-search-box">
-            <SearchIcon size={16} className="search-box-icon" />
-            <input
-              type="text"
-              id="role-search-input"
-              placeholder="Search roles by title or description..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="search-input-field"
-              aria-label="Search roles"
-            />
-            {search && (
-              <button
-                type="button"
-                className="search-clear-btn"
-                onClick={() => setSearch('')}
-                title="Clear search query"
-              >
-                ×
-              </button>
-            )}
-          </div>
-
-          <div className="filter-controls-group">
-            <div className="filter-select-wrap">
-              <select
-                id="role-type-filter"
-                value={typeFilter}
-                onChange={(e) => setTypeFilter(e.target.value as any)}
-                className="filter-select-field"
-                aria-label="Filter by role type"
-              >
-                <option value="ALL">All Roles ({totalRoles})</option>
-                <option value="SYSTEM">System Roles Only ({systemRolesCount})</option>
-                <option value="CUSTOM">Custom Roles Only ({customRolesCount})</option>
-              </select>
+        <section
+          className="crm-filter-bar lg-card users-filter-bar ld-roles-filter-bar"
+          id="roles-filter-bar"
+          aria-label="Roles search and classification filters"
+          style={{ marginBottom: '1.5rem' }}
+        >
+          <div className="crm-filter-header">
+            <div className="crm-filter-title-group">
+              <div className="crm-filter-icon-badge">
+                <FilterIcon size={15} />
+              </div>
+              <div className="crm-filter-heading">
+                <span>Role Directory &amp; RBAC Filters</span>
+                {(search || typeFilter !== 'ALL') && (
+                  <span className="crm-badge crm-badge-secondary">
+                    <span className="crm-badge-dot" />
+                    Active
+                  </span>
+                )}
+              </div>
             </div>
 
-            {(search || typeFilter !== 'ALL') && (
-              <button
-                type="button"
-                onClick={() => {
-                  setSearch('');
-                  setTypeFilter('ALL');
-                }}
-                className="filter-reset-btn"
-                title="Reset filters"
+            <div className="crm-filter-actions">
+              <span
+                className="crm-badge crm-badge-neutral"
+                style={{ fontSize: '11px', fontWeight: 700, padding: '0.35rem 0.75rem' }}
               >
-                <RefreshCwIcon size={14} />
-                <span>Reset</span>
-              </button>
-            )}
+                {filteredRoles.length} {filteredRoles.length === 1 ? 'role matched' : 'roles matched'}
+              </span>
+
+              {(search || typeFilter !== 'ALL') && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearch('');
+                    setTypeFilter('ALL');
+                  }}
+                  className="auth-btn btn-secondary btn-size-small"
+                  title="Reset all filters"
+                >
+                  <RefreshCwIcon size={13} />
+                  <span>Reset Filters</span>
+                </button>
+              )}
+            </div>
           </div>
 
-          <div className="filter-results-counter">
-            <span className="results-badge">{filteredRoles.length}</span>
-            <span className="results-label">
-              {filteredRoles.length === 1 ? 'role matched' : 'roles matched'}
-            </span>
+          <div className="crm-filter-grid ld-roles-filter-grid">
+            <div className="crm-filter-control ld-roles-search-col">
+              <label className="crm-filter-label" htmlFor="role-search-input">
+                Search Roles
+              </label>
+              <div className="crm-filter-search-wrap">
+                <SearchIcon size={15} className="crm-filter-search-icon" />
+                <input
+                  type="search"
+                  id="role-search-input"
+                  placeholder="Search roles by title, key, or description..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="crm-filter-select crm-filter-search-input"
+                  aria-label="Search roles"
+                />
+                {search && (
+                  <button
+                    type="button"
+                    className="crm-filter-search-clear"
+                    onClick={() => setSearch('')}
+                    title="Clear search query"
+                    aria-label="Clear search query"
+                  >
+                    <XIcon size={13} />
+                  </button>
+                )}
+              </div>
+            </div>
+
+            <div className="crm-filter-control">
+              <label className="crm-filter-label" htmlFor="role-type-filter">
+                Role Classification
+              </label>
+              <div className="crm-filter-select-wrap">
+                <select
+                  id="role-type-filter"
+                  value={typeFilter}
+                  onChange={(e) => setTypeFilter(e.target.value as any)}
+                  className="crm-filter-select"
+                  aria-label="Filter by role type"
+                >
+                  <option value="ALL">All Roles ({totalRoles})</option>
+                  <option value="SYSTEM">System Roles Only ({systemRolesCount})</option>
+                  <option value="CUSTOM">Custom Roles Only ({customRolesCount})</option>
+                </select>
+                <ChevronDownIcon size={14} className="crm-filter-chevron" />
+              </div>
+            </div>
           </div>
-        </div>
+        </section>
 
         {/* Roles Cards Grid */}
         {isLoading ? (
@@ -484,15 +522,27 @@ export const RolesListPage: React.FC = () => {
               </div>
 
               <div className="modal-body" style={{ overflowY: 'auto', maxHeight: '65vh' }}>
-                <div className="filter-search-box" style={{ marginBottom: '1rem' }}>
-                  <SearchIcon size={16} className="search-box-icon" />
+                <div className="crm-filter-search-wrap" style={{ marginBottom: '1.25rem', width: '100%' }}>
+                  <SearchIcon size={15} className="crm-filter-search-icon" />
                   <input
-                    type="text"
+                    type="search"
                     placeholder="Filter catalog by permission, resource, or action..."
                     value={catalogSearch}
                     onChange={(e) => setCatalogSearch(e.target.value)}
-                    className="search-input-field"
+                    className="crm-filter-select crm-filter-search-input"
+                    aria-label="Filter catalog permissions"
                   />
+                  {catalogSearch && (
+                    <button
+                      type="button"
+                      className="crm-filter-search-clear"
+                      onClick={() => setCatalogSearch('')}
+                      title="Clear search query"
+                      aria-label="Clear search query"
+                    >
+                      <XIcon size={13} />
+                    </button>
+                  )}
                 </div>
 
                 <PermissionsMatrix

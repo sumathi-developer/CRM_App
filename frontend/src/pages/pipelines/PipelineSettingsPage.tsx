@@ -180,7 +180,7 @@ export const PipelineSettingsPage: React.FC = () => {
             title="2. Stage Probability & Board Behavior"
             subtitle="Control how stage probabilities, weighted deal forecasts, and drag-and-drop behave."
           >
-            <div className="ld-form-stack">
+            <div className="lg-form-grid ld-settings-toggles-grid">
               <Toggle
                 id="pipe-set-weighted"
                 checked={settings.showWeightedValue}
@@ -226,16 +226,21 @@ export const PipelineSettingsPage: React.FC = () => {
             </div>
           </SectionCard>
 
-          <div className="lg-form-footer">
+          <div className="lg-form-footer ld-pipeline-form-footer">
             <button
               type="button"
-              className="auth-btn btn-secondary"
+              className="auth-btn btn-secondary ld-cancel-btn"
               onClick={handleResetDefaults}
             >
               Reset to Defaults
             </button>
             <div className="ld-submit-btn-wrap">
-              <PrimaryButton type="submit" isLoading={isSaving}>
+              <PrimaryButton
+                type="submit"
+                isLoading={isSaving}
+                fullWidth={false}
+                className="ld-submit-pipeline-btn"
+              >
                 Save Pipeline Settings
               </PrimaryButton>
             </div>
