@@ -4309,14 +4309,22 @@ main.ld-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
 }
 
 /* ---------- 21.5 Standardized Kanban Columns & Deal/Lead Cards ---------- */
-.ld-board-columns {
-  display: grid !important;
-  grid-template-columns: repeat(auto-fit, minmax(285px, 1fr)) !important;
-  gap: 16px !important;
+.ld-board-scroll {
+  width: 100% !important;
   overflow-x: auto !important;
   padding-bottom: 0.75rem !important;
-  align-items: start !important;
+  box-sizing: border-box !important;
+}
+
+.ld-board-columns {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  gap: 16px !important;
+  align-items: stretch !important;
   width: 100% !important;
+  min-width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 .ld-board-column,
@@ -4326,10 +4334,14 @@ main.ld-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
   border-radius: 18px !important;
   display: flex !important;
   flex-direction: column !important;
+  min-width: 295px !important;
+  width: 295px !important;
+  flex: 1 0 295px !important;
   min-height: 480px !important;
-  max-height: 780px !important;
+  max-height: 820px !important;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
   overflow: hidden !important;
+  box-sizing: border-box !important;
 }
 
 .ld-board-col-header {
@@ -4337,54 +4349,92 @@ main.ld-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
   background: #F4FAF6 !important;
   border-bottom: 1px solid rgba(16, 185, 129, 0.16) !important;
   display: flex !important;
+  flex-direction: column !important;
+  gap: 0.65rem !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.ld-board-col-title-row {
+  display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
+  width: 100% !important;
   gap: 0.5rem !important;
 }
 
-.ld-board-col-title-row,
 .ld-board-col-title {
   display: flex !important;
   align-items: center !important;
   gap: 0.5rem !important;
-  color: #000000 !important;
-  font-weight: 800 !important;
-  font-size: 0.88rem !important;
+  min-width: 0 !important;
+  flex: 1 !important;
 }
 
 .ld-board-col-title strong,
 .ld-board-col-title-row strong {
-  color: #000000 !important;
+  color: #1E293B !important;
   font-weight: 800 !important;
+  font-size: 0.88rem !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 
+.ld-board-order-dot {
+  width: 22px !important;
+  height: 22px !important;
+  min-width: 22px !important;
+  border-radius: 50% !important;
+  background: rgba(16, 185, 129, 0.12) !important;
+  color: #047857 !important;
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+}
+
+.ld-board-col-stats-row,
+.ld-board-col-stats {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  gap: 0.5rem !important;
+}
+
+.ld-board-count-pill,
 .ld-board-col-count {
   font-size: 0.75rem !important;
-  font-weight: 800 !important;
-  color: #000000 !important;
+  font-weight: 700 !important;
+  color: #475569 !important;
   padding: 0.15rem 0.55rem !important;
   border-radius: 999px !important;
   background: #EAF4ED !important;
   border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
 }
 
-.ld-board-col-value {
-  font-size: 0.82rem !important;
-  font-weight: 800 !important;
-  color: #000000 !important;
-}
-
-.ld-board-col-stats {
-  font-size: 0.78rem !important;
-  color: #000000 !important;
+.ld-board-val-wrap {
   display: flex !important;
   align-items: center !important;
   gap: 0.35rem !important;
+  white-space: nowrap !important;
 }
 
-.ld-board-col-stats strong {
-  color: #000000 !important;
+.ld-board-val-total {
+  font-size: 0.82rem !important;
   font-weight: 800 !important;
+  color: #0F172A !important;
+}
+
+.ld-board-val-weighted {
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  color: #059669 !important;
 }
 
 .ld-board-col-body {
@@ -4395,6 +4445,40 @@ main.ld-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
   overflow-y: auto !important;
   flex: 1 !important;
   background: #FAFDFB !important;
+}
+
+.ld-board-col-footer {
+  padding: 0.75rem 1rem !important;
+  background: #F4FAF6 !important;
+  border-top: 1px solid rgba(16, 185, 129, 0.16) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.ld-board-col-footer button {
+  width: 100% !important;
+  justify-content: center !important;
+  font-size: 0.8125rem !important;
+  font-weight: 600 !important;
+  color: #059669 !important;
+  padding: 0.45rem 0.75rem !important;
+  border-radius: 8px !important;
+  transition: all 150ms ease !important;
+  background: transparent !important;
+  border: 1px dashed rgba(16, 185, 129, 0.35) !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.4rem !important;
+}
+
+.ld-board-col-footer button:hover {
+  background: #EAF4ED !important;
+  border-color: #10B981 !important;
+  color: #047857 !important;
 }
 
 /* Kanban Cards (Deals, Leads) */
@@ -4439,6 +4523,34 @@ main.ld-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
   font-size: 0.92rem !important;
   font-weight: 800 !important;
   color: #000000 !important;
+}
+
+.ld-card-footer {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 0.5rem !important;
+  width: 100% !important;
+  padding-top: 0.5rem !important;
+  border-top: 1px solid rgba(16, 185, 129, 0.12) !important;
+  box-sizing: border-box !important;
+}
+
+.ld-card-footer .ld-compact-select {
+  flex: 1 !important;
+  min-width: 0 !important;
+  max-width: calc(100% - 95px) !important;
+  font-size: 0.75rem !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  padding: 0 0.5rem !important;
+}
+
+.ld-card-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.25rem !important;
+  flex-shrink: 0 !important;
 }
 
 /* ---------- 21.6 Data Tables & Pagination Across All Modules ---------- */

@@ -79,13 +79,18 @@ export class PipelinesService {
   }
 
   async remove(id: string) {
-    await this.findOne(id);
+    const exists = await this.prisma.pipeline.findUnique({
+      where: { id },
+      select: { id: true },
+    });
+    if (!exists) {
+      throw new NotFoundException(`Pipeline with ID ${id} not found`);
+    }
     await this.prisma.pipeline.delete({ where: { id } });
     return { message: `Pipeline with ID ${id} successfully deleted` };
   }
 
   async getStages(pipelineId: string) {
-    await this.findOne(pipelineId);
     return this.prisma.pipelineStage.findMany({
       where: { pipelineId },
       orderBy: { order: 'asc' },
@@ -94,7 +99,6 @@ export class PipelinesService {
   }
 
   async createStage(pipelineId: string, dto: CreatePipelineStageDto) {
-    await this.findOne(pipelineId);
     return this.prisma.pipelineStage.create({
       data: {
         pipelineId,
@@ -107,9 +111,9 @@ export class PipelinesService {
   }
 
   async updateStage(pipelineId: string, stageId: string, dto: UpdatePipelineStageDto) {
-    await this.findOne(pipelineId);
     const stage = await this.prisma.pipelineStage.findUnique({
       where: { id: stageId },
+      select: { id: true, pipelineId: true },
     });
 
     if (!stage || stage.pipelineId !== pipelineId) {

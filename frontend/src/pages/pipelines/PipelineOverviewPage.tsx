@@ -29,7 +29,6 @@ import { PipelinesLayout } from './components/PipelinesLayout';
 import {
   PipelineSelectorBar,
   QuickDealModal,
-  StageProbabilityBadge,
 } from './components/PipelineDealComponents';
 import {
   PipelineBoardView,
@@ -95,7 +94,6 @@ export const PipelineOverviewPage: React.FC = () => {
 
   const loadPipelineWorkspace = useCallback(
     async (preferredPipelineId?: string) => {
-      setIsLoading(true);
       setError(null);
       try {
         const allPipelines = await pipelineService.getPipelines();
@@ -112,27 +110,25 @@ export const PipelineOverviewPage: React.FC = () => {
         if (!targetId) {
           setActivePipeline(null);
           setDeals([]);
+          setIsLoading(false);
           return;
         }
 
-        const [fullPipeline, dealsRes] = await Promise.all([
-          pipelineService
-            .getPipelineById(targetId)
-            .catch(() => allPipelines.find((p) => p.id === targetId) || null),
-          pipelineService.getDeals({
-            pipelineId: targetId,
-            limit: 100,
-          }),
-        ]);
-
-        setActivePipeline(fullPipeline);
-        if (fullPipeline) {
-          pipelineService.setSavedPipelineId(fullPipeline.id);
+        const found = allPipelines.find((p) => p.id === targetId) || allPipelines[0];
+        if (found) {
+          setActivePipeline(found);
+          pipelineService.setSavedPipelineId(found.id);
+          // Instant display: show pipeline header, stage cards, and funnel immediately!
+          setIsLoading(false);
         }
-        setDeals(dealsRes.data || fullPipeline?.deals || []);
+
+        // Fetch deals concurrently in background
+        pipelineService
+          .getDeals({ pipelineId: targetId, limit: 100 })
+          .then((dealsRes) => setDeals(dealsRes.data || found?.deals || []))
+          .catch(() => setDeals(found?.deals || []));
       } catch (err: any) {
         setError(err?.message || 'Failed to load sales pipeline data.');
-      } finally {
         setIsLoading(false);
       }
     },
@@ -481,37 +477,69 @@ export const PipelineOverviewPage: React.FC = () => {
                   </div>
                 }
               >
-                <div className="ld-items-stack">
+                <div className="ld-stage-breakdown-list" role="table" aria-label="Pipeline stage breakdown">
+                  <div className="ld-stage-breakdown-header" role="row">
+                    <div className="ld-stage-col-stage" role="columnheader">Stage & Deals</div>
+                    <div className="ld-stage-col-prob" role="columnheader">Win Probability</div>
+                    <div className="ld-stage-col-value" role="columnheader">Total Value & Forecast</div>
+                  </div>
+
                   {(activePipeline.stages || []).map((stage) => {
                     const { stageDeals, totalValue, weightedValue } = summarizeStageDeals(
                       stage,
                       filteredDeals,
                     );
+                    const clampedProb = Math.max(0, Math.min(100, Math.round(Number(stage.winProbability || 0))));
+                    const isSelected = stageFilter === stage.id;
+
                     return (
-                      <div key={stage.id} className="ld-subcard">
-                        <div className="ld-subcard-top">
-                          <div className="lg-badge-row">
-                            <span
-                              className="ld-timeline-dot"
-                              style={{ backgroundColor: stage.color || '#3b82f6' }}
-                            />
-                            <strong>
-                              Stage {stage.order}: {stage.name}
-                            </strong>
-                            <Badge tone="slate">
-                              {stageDeals.length} deal{stageDeals.length === 1 ? '' : 's'}
-                            </Badge>
-                          </div>
-                          <div className="lg-badge-row">
-                            <StageProbabilityBadge
-                              probability={stage.winProbability}
-                              showBar={savedSettings.showStageProbabilityBar}
-                              color={stage.color}
-                            />
-                            <strong>{formatCurrency(totalValue)}</strong>
-                            <span className="lg-muted">
-                              (Weighted: {formatCurrency(weightedValue)})
+                      <div
+                        key={stage.id}
+                        role="row"
+                        tabIndex={0}
+                        onClick={() => setStageFilter(isSelected ? '' : stage.id)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            setStageFilter(isSelected ? '' : stage.id);
+                          }
+                        }}
+                        className={`ld-stage-breakdown-row ${isSelected ? 'is-selected' : ''}`}
+                        title={`Click to filter deals by ${stage.name}`}
+                      >
+                        {/* Col 1: Stage Identity & Deal Count */}
+                        <div className="ld-stage-col-stage">
+                          <span className="ld-qual-step-index">{stage.order}</span>
+                          <div className="ld-stage-title-wrap">
+                            <strong className="ld-stage-title-text">{stage.name}</strong>
+                            <span className="ld-stage-deals-pill">
+                              {stageDeals.length} {stageDeals.length === 1 ? 'deal' : 'deals'}
                             </span>
+                          </div>
+                        </div>
+
+                        {/* Col 2: Win Probability & Wide Progress Bar */}
+                        <div className="ld-stage-col-prob">
+                          <div className="ld-stage-prob-meta">
+                            <span className="ld-stage-prob-badge">{clampedProb}% Win Prob</span>
+                          </div>
+                          <div className="ld-stage-prob-track" aria-hidden="true">
+                            <div
+                              className="ld-stage-prob-fill"
+                              style={{
+                                width: `${clampedProb}%`,
+                                backgroundColor: stage.color || undefined,
+                              }}
+                            />
+                          </div>
+                        </div>
+
+                        {/* Col 3: Total & Weighted Value */}
+                        <div className="ld-stage-col-value">
+                          <div className="ld-stage-val-main">{formatCurrency(totalValue)}</div>
+                          <div className="ld-stage-val-sub">
+                            <span className="ld-stage-val-sub-label">Weighted:</span>{' '}
+                            <span className="ld-stage-val-sub-amount">{formatCurrency(weightedValue)}</span>
                           </div>
                         </div>
                       </div>

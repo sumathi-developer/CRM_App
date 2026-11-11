@@ -222,42 +222,35 @@ export const PipelineBoardView: React.FC<SharedPipelineViewProps> = ({
           return (
             <section
               key={stage.id}
-              className={`ld-board-col tone-${tone} ${isDropTarget ? 'is-drop-target' : ''}`}
+              className={`ld-board-col ${isDropTarget ? 'is-drop-target' : ''}`}
               onDragOver={(e) => handleDragOver(e, stage.id)}
               onDragLeave={() => setDragOverStageId(null)}
               onDrop={(e) => handleDrop(e, stage.id)}
               aria-label={`Stage ${stage.order}: ${stage.name}`}
             >
-              <header
-                className="ld-board-col-header"
-                style={{
-                  borderTop: stage.color ? `3px solid ${stage.color}` : undefined,
-                }}
-              >
-                <div className="ld-board-col-title">
-                  <span
-                    className="ld-timeline-dot"
-                    style={{ backgroundColor: stage.color || '#3b82f6' }}
-                  />
-                  <strong>
-                    {stage.order}. {stage.name}
-                  </strong>
+              <header className="ld-board-col-header">
+                {/* Row 1: Stage Title & Win Probability Badge */}
+                <div className="ld-board-col-title-row">
+                  <div className="ld-board-col-title">
+                    <span className="ld-board-order-dot">{stage.order}</span>
+                    <strong title={stage.name}>{stage.name}</strong>
+                  </div>
                   <Badge tone={tone}>{stage.winProbability}%</Badge>
                 </div>
-                <div className="ld-board-col-stats">
-                  <span>
-                    {stageDeals.length} deal{stageDeals.length === 1 ? '' : 's'}
+
+                {/* Row 2: Deals count and Value Summary */}
+                <div className="ld-board-col-stats-row">
+                  <span className="ld-board-count-pill">
+                    {stageDeals.length} {stageDeals.length === 1 ? 'deal' : 'deals'}
                   </span>
-                  <span>·</span>
-                  <strong>{formatCurrency(totalValue)}</strong>
-                  {showWeightedValue && (
-                    <>
-                      <span>·</span>
-                      <span className="lg-muted" title="Weighted stage value">
-                        W: {formatCurrency(weightedValue)}
+                  <div className="ld-board-val-wrap">
+                    <strong className="ld-board-val-total">{formatCurrency(totalValue)}</strong>
+                    {showWeightedValue && (
+                      <span className="ld-board-val-weighted" title="Weighted stage value">
+                        · W: {formatCurrency(weightedValue)}
                       </span>
-                    </>
-                  )}
+                    )}
+                  </div>
                 </div>
               </header>
 
@@ -296,10 +289,9 @@ export const PipelineBoardView: React.FC<SharedPipelineViewProps> = ({
               </div>
 
               {canManageDeals && (
-                <footer className="ld-card-footer">
+                <footer className="ld-board-col-footer">
                   <button
                     type="button"
-                    className="lg-link-btn"
                     onClick={() => onOpenCreateDeal(stage.id)}
                   >
                     <PlusIcon size={13} /> Add Deal to {stage.name}

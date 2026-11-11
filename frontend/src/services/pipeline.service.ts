@@ -62,6 +62,15 @@ function normalizePaginatedDeals(res: any, fallbackLimit = 50): PaginatedDeals {
 }
 
 class PipelineService {
+  private cachedPipelines: Pipeline[] | null = null;
+  private cacheTimestamp = 0;
+  private readonly CACHE_TTL = 30000; // 30 seconds cache for instant page switches
+
+  invalidateCache(): void {
+    this.cachedPipelines = null;
+    this.cacheTimestamp = 0;
+  }
+
   /* ---------------- Active Pipeline Selection Persistence ---------------- */
 
   getSavedPipelineId(): string {
@@ -86,19 +95,34 @@ class PipelineService {
 
   /* ---------------- Core Pipelines CRUD ---------------- */
 
-  async getPipelines(): Promise<Pipeline[]> {
+  async getPipelines(forceRefresh = false): Promise<Pipeline[]> {
+    const now = Date.now();
+    if (!forceRefresh && this.cachedPipelines && now - this.cacheTimestamp < this.CACHE_TTL) {
+      return this.cachedPipelines;
+    }
+
     const res = await api.get<any>('/pipelines');
     const list = Array.isArray(res) ? res : res?.data;
     const pipelines: Pipeline[] = Array.isArray(list) ? list : [];
-    return pipelines.map((p) => ({
+    const processed = pipelines.map((p) => ({
       ...p,
       stages: Array.isArray(p.stages)
         ? [...p.stages].sort((a, b) => a.order - b.order)
         : [],
     }));
+
+    this.cachedPipelines = processed;
+    this.cacheTimestamp = now;
+    return processed;
   }
 
   async getPipelineById(id: string): Promise<Pipeline> {
+    // If we have cached pipelines, find it in cache first
+    const cached = this.cachedPipelines?.find((p) => p.id === id);
+    if (cached && cached.stages && cached.stages.length > 0) {
+      return cached;
+    }
+
     const res = await api.get<any>(`/pipelines/${id}`);
     const p: Pipeline = res?.data || res;
     return {
@@ -110,6 +134,7 @@ class PipelineService {
   }
 
   async createPipeline(payload: CreatePipelinePayload): Promise<Pipeline> {
+    this.invalidateCache();
     const res = await api.post<any>('/pipelines', payload);
     const p: Pipeline = res?.data || res;
     return {
@@ -119,6 +144,7 @@ class PipelineService {
   }
 
   async updatePipeline(id: string, payload: UpdatePipelinePayload): Promise<Pipeline> {
+    this.invalidateCache();
     const res = await api.patch<any>(`/pipelines/${id}`, payload);
     const p: Pipeline = res?.data || res;
     return {
@@ -130,6 +156,7 @@ class PipelineService {
   }
 
   async deletePipeline(id: string): Promise<{ message: string }> {
+    this.invalidateCache();
     const res = await api.delete<any>(`/pipelines/${id}`);
     return res?.data || res;
   }
@@ -137,6 +164,12 @@ class PipelineService {
   /* ---------------- Pipeline Stages Management ---------------- */
 
   async getStages(pipelineId: string): Promise<PipelineStage[]> {
+    // If cached, return sorted stages directly
+    const cached = this.cachedPipelines?.find((p) => p.id === pipelineId);
+    if (cached?.stages && cached.stages.length > 0) {
+      return cached.stages;
+    }
+
     const res = await api.get<any>(`/pipelines/${pipelineId}/stages`);
     const list = Array.isArray(res) ? res : res?.data;
     return Array.isArray(list) ? [...list].sort((a, b) => a.order - b.order) : [];
@@ -146,6 +179,7 @@ class PipelineService {
     pipelineId: string,
     payload: CreatePipelineStagePayload,
   ): Promise<PipelineStage> {
+    this.invalidateCache();
     const res = await api.post<any>(`/pipelines/${pipelineId}/stages`, payload);
     return res?.data || res;
   }
@@ -155,6 +189,7 @@ class PipelineService {
     stageId: string,
     payload: UpdatePipelineStagePayload,
   ): Promise<PipelineStage> {
+    this.invalidateCache();
     const res = await api.patch<any>(`/pipelines/${pipelineId}/stages/${stageId}`, payload);
     return res?.data || res;
   }

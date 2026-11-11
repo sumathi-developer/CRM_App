@@ -1093,6 +1093,272 @@ html.dark .ld-drawer-kv,
   color: #047857 !important;
 }
 
+/* ============================================================================
+   STAGE BREAKDOWN & WIN PROBABILITY FULL-WIDTH ALIGNED TABLE/CARD LIST
+   ============================================================================ */
+.ld-stage-breakdown-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.ld-stage-breakdown-header {
+  display: grid;
+  grid-template-columns: minmax(240px, 1.2fr) minmax(260px, 1.8fr) minmax(200px, 1fr);
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.35rem 1.25rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748B;
+  box-sizing: border-box;
+}
+
+.ld-stage-breakdown-row {
+  display: grid;
+  grid-template-columns: minmax(240px, 1.2fr) minmax(260px, 1.8fr) minmax(200px, 1fr);
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.95rem 1.35rem;
+  background: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: all 150ms ease;
+  width: 100%;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.ld-stage-breakdown-row:hover {
+  background: #F8FCF9 !important;
+  border-color: rgba(16, 185, 129, 0.45) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
+}
+
+.ld-stage-breakdown-row.is-selected {
+  background: #EAF4ED !important;
+  border-color: #10B981 !important;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25) !important;
+}
+
+/* Col 1: Stage Identity */
+.ld-stage-col-stage {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.ld-stage-col-stage .ld-qual-step-index {
+  width: 26px;
+  height: 26px;
+  min-width: 26px;
+  border-radius: 50%;
+  background: rgba(16, 185, 129, 0.12) !important;
+  color: #047857 !important;
+  font-size: 0.78rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ld-stage-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+.ld-stage-title-text {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #1E293B;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ld-stage-deals-pill {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #475569;
+  background: #F1F5F9;
+  border: 1px solid #E2E8F0;
+  padding: 0.12rem 0.55rem;
+  border-radius: 9999px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.ld-stage-breakdown-row.is-selected .ld-stage-deals-pill {
+  background: #D1FAE5;
+  color: #065F46;
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+/* Col 2: Probability & Visual Progress Bar */
+.ld-stage-col-prob {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-width: 0;
+  width: 100%;
+}
+
+.ld-stage-prob-meta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+}
+
+.ld-stage-prob-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #059669;
+  background: rgba(16, 185, 129, 0.1);
+  padding: 0.15rem 0.55rem;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+}
+
+.ld-stage-prob-track {
+  width: 100%;
+  height: 8px;
+  border-radius: 9999px;
+  background: #E2E8F0;
+  overflow: hidden;
+  position: relative;
+}
+
+.ld-stage-prob-fill {
+  height: 100%;
+  border-radius: 9999px;
+  background: #10B981;
+  transition: width 300ms ease;
+}
+
+/* Col 3: Values */
+.ld-stage-col-value {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.ld-stage-breakdown-header .ld-stage-col-value {
+  text-align: right;
+}
+
+.ld-stage-val-main {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0F172A;
+  white-space: nowrap;
+}
+
+.ld-stage-val-sub {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #64748B;
+  white-space: nowrap;
+}
+
+.ld-stage-val-sub-label {
+  color: #94A3B8;
+  margin-right: 0.2rem;
+}
+
+.ld-stage-val-sub-amount {
+  color: #059669;
+  font-weight: 600;
+}
+
+/* Responsive adjustments */
+@media (max-width: 860px) {
+  .ld-stage-breakdown-header {
+    display: none;
+  }
+  .ld-stage-breakdown-row {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+  .ld-stage-col-value {
+    align-items: flex-start;
+    text-align: left;
+    flex-direction: row;
+    gap: 0.75rem;
+  }
+}
+
+/* Subcard fallback for other pages */
+.ld-subcard {
+  padding: 0.9rem 1.25rem;
+  background: #FFFFFF !important;
+  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  box-sizing: border-box;
+  transition: all 150ms ease;
+}
+
+.ld-subcard-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+/* Dark mode */
+html.dark .ld-stage-breakdown-row,
+[data-theme="dark"] .ld-stage-breakdown-row,
+html.dark .ld-subcard,
+[data-theme="dark"] .ld-subcard {
+  background: rgba(15, 23, 42, 0.65) !important;
+  border-color: rgba(16, 185, 129, 0.2) !important;
+}
+
+html.dark .ld-stage-title-text,
+[data-theme="dark"] .ld-stage-title-text {
+  color: #F1F5F9 !important;
+}
+
+html.dark .ld-stage-val-main,
+[data-theme="dark"] .ld-stage-val-main {
+  color: #F8FAFC !important;
+}
+
+html.dark .ld-stage-deals-pill,
+[data-theme="dark"] .ld-stage-deals-pill {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #94A3B8;
+}
+
+html.dark .ld-stage-prob-track,
+[data-theme="dark"] .ld-stage-prob-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
 /* Dark mode support */
 html.dark .ld-details-stage-card,
 [data-theme="dark"] .ld-details-stage-card {

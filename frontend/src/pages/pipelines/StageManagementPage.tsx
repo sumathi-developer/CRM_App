@@ -55,7 +55,6 @@ export const StageManagementPage: React.FC = () => {
 
   const loadData = useCallback(
     async (preferredId?: string) => {
-      setIsLoading(true);
       setError(null);
       try {
         const allPipelines = await pipelineService.getPipelines();
@@ -73,22 +72,24 @@ export const StageManagementPage: React.FC = () => {
           setActivePipeline(null);
           setStages([]);
           setDeals([]);
+          setIsLoading(false);
           return;
         }
 
-        const [pipelineData, stagesData, dealsRes] = await Promise.all([
-          pipelineService.getPipelineById(targetId),
-          pipelineService.getStages(targetId),
-          pipelineService.getDeals({ pipelineId: targetId, limit: 100 }),
-        ]);
+        const found = allPipelines.find((p) => p.id === targetId) || allPipelines[0];
+        if (found) {
+          setActivePipeline(found);
+          setStages(found.stages || []);
+          pipelineService.setSavedPipelineId(targetId);
+          setIsLoading(false);
+        }
 
-        setActivePipeline(pipelineData);
-        setStages(stagesData);
-        setDeals(dealsRes.data || []);
-        pipelineService.setSavedPipelineId(targetId);
+        pipelineService
+          .getDeals({ pipelineId: targetId, limit: 100 })
+          .then((dealsRes) => setDeals(dealsRes.data || []))
+          .catch(() => setDeals([]));
       } catch (err: any) {
         setError(err?.message || 'Failed to load pipeline stages.');
-      } finally {
         setIsLoading(false);
       }
     },

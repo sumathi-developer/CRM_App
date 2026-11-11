@@ -283,7 +283,7 @@ export const PipelineDealCard: React.FC<PipelineDealCardProps> = ({
           >
             {stages.map((st) => (
               <option key={st.id} value={st.id}>
-                Stage {st.order}: {st.name} ({st.winProbability}%)
+                {st.name} ({st.winProbability}%)
               </option>
             ))}
           </select>

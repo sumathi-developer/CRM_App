@@ -44,7 +44,6 @@ export const StageProbabilityPage: React.FC = () => {
 
   const loadData = useCallback(
     async (preferredId?: string) => {
-      setIsLoading(true);
       setError(null);
       try {
         const allPipelines = await pipelineService.getPipelines();
@@ -62,27 +61,32 @@ export const StageProbabilityPage: React.FC = () => {
           setActivePipeline(null);
           setStages([]);
           setDeals([]);
+          setIsLoading(false);
           return;
         }
 
-        const [pipelineData, stagesData, dealsRes] = await Promise.all([
-          pipelineService.getPipelineById(targetId),
-          pipelineService.getStages(targetId),
-          pipelineService.getDeals({ pipelineId: targetId, limit: 100 }),
-        ]);
+        const found = allPipelines.find((p) => p.id === targetId) || allPipelines[0];
+        if (found) {
+          setActivePipeline(found);
+          const stList = found.stages || [];
+          setStages(stList);
+          const map: Record<string, number> = {};
+          stList.forEach((st) => {
+            map[st.id] = st.winProbability ?? 10;
+          });
+          setDraftProbabilities(map);
+          pipelineService.setSavedPipelineId(targetId);
+          // Instant display: UI renders immediately from pipeline stages!
+          setIsLoading(false);
+        }
 
-        setActivePipeline(pipelineData);
-        setStages(stagesData);
-        setDeals(dealsRes.data || []);
-        const map: Record<string, number> = {};
-        stagesData.forEach((st) => {
-          map[st.id] = st.winProbability ?? 10;
-        });
-        setDraftProbabilities(map);
-        pipelineService.setSavedPipelineId(targetId);
+        // Fetch deals asynchronously in the background without blocking the UI
+        pipelineService
+          .getDeals({ pipelineId: targetId, limit: 100 })
+          .then((dealsRes) => setDeals(dealsRes.data || []))
+          .catch(() => setDeals([]));
       } catch (err: any) {
         setError(err?.message || 'Failed to load stage probabilities.');
-      } finally {
         setIsLoading(false);
       }
     },
@@ -127,10 +131,14 @@ export const StageProbabilityPage: React.FC = () => {
       const changedStages = stages.filter(
         (st) => (draftProbabilities[st.id] ?? st.winProbability) !== st.winProbability,
       );
-      for (const st of changedStages) {
-        await pipelineService.updateStage(activePipeline.id, st.id, {
-          winProbability: draftProbabilities[st.id],
-        });
+      if (changedStages.length > 0) {
+        await Promise.all(
+          changedStages.map((st) =>
+            pipelineService.updateStage(activePipeline.id, st.id, {
+              winProbability: draftProbabilities[st.id],
+            }),
+          ),
+        );
       }
       setSuccess(
         changedStages.length > 0
