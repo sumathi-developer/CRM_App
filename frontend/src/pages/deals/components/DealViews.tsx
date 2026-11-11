@@ -71,12 +71,9 @@ export const DealStageStepper: React.FC<DealStageStepperProps> = ({
             type="button"
             disabled={disabled || !onSelectStage}
             onClick={() => onSelectStage?.(stage.id)}
-            className={`ld-qual-step tone-${tone} ${isCurrent ? 'is-current' : ''} ${
+            className={`ld-qual-step ${isCurrent ? 'is-current' : ''} ${
               isPassed ? 'is-passed' : ''
             }`}
-            style={{
-              borderLeft: stage.color ? `4px solid ${stage.color}` : undefined,
-            }}
           >
             <span className="ld-qual-step-index">{stage.order}</span>
             <div className="ld-qual-step-text">

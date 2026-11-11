@@ -84,11 +84,19 @@ export const PipelineStageFunnelStrip: React.FC<{
         </div>
       </div>
 
-      <div className="ld-qual-pipeline" role="group" aria-label="Pipeline stages">
+      <div
+        className="ld-qual-pipeline"
+        role="group"
+        aria-label="Pipeline stages"
+        style={
+          stages.length > 0 && stages.length <= 7
+            ? { gridTemplateColumns: `repeat(${stages.length}, minmax(130px, 1fr))` }
+            : undefined
+        }
+      >
         {stages.map((stage) => {
           const { stageDeals, totalValue, weightedValue } = summarizeStageDeals(stage, deals);
           const isSelected = selectedStageId === stage.id;
-          const tone = probabilityTone(stage.winProbability);
 
           return (
             <button
@@ -97,20 +105,22 @@ export const PipelineStageFunnelStrip: React.FC<{
               onClick={() =>
                 onSelectStageFilter?.(isSelected ? '' : stage.id)
               }
-              className={`ld-qual-step tone-${tone} ${isSelected ? 'is-current' : ''}`}
-              style={{
-                borderLeft: stage.color ? `4px solid ${stage.color}` : undefined,
-              }}
+              className={`ld-qual-step ${isSelected ? 'is-current' : ''}`}
             >
               <span className="ld-qual-step-index">{stage.order}</span>
               <div className="ld-qual-step-text">
-                <strong>
-                  {stage.name} ({stage.winProbability}%)
-                </strong>
-                <span>
-                  {stageDeals.length} deal{stageDeals.length === 1 ? '' : 's'} ·{' '}
-                  {formatCurrency(totalValue)} (W: {formatCurrency(weightedValue)})
-                </span>
+                <div className="ld-qual-step-name">
+                  <strong>{stage.name}</strong>
+                  <span className="ld-qual-prob-badge">({stage.winProbability}%)</span>
+                </div>
+                <div className="ld-qual-step-meta">
+                  <span className="ld-qual-deals-count">
+                    {stageDeals.length} {stageDeals.length === 1 ? 'deal' : 'deals'}
+                  </span>
+                  <span className="ld-qual-sep">·</span>
+                  <span className="ld-qual-val">{formatCurrency(totalValue)}</span>
+                  <span className="ld-qual-wval">(W: {formatCurrency(weightedValue)})</span>
+                </div>
               </div>
             </button>
           );
