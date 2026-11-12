@@ -269,16 +269,60 @@ export const EmailsExplorerPage: React.FC<EmailsExplorerPageProps> = ({
       onDismissError={() => setError(null)}
       onDismissSuccess={() => setBannerMessage(null)}
       actions={
-        <div className="lg-badge-row">
+        <div className="lg-badge-row" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <Link
             to="/communications/templates"
             className="auth-btn btn-secondary btn-size-small"
+            style={{
+              backgroundColor: '#FFFFFF',
+              color: '#062E03',
+              border: '1px solid rgba(16, 185, 129, 0.35)',
+              borderRadius: '8px',
+              padding: '6px 14px',
+              fontWeight: 600,
+              fontSize: '13px',
+              textDecoration: 'none',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              transition: 'all 0.15s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = '#EAF4ED';
+              e.currentTarget.style.borderColor = '#10B981';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = '#FFFFFF';
+              e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.35)';
+            }}
           >
             Templates
           </Link>
           <Link
             to="/communications/compose"
             className="auth-btn btn-primary btn-size-small"
+            style={{
+              backgroundColor: '#10B981',
+              color: '#FFFFFF',
+              border: '1px solid #10B981',
+              borderRadius: '8px',
+              padding: '6px 14px',
+              fontWeight: 600,
+              fontSize: '13px',
+              textDecoration: 'none',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              transition: 'all 0.15s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = '#059669';
+              e.currentTarget.style.borderColor = '#059669';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = '#10B981';
+              e.currentTarget.style.borderColor = '#10B981';
+            }}
           >
             <PlusIcon size={15} /> Compose Email
           </Link>
@@ -365,7 +409,21 @@ export const EmailsExplorerPage: React.FC<EmailsExplorerPageProps> = ({
 
       {/* Batch Action Bar */}
       {selectedIds.length > 0 && (
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-blue-200 bg-blue-50/80 px-4 py-2.5 text-xs text-blue-900">
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '12px',
+            borderRadius: '12px',
+            border: '1px solid rgba(16, 185, 129, 0.3)',
+            backgroundColor: '#F8FCF9',
+            padding: '10px 16px',
+            fontSize: '12px',
+            color: '#062E03',
+          }}
+        >
           <span className="font-semibold">
             {selectedIds.length} email(s) selected
           </span>
@@ -373,35 +431,95 @@ export const EmailsExplorerPage: React.FC<EmailsExplorerPageProps> = ({
             <button
               type="button"
               onClick={() => handleBatchAction('MARK_READ')}
-              className="rounded-lg border border-blue-300 bg-white px-2.5 py-1 font-medium text-gray-800 hover:bg-gray-50"
+              style={{
+                backgroundColor: '#FFFFFF',
+                color: '#062E03',
+                border: '1px solid rgba(16, 185, 129, 0.35)',
+                borderRadius: '8px',
+                padding: '5px 12px',
+                fontSize: '12px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'all 0.15s ease',
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#EAF4ED')}
+              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#FFFFFF')}
             >
               Mark Read
             </button>
             <button
               type="button"
               onClick={() => handleBatchAction('MARK_UNREAD')}
-              className="rounded-lg border border-blue-300 bg-white px-2.5 py-1 font-medium text-gray-800 hover:bg-gray-50"
+              style={{
+                backgroundColor: '#FFFFFF',
+                color: '#062E03',
+                border: '1px solid rgba(16, 185, 129, 0.35)',
+                borderRadius: '8px',
+                padding: '5px 12px',
+                fontSize: '12px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'all 0.15s ease',
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#EAF4ED')}
+              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#FFFFFF')}
             >
               Mark Unread
             </button>
             <button
               type="button"
               onClick={() => handleBatchAction('STAR')}
-              className="rounded-lg border border-blue-300 bg-white px-2.5 py-1 font-medium text-gray-800 hover:bg-gray-50"
+              style={{
+                backgroundColor: '#FFFFFF',
+                color: '#062E03',
+                border: '1px solid rgba(16, 185, 129, 0.35)',
+                borderRadius: '8px',
+                padding: '5px 12px',
+                fontSize: '12px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'all 0.15s ease',
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#EAF4ED')}
+              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#FFFFFF')}
             >
               Star
             </button>
             <button
               type="button"
               onClick={() => handleBatchAction('ARCHIVE')}
-              className="rounded-lg border border-blue-300 bg-white px-2.5 py-1 font-medium text-gray-800 hover:bg-gray-50"
+              style={{
+                backgroundColor: '#FFFFFF',
+                color: '#062E03',
+                border: '1px solid rgba(16, 185, 129, 0.35)',
+                borderRadius: '8px',
+                padding: '5px 12px',
+                fontSize: '12px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'all 0.15s ease',
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#EAF4ED')}
+              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#FFFFFF')}
             >
               Archive
             </button>
             <button
               type="button"
               onClick={() => handleBatchAction('DELETE')}
-              className="rounded-lg border border-red-200 bg-red-50 px-2.5 py-1 font-medium text-red-700 hover:bg-red-100"
+              style={{
+                backgroundColor: '#FFFFFF',
+                color: '#EF4444',
+                border: '1px solid rgba(239, 68, 68, 0.3)',
+                borderRadius: '8px',
+                padding: '5px 12px',
+                fontSize: '12px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'all 0.15s ease',
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#FEF2F2')}
+              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#FFFFFF')}
             >
               Move to Trash
             </button>
@@ -426,17 +544,30 @@ export const EmailsExplorerPage: React.FC<EmailsExplorerPageProps> = ({
               <Link
                 to="/communications/compose"
                 className="auth-btn btn-primary btn-size-small"
+                style={{
+                  backgroundColor: '#10B981',
+                  color: '#FFFFFF',
+                  border: '1px solid #10B981',
+                  borderRadius: '8px',
+                  padding: '6px 14px',
+                  fontWeight: 600,
+                  fontSize: '13px',
+                  textDecoration: 'none',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                }}
               >
                 <PlusIcon size={14} /> Compose Email
               </Link>
             }
           />
         ) : (
-          <div className="lg-table-wrap">
-            <table className="lg-table">
+          <div className="lg-table-wrap" style={{ overflowX: 'auto', width: '100%' }}>
+            <table className="lg-table" style={{ width: '100%', minWidth: '980px', borderCollapse: 'collapse' }}>
               <thead>
                 <tr>
-                  <th style={{ width: '36px' }}>
+                  <th style={{ width: '38px', textAlign: 'center', verticalAlign: 'middle' }}>
                     <input
                       type="checkbox"
                       checked={
@@ -446,13 +577,13 @@ export const EmailsExplorerPage: React.FC<EmailsExplorerPageProps> = ({
                       aria-label="Select all emails"
                     />
                   </th>
-                  <th style={{ width: '40px' }}>★</th>
-                  <th>From / Recipients</th>
-                  <th>Subject & Snippet</th>
-                  <th>Related Record</th>
-                  <th>Status</th>
-                  <th>Date</th>
-                  <th style={{ textAlign: 'right' }}>Actions</th>
+                  <th style={{ width: '38px', textAlign: 'center', verticalAlign: 'middle' }}>★</th>
+                  <th style={{ width: '190px', minWidth: '170px', verticalAlign: 'middle' }}>From / Recipients</th>
+                  <th style={{ minWidth: '220px', verticalAlign: 'middle' }}>Subject & Snippet</th>
+                  <th style={{ width: '120px', minWidth: '100px', verticalAlign: 'middle' }}>Related Record</th>
+                  <th style={{ width: '100px', minWidth: '90px', verticalAlign: 'middle' }}>Status</th>
+                  <th style={{ width: '150px', minWidth: '140px', whiteSpace: 'nowrap', verticalAlign: 'middle' }}>Date</th>
+                  <th style={{ width: '180px', minWidth: '180px', textAlign: 'right', whiteSpace: 'nowrap', verticalAlign: 'middle' }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -469,7 +600,7 @@ export const EmailsExplorerPage: React.FC<EmailsExplorerPageProps> = ({
                         background: !email.isRead ? '#f8fafc' : undefined,
                       }}
                     >
-                      <td>
+                      <td style={{ width: '38px', textAlign: 'center', verticalAlign: 'middle' }}>
                         <input
                           type="checkbox"
                           checked={isSelected}
@@ -477,7 +608,7 @@ export const EmailsExplorerPage: React.FC<EmailsExplorerPageProps> = ({
                           aria-label={`Select ${email.subject}`}
                         />
                       </td>
-                      <td>
+                      <td style={{ width: '38px', textAlign: 'center', verticalAlign: 'middle' }}>
                         <button
                           type="button"
                           onClick={() => handleToggleStar(email)}
@@ -488,12 +619,17 @@ export const EmailsExplorerPage: React.FC<EmailsExplorerPageProps> = ({
                             background: 'none',
                             border: 'none',
                             cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            width: '24px',
+                            height: '24px',
                           }}
                         >
                           ★
                         </button>
                       </td>
-                      <td>
+                      <td style={{ verticalAlign: 'middle' }}>
                         <div className="flex flex-col">
                           <span
                             className={`text-xs ${
@@ -518,7 +654,7 @@ export const EmailsExplorerPage: React.FC<EmailsExplorerPageProps> = ({
                           </span>
                         </div>
                       </td>
-                      <td>
+                      <td style={{ verticalAlign: 'middle' }}>
                         <div className="max-w-md">
                           <Link
                             to={
@@ -526,11 +662,12 @@ export const EmailsExplorerPage: React.FC<EmailsExplorerPageProps> = ({
                                 ? `/communications/compose?draftId=${email.id}`
                                 : `/communications/emails/${email.id}`
                             }
-                            className={`block truncate text-sm hover:text-blue-600 ${
+                            className={`block truncate text-sm hover:text-emerald-600 ${
                               !email.isRead
                                 ? 'font-bold text-gray-950'
                                 : 'font-medium text-gray-800'
                             }`}
+                            style={{ transition: 'color 0.15s ease' }}
                           >
                             {email.subject}
                           </Link>
@@ -553,7 +690,7 @@ export const EmailsExplorerPage: React.FC<EmailsExplorerPageProps> = ({
                           </div>
                         </div>
                       </td>
-                      <td>
+                      <td style={{ verticalAlign: 'middle' }}>
                         {related.length === 0 ? (
                           <span className="text-xs text-gray-400">—</span>
                         ) : (
@@ -562,7 +699,13 @@ export const EmailsExplorerPage: React.FC<EmailsExplorerPageProps> = ({
                               <Link
                                 key={`${rel.entityType}-${rel.id}`}
                                 to={rel.path}
-                                className="inline-flex items-center rounded-md bg-blue-50 px-2 py-0.5 text-[11px] font-medium text-blue-700 hover:bg-blue-100"
+                                className="inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-medium"
+                                style={{
+                                  backgroundColor: '#EAF4ED',
+                                  color: '#062E03',
+                                  border: '1px solid rgba(16, 185, 129, 0.25)',
+                                  textDecoration: 'none',
+                                }}
                               >
                                 {rel.entityType}: {rel.label}
                               </Link>
@@ -570,7 +713,7 @@ export const EmailsExplorerPage: React.FC<EmailsExplorerPageProps> = ({
                           </div>
                         )}
                       </td>
-                      <td>
+                      <td style={{ verticalAlign: 'middle' }}>
                         <div className="flex flex-col gap-1">
                           <Badge tone={emailStatusTone(email.status)}>
                             {email.status}
@@ -582,58 +725,157 @@ export const EmailsExplorerPage: React.FC<EmailsExplorerPageProps> = ({
                           )}
                         </div>
                       </td>
-                      <td>
-                        <span className="text-xs text-gray-600">
+                      <td style={{ whiteSpace: 'nowrap', verticalAlign: 'middle' }}>
+                        <span style={{ fontSize: '12px', color: '#64748B', whiteSpace: 'nowrap' }}>
                           {formatDateTime(email.sentAt || email.createdAt)}
                         </span>
                       </td>
-                      <td style={{ textAlign: 'right' }}>
+                      <td style={{ width: '180px', minWidth: '180px', textAlign: 'right', whiteSpace: 'nowrap', verticalAlign: 'middle' }}>
                         <div
-                          className="lg-badge-row"
-                          style={{ justifyContent: 'flex-end' }}
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'flex-end',
+                            gap: '6px',
+                            flexWrap: 'nowrap',
+                            whiteSpace: 'nowrap',
+                          }}
                         >
                           {email.isDraft ? (
                             <button
                               type="button"
-                              className="auth-btn btn-secondary btn-size-small"
                               onClick={() =>
                                 navigate(
                                   `/communications/compose?draftId=${email.id}`,
                                 )
                               }
+                              style={{
+                                backgroundColor: '#FFFFFF',
+                                color: '#062E03',
+                                border: '1px solid rgba(16, 185, 129, 0.35)',
+                                borderRadius: '8px',
+                                padding: '4px 10px',
+                                fontSize: '12px',
+                                fontWeight: 600,
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '5px',
+                                cursor: 'pointer',
+                                whiteSpace: 'nowrap',
+                                transition: 'all 0.15s ease',
+                                height: '30px',
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.backgroundColor = '#EAF4ED';
+                                e.currentTarget.style.borderColor = '#10B981';
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.backgroundColor = '#FFFFFF';
+                                e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.35)';
+                              }}
+                              title="Edit Draft"
                             >
-                              <SendIcon size={13} /> Edit Draft
+                              <SendIcon size={12} />
+                              <span>Edit Draft</span>
                             </button>
                           ) : (
                             <Link
                               to={`/communications/emails/${email.id}`}
-                              className="auth-btn btn-secondary btn-size-small"
+                              style={{
+                                backgroundColor: '#FFFFFF',
+                                color: '#062E03',
+                                border: '1px solid rgba(16, 185, 129, 0.35)',
+                                borderRadius: '8px',
+                                padding: '4px 12px',
+                                fontSize: '12px',
+                                fontWeight: 600,
+                                textDecoration: 'none',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '5px',
+                                whiteSpace: 'nowrap',
+                                transition: 'all 0.15s ease',
+                                height: '30px',
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.backgroundColor = '#EAF4ED';
+                                e.currentTarget.style.borderColor = '#10B981';
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.backgroundColor = '#FFFFFF';
+                                e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.35)';
+                              }}
                               title="View Email Details"
                             >
-                              <EyeIcon size={14} /> View
+                              <EyeIcon size={13} />
+                              <span>View</span>
                             </Link>
                           )}
                           <button
                             type="button"
-                            className="auth-btn btn-secondary btn-size-small"
                             onClick={() => handleToggleRead(email)}
                             title={
                               email.isRead ? 'Mark as Unread' : 'Mark as Read'
                             }
+                            style={{
+                              backgroundColor: '#FFFFFF',
+                              color: '#062E03',
+                              border: '1px solid rgba(16, 185, 129, 0.35)',
+                              borderRadius: '8px',
+                              width: '30px',
+                              height: '30px',
+                              padding: 0,
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              cursor: 'pointer',
+                              flexShrink: 0,
+                              transition: 'all 0.15s ease',
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.backgroundColor = '#EAF4ED';
+                              e.currentTarget.style.borderColor = '#10B981';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.backgroundColor = '#FFFFFF';
+                              e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.35)';
+                            }}
                           >
                             {email.isRead ? (
-                              <MailIcon size={14} />
+                              <MailIcon size={13} />
                             ) : (
-                              <CheckCircleIcon size={14} />
+                              <CheckCircleIcon size={13} />
                             )}
                           </button>
                           <button
                             type="button"
-                            className="auth-btn btn-secondary btn-size-small"
                             onClick={() => setDeletingEmail(email)}
                             title="Delete Email"
+                            style={{
+                              backgroundColor: '#FFFFFF',
+                              color: '#EF4444',
+                              border: '1px solid rgba(239, 68, 68, 0.3)',
+                              borderRadius: '8px',
+                              width: '30px',
+                              height: '30px',
+                              padding: 0,
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              cursor: 'pointer',
+                              flexShrink: 0,
+                              transition: 'all 0.15s ease',
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.backgroundColor = '#FEF2F2';
+                              e.currentTarget.style.borderColor = '#EF4444';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.backgroundColor = '#FFFFFF';
+                              e.currentTarget.style.borderColor = 'rgba(239, 68, 68, 0.3)';
+                            }}
                           >
-                            <TrashIcon size={14} />
+                            <TrashIcon size={13} />
                           </button>
                         </div>
                       </td>
@@ -657,7 +899,17 @@ export const EmailsExplorerPage: React.FC<EmailsExplorerPageProps> = ({
                 type="button"
                 disabled={page <= 1}
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
-                className="rounded-lg border border-gray-300 bg-white px-3 py-1.5 font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+                style={{
+                  backgroundColor: '#FFFFFF',
+                  color: page <= 1 ? '#94A3B8' : '#062E03',
+                  border: '1px solid rgba(16, 185, 129, 0.3)',
+                  borderRadius: '8px',
+                  padding: '6px 14px',
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  cursor: page <= 1 ? 'not-allowed' : 'pointer',
+                  transition: 'all 0.15s ease',
+                }}
               >
                 Previous
               </button>
@@ -665,7 +917,17 @@ export const EmailsExplorerPage: React.FC<EmailsExplorerPageProps> = ({
                 type="button"
                 disabled={page >= totalPages}
                 onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-                className="rounded-lg border border-gray-300 bg-white px-3 py-1.5 font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+                style={{
+                  backgroundColor: '#FFFFFF',
+                  color: page >= totalPages ? '#94A3B8' : '#062E03',
+                  border: '1px solid rgba(16, 185, 129, 0.3)',
+                  borderRadius: '8px',
+                  padding: '6px 14px',
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  cursor: page >= totalPages ? 'not-allowed' : 'pointer',
+                  transition: 'all 0.15s ease',
+                }}
               >
                 Next
               </button>
