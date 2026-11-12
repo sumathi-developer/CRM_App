@@ -15,7 +15,7 @@ import {
   SectionCard,
   StatCard,
 } from '../lead-generation/components/Cards';
-import { FilterBar, SearchInput } from '../lead-generation/components/FilterBar';
+import { FilterBar, FilterSelect, SearchInput } from '../lead-generation/components/FilterBar';
 import { EmptyState } from '../../components/common/EmptyState';
 import { LoadingIndicator } from '../../components/auth/LoadingIndicator';
 import { ConfirmDeleteModal } from '../../components/workspace/ConfirmDeleteModal';
@@ -214,7 +214,7 @@ export const InternalCommentsPage: React.FC<InternalCommentsPageProps> = ({
       onDismissError={() => setError(null)}
       onDismissSuccess={() => setBannerMessage(null)}
       actions={
-        <div className="lg-badge-row">
+        <div className="lg-badge-row" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <Link
             to={
               mode === 'mentions'
@@ -222,12 +222,56 @@ export const InternalCommentsPage: React.FC<InternalCommentsPageProps> = ({
                 : '/communications/mentions'
             }
             className="auth-btn btn-secondary btn-size-small"
+            style={{
+              backgroundColor: '#FFFFFF',
+              color: '#062E03',
+              border: '1px solid rgba(16, 185, 129, 0.35)',
+              borderRadius: '8px',
+              padding: '6px 14px',
+              fontWeight: 600,
+              fontSize: '13px',
+              textDecoration: 'none',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              transition: 'all 0.15s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = '#EAF4ED';
+              e.currentTarget.style.borderColor = '#10B981';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = '#FFFFFF';
+              e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.35)';
+            }}
           >
             {mode === 'mentions' ? 'View All Comments' : 'View @Mentions'}
           </Link>
           <Link
             to="/communications/compose"
             className="auth-btn btn-primary btn-size-small"
+            style={{
+              backgroundColor: '#10B981',
+              color: '#FFFFFF',
+              border: '1px solid #10B981',
+              borderRadius: '8px',
+              padding: '6px 14px',
+              fontWeight: 600,
+              fontSize: '13px',
+              textDecoration: 'none',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              transition: 'all 0.15s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = '#059669';
+              e.currentTarget.style.borderColor = '#059669';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = '#10B981';
+              e.currentTarget.style.borderColor = '#10B981';
+            }}
           >
             <PlusIcon size={15} /> Compose Email
           </Link>
@@ -235,7 +279,7 @@ export const InternalCommentsPage: React.FC<InternalCommentsPageProps> = ({
       }
     >
       {/* Summary KPIs */}
-      <div className="lg-stat-grid">
+      <div className="lg-stat-grid" style={{ marginBottom: '1.25rem' }}>
         <StatCard
           label="Visible Comments"
           value={total}
@@ -280,33 +324,27 @@ export const InternalCommentsPage: React.FC<InternalCommentsPageProps> = ({
               placeholder="Search internal comments or @mentions..."
             />
 
-            <select
-              className="lg-select"
+            <FilterSelect
+              label="Mentioned User"
               value={mentionedUserFilter}
-              onChange={(e) => setMentionedUserFilter(e.target.value)}
-              aria-label="Filter by mentioned user"
-            >
-              <option value="">All Mentioned Users</option>
-              {users.map((u) => (
-                <option key={u.id} value={u.id}>
-                  Mentioning @{u.name}
-                </option>
-              ))}
-            </select>
+              onChange={(val) => setMentionedUserFilter(val)}
+              options={users.map((u) => ({
+                value: u.id,
+                label: `@${u.name}`,
+              }))}
+              allLabel="All Mentioned Users"
+            />
 
-            <select
-              className="lg-select"
+            <FilterSelect
+              label="Associated Deal"
               value={dealFilter}
-              onChange={(e) => setDealFilter(e.target.value)}
-              aria-label="Filter by deal"
-            >
-              <option value="">All Deals</option>
-              {deals.map((d) => (
-                <option key={d.id} value={d.id}>
-                  Deal: {d.title}
-                </option>
-              ))}
-            </select>
+              onChange={(val) => setDealFilter(val)}
+              options={deals.map((d) => ({
+                value: d.id,
+                label: d.title,
+              }))}
+              allLabel="All Deals"
+            />
           </FilterBar>
 
           <SectionCard
@@ -331,120 +369,312 @@ export const InternalCommentsPage: React.FC<InternalCommentsPageProps> = ({
                 description="Use the composer on the right to post an internal comment and @mention a teammate."
               />
             ) : (
-              <div className="space-y-3">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 {comments.map((c) => (
                   <div
                     key={c.id}
-                    className="rounded-xl border border-gray-200 bg-white p-4 shadow-xs"
+                    style={{
+                      backgroundColor: '#FFFFFF',
+                      border: '1px solid rgba(16, 185, 129, 0.22)',
+                      borderRadius: '12px',
+                      padding: '16px',
+                      boxShadow: '0 1px 3px rgba(6, 46, 3, 0.03)',
+                      transition: 'all 0.15s ease',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.45)';
+                      e.currentTarget.style.backgroundColor = '#FCFDFD';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.22)';
+                      e.currentTarget.style.backgroundColor = '#FFFFFF';
+                    }}
                   >
-                    <div className="flex flex-wrap items-center justify-between gap-2">
-                      <div className="flex items-center gap-2">
-                        <strong className="text-sm text-gray-900">
+                    {/* Header Row: Author + Badge & Date + Actions */}
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        gap: '8px',
+                        flexWrap: 'wrap',
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <strong style={{ fontSize: '13.5px', fontWeight: 600, color: '#062E03' }}>
                           {c.author?.name || c.author?.email || 'Team Member'}
                         </strong>
                         <Badge tone="amber">Internal Only</Badge>
                       </div>
 
-                      <div className="flex items-center gap-2 text-xs text-gray-400">
-                        <span>{formatDateTime(c.createdAt)}</span>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setEditingComment(c);
-                            setEditContent(c.content);
-                          }}
-                          className="rounded p-1 text-gray-500 hover:bg-gray-100 hover:text-gray-800"
-                          title="Edit comment"
-                        >
-                          <EditIcon size={13} />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setDeletingComment(c)}
-                          className="rounded p-1 text-gray-500 hover:bg-red-50 hover:text-red-600"
-                          title="Delete comment"
-                        >
-                          <TrashIcon size={13} />
-                        </button>
+                      <div
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          fontSize: '11px',
+                          color: '#64748B',
+                        }}
+                      >
+                        <span style={{ whiteSpace: 'nowrap' }}>{formatDateTime(c.createdAt)}</span>
+                        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setEditingComment(c);
+                              setEditContent(c.content);
+                            }}
+                            title="Edit comment"
+                            style={{
+                              backgroundColor: '#FFFFFF',
+                              color: '#062E03',
+                              border: '1px solid rgba(16, 185, 129, 0.3)',
+                              borderRadius: '6px',
+                              width: '26px',
+                              height: '26px',
+                              padding: 0,
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              cursor: 'pointer',
+                              transition: 'all 0.15s ease',
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.backgroundColor = '#EAF4ED';
+                              e.currentTarget.style.borderColor = '#10B981';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.backgroundColor = '#FFFFFF';
+                              e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+                            }}
+                          >
+                            <EditIcon size={12} />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setDeletingComment(c)}
+                            title="Delete comment"
+                            style={{
+                              backgroundColor: '#FFFFFF',
+                              color: '#EF4444',
+                              border: '1px solid rgba(239, 68, 68, 0.3)',
+                              borderRadius: '6px',
+                              width: '26px',
+                              height: '26px',
+                              padding: 0,
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              cursor: 'pointer',
+                              transition: 'all 0.15s ease',
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.backgroundColor = '#FEF2F2';
+                              e.currentTarget.style.borderColor = '#EF4444';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.backgroundColor = '#FFFFFF';
+                              e.currentTarget.style.borderColor = 'rgba(239, 68, 68, 0.3)';
+                            }}
+                          >
+                            <TrashIcon size={12} />
+                          </button>
+                        </div>
                       </div>
                     </div>
 
+                    {/* Comment Body */}
                     {editingComment?.id === c.id ? (
-                      <div className="mt-3 space-y-2">
+                      <div style={{ marginTop: '10px' }}>
                         <textarea
                           rows={3}
                           value={editContent}
                           onChange={(e) => setEditContent(e.target.value)}
-                          className="w-full rounded-lg border border-gray-300 p-2.5 text-xs focus:border-blue-500 focus:outline-none"
+                          style={{
+                            width: '100%',
+                            borderRadius: '8px',
+                            border: '1px solid #10B981',
+                            padding: '8px 10px',
+                            fontSize: '12px',
+                            color: '#062E03',
+                            outline: 'none',
+                            boxSizing: 'border-box',
+                          }}
                         />
-                        <div className="flex justify-end gap-2">
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px', marginTop: '6px' }}>
                           <button
                             type="button"
                             onClick={() => setEditingComment(null)}
-                            className="rounded-lg border border-gray-300 bg-white px-3 py-1 text-xs font-medium text-gray-700"
+                            style={{
+                              backgroundColor: '#FFFFFF',
+                              color: '#062E03',
+                              border: '1px solid rgba(16, 185, 129, 0.35)',
+                              borderRadius: '6px',
+                              padding: '4px 12px',
+                              fontSize: '12px',
+                              fontWeight: 600,
+                              cursor: 'pointer',
+                            }}
                           >
                             Cancel
                           </button>
                           <button
                             type="button"
                             onClick={() => handleSaveEdit(c.id)}
-                            className="rounded-lg bg-blue-600 px-3 py-1 text-xs font-semibold text-white hover:bg-blue-700"
+                            style={{
+                              backgroundColor: '#10B981',
+                              color: '#FFFFFF',
+                              border: 'none',
+                              borderRadius: '6px',
+                              padding: '4px 12px',
+                              fontSize: '12px',
+                              fontWeight: 600,
+                              cursor: 'pointer',
+                            }}
                           >
                             Save Changes
                           </button>
                         </div>
                       </div>
                     ) : (
-                      <p className="mt-2 whitespace-pre-wrap text-sm text-gray-800">
+                      <p
+                        style={{
+                          margin: '10px 0 12px 0',
+                          fontSize: '13px',
+                          color: '#1E293B',
+                          lineHeight: '1.55',
+                          whiteSpace: 'pre-wrap',
+                        }}
+                      >
                         {c.content}
                       </p>
                     )}
 
-                    {/* Mentions & Linked Context Badges */}
-                    <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-gray-100 pt-2.5 text-xs">
-                      {c.mentions &&
-                        c.mentions.map((m) => (
-                          <Badge key={m.userId} tone="purple">
-                            @{m.name} ({m.email})
-                          </Badge>
-                        ))}
+                    {/* Bottom Metadata: Mentions & Linked Context */}
+                    {((c.mentions && c.mentions.length > 0) || c.email || c.contact || c.lead || c.deal) && (
+                      <div
+                        style={{
+                          borderTop: '1px solid rgba(16, 185, 129, 0.12)',
+                          paddingTop: '10px',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: '8px',
+                        }}
+                      >
+                        {/* Teammates Mentioned */}
+                        {c.mentions && c.mentions.length > 0 && (
+                          <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
+                            <span style={{ fontSize: '11px', fontWeight: 600, color: '#64748B' }}>
+                              Mentioned:
+                            </span>
+                            {c.mentions.map((m) => (
+                              <span
+                                key={m.userId}
+                                title={m.email}
+                                style={{
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  backgroundColor: '#F5EEFB',
+                                  color: '#6B21A8',
+                                  border: '1px solid rgba(147, 51, 234, 0.22)',
+                                  borderRadius: '6px',
+                                  padding: '2px 8px',
+                                  fontSize: '11px',
+                                  fontWeight: 600,
+                                }}
+                              >
+                                @{m.name}
+                              </span>
+                            ))}
+                          </div>
+                        )}
 
-                      {c.email && (
-                        <Link
-                          to={`/communications/emails/${c.email.id}`}
-                          className="inline-flex items-center rounded-md bg-blue-50 px-2 py-0.5 text-[11px] font-medium text-blue-700 hover:bg-blue-100"
-                        >
-                          Email: {c.email.subject} →
-                        </Link>
-                      )}
-
-                      {c.contact && (
-                        <Link
-                          to={`/contacts/${c.contact.id}`}
-                          className="inline-flex items-center rounded-md bg-emerald-50 px-2 py-0.5 text-[11px] font-medium text-emerald-700 hover:bg-emerald-100"
-                        >
-                          Contact: {c.contact.firstName} {c.contact.lastName} →
-                        </Link>
-                      )}
-
-                      {c.lead && (
-                        <Link
-                          to={`/leads/${c.lead.id}`}
-                          className="inline-flex items-center rounded-md bg-amber-50 px-2 py-0.5 text-[11px] font-medium text-amber-800 hover:bg-amber-100"
-                        >
-                          Lead: {c.lead.title} →
-                        </Link>
-                      )}
-
-                      {c.deal && (
-                        <Link
-                          to={`/deals/${c.deal.id}`}
-                          className="inline-flex items-center rounded-md bg-purple-50 px-2 py-0.5 text-[11px] font-medium text-purple-800 hover:bg-purple-100"
-                        >
-                          Deal: {c.deal.title} →
-                        </Link>
-                      )}
-                    </div>
+                        {/* Linked CRM Records */}
+                        {(c.email || c.contact || c.lead || c.deal) && (
+                          <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
+                            <span style={{ fontSize: '11px', fontWeight: 600, color: '#64748B' }}>
+                              Linked:
+                            </span>
+                            {c.email && (
+                              <Link
+                                to={`/communications/emails/${c.email.id}`}
+                                style={{
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  backgroundColor: '#EAF4ED',
+                                  color: '#062E03',
+                                  border: '1px solid rgba(16, 185, 129, 0.25)',
+                                  borderRadius: '6px',
+                                  padding: '2px 8px',
+                                  fontSize: '11px',
+                                  fontWeight: 600,
+                                  textDecoration: 'none',
+                                }}
+                              >
+                                ✉ Email: {c.email.subject} →
+                              </Link>
+                            )}
+                            {c.contact && (
+                              <Link
+                                to={`/contacts/${c.contact.id}`}
+                                style={{
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  backgroundColor: '#EAF4ED',
+                                  color: '#062E03',
+                                  border: '1px solid rgba(16, 185, 129, 0.25)',
+                                  borderRadius: '6px',
+                                  padding: '2px 8px',
+                                  fontSize: '11px',
+                                  fontWeight: 600,
+                                  textDecoration: 'none',
+                                }}
+                              >
+                                👤 Contact: {c.contact.firstName} {c.contact.lastName} →
+                              </Link>
+                            )}
+                            {c.lead && (
+                              <Link
+                                to={`/leads/${c.lead.id}`}
+                                style={{
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  backgroundColor: '#FEF3C7',
+                                  color: '#92400E',
+                                  border: '1px solid rgba(245, 158, 11, 0.25)',
+                                  borderRadius: '6px',
+                                  padding: '2px 8px',
+                                  fontSize: '11px',
+                                  fontWeight: 600,
+                                  textDecoration: 'none',
+                                }}
+                              >
+                                🎯 Lead: {c.lead.title} →
+                              </Link>
+                            )}
+                            {c.deal && (
+                              <Link
+                                to={`/deals/${c.deal.id}`}
+                                style={{
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  backgroundColor: '#F1F5F9',
+                                  color: '#334155',
+                                  border: '1px solid rgba(100, 116, 139, 0.25)',
+                                  borderRadius: '6px',
+                                  padding: '2px 8px',
+                                  fontSize: '11px',
+                                  fontWeight: 600,
+                                  textDecoration: 'none',
+                                }}
+                              >
+                                💼 Deal: {c.deal.title} →
+                              </Link>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
@@ -458,12 +688,21 @@ export const InternalCommentsPage: React.FC<InternalCommentsPageProps> = ({
             title="New Internal Comment"
             subtitle="Tag teammates with @mentions and optionally link a CRM record"
           >
-            <form onSubmit={handleCreateComment} className="space-y-4">
+            <form onSubmit={handleCreateComment} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <div>
-                <label className="mb-1.5 block text-xs font-semibold text-gray-700">
+                <label style={{ display: 'block', marginBottom: '6px', fontSize: '12px', fontWeight: 600, color: '#062E03' }}>
                   Quick @Mention Teammates
                 </label>
-                <div className="flex flex-wrap gap-1.5">
+                <div
+                  style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: '6px',
+                    maxHeight: '130px',
+                    overflowY: 'auto',
+                    padding: '2px',
+                  }}
+                >
                   {users.map((u) => {
                     const isTagged = selectedMentionIds.includes(u.id);
                     return (
@@ -471,11 +710,29 @@ export const InternalCommentsPage: React.FC<InternalCommentsPageProps> = ({
                         key={u.id}
                         type="button"
                         onClick={() => handleInsertMention(u)}
-                        className={`rounded-lg border px-2 py-1 text-[11px] font-medium transition-colors ${
-                          isTagged
-                            ? 'border-purple-600 bg-purple-600 text-white'
-                            : 'border-purple-200 bg-purple-50 text-purple-800 hover:bg-purple-100'
-                        }`}
+                        style={{
+                          borderRadius: '16px',
+                          border: isTagged ? '1px solid #10B981' : '1px solid rgba(16, 185, 129, 0.25)',
+                          backgroundColor: isTagged ? '#10B981' : '#F1F8F3',
+                          color: isTagged ? '#FFFFFF' : '#062E03',
+                          padding: '3px 9px',
+                          fontSize: '11px',
+                          fontWeight: 500,
+                          cursor: 'pointer',
+                          transition: 'all 0.15s ease',
+                        }}
+                        onMouseEnter={(e) => {
+                          if (!isTagged) {
+                            e.currentTarget.style.backgroundColor = '#EAF4ED';
+                            e.currentTarget.style.borderColor = '#10B981';
+                          }
+                        }}
+                        onMouseLeave={(e) => {
+                          if (!isTagged) {
+                            e.currentTarget.style.backgroundColor = '#F1F8F3';
+                            e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.25)';
+                          }
+                        }}
                       >
                         @{u.name}
                       </button>
@@ -485,8 +742,8 @@ export const InternalCommentsPage: React.FC<InternalCommentsPageProps> = ({
               </div>
 
               <div>
-                <label className="mb-1 block text-xs font-semibold text-gray-700">
-                  Comment Content <span className="text-red-500">*</span>
+                <label style={{ display: 'block', marginBottom: '6px', fontSize: '12px', fontWeight: 600, color: '#062E03' }}>
+                  Comment Content <span style={{ color: '#EF4444' }}>*</span>
                 </label>
                 <textarea
                   rows={4}
@@ -494,19 +751,43 @@ export const InternalCommentsPage: React.FC<InternalCommentsPageProps> = ({
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
                   placeholder="Write an internal note (e.g. Hey @Alex, let's offer a 10% annual discount on this deal)..."
-                  className="w-full rounded-lg border border-gray-300 bg-white p-3 text-xs text-gray-900 focus:border-blue-500 focus:outline-none"
+                  style={{
+                    width: '100%',
+                    borderRadius: '10px',
+                    border: '1px solid rgba(16, 185, 129, 0.3)',
+                    backgroundColor: '#FFFFFF',
+                    padding: '10px 12px',
+                    fontSize: '12px',
+                    color: '#062E03',
+                    resize: 'vertical',
+                    outline: 'none',
+                    boxSizing: 'border-box',
+                    transition: 'border-color 0.15s ease',
+                  }}
+                  onFocus={(e) => (e.currentTarget.style.borderColor = '#10B981')}
+                  onBlur={(e) => (e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.3)')}
                 />
               </div>
 
-              <div className="space-y-2.5 border-t border-gray-100 pt-3">
-                <p className="text-xs font-semibold text-gray-700">
+              <div style={{ borderTop: '1px solid rgba(16, 185, 129, 0.15)', paddingTop: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <p style={{ margin: '0 0 4px 0', fontSize: '12px', fontWeight: 600, color: '#062E03' }}>
                   Link to CRM Record (Optional)
                 </p>
 
                 <select
                   value={linkedContactId}
                   onChange={(e) => setLinkedContactId(e.target.value)}
-                  className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs text-gray-800"
+                  style={{
+                    width: '100%',
+                    borderRadius: '8px',
+                    border: '1px solid rgba(16, 185, 129, 0.25)',
+                    backgroundColor: '#FFFFFF',
+                    padding: '8px 10px',
+                    fontSize: '12px',
+                    color: '#062E03',
+                    outline: 'none',
+                    boxSizing: 'border-box',
+                  }}
                 >
                   <option value="">No Contact Linked</option>
                   {contacts.map((c) => (
@@ -519,7 +800,17 @@ export const InternalCommentsPage: React.FC<InternalCommentsPageProps> = ({
                 <select
                   value={linkedLeadId}
                   onChange={(e) => setLinkedLeadId(e.target.value)}
-                  className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs text-gray-800"
+                  style={{
+                    width: '100%',
+                    borderRadius: '8px',
+                    border: '1px solid rgba(16, 185, 129, 0.25)',
+                    backgroundColor: '#FFFFFF',
+                    padding: '8px 10px',
+                    fontSize: '12px',
+                    color: '#062E03',
+                    outline: 'none',
+                    boxSizing: 'border-box',
+                  }}
                 >
                   <option value="">No Lead Linked</option>
                   {leads.map((l) => (
@@ -532,7 +823,17 @@ export const InternalCommentsPage: React.FC<InternalCommentsPageProps> = ({
                 <select
                   value={linkedDealId}
                   onChange={(e) => setLinkedDealId(e.target.value)}
-                  className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs text-gray-800"
+                  style={{
+                    width: '100%',
+                    borderRadius: '8px',
+                    border: '1px solid rgba(16, 185, 129, 0.25)',
+                    backgroundColor: '#FFFFFF',
+                    padding: '8px 10px',
+                    fontSize: '12px',
+                    color: '#062E03',
+                    outline: 'none',
+                    boxSizing: 'border-box',
+                  }}
                 >
                   <option value="">No Deal Linked</option>
                   {deals.map((d) => (
@@ -546,7 +847,32 @@ export const InternalCommentsPage: React.FC<InternalCommentsPageProps> = ({
               <button
                 type="submit"
                 disabled={submitting || !content.trim()}
-                className="w-full rounded-lg bg-blue-600 px-4 py-2 text-xs font-semibold text-white hover:bg-blue-700 disabled:opacity-50"
+                style={{
+                  width: '100%',
+                  backgroundColor: submitting || !content.trim() ? '#94A3B8' : '#10B981',
+                  color: '#FFFFFF',
+                  border: 'none',
+                  borderRadius: '8px',
+                  padding: '10px 16px',
+                  fontSize: '13px',
+                  fontWeight: 600,
+                  cursor: submitting || !content.trim() ? 'not-allowed' : 'pointer',
+                  transition: 'all 0.15s ease',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '6px',
+                }}
+                onMouseEnter={(e) => {
+                  if (!submitting && content.trim()) {
+                    e.currentTarget.style.backgroundColor = '#059669';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!submitting && content.trim()) {
+                    e.currentTarget.style.backgroundColor = '#10B981';
+                  }
+                }}
               >
                 {submitting ? 'Posting Comment...' : 'Post Internal Comment'}
               </button>
