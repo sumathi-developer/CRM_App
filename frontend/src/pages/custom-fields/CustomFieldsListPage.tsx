@@ -75,9 +75,16 @@ export const CustomFieldsListPage: React.FC = () => {
   const { user: currentUser } = useAuth();
   const { currentWorkspace, userRoleInWorkspace } = useWorkspace();
 
-  const [allFields, setAllFields] = useState<CustomFieldEntity[]>([]);
-  const [totalCount, setTotalCount] = useState<number>(0);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  // Instant hydration from cache for 0ms initial render without spinning loader
+  const [allFields, setAllFields] = useState<CustomFieldEntity[]>(() =>
+    customFieldService.getCachedFields(currentWorkspace?.id),
+  );
+  const [totalCount, setTotalCount] = useState<number>(() =>
+    customFieldService.getCachedFields(currentWorkspace?.id).length,
+  );
+  const [isLoading, setIsLoading] = useState<boolean>(() =>
+    !customFieldService.hasCachedFields(currentWorkspace?.id),
+  );
   const [apiError, setApiError] = useState<string | null>(null);
   const [apiSuccess, setApiSuccess] = useState<string | null>(null);
 
@@ -107,8 +114,8 @@ export const CustomFieldsListPage: React.FC = () => {
     let ignore = false;
 
     const loadData = async (forceRefresh = false) => {
-      // Only show full loader on initial cold start when no fields are in state
-      if (allFields.length === 0) {
+      // Only show full loader if absolutely no cached fields are present
+      if (allFields.length === 0 && !customFieldService.hasCachedFields(currentWorkspace?.id)) {
         setIsLoading(true);
       }
       setApiError(null);
@@ -128,7 +135,9 @@ export const CustomFieldsListPage: React.FC = () => {
         }
       } catch (err: any) {
         if (!ignore) {
-          setApiError(err.message || 'Failed to load custom fields');
+          if (allFields.length === 0) {
+            setApiError(err.message || 'Failed to load custom fields');
+          }
         }
       } finally {
         if (!ignore) {
@@ -138,9 +147,6 @@ export const CustomFieldsListPage: React.FC = () => {
     };
 
     loadData(refreshTrigger > 0);
-
-    // Warm-up layout cache in the background so opening preview modal is 0ms
-    customFieldService.preloadAllLayouts(currentWorkspace?.id);
 
     return () => {
       ignore = true;

@@ -23,6 +23,40 @@ class CustomFieldService {
   clearCache(): void {
     this.layoutCache.clear();
     this.fieldsCache.clear();
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        Object.keys(localStorage)
+          .filter((k) => k.startsWith('cf_'))
+          .forEach((k) => localStorage.removeItem(k));
+      }
+    } catch {}
+  }
+
+  /**
+   * Get cached fields synchronously for 0ms initial render
+   */
+  getCachedFields(workspaceId?: string): CustomFieldEntity[] {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        const key = `cf_list_${workspaceId || 'default'}`;
+        const saved = localStorage.getItem(key);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed?.data)) return parsed.data;
+          if (Array.isArray(parsed)) return parsed;
+        }
+      }
+    } catch {
+      // ignore
+    }
+    return [];
+  }
+
+  /**
+   * Check if fields are cached
+   */
+  hasCachedFields(workspaceId?: string): boolean {
+    return this.getCachedFields(workspaceId).length > 0;
   }
 
   /**
@@ -55,12 +89,27 @@ class CustomFieldService {
 
     const queryString = params.toString() ? `?${params.toString()}` : '';
     const cacheKey = queryString;
+    const storageKey = `cf_list_${query?.workspaceId || 'default'}`;
 
     if (!forceRefresh) {
       const cached = this.fieldsCache.get(cacheKey);
-      if (cached && Date.now() - cached.timestamp < 30_000) {
+      if (cached && Date.now() - cached.timestamp < 300_000) {
         return cached.data;
       }
+
+      // Check localStorage for 0ms instant loading
+      try {
+        if (typeof window !== 'undefined' && window.localStorage) {
+          const saved = localStorage.getItem(storageKey);
+          if (saved) {
+            const parsed = JSON.parse(saved);
+            if (parsed && Date.now() - (parsed.timestamp || 0) < 300_000 && parsed.data) {
+              this.fieldsCache.set(cacheKey, { timestamp: parsed.timestamp, data: parsed });
+              return parsed;
+            }
+          }
+        }
+      } catch {}
     }
 
     const response = await api.get<any>(`/custom-fields${queryString}`);
@@ -86,6 +135,12 @@ class CustomFieldService {
     }
 
     this.fieldsCache.set(cacheKey, { timestamp: Date.now(), data: formatted });
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        localStorage.setItem(storageKey, JSON.stringify({ timestamp: Date.now(), ...formatted }));
+      }
+    } catch {}
+
     return formatted;
   }
 
@@ -136,7 +191,7 @@ class CustomFieldService {
 
     if (!forceRefresh) {
       const cached = this.layoutCache.get(cacheKey);
-      if (cached && Date.now() - cached.timestamp < 60_000) {
+      if (cached && Date.now() - cached.timestamp < 300_000) {
         return cached.data;
       }
     }

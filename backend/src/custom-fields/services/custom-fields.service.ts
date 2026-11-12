@@ -167,9 +167,9 @@ export class CustomFieldsService {
    */
   async findAll(query: CustomFieldQueryDto, currentUser?: any) {
     const userRole = (currentUser?.role?.name || currentUser?.role || '').toUpperCase();
-    const cacheKey = JSON.stringify({ query, userRole });
+    const cacheKey = `${query.workspaceId || 'all'}_${query.entityType || 'all'}_${query.fieldType || 'all'}_${query.search || ''}_${query.page || 1}_${query.limit || 50}_${userRole}`;
     const cached = this.fieldsCache.get(cacheKey);
-    if (cached && Date.now() - cached.timestamp < 30_000) {
+    if (cached && Date.now() - cached.timestamp < 300_000) {
       return cached.data;
     }
 
@@ -402,7 +402,7 @@ export class CustomFieldsService {
     const userRole = (currentUser?.role?.name || currentUser?.role || '').toUpperCase();
     const cacheKey = `${entityType}_${userRole}_${workspaceId || 'all'}`;
     const cached = this.layoutCache.get(cacheKey);
-    if (cached && Date.now() - cached.timestamp < 60_000) {
+    if (cached && Date.now() - cached.timestamp < 300_000) {
       return cached.data;
     }
 
