@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { customFieldService } from '../../services/custom-field.service';
 import { useAuth } from '../../context/AuthContext';
@@ -33,15 +33,23 @@ import {
   EyeIcon,
   CopyIcon,
   LayersIcon,
+  BuildingIcon,
+  UserIcon,
+  TrophyIcon,
+  CalendarIcon,
 } from './CustomFieldIcons';
 
-const ENTITY_TABS: Array<{ label: string; value: CustomFieldEntityType | 'ALL' }> = [
-  { label: 'All Entities', value: 'ALL' },
-  { label: 'Leads', value: 'LEAD' },
-  { label: 'Contacts', value: 'CONTACT' },
-  { label: 'Companies', value: 'COMPANY' },
-  { label: 'Deals', value: 'DEAL' },
-  { label: 'Activities', value: 'ACTIVITY' },
+const ENTITY_TABS: Array<{
+  label: string;
+  value: CustomFieldEntityType | 'ALL';
+  icon: React.ComponentType<{ size?: number; className?: string }>;
+}> = [
+  { label: 'All Entities', value: 'ALL', icon: LayersIcon },
+  { label: 'Leads', value: 'LEAD', icon: BuildingIcon },
+  { label: 'Contacts', value: 'CONTACT', icon: UserIcon },
+  { label: 'Companies', value: 'COMPANY', icon: BuildingIcon },
+  { label: 'Deals', value: 'DEAL', icon: TrophyIcon },
+  { label: 'Activities', value: 'ACTIVITY', icon: CalendarIcon },
 ];
 
 const ALL_FIELD_TYPES: Array<{ label: string; value: CustomFieldType | '' }> = [
@@ -67,7 +75,7 @@ export const CustomFieldsListPage: React.FC = () => {
   const { user: currentUser } = useAuth();
   const { currentWorkspace, userRoleInWorkspace } = useWorkspace();
 
-  const [fields, setFields] = useState<CustomFieldEntity[]>([]);
+  const [allFields, setAllFields] = useState<CustomFieldEntity[]>([]);
   const [totalCount, setTotalCount] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [apiError, setApiError] = useState<string | null>(null);
@@ -94,25 +102,29 @@ export const CustomFieldsListPage: React.FC = () => {
     userRoleInWorkspace === 'OWNER' ||
     userRoleInWorkspace === 'ADMIN';
 
-  // Load custom fields
+  // Load custom fields with warm cache & SWR (stale-while-revalidate)
   useEffect(() => {
     let ignore = false;
 
-    const loadData = async () => {
-      setIsLoading(true);
+    const loadData = async (forceRefresh = false) => {
+      // Only show full loader on initial cold start when no fields are in state
+      if (allFields.length === 0) {
+        setIsLoading(true);
+      }
       setApiError(null);
       try {
-        const res = await customFieldService.getCustomFields({
-          entityType: selectedEntityTab === 'ALL' ? undefined : selectedEntityTab,
-          fieldType: selectedFieldType || undefined,
-          search: searchQuery.trim() || undefined,
-          workspaceId: currentWorkspace?.id,
-          limit: 100,
-        });
+        const res = await customFieldService.getCustomFields(
+          {
+            workspaceId: currentWorkspace?.id,
+            limit: 250,
+          },
+          forceRefresh,
+        );
 
         if (!ignore) {
-          setFields(res.data || []);
-          setTotalCount(res.meta?.total ?? (res.data ? res.data.length : 0));
+          const list = res.data || [];
+          setAllFields(list);
+          setTotalCount(res.meta?.total ?? list.length);
         }
       } catch (err: any) {
         if (!ignore) {
@@ -125,11 +137,37 @@ export const CustomFieldsListPage: React.FC = () => {
       }
     };
 
-    loadData();
+    loadData(refreshTrigger > 0);
+
+    // Warm-up layout cache in the background so opening preview modal is 0ms
+    customFieldService.preloadAllLayouts(currentWorkspace?.id);
+
     return () => {
       ignore = true;
     };
-  }, [selectedEntityTab, selectedFieldType, searchQuery, currentWorkspace?.id, refreshTrigger]);
+  }, [currentWorkspace?.id, refreshTrigger]);
+
+  // Instant client-side filtering across tabs, types, and search (0ms latency)
+  const fields = useMemo(() => {
+    let result = allFields;
+    if (selectedEntityTab !== 'ALL') {
+      result = result.filter((f) => f.entityType === selectedEntityTab);
+    }
+    if (selectedFieldType) {
+      result = result.filter((f) => f.fieldType === selectedFieldType);
+    }
+    if (searchQuery.trim()) {
+      const q = searchQuery.trim().toLowerCase();
+      result = result.filter(
+        (f) =>
+          f.name.toLowerCase().includes(q) ||
+          f.key.toLowerCase().includes(q) ||
+          (f.description && f.description.toLowerCase().includes(q)) ||
+          (f.section && f.section.toLowerCase().includes(q)),
+      );
+    }
+    return result;
+  }, [allFields, selectedEntityTab, selectedFieldType, searchQuery]);
 
   const handleDeleteConfirm = async () => {
     if (!fieldToDelete) return;
@@ -153,9 +191,9 @@ export const CustomFieldsListPage: React.FC = () => {
     setTimeout(() => setCopiedKey(null), 2000);
   };
 
-  // Metrics computation
-  const activeFieldsCount = fields.filter((f) => f.isActive && !f.isArchived).length;
-  const filterableCount = fields.filter((f) => f.isFilterable || f.isSearchable).length;
+  // Metrics computation from allFields
+  const activeFieldsCount = allFields.filter((f) => f.isActive && !f.isArchived).length;
+  const filterableCount = allFields.filter((f) => f.isFilterable || f.isSearchable).length;
 
   const hasActiveFilters = Boolean(
     searchQuery.trim() || selectedFieldType || selectedEntityTab !== 'ALL'
@@ -297,9 +335,10 @@ export const CustomFieldsListPage: React.FC = () => {
           {ENTITY_TABS.map((tab) => {
             const countForTab =
               tab.value === 'ALL'
-                ? fields.length
-                : fields.filter((f) => f.entityType === tab.value).length;
+                ? allFields.length
+                : allFields.filter((f) => f.entityType === tab.value).length;
             const isActive = selectedEntityTab === tab.value;
+            const TabIcon = tab.icon;
 
             return (
               <button
@@ -310,6 +349,7 @@ export const CustomFieldsListPage: React.FC = () => {
                 className={`entity-tab-btn ${isActive ? 'is-active' : ''}`}
                 onClick={() => setSelectedEntityTab(tab.value)}
               >
+                <TabIcon size={14} />
                 <span>{tab.label}</span>
                 <span className="entity-tab-count">{countForTab}</span>
               </button>

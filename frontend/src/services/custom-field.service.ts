@@ -14,10 +14,32 @@ import type {
 } from '../types/custom-field.types';
 
 class CustomFieldService {
+  private layoutCache = new Map<string, { timestamp: number; data: EntityLayoutResponse }>();
+  private fieldsCache = new Map<string, { timestamp: number; data: PaginatedCustomFieldsResponse }>();
+
+  /**
+   * Clear all custom field client-side caches
+   */
+  clearCache(): void {
+    this.layoutCache.clear();
+    this.fieldsCache.clear();
+  }
+
+  /**
+   * Preload layouts for all 5 CRM entities in parallel so modal preview renders in 0ms
+   */
+  async preloadAllLayouts(workspaceId?: string): Promise<void> {
+    const entities: CustomFieldEntityType[] = ['LEAD', 'CONTACT', 'COMPANY', 'DEAL', 'ACTIVITY'];
+    await Promise.allSettled(entities.map((e) => this.getEntityLayout(e, workspaceId)));
+  }
+
   /**
    * List custom fields with pagination and filters
    */
-  async getCustomFields(query?: CustomFieldQueryFilters): Promise<PaginatedCustomFieldsResponse> {
+  async getCustomFields(
+    query?: CustomFieldQueryFilters,
+    forceRefresh = false,
+  ): Promise<PaginatedCustomFieldsResponse> {
     const params = new URLSearchParams();
     if (query?.page) params.append('page', String(query.page));
     if (query?.limit) params.append('limit', String(query.limit));
@@ -32,13 +54,22 @@ class CustomFieldService {
     if (query?.workspaceId) params.append('workspaceId', query.workspaceId);
 
     const queryString = params.toString() ? `?${params.toString()}` : '';
+    const cacheKey = queryString;
+
+    if (!forceRefresh) {
+      const cached = this.fieldsCache.get(cacheKey);
+      if (cached && Date.now() - cached.timestamp < 30_000) {
+        return cached.data;
+      }
+    }
+
     const response = await api.get<any>(`/custom-fields${queryString}`);
 
+    let formatted: PaginatedCustomFieldsResponse;
     if (response?.data && response?.meta) {
-      return response as PaginatedCustomFieldsResponse;
-    }
-    if (Array.isArray(response)) {
-      return {
+      formatted = response as PaginatedCustomFieldsResponse;
+    } else if (Array.isArray(response)) {
+      formatted = {
         data: response,
         meta: {
           total: response.length,
@@ -47,11 +78,15 @@ class CustomFieldService {
           totalPages: 1,
         },
       };
+    } else {
+      formatted = {
+        data: response?.data || [],
+        meta: response?.meta || { total: 0, page: 1, limit: 50, totalPages: 1 },
+      };
     }
-    return {
-      data: response?.data || [],
-      meta: response?.meta || { total: 0, page: 1, limit: 50, totalPages: 1 },
-    };
+
+    this.fieldsCache.set(cacheKey, { timestamp: Date.now(), data: formatted });
+    return formatted;
   }
 
   /**
@@ -67,6 +102,7 @@ class CustomFieldService {
    */
   async createCustomField(payload: CreateCustomFieldPayload): Promise<CustomFieldEntity> {
     const response = await api.post<any>('/custom-fields', payload);
+    this.clearCache();
     return (response?.data || response) as CustomFieldEntity;
   }
 
@@ -75,6 +111,7 @@ class CustomFieldService {
    */
   async updateCustomField(id: string, payload: UpdateCustomFieldPayload): Promise<CustomFieldEntity> {
     const response = await api.patch<any>(`/custom-fields/${id}`, payload);
+    this.clearCache();
     return (response?.data || response) as CustomFieldEntity;
   }
 
@@ -83,23 +120,42 @@ class CustomFieldService {
    */
   async deleteCustomField(id: string, hardDelete = false): Promise<{ success: boolean; message: string }> {
     const response = await api.delete<any>(`/custom-fields/${id}${hardDelete ? '?hardDelete=true' : ''}`);
+    this.clearCache();
     return (response?.data || response) as { success: boolean; message: string };
   }
 
   /**
-   * Get organized dynamic layout for an entity type
+   * Get organized dynamic layout for an entity type with in-memory caching
    */
-  async getEntityLayout(entityType: CustomFieldEntityType, workspaceId?: string): Promise<EntityLayoutResponse> {
+  async getEntityLayout(
+    entityType: CustomFieldEntityType,
+    workspaceId?: string,
+    forceRefresh = false,
+  ): Promise<EntityLayoutResponse> {
+    const cacheKey = `${entityType}_${workspaceId || 'default'}`;
+
+    if (!forceRefresh) {
+      const cached = this.layoutCache.get(cacheKey);
+      if (cached && Date.now() - cached.timestamp < 60_000) {
+        return cached.data;
+      }
+    }
+
     const query = workspaceId ? `?workspaceId=${workspaceId}` : '';
     const response = await api.get<any>(`/custom-fields/layout/${entityType}${query}`);
-    return (response?.data || response) as EntityLayoutResponse;
+    const data = (response?.data || response) as EntityLayoutResponse;
+
+    this.layoutCache.set(cacheKey, { timestamp: Date.now(), data });
+    return data;
   }
 
   /**
    * Reorder fields and section positions
    */
   async reorderFields(items: { id: string; order: number; section?: string }[]): Promise<any> {
-    return api.post('/custom-fields/layout/reorder', { fields: items });
+    const res = await api.post('/custom-fields/layout/reorder', { fields: items });
+    this.clearCache();
+    return res;
   }
 
   /**

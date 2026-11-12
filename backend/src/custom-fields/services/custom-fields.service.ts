@@ -22,11 +22,18 @@ import { FieldLayoutSection, FieldLayoutItem } from '../interfaces/custom-field.
 @Injectable()
 export class CustomFieldsService {
   private readonly logger = new Logger(CustomFieldsService.name);
+  private layoutCache = new Map<string, { timestamp: number; data: any }>();
+  private fieldsCache = new Map<string, { timestamp: number; data: any }>();
 
   constructor(
     private readonly prisma: PrismaService,
     private readonly validationService: CustomFieldValidationService,
   ) {}
+
+  clearCache() {
+    this.layoutCache.clear();
+    this.fieldsCache.clear();
+  }
 
   /**
    * Helper to format a string into a clean snake_case identifier key
@@ -150,6 +157,7 @@ export class CustomFieldsService {
       });
 
       this.logger.log(`Created custom field "${field.name}" (${field.key}) for ${field.entityType}`);
+      this.clearCache();
       return field;
     });
   }
@@ -158,6 +166,13 @@ export class CustomFieldsService {
    * List custom fields with pagination and filters
    */
   async findAll(query: CustomFieldQueryDto, currentUser?: any) {
+    const userRole = (currentUser?.role?.name || currentUser?.role || '').toUpperCase();
+    const cacheKey = JSON.stringify({ query, userRole });
+    const cached = this.fieldsCache.get(cacheKey);
+    if (cached && Date.now() - cached.timestamp < 30_000) {
+      return cached.data;
+    }
+
     const {
       entityType,
       fieldType,
@@ -213,7 +228,6 @@ export class CustomFieldsService {
     ]);
 
     // Check user role permissions if current user provided
-    const userRole = (currentUser?.role?.name || currentUser?.role || '').toUpperCase();
     const isSuperAdmin = userRole === 'ADMIN' || userRole === 'SUPER_ADMIN';
 
     const accessibleFields = fields.filter((f) => {
@@ -224,7 +238,7 @@ export class CustomFieldsService {
       return readRoles.map((r) => r.toUpperCase()).includes(userRole);
     });
 
-    return {
+    const result = {
       data: accessibleFields,
       meta: {
         total,
@@ -233,6 +247,9 @@ export class CustomFieldsService {
         totalPages: Math.ceil(total / limit) || 1,
       },
     };
+
+    this.fieldsCache.set(cacheKey, { timestamp: Date.now(), data: result });
+    return result;
   }
 
   /**
@@ -327,6 +344,7 @@ export class CustomFieldsService {
       });
 
       this.logger.log(`Updated custom field "${updated.name}" (${updated.id})`);
+      this.clearCache();
       return updated;
     });
   }
@@ -347,6 +365,8 @@ export class CustomFieldsService {
     if (!existing) {
       throw new NotFoundException(`Custom field with ID "${id}" not found`);
     }
+
+    this.clearCache();
 
     if (hardDelete) {
       await this.prisma.customField.delete({ where: { id } });
@@ -379,6 +399,13 @@ export class CustomFieldsService {
     currentUser?: any,
     workspaceId?: string,
   ): Promise<{ entityType: CustomFieldEntityType; layout: FieldLayoutSection[] }> {
+    const userRole = (currentUser?.role?.name || currentUser?.role || '').toUpperCase();
+    const cacheKey = `${entityType}_${userRole}_${workspaceId || 'all'}`;
+    const cached = this.layoutCache.get(cacheKey);
+    if (cached && Date.now() - cached.timestamp < 60_000) {
+      return cached.data;
+    }
+
     const fields = await this.prisma.customField.findMany({
       where: {
         entityType,
@@ -395,7 +422,6 @@ export class CustomFieldsService {
       orderBy: [{ section: 'asc' }, { order: 'asc' }],
     });
 
-    const userRole = (currentUser?.role?.name || currentUser?.role || '').toUpperCase();
     const isSuperAdmin = userRole === 'ADMIN' || userRole === 'SUPER_ADMIN';
 
     const sectionMap = new Map<string, FieldLayoutItem[]>();
@@ -466,10 +492,12 @@ export class CustomFieldsService {
       });
     }
 
-    return {
+    const result = {
       entityType,
       layout: sections,
     };
+    this.layoutCache.set(cacheKey, { timestamp: Date.now(), data: result });
+    return result;
   }
 
   /**
@@ -491,6 +519,8 @@ export class CustomFieldsService {
         }),
       ),
     );
+
+    this.clearCache();
 
     return {
       success: true,
@@ -547,6 +577,7 @@ export class CustomFieldsService {
       );
     }
 
+    this.clearCache();
     return this.prisma.customFieldOption.create({
       data: {
         fieldId,
@@ -571,6 +602,7 @@ export class CustomFieldsService {
       throw new NotFoundException(`Option with ID "${optionId}" not found for this field`);
     }
 
+    this.clearCache();
     return this.prisma.customFieldOption.update({
       where: { id: optionId },
       data: {
@@ -596,6 +628,7 @@ export class CustomFieldsService {
       throw new NotFoundException(`Option with ID "${optionId}" not found for this field`);
     }
 
+    this.clearCache();
     await this.prisma.customFieldOption.delete({
       where: { id: optionId },
     });
@@ -621,6 +654,10 @@ export class CustomFieldsService {
       ),
     );
 
-    return this.getOptions(fieldId);
+    this.clearCache();
+    return {
+      success: true,
+      message: `Reordered ${dto.orderedOptionIds.length} options successfully`,
+    };
   }
 }

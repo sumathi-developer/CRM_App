@@ -2771,3 +2771,84 @@ body.modal-open::-webkit-scrollbar {
 .switch-toggle-label input:checked + .switch-toggle-slider:before {
   transform: translateX(20px);
 }
+
+/* --------------------------------------------------------------------------
+   Settings Section Directory Sidebar Navigation & Alignment
+   -------------------------------------------------------------------------- */
+.settings-nav-card {
+  background: #ffffff;
+  border: 1px solid rgba(16, 185, 129, 0.22);
+  border-radius: 14px;
+  padding: 0.875rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  margin-bottom: 1rem;
+}
+
+.settings-nav-group-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.2rem 0.5rem 0.55rem;
+  margin-bottom: 0.45rem;
+  border-bottom: 1px solid rgba(16, 185, 129, 0.12);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #059669;
+}
+
+.settings-nav-item-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  box-sizing: border-box;
+  color: #374151;
+  background: transparent;
+  margin-bottom: 2px;
+}
+
+.settings-nav-item-link:hover {
+  background: rgba(16, 185, 129, 0.07);
+  color: #062e03;
+}
+
+.settings-nav-item-link:hover .settings-nav-icon-box {
+  background: rgba(16, 185, 129, 0.18);
+  color: #047857;
+}
+
+.settings-nav-item-link.is-active-setting {
+  background: #10b981 !important;
+  color: #ffffff !important;
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.3) !important;
+}
+
+.settings-nav-item-link.is-active-setting .settings-nav-icon-box {
+  background: rgba(255, 255, 255, 0.22) !important;
+  color: #ffffff !important;
+  border-color: transparent !important;
+}
+
+.settings-nav-icon-box {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.18);
+  color: #059669;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+
