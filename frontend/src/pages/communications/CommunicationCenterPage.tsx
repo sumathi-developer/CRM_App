@@ -81,23 +81,89 @@ export const CommunicationCenterPage: React.FC = () => {
       error={error}
       onDismissError={() => setError(null)}
       actions={
-        <div className="lg-badge-row">
+        <div className="lg-badge-row" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <button
             type="button"
             className="auth-btn btn-secondary btn-size-small"
             onClick={loadCenterData}
+            style={{
+              backgroundColor: '#FFFFFF',
+              color: '#062E03',
+              border: '1px solid rgba(16, 185, 129, 0.35)',
+              borderRadius: '8px',
+              padding: '6px 14px',
+              fontWeight: 600,
+              fontSize: '13px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              cursor: 'pointer',
+              transition: 'all 0.15s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = '#EAF4ED';
+              e.currentTarget.style.borderColor = '#10B981';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = '#FFFFFF';
+              e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.35)';
+            }}
           >
             <RefreshCwIcon size={15} /> Refresh
           </button>
           <Link
             to="/communications/templates"
             className="auth-btn btn-secondary btn-size-small"
+            style={{
+              backgroundColor: '#FFFFFF',
+              color: '#062E03',
+              border: '1px solid rgba(16, 185, 129, 0.35)',
+              borderRadius: '8px',
+              padding: '6px 14px',
+              fontWeight: 600,
+              fontSize: '13px',
+              textDecoration: 'none',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              transition: 'all 0.15s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = '#EAF4ED';
+              e.currentTarget.style.borderColor = '#10B981';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = '#FFFFFF';
+              e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.35)';
+            }}
           >
             Templates ({stats.overview.templatesTotal})
           </Link>
           <Link
             to="/communications/compose"
             className="auth-btn btn-primary btn-size-small"
+            style={{
+              backgroundColor: '#10B981',
+              color: '#FFFFFF',
+              border: '1px solid #10B981',
+              borderRadius: '8px',
+              padding: '6px 14px',
+              fontWeight: 600,
+              fontSize: '13px',
+              textDecoration: 'none',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              transition: 'all 0.15s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = '#059669';
+              e.currentTarget.style.borderColor = '#059669';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = '#10B981';
+              e.currentTarget.style.borderColor = '#10B981';
+            }}
           >
             <PlusIcon size={15} /> Compose Email
           </Link>
@@ -105,7 +171,7 @@ export const CommunicationCenterPage: React.FC = () => {
       }
     >
       {/* Top KPI Cards */}
-      <div className="lg-stat-grid">
+      <div className="lg-stat-grid" style={{ marginBottom: '1.25rem' }}>
         <StatCard
           label="Email Inbox"
           value={stats.overview.inboxTotal}
@@ -137,87 +203,181 @@ export const CommunicationCenterPage: React.FC = () => {
       </div>
 
       {/* Quick Navigation Folder Tiles */}
-      <SectionCard
-        title="Email Navigation & Channels"
-        subtitle="Jump directly to any communication folder or collaboration workspace"
-      >
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-          <Link
-            to="/communications/inbox"
-            className="flex flex-col justify-between rounded-xl border border-gray-200 bg-white p-3.5 transition-all hover:border-blue-400 hover:bg-blue-50/40"
-          >
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-gray-700">Inbox</span>
-              {stats.overview.inboxUnread > 0 && (
-                <Badge tone="blue">{stats.overview.inboxUnread} unread</Badge>
-              )}
-            </div>
-            <p className="mt-2 text-lg font-bold text-gray-900">
-              {stats.overview.inboxTotal}
-            </p>
-          </Link>
+      <div style={{ marginBottom: '1.5rem' }}>
+        <SectionCard
+          title="Email Navigation & Channels"
+          subtitle="Jump directly to any communication folder or collaboration workspace"
+        >
+          <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 lg:grid-cols-5">
+            <Link
+              to="/communications/inbox"
+              style={{
+                backgroundColor: '#FFFFFF',
+                border: '1px solid rgba(16, 185, 129, 0.22)',
+                borderRadius: '12px',
+                padding: '14px 16px',
+                minHeight: '88px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                textDecoration: 'none',
+                boxShadow: '0 1px 3px rgba(6, 46, 3, 0.04)',
+                transition: 'all 0.15s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = '#10B981';
+                e.currentTarget.style.backgroundColor = '#F8FCF9';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.22)';
+                e.currentTarget.style.backgroundColor = '#FFFFFF';
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
+                <span style={{ fontSize: '13px', fontWeight: 600, color: '#062E03' }}>Inbox</span>
+                {stats.overview.inboxUnread > 0 && (
+                  <Badge tone="blue">{stats.overview.inboxUnread} unread</Badge>
+                )}
+              </div>
+              <p style={{ margin: '8px 0 0 0', fontSize: '22px', fontWeight: 700, color: '#062E03', lineHeight: 1 }}>
+                {stats.overview.inboxTotal}
+              </p>
+            </Link>
 
-          <Link
-            to="/communications/sent"
-            className="flex flex-col justify-between rounded-xl border border-gray-200 bg-white p-3.5 transition-all hover:border-blue-400 hover:bg-blue-50/40"
-          >
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-gray-700">
-                Sent Emails
-              </span>
-              <Badge tone="green">Outbound</Badge>
-            </div>
-            <p className="mt-2 text-lg font-bold text-gray-900">
-              {stats.overview.sentTotal}
-            </p>
-          </Link>
+            <Link
+              to="/communications/sent"
+              style={{
+                backgroundColor: '#FFFFFF',
+                border: '1px solid rgba(16, 185, 129, 0.22)',
+                borderRadius: '12px',
+                padding: '14px 16px',
+                minHeight: '88px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                textDecoration: 'none',
+                boxShadow: '0 1px 3px rgba(6, 46, 3, 0.04)',
+                transition: 'all 0.15s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = '#10B981';
+                e.currentTarget.style.backgroundColor = '#F8FCF9';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.22)';
+                e.currentTarget.style.backgroundColor = '#FFFFFF';
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
+                <span style={{ fontSize: '13px', fontWeight: 600, color: '#062E03' }}>Sent Emails</span>
+                <Badge tone="green">Outbound</Badge>
+              </div>
+              <p style={{ margin: '8px 0 0 0', fontSize: '22px', fontWeight: 700, color: '#062E03', lineHeight: 1 }}>
+                {stats.overview.sentTotal}
+              </p>
+            </Link>
 
-          <Link
-            to="/communications/emails?folder=DRAFTS"
-            className="flex flex-col justify-between rounded-xl border border-gray-200 bg-white p-3.5 transition-all hover:border-blue-400 hover:bg-blue-50/40"
-          >
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-gray-700">
-                Saved Drafts
-              </span>
-              <Badge tone="amber">Draft</Badge>
-            </div>
-            <p className="mt-2 text-lg font-bold text-gray-900">
-              {stats.overview.draftsTotal}
-            </p>
-          </Link>
+            <Link
+              to="/communications/emails?folder=DRAFTS"
+              style={{
+                backgroundColor: '#FFFFFF',
+                border: '1px solid rgba(16, 185, 129, 0.22)',
+                borderRadius: '12px',
+                padding: '14px 16px',
+                minHeight: '88px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                textDecoration: 'none',
+                boxShadow: '0 1px 3px rgba(6, 46, 3, 0.04)',
+                transition: 'all 0.15s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = '#10B981';
+                e.currentTarget.style.backgroundColor = '#F8FCF9';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.22)';
+                e.currentTarget.style.backgroundColor = '#FFFFFF';
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
+                <span style={{ fontSize: '13px', fontWeight: 600, color: '#062E03' }}>Saved Drafts</span>
+                <Badge tone="amber">Draft</Badge>
+              </div>
+              <p style={{ margin: '8px 0 0 0', fontSize: '22px', fontWeight: 700, color: '#062E03', lineHeight: 1 }}>
+                {stats.overview.draftsTotal}
+              </p>
+            </Link>
 
-          <Link
-            to="/communications/comments"
-            className="flex flex-col justify-between rounded-xl border border-gray-200 bg-white p-3.5 transition-all hover:border-blue-400 hover:bg-blue-50/40"
-          >
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-gray-700">
-                Internal Comments
-              </span>
-              <Badge tone="purple">Team</Badge>
-            </div>
-            <p className="mt-2 text-lg font-bold text-gray-900">
-              {stats.overview.commentsTotal}
-            </p>
-          </Link>
+            <Link
+              to="/communications/comments"
+              style={{
+                backgroundColor: '#FFFFFF',
+                border: '1px solid rgba(16, 185, 129, 0.22)',
+                borderRadius: '12px',
+                padding: '14px 16px',
+                minHeight: '88px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                textDecoration: 'none',
+                boxShadow: '0 1px 3px rgba(6, 46, 3, 0.04)',
+                transition: 'all 0.15s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = '#10B981';
+                e.currentTarget.style.backgroundColor = '#F8FCF9';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.22)';
+                e.currentTarget.style.backgroundColor = '#FFFFFF';
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
+                <span style={{ fontSize: '13px', fontWeight: 600, color: '#062E03' }}>Internal Comments</span>
+                <Badge tone="purple">Team</Badge>
+              </div>
+              <p style={{ margin: '8px 0 0 0', fontSize: '22px', fontWeight: 700, color: '#062E03', lineHeight: 1 }}>
+                {stats.overview.commentsTotal}
+              </p>
+            </Link>
 
-          <Link
-            to="/communications/history"
-            className="flex flex-col justify-between rounded-xl border border-gray-200 bg-white p-3.5 transition-all hover:border-blue-400 hover:bg-blue-50/40"
-          >
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-gray-700">
-                Full Timeline
-              </span>
-              <ActivityIcon size={14} />
-            </div>
-            <p className="mt-2 text-sm font-bold text-blue-600">
-              View All History →
-            </p>
-          </Link>
-        </div>
-      </SectionCard>
+            <Link
+              to="/communications/history"
+              style={{
+                backgroundColor: '#FFFFFF',
+                border: '1px solid rgba(16, 185, 129, 0.22)',
+                borderRadius: '12px',
+                padding: '14px 16px',
+                minHeight: '88px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                textDecoration: 'none',
+                boxShadow: '0 1px 3px rgba(6, 46, 3, 0.04)',
+                transition: 'all 0.15s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = '#10B981';
+                e.currentTarget.style.backgroundColor = '#F8FCF9';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.22)';
+                e.currentTarget.style.backgroundColor = '#FFFFFF';
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
+                <span style={{ fontSize: '13px', fontWeight: 600, color: '#062E03' }}>Full Timeline</span>
+                <ActivityIcon size={15} style={{ color: '#10B981' }} />
+              </div>
+              <p style={{ margin: '8px 0 0 0', fontSize: '13px', fontWeight: 700, color: '#10B981', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                View All History →
+              </p>
+            </Link>
+          </div>
+        </SectionCard>
+      </div>
 
       {loading ? (
         <div className="lg-card" style={{ padding: '2.5rem' }}>
@@ -233,7 +393,17 @@ export const CommunicationCenterPage: React.FC = () => {
               actions={
                 <Link
                   to="/communications/emails"
-                  className="text-xs font-semibold text-blue-600 hover:underline"
+                  style={{
+                    fontSize: '12px',
+                    fontWeight: 600,
+                    color: '#10B981',
+                    textDecoration: 'none',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.textDecoration = 'underline')}
+                  onMouseLeave={(e) => (e.currentTarget.style.textDecoration = 'none')}
                 >
                   Open All Emails →
                 </Link>
@@ -247,13 +417,26 @@ export const CommunicationCenterPage: React.FC = () => {
                     <Link
                       to="/communications/compose"
                       className="auth-btn btn-primary btn-size-small"
+                      style={{
+                        backgroundColor: '#10B981',
+                        color: '#FFFFFF',
+                        border: '1px solid #10B981',
+                        borderRadius: '8px',
+                        padding: '6px 14px',
+                        fontWeight: 600,
+                        fontSize: '13px',
+                        textDecoration: 'none',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                      }}
                     >
                       <PlusIcon size={14} /> Compose Email
                     </Link>
                   }
                 />
               ) : (
-                <div className="divide-y divide-gray-100">
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                   {(stream.length > 0
                     ? stream
                     : stats.recentActivity.emails.map((e) => ({
@@ -276,10 +459,26 @@ export const CommunicationCenterPage: React.FC = () => {
                   ).map((item) => (
                     <div
                       key={item.id}
-                      className="flex flex-col justify-between gap-2 py-3 sm:flex-row sm:items-center"
+                      className="flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                      style={{
+                        backgroundColor: '#FFFFFF',
+                        border: '1px solid rgba(16, 185, 129, 0.18)',
+                        borderRadius: '12px',
+                        padding: '12px 14px',
+                        boxShadow: '0 1px 2px rgba(6, 46, 3, 0.02)',
+                        transition: 'all 0.15s ease',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = '#F9FCF9';
+                        e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.45)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = '#FFFFFF';
+                        e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.18)';
+                      }}
                     >
-                      <div className="min-w-0 flex-1">
-                        <div className="flex flex-wrap items-center gap-2">
+                      <div style={{ minWidth: 0, flex: '1 1 auto' }}>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
                           <Badge tone="slate">{item.folder}</Badge>
                           <Badge tone={emailStatusTone(item.status)}>
                             {item.status}
@@ -294,25 +493,76 @@ export const CommunicationCenterPage: React.FC = () => {
                         </div>
                         <Link
                           to={`/communications/emails/${item.id}`}
-                          className={`mt-1 block truncate text-sm hover:text-blue-600 ${
-                            item.isRead
-                              ? 'font-medium text-gray-800'
-                              : 'font-bold text-gray-950'
-                          }`}
+                          style={{
+                            display: 'block',
+                            fontSize: '13.5px',
+                            fontWeight: item.isRead ? 600 : 700,
+                            color: '#062E03',
+                            textDecoration: 'none',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            marginTop: '2px',
+                            transition: 'color 0.15s ease',
+                          }}
+                          onMouseEnter={(e) => (e.currentTarget.style.color = '#10B981')}
+                          onMouseLeave={(e) => (e.currentTarget.style.color = '#062E03')}
                         >
                           {item.subject}
                         </Link>
-                        <p className="mt-0.5 truncate text-xs text-gray-500">
+                        <p
+                          style={{
+                            margin: '3px 0 0 0',
+                            fontSize: '12px',
+                            color: '#64748B',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                          }}
+                        >
                           From: {item.sender?.name || item.sender?.email} ·{' '}
                           {item.snippet || 'No preview available'}
                         </p>
                       </div>
 
-                      <div className="flex items-center gap-2 text-xs text-gray-400">
-                        <span>{formatDateTime(item.createdAt)}</span>
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'flex-end',
+                          justifyContent: 'center',
+                          gap: '6px',
+                          flexShrink: 0,
+                          marginLeft: '10px',
+                        }}
+                      >
+                        <span style={{ fontSize: '11px', color: '#64748B', whiteSpace: 'nowrap' }}>
+                          {formatDateTime(item.createdAt)}
+                        </span>
                         <Link
                           to={`/communications/emails/${item.id}`}
-                          className="rounded-lg border border-gray-200 bg-gray-50 px-2.5 py-1 text-xs font-medium text-gray-700 hover:bg-gray-100"
+                          style={{
+                            backgroundColor: '#FFFFFF',
+                            color: '#062E03',
+                            border: '1px solid rgba(16, 185, 129, 0.35)',
+                            borderRadius: '8px',
+                            padding: '4px 14px',
+                            fontSize: '12px',
+                            fontWeight: 600,
+                            textDecoration: 'none',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            transition: 'all 0.15s ease',
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.backgroundColor = '#EAF4ED';
+                            e.currentTarget.style.borderColor = '#10B981';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor = '#FFFFFF';
+                            e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.35)';
+                          }}
                         >
                           Open
                         </Link>
@@ -332,46 +582,75 @@ export const CommunicationCenterPage: React.FC = () => {
               actions={
                 <Link
                   to="/communications/comments"
-                  className="text-xs font-semibold text-blue-600 hover:underline"
+                  style={{
+                    fontSize: '12px',
+                    fontWeight: 600,
+                    color: '#10B981',
+                    textDecoration: 'none',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.textDecoration = 'underline')}
+                  onMouseLeave={(e) => (e.currentTarget.style.textDecoration = 'none')}
                 >
                   All Comments →
                 </Link>
               }
             >
               {stats.recentActivity.comments.length === 0 ? (
-                <div className="py-6 text-center text-xs text-gray-500">
+                <div style={{ padding: '24px 0', textAlign: 'center', fontSize: '12px', color: '#64748B' }}>
                   No internal comments yet. Collaborate with teammates on{' '}
                   <Link
                     to="/communications/comments"
-                    className="font-medium text-blue-600 hover:underline"
+                    style={{ fontWeight: 600, color: '#10B981', textDecoration: 'none' }}
+                    onMouseEnter={(e) => (e.currentTarget.style.textDecoration = 'underline')}
+                    onMouseLeave={(e) => (e.currentTarget.style.textDecoration = 'none')}
                   >
                     Internal Comments
                   </Link>
                   .
                 </div>
               ) : (
-                <div className="space-y-3">
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                   {stats.recentActivity.comments.map((c) => (
                     <div
                       key={c.id}
-                      className="rounded-xl border border-gray-200 bg-gray-50/70 p-3 text-xs"
+                      style={{
+                        backgroundColor: '#F8FCF9',
+                        border: '1px solid rgba(16, 185, 129, 0.22)',
+                        borderRadius: '12px',
+                        padding: '13px 15px',
+                        boxShadow: '0 1px 2px rgba(6, 46, 3, 0.02)',
+                        transition: 'all 0.15s ease',
+                      }}
                     >
-                      <div className="flex items-center justify-between">
-                        <strong className="text-gray-900">
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
+                        <strong style={{ color: '#062E03', fontSize: '12.5px', fontWeight: 600 }}>
                           {c.author?.name || c.author?.email || 'Team Member'}
                         </strong>
-                        <span className="text-[11px] text-gray-400">
+                        <span style={{ fontSize: '11px', color: '#64748B', whiteSpace: 'nowrap' }}>
                           {formatDateTime(c.createdAt)}
                         </span>
                       </div>
-                      <p className="mt-1 whitespace-pre-wrap text-gray-700">
+                      <p style={{ margin: '6px 0 0 0', fontSize: '12px', color: '#334155', lineHeight: '1.45', whiteSpace: 'pre-wrap' }}>
                         {c.content}
                       </p>
                       {c.email && (
-                        <div className="mt-2">
+                        <div style={{ marginTop: '8px' }}>
                           <Link
                             to={`/communications/emails/${c.email.id}`}
-                            className="inline-flex items-center gap-1 text-[11px] font-medium text-blue-600 hover:underline"
+                            style={{
+                              color: '#10B981',
+                              fontSize: '11.5px',
+                              fontWeight: 600,
+                              textDecoration: 'none',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '4px',
+                            }}
+                            onMouseEnter={(e) => (e.currentTarget.style.textDecoration = 'underline')}
+                            onMouseLeave={(e) => (e.currentTarget.style.textDecoration = 'none')}
                           >
                             Thread: {c.email.subject} →
                           </Link>
@@ -387,21 +666,34 @@ export const CommunicationCenterPage: React.FC = () => {
               title="Email Delivery Status Breakdown"
               subtitle="Status distribution across all workspace emails"
             >
-              <div className="grid grid-cols-3 gap-2.5">
-                {Object.entries(stats.performance.statusBreakdown).map(
-                  ([statusKey, count]) => (
-                    <div
-                      key={statusKey}
-                      className="rounded-lg border border-gray-200 bg-white p-2.5 text-center"
-                    >
-                      <Badge tone={emailStatusTone(statusKey)}>
-                        {statusKey}
-                      </Badge>
-                      <p className="mt-1.5 text-base font-bold text-gray-900">
-                        {count}
-                      </p>
-                    </div>
-                  ),
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
+                {Object.entries(stats.performance.statusBreakdown).length === 0 ? (
+                  <div style={{ gridColumn: 'span 3', textAlign: 'center', padding: '16px', color: '#64748B', fontSize: '12px' }}>
+                    No delivery status metrics recorded yet.
+                  </div>
+                ) : (
+                  Object.entries(stats.performance.statusBreakdown).map(
+                    ([statusKey, count]) => (
+                      <div
+                        key={statusKey}
+                        style={{
+                          backgroundColor: '#FFFFFF',
+                          border: '1px solid rgba(16, 185, 129, 0.22)',
+                          borderRadius: '10px',
+                          padding: '12px 8px',
+                          textAlign: 'center',
+                          boxShadow: '0 1px 2px rgba(6, 46, 3, 0.03)',
+                        }}
+                      >
+                        <Badge tone={emailStatusTone(statusKey)}>
+                          {statusKey}
+                        </Badge>
+                        <p style={{ margin: '8px 0 0 0', fontSize: '18px', fontWeight: 700, color: '#062E03', lineHeight: 1 }}>
+                          {count}
+                        </p>
+                      </div>
+                    ),
+                  )
                 )}
               </div>
             </SectionCard>
