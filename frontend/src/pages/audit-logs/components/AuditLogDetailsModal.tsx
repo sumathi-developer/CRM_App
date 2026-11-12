@@ -66,33 +66,77 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/50 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/60 p-4 backdrop-blur-sm"
       role="dialog"
       aria-modal="true"
       aria-labelledby="audit-log-details-title"
     >
-      <div className="relative w-full max-w-3xl rounded-2xl bg-white shadow-2xl border border-gray-200 overflow-hidden flex flex-col max-h-[90vh]">
+      <div
+        style={{
+          position: 'relative',
+          width: '100%',
+          maxWidth: '780px',
+          borderRadius: '16px',
+          backgroundColor: '#FFFFFF',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+          border: '1px solid rgba(16, 185, 129, 0.25)',
+          overflow: 'hidden',
+          display: 'flex',
+          flexDirection: 'column',
+          maxHeight: '90vh',
+        }}
+      >
         {/* Modal Header */}
-        <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4 bg-gray-50/80">
-          <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700">
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            borderBottom: '1px solid rgba(16, 185, 129, 0.18)',
+            padding: '16px 24px',
+            backgroundColor: '#F8FCF9',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div
+              style={{
+                display: 'flex',
+                height: '38px',
+                width: '38px',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: '10px',
+                backgroundColor: '#EAF4ED',
+                color: '#10B981',
+                flexShrink: 0,
+              }}
+            >
               <ShieldIcon size={20} />
             </div>
             <div>
               <h2
                 id="audit-log-details-title"
-                className="text-base font-bold text-gray-900 flex items-center gap-2"
+                style={{
+                  fontSize: '16px',
+                  fontWeight: 700,
+                  color: '#062E03',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  flexWrap: 'wrap',
+                  margin: 0,
+                }}
               >
                 <span>Audit Log Details</span>
                 <span
-                  className={`inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-semibold ${getActionBadgeClass(
+                  className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold ${getActionBadgeClass(
                     log.action,
                   )}`}
                 >
                   {log.action}
                 </span>
                 <span
-                  className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-semibold ${statusMeta.badgeClass}`}
+                  className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-semibold ${statusMeta.badgeClass}`}
                 >
                   {log.status === 'SUCCESS' && <CheckCircleIcon size={11} />}
                   {log.status === 'FAILURE' && <AlertCircleIcon size={11} />}
@@ -100,7 +144,7 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
                   <span>{statusMeta.label}</span>
                 </span>
               </h2>
-              <p className="text-xs text-gray-500">
+              <p style={{ fontSize: '12px', color: '#64748B', margin: '3px 0 0 0' }}>
                 Recorded {formatAuditDateTime(log.createdAt)} ({formatRelativeTime(log.createdAt)})
               </p>
             </div>
@@ -109,7 +153,26 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-700"
+            style={{
+              borderRadius: '8px',
+              padding: '6px',
+              color: '#64748B',
+              backgroundColor: 'transparent',
+              border: 'none',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'all 0.15s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = '#EAF4ED';
+              e.currentTarget.style.color = '#062E03';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'transparent';
+              e.currentTarget.style.color = '#64748B';
+            }}
             aria-label="Close modal"
           >
             <XIcon size={18} />
@@ -117,15 +180,30 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
         </div>
 
         {/* Navigation Tabs inside modal */}
-        <div className="flex border-b border-gray-200 px-6 bg-white text-xs font-semibold">
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            borderBottom: '1px solid rgba(16, 185, 129, 0.16)',
+            padding: '0 24px',
+            backgroundColor: '#FFFFFF',
+            gap: '8px',
+          }}
+        >
           <button
             type="button"
             onClick={() => setActiveTab('overview')}
-            className={`py-3 px-3 border-b-2 transition ${
-              activeTab === 'overview'
-                ? 'border-emerald-600 text-emerald-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700'
-            }`}
+            style={{
+              padding: '12px 16px',
+              fontSize: '13px',
+              fontWeight: 600,
+              color: activeTab === 'overview' ? '#10B981' : '#64748B',
+              border: 'none',
+              borderBottom: activeTab === 'overview' ? '2px solid #10B981' : '2px solid transparent',
+              backgroundColor: 'transparent',
+              cursor: 'pointer',
+              transition: 'all 0.15s ease',
+            }}
           >
             Overview
           </button>
@@ -133,11 +211,17 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
             <button
               type="button"
               onClick={() => setActiveTab('changes')}
-              className={`py-3 px-3 border-b-2 transition ${
-                activeTab === 'changes'
-                  ? 'border-emerald-600 text-emerald-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700'
-              }`}
+              style={{
+                padding: '12px 16px',
+                fontSize: '13px',
+                fontWeight: 600,
+                color: activeTab === 'changes' ? '#10B981' : '#64748B',
+                border: 'none',
+                borderBottom: activeTab === 'changes' ? '2px solid #10B981' : '2px solid transparent',
+                backgroundColor: 'transparent',
+                cursor: 'pointer',
+                transition: 'all 0.15s ease',
+              }}
             >
               Changes & Diffs
             </button>
@@ -145,47 +229,136 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
           <button
             type="button"
             onClick={() => setActiveTab('raw')}
-            className={`py-3 px-3 border-b-2 transition ${
-              activeTab === 'raw'
-                ? 'border-emerald-600 text-emerald-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700'
-            }`}
+            style={{
+              padding: '12px 16px',
+              fontSize: '13px',
+              fontWeight: 600,
+              color: activeTab === 'raw' ? '#10B981' : '#64748B',
+              border: 'none',
+              borderBottom: activeTab === 'raw' ? '2px solid #10B981' : '2px solid transparent',
+              backgroundColor: 'transparent',
+              cursor: 'pointer',
+              transition: 'all 0.15s ease',
+            }}
           >
             Raw JSON Payload
           </button>
 
-          <div className="ml-auto flex items-center py-2">
+          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
             <button
               type="button"
               onClick={handleCopyJson}
-              className="inline-flex items-center gap-1 rounded border border-gray-200 bg-gray-50 px-2 py-1 text-xs text-gray-600 hover:bg-gray-100"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                borderRadius: '8px',
+                border: '1px solid rgba(16, 185, 129, 0.28)',
+                backgroundColor: '#F1F8F3',
+                color: '#062E03',
+                padding: '5px 12px',
+                fontSize: '12px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'all 0.15s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#EAF4ED';
+                e.currentTarget.style.borderColor = '#10B981';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#F1F8F3';
+                e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.28)';
+              }}
             >
-              {copiedJson ? <CheckIcon size={12} className="text-emerald-600" /> : null}
+              {copiedJson ? <CheckIcon size={12} style={{ color: '#10B981' }} /> : null}
               <span>{copiedJson ? 'JSON Copied' : 'Copy JSON'}</span>
             </button>
           </div>
         </div>
 
         {/* Modal Scrollable Body */}
-        <div className="p-6 overflow-y-auto space-y-5 text-sm">
+        <div
+          style={{
+            padding: '20px 24px',
+            overflowY: 'auto',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '18px',
+            backgroundColor: '#FFFFFF',
+          }}
+        >
           {activeTab === 'overview' && (
             <>
               {/* Log UUID Bar */}
-              <div className="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 p-3">
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  borderRadius: '10px',
+                  border: '1px solid rgba(16, 185, 129, 0.22)',
+                  backgroundColor: '#F8FCF9',
+                  padding: '12px 16px',
+                  gap: '12px',
+                }}
+              >
                 <div>
-                  <span className="text-xs font-bold uppercase tracking-wider text-gray-500">
+                  <span
+                    style={{
+                      display: 'block',
+                      fontSize: '11px',
+                      fontWeight: 700,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.06em',
+                      color: '#475569',
+                      marginBottom: '3px',
+                    }}
+                  >
                     Log Entry UUID:
                   </span>
-                  <div className="font-mono text-xs font-semibold text-gray-800 break-all">
+                  <div
+                    style={{
+                      fontFamily: 'monospace',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      color: '#062E03',
+                      wordBreak: 'break-all',
+                    }}
+                  >
                     {log.id}
                   </div>
                 </div>
                 <button
                   type="button"
                   onClick={handleCopyId}
-                  className="inline-flex items-center gap-1 rounded bg-white px-2.5 py-1 text-xs font-medium text-gray-700 shadow-sm border border-gray-200 hover:bg-gray-50"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    borderRadius: '8px',
+                    border: '1px solid rgba(16, 185, 129, 0.28)',
+                    backgroundColor: '#FFFFFF',
+                    color: '#062E03',
+                    padding: '6px 14px',
+                    fontSize: '12px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.04)',
+                    whiteSpace: 'nowrap',
+                    flexShrink: 0,
+                    transition: 'all 0.15s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = '#EAF4ED';
+                    e.currentTarget.style.borderColor = '#10B981';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = '#FFFFFF';
+                    e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.28)';
+                  }}
                 >
-                  {copiedId ? <CheckIcon size={12} className="text-emerald-600" /> : null}
+                  {copiedId ? <CheckIcon size={12} style={{ color: '#10B981' }} /> : null}
                   <span>{copiedId ? 'Copied' : 'Copy UUID'}</span>
                 </button>
               </div>
@@ -193,28 +366,61 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
               {/* Grid with Actor, Target, and Network details */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Actor Card */}
-                <div className="rounded-xl border border-gray-200 p-4 bg-white">
-                  <div className="flex items-center gap-2 mb-3 text-xs font-bold uppercase tracking-wider text-gray-500">
-                    <UserIcon size={14} className="text-emerald-600" />
+                <div
+                  style={{
+                    borderRadius: '12px',
+                    border: '1px solid rgba(16, 185, 129, 0.22)',
+                    padding: '16px 18px',
+                    backgroundColor: '#FFFFFF',
+                    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.03)',
+                  }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      marginBottom: '10px',
+                      fontSize: '11px',
+                      fontWeight: 700,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.06em',
+                      color: '#062E03',
+                    }}
+                  >
+                    <UserIcon size={15} style={{ color: '#10B981' }} />
                     <span>Responsible User</span>
                   </div>
-                  <div className="space-y-1.5">
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                     <div>
-                      <span className="text-xs text-gray-400">Name:</span>
-                      <p className="font-semibold text-gray-900">
+                      <span style={{ fontSize: '11px', color: '#64748B', display: 'block' }}>Name:</span>
+                      <p style={{ fontWeight: 600, color: '#062E03', fontSize: '13px', margin: '2px 0 0 0' }}>
                         {log.userName || log.userEmail || 'System / Automated Routine'}
                       </p>
                     </div>
                     {log.userEmail && (
                       <div>
-                        <span className="text-xs text-gray-400">Email:</span>
-                        <p className="font-mono text-xs text-gray-700">{log.userEmail}</p>
+                        <span style={{ fontSize: '11px', color: '#64748B', display: 'block' }}>Email:</span>
+                        <p style={{ fontFamily: 'monospace', fontSize: '12px', color: '#062E03', margin: '2px 0 0 0' }}>
+                          {log.userEmail}
+                        </p>
                       </div>
                     )}
                     {log.userId && (
                       <div>
-                        <span className="text-xs text-gray-400">User ID:</span>
-                        <p className="font-mono text-[11px] text-gray-500 truncate" title={log.userId}>
+                        <span style={{ fontSize: '11px', color: '#64748B', display: 'block' }}>User ID:</span>
+                        <p
+                          style={{
+                            fontFamily: 'monospace',
+                            fontSize: '11px',
+                            color: '#475569',
+                            margin: '2px 0 0 0',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                          }}
+                          title={log.userId}
+                        >
                           {log.userId}
                         </p>
                       </div>
@@ -223,15 +429,35 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
                 </div>
 
                 {/* Target Record Card */}
-                <div className="rounded-xl border border-gray-200 p-4 bg-white">
-                  <div className="flex items-center gap-2 mb-3 text-xs font-bold uppercase tracking-wider text-gray-500">
-                    <ShieldIcon size={14} className="text-blue-600" />
+                <div
+                  style={{
+                    borderRadius: '12px',
+                    border: '1px solid rgba(16, 185, 129, 0.22)',
+                    padding: '16px 18px',
+                    backgroundColor: '#FFFFFF',
+                    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.03)',
+                  }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      marginBottom: '10px',
+                      fontSize: '11px',
+                      fontWeight: 700,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.06em',
+                      color: '#062E03',
+                    }}
+                  >
+                    <ShieldIcon size={15} style={{ color: '#10B981' }} />
                     <span>Target Record</span>
                   </div>
-                  <div className="space-y-1.5">
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                     <div>
-                      <span className="text-xs text-gray-400">Category:</span>
-                      <div>
+                      <span style={{ fontSize: '11px', color: '#64748B', display: 'block' }}>Category:</span>
+                      <div style={{ marginTop: '3px' }}>
                         <span
                           className={`inline-flex items-center rounded border px-2 py-0.5 text-xs font-semibold ${getEntityBadgeClass(
                             log.entityType,
@@ -243,14 +469,27 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
                     </div>
                     {log.entityName && (
                       <div>
-                        <span className="text-xs text-gray-400">Entity Name:</span>
-                        <p className="font-semibold text-gray-900">{log.entityName}</p>
+                        <span style={{ fontSize: '11px', color: '#64748B', display: 'block' }}>Entity Name:</span>
+                        <p style={{ fontWeight: 600, color: '#062E03', fontSize: '13px', margin: '2px 0 0 0' }}>
+                          {log.entityName}
+                        </p>
                       </div>
                     )}
                     {log.entityId && (
                       <div>
-                        <span className="text-xs text-gray-400">Entity ID:</span>
-                        <p className="font-mono text-[11px] text-gray-500 truncate" title={log.entityId}>
+                        <span style={{ fontSize: '11px', color: '#64748B', display: 'block' }}>Entity ID:</span>
+                        <p
+                          style={{
+                            fontFamily: 'monospace',
+                            fontSize: '11px',
+                            color: '#475569',
+                            margin: '2px 0 0 0',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                          }}
+                          title={log.entityId}
+                        >
                           {log.entityId}
                         </p>
                       </div>
@@ -259,60 +498,120 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
                 </div>
 
                 {/* Network & Device Info */}
-                <div className="rounded-xl border border-gray-200 p-4 bg-white">
-                  <div className="flex items-center gap-2 mb-3 text-xs font-bold uppercase tracking-wider text-gray-500">
-                    <ClockIcon size={14} className="text-emerald-600" />
+                <div
+                  style={{
+                    borderRadius: '12px',
+                    border: '1px solid rgba(16, 185, 129, 0.22)',
+                    padding: '16px 18px',
+                    backgroundColor: '#FFFFFF',
+                    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.03)',
+                  }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      marginBottom: '10px',
+                      fontSize: '11px',
+                      fontWeight: 700,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.06em',
+                      color: '#062E03',
+                    }}
+                  >
+                    <ClockIcon size={15} style={{ color: '#10B981' }} />
                     <span>Network & Client</span>
                   </div>
-                  <div className="space-y-1.5">
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                     <div>
-                      <span className="text-xs text-gray-400">IP Address:</span>
-                      <p className="font-mono text-xs font-semibold text-gray-800">
+                      <span style={{ fontSize: '11px', color: '#64748B', display: 'block' }}>IP Address:</span>
+                      <p style={{ fontFamily: 'monospace', fontSize: '13px', fontWeight: 600, color: '#062E03', margin: '2px 0 0 0' }}>
                         {log.ipAddress || 'Internal Network'}
                       </p>
                     </div>
                     <div>
-                      <span className="text-xs text-gray-400">Browser / Platform:</span>
-                      <p className="text-xs font-medium text-gray-800">
+                      <span style={{ fontSize: '11px', color: '#64748B', display: 'block' }}>Browser / Platform:</span>
+                      <p style={{ fontSize: '13px', fontWeight: 500, color: '#062E03', margin: '2px 0 0 0' }}>
                         {browser} on {os}
                       </p>
                     </div>
                     {log.userAgent && (
                       <div>
-                        <span className="text-xs text-gray-400">User Agent:</span>
-                        <p
-                          className="font-mono text-[11px] text-gray-500 break-all bg-gray-50 p-1.5 rounded"
+                        <span style={{ fontSize: '11px', color: '#64748B', display: 'block', marginBottom: '3px' }}>User Agent:</span>
+                        <div
+                          style={{
+                            fontFamily: 'monospace',
+                            fontSize: '11px',
+                            color: '#062E03',
+                            wordBreak: 'break-all',
+                            backgroundColor: '#F1F8F3',
+                            border: '1px solid rgba(16, 185, 129, 0.18)',
+                            padding: '6px 10px',
+                            borderRadius: '6px',
+                            lineHeight: 1.4,
+                          }}
                           title={log.userAgent}
                         >
                           {log.userAgent}
-                        </p>
+                        </div>
                       </div>
                     )}
                   </div>
                 </div>
 
                 {/* Workspace Context */}
-                <div className="rounded-xl border border-gray-200 p-4 bg-white">
-                  <div className="flex items-center gap-2 mb-3 text-xs font-bold uppercase tracking-wider text-gray-500">
-                    <LockIcon size={14} className="text-emerald-600" />
+                <div
+                  style={{
+                    borderRadius: '12px',
+                    border: '1px solid rgba(16, 185, 129, 0.22)',
+                    padding: '16px 18px',
+                    backgroundColor: '#FFFFFF',
+                    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.03)',
+                  }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      marginBottom: '10px',
+                      fontSize: '11px',
+                      fontWeight: 700,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.06em',
+                      color: '#062E03',
+                    }}
+                  >
+                    <LockIcon size={15} style={{ color: '#10B981' }} />
                     <span>Security & Workspace</span>
                   </div>
-                  <div className="space-y-1.5">
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                     <div>
-                      <span className="text-xs text-gray-400">Workspace ID:</span>
-                      <p className="font-mono text-[11px] text-gray-600 truncate">
+                      <span style={{ fontSize: '11px', color: '#64748B', display: 'block' }}>Workspace ID:</span>
+                      <p
+                        style={{
+                          fontFamily: 'monospace',
+                          fontSize: '11px',
+                          color: '#475569',
+                          margin: '2px 0 0 0',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
                         {log.workspaceId || 'Default Organization Workspace'}
                       </p>
                     </div>
                     <div>
-                      <span className="text-xs text-gray-400">Immutability:</span>
-                      <p className="text-xs font-semibold text-emerald-700">
+                      <span style={{ fontSize: '11px', color: '#64748B', display: 'block' }}>Immutability:</span>
+                      <p style={{ fontSize: '13px', fontWeight: 600, color: '#10B981', margin: '2px 0 0 0' }}>
                         Cryptographically Sealed
                       </p>
                     </div>
                     <div>
-                      <span className="text-xs text-gray-400">Execution Status:</span>
-                      <p className="text-xs font-medium text-gray-800">
+                      <span style={{ fontSize: '11px', color: '#64748B', display: 'block' }}>Execution Status:</span>
+                      <p style={{ fontSize: '13px', fontWeight: 600, color: '#062E03', margin: '2px 0 0 0' }}>
                         {statusMeta.label} ({log.status})
                       </p>
                     </div>
@@ -324,33 +623,49 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
 
           {/* Changes / Diffs Tab */}
           {activeTab === 'changes' && (
-            <div className="space-y-4">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-gray-500">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              <h3
+                style={{
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.06em',
+                  color: '#475569',
+                  margin: 0,
+                }}
+              >
                 Field Value Modifications
               </h3>
               {allDiffKeys.length > 0 ? (
-                <div className="border border-gray-200 rounded-xl overflow-hidden shadow-sm">
-                  <table className="w-full text-left text-xs">
-                    <thead className="bg-gray-50 border-b border-gray-200 font-semibold text-gray-600">
+                <div
+                  style={{
+                    border: '1px solid rgba(16, 185, 129, 0.22)',
+                    borderRadius: '10px',
+                    overflow: 'hidden',
+                    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.03)',
+                  }}
+                >
+                  <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '12px' }}>
+                    <thead style={{ backgroundColor: '#F4FAF6', borderBottom: '1px solid rgba(16, 185, 129, 0.18)', fontWeight: 600, color: '#062E03' }}>
                       <tr>
-                        <th className="py-2.5 px-3">Field</th>
-                        <th className="py-2.5 px-3 bg-rose-50/50 text-rose-800">Previous Value</th>
-                        <th className="py-2.5 px-3 bg-emerald-50/50 text-emerald-800">Updated Value</th>
+                        <th style={{ padding: '10px 14px' }}>Field</th>
+                        <th style={{ padding: '10px 14px', backgroundColor: 'rgba(239, 68, 68, 0.08)', color: '#DC2626' }}>Previous Value</th>
+                        <th style={{ padding: '10px 14px', backgroundColor: 'rgba(16, 185, 129, 0.08)', color: '#047857' }}>Updated Value</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-100">
+                    <tbody>
                       {allDiffKeys.map((key) => {
                         const oldVal = oldValues[key];
                         const newVal = newValues[key];
                         return (
-                          <tr key={key} className="hover:bg-gray-50">
-                            <td className="py-2 px-3 font-mono font-medium text-gray-800">
+                          <tr key={key} style={{ borderBottom: '1px solid #F1F5F2' }}>
+                            <td style={{ padding: '10px 14px', fontFamily: 'monospace', fontWeight: 600, color: '#062E03' }}>
                               {key}
                             </td>
-                            <td className="py-2 px-3 font-mono text-rose-700 bg-rose-50/20">
+                            <td style={{ padding: '10px 14px', fontFamily: 'monospace', color: '#DC2626', backgroundColor: 'rgba(254, 242, 242, 0.6)' }}>
                               {oldVal !== undefined ? JSON.stringify(oldVal) : '—'}
                             </td>
-                            <td className="py-2 px-3 font-mono text-emerald-700 bg-emerald-50/20 font-semibold">
+                            <td style={{ padding: '10px 14px', fontFamily: 'monospace', color: '#047857', backgroundColor: 'rgba(236, 253, 245, 0.6)', fontWeight: 600 }}>
                               {newVal !== undefined ? JSON.stringify(newVal) : '—'}
                             </td>
                           </tr>
@@ -360,11 +675,22 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
                   </table>
                 </div>
               ) : details.changes ? (
-                <pre className="rounded-xl bg-gray-900 p-4 text-xs font-mono text-emerald-400 overflow-x-auto">
+                <pre
+                  style={{
+                    borderRadius: '10px',
+                    backgroundColor: '#0F172A',
+                    padding: '16px',
+                    fontSize: '12px',
+                    fontFamily: 'monospace',
+                    color: '#34D399',
+                    overflowX: 'auto',
+                    margin: 0,
+                  }}
+                >
                   {JSON.stringify(details.changes, null, 2)}
                 </pre>
               ) : (
-                <p className="text-xs text-gray-500">
+                <p style={{ fontSize: '13px', color: '#64748B', margin: 0 }}>
                   No individual field diffs recorded for this entry.
                 </p>
               )}
@@ -373,14 +699,27 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
 
           {/* Raw JSON Tab */}
           {activeTab === 'raw' && (
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-xs text-gray-500">
-                <span>Complete Record JSON:</span>
-                <span className="font-mono text-[11px] text-gray-400">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '12px', color: '#64748B' }}>
+                <span style={{ fontWeight: 600, color: '#062E03' }}>Complete Record JSON:</span>
+                <span style={{ fontFamily: 'monospace', fontSize: '11px', color: '#64748B' }}>
                   {Object.keys(log).length} attributes
                 </span>
               </div>
-              <pre className="rounded-xl bg-slate-900 p-4 text-xs font-mono text-slate-100 overflow-x-auto max-h-96">
+              <pre
+                style={{
+                  borderRadius: '10px',
+                  backgroundColor: '#0F172A',
+                  padding: '16px',
+                  fontSize: '12px',
+                  fontFamily: 'monospace',
+                  color: '#E2E8F0',
+                  overflowX: 'auto',
+                  maxHeight: '380px',
+                  margin: 0,
+                  border: '1px solid rgba(16, 185, 129, 0.2)',
+                }}
+              >
                 {JSON.stringify(log, null, 2)}
               </pre>
             </div>
@@ -388,15 +727,46 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
         </div>
 
         {/* Modal Footer */}
-        <div className="flex items-center justify-between border-t border-gray-200 px-6 py-3 bg-gray-50 text-xs">
-          <div className="flex items-center gap-1.5 text-slate-600 font-medium">
-            <LockIcon size={14} className="text-slate-500" />
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            borderTop: '1px solid rgba(16, 185, 129, 0.18)',
+            padding: '14px 24px',
+            backgroundColor: '#F8FCF9',
+            fontSize: '12px',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#062E03', fontWeight: 500 }}>
+            <LockIcon size={14} style={{ color: '#10B981' }} />
             <span>Read-Only Compliance Record: Frontend edits are strictly disabled.</span>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg bg-white border border-gray-300 px-4 py-1.5 text-xs font-semibold text-gray-700 hover:bg-gray-100 shadow-sm"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              padding: '7px 18px',
+              borderRadius: '8px',
+              border: '1px solid rgba(16, 185, 129, 0.3)',
+              backgroundColor: '#FFFFFF',
+              color: '#062E03',
+              fontSize: '12px',
+              fontWeight: 600,
+              cursor: 'pointer',
+              boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)',
+              transition: 'all 0.15s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = '#EAF4ED';
+              e.currentTarget.style.borderColor = '#10B981';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = '#FFFFFF';
+              e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+            }}
           >
             Close
           </button>
