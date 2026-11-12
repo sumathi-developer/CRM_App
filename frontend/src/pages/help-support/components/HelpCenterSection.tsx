@@ -52,24 +52,75 @@ export const HelpCenterSection: React.FC<HelpCenterSectionProps> = ({
   const selectedCategory = categories.find((c) => c.id === selectedCategoryId);
 
   return (
-    <div className="space-y-8">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
       {/* Hero Search Box */}
-      <div className="relative rounded-2xl bg-gradient-to-r from-purple-700 via-indigo-700 to-purple-800 p-8 text-white shadow-lg">
-        <div className="max-w-2xl mx-auto text-center space-y-4">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1 text-xs font-semibold backdrop-blur-sm">
+      <div
+        className="help-hero-banner"
+        style={{
+          background: 'linear-gradient(135deg, #FFFFFF 0%, #F4FBF7 100%)',
+          border: '1px solid rgba(16, 185, 129, 0.25)',
+          borderRadius: '16px',
+          padding: '36px 24px',
+          textAlign: 'center',
+          boxShadow: '0 2px 8px rgba(6, 46, 3, 0.04)',
+          position: 'relative',
+        }}
+      >
+        <div style={{ maxWidth: '640px', margin: '0 auto' }}>
+          <span
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              backgroundColor: '#EAF4ED',
+              border: '1px solid rgba(16, 185, 129, 0.3)',
+              color: '#10B981',
+              padding: '4px 12px',
+              borderRadius: '9999px',
+              fontSize: '12px',
+              fontWeight: 600,
+              marginBottom: '12px',
+            }}
+          >
             <LifeBuoyIcon size={14} />
             <span>24/7 Knowledge & Resource Center</span>
           </span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+          <h2
+            style={{
+              color: '#062E03',
+              fontSize: '26px',
+              fontWeight: 800,
+              letterSpacing: '-0.02em',
+              margin: '0 0 8px',
+            }}
+          >
             How can we help you today?
           </h2>
-          <p className="text-sm text-purple-100 max-w-lg mx-auto">
+          <p
+            style={{
+              color: '#64748B',
+              fontSize: '13.5px',
+              lineHeight: 1.5,
+              margin: '0 0 20px',
+            }}
+          >
             Search hundreds of articles, explore pipeline workflows, or learn how to convert leads into revenue.
           </p>
 
           {/* Search Input Bar */}
-          <div className="relative mt-4 text-left">
-            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-gray-400">
+          <div style={{ position: 'relative', maxWidth: '560px', margin: '0 auto', textAlign: 'left' }}>
+            <div
+              style={{
+                position: 'absolute',
+                top: 0,
+                bottom: 0,
+                left: '14px',
+                display: 'flex',
+                alignItems: 'center',
+                color: '#10B981',
+                pointerEvents: 'none',
+              }}
+            >
               <SearchIcon size={18} />
             </div>
             <input
@@ -77,13 +128,45 @@ export const HelpCenterSection: React.FC<HelpCenterSectionProps> = ({
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
               placeholder="Search guides (e.g. 'convert lead', 'pipelines', 'email sync')..."
-              className="w-full rounded-xl border-0 bg-white py-3.5 pl-11 pr-10 text-sm text-gray-900 shadow-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-300"
+              style={{
+                width: '100%',
+                backgroundColor: '#FFFFFF',
+                border: '1px solid rgba(16, 185, 129, 0.35)',
+                borderRadius: '12px',
+                padding: '12px 38px 12px 42px',
+                fontSize: '13.5px',
+                color: '#062E03',
+                outline: 'none',
+                boxShadow: '0 1px 3px rgba(6, 46, 3, 0.04)',
+                boxSizing: 'border-box',
+                transition: 'all 0.15s ease',
+              }}
+              onFocus={(e) => {
+                e.currentTarget.style.borderColor = '#10B981';
+                e.currentTarget.style.boxShadow = '0 0 0 3px rgba(16, 185, 129, 0.15)';
+              }}
+              onBlur={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.35)';
+                e.currentTarget.style.boxShadow = '0 1px 3px rgba(6, 46, 3, 0.04)';
+              }}
             />
             {searchQuery && (
               <button
                 type="button"
                 onClick={() => onSearchChange('')}
-                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600"
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  bottom: 0,
+                  right: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  background: 'none',
+                  border: 'none',
+                  color: '#94A3B8',
+                  cursor: 'pointer',
+                  padding: 0,
+                }}
                 aria-label="Clear search"
               >
                 <XIcon size={16} />
@@ -94,53 +177,118 @@ export const HelpCenterSection: React.FC<HelpCenterSectionProps> = ({
       </div>
 
       {/* Help Categories Grid */}
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <h3 className="text-base font-bold text-gray-900">
+      <div>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+          <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#062E03', margin: 0 }}>
             Browse Knowledge Categories
           </h3>
           {selectedCategoryId && (
             <button
               type="button"
               onClick={() => onSelectCategory(undefined)}
-              className="text-xs font-semibold text-purple-600 hover:text-purple-800"
+              style={{
+                fontSize: '12px',
+                fontWeight: 600,
+                color: '#10B981',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                padding: '4px 8px',
+              }}
             >
               Show all categories
             </button>
           )}
         </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '14px' }}>
           {categories.map((cat) => {
             const isSelected = selectedCategoryId === cat.id;
             const count = cat.articleCount ?? cat._count?.articles ?? 0;
             return (
               <div
                 key={cat.id}
-                onClick={() =>
-                  onSelectCategory(isSelected ? undefined : cat.id)
-                }
-                className={`cursor-pointer rounded-xl border p-4 shadow-sm transition hover:shadow-md ${
-                  isSelected
-                    ? 'border-purple-500 bg-purple-50/70 ring-1 ring-purple-500'
-                    : 'border-gray-200 bg-white hover:border-purple-200'
-                }`}
+                onClick={() => onSelectCategory(isSelected ? undefined : cat.id)}
+                style={{
+                  cursor: 'pointer',
+                  borderRadius: '12px',
+                  border: isSelected
+                    ? '1.5px solid #10B981'
+                    : '1px solid rgba(16, 185, 129, 0.2)',
+                  backgroundColor: isSelected ? '#F8FCF9' : '#FFFFFF',
+                  padding: '16px',
+                  boxShadow: '0 1px 3px rgba(6, 46, 3, 0.04)',
+                  transition: 'all 0.15s ease',
+                }}
+                onMouseEnter={(e) => {
+                  if (!isSelected) {
+                    e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+                    e.currentTarget.style.boxShadow = '0 4px 12px rgba(16, 185, 129, 0.08)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isSelected) {
+                    e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.2)';
+                    e.currentTarget.style.boxShadow = '0 1px 3px rgba(6, 46, 3, 0.04)';
+                  }
+                }}
               >
-                <div className="flex items-start gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-purple-100 text-purple-700">
-                    <BookOpenIcon size={20} />
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                  <div
+                    style={{
+                      width: '38px',
+                      height: '38px',
+                      borderRadius: '8px',
+                      backgroundColor: '#EAF4ED',
+                      border: '1px solid rgba(16, 185, 129, 0.25)',
+                      color: '#10B981',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0,
+                    }}
+                  >
+                    <BookOpenIcon size={18} />
                   </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center justify-between">
-                      <h4 className="font-semibold text-gray-900 text-sm truncate">
+                  <div style={{ minWidth: 0, flex: 1 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
+                      <h4
+                        style={{
+                          fontSize: '13.5px',
+                          fontWeight: 600,
+                          color: '#062E03',
+                          margin: 0,
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
                         {cat.name}
                       </h4>
-                      <span className="text-[11px] font-bold text-purple-700 bg-purple-100 px-2 py-0.5 rounded-full">
+                      <span
+                        style={{
+                          fontSize: '11px',
+                          fontWeight: 600,
+                          color: '#10B981',
+                          backgroundColor: '#EAF4ED',
+                          border: '1px solid rgba(16, 185, 129, 0.25)',
+                          padding: '2px 8px',
+                          borderRadius: '9999px',
+                          flexShrink: 0,
+                        }}
+                      >
                         {count} {count === 1 ? 'guide' : 'guides'}
                       </span>
                     </div>
                     {cat.description && (
-                      <p className="mt-1 text-xs text-gray-500 line-clamp-2">
+                      <p
+                        style={{
+                          fontSize: '12px',
+                          color: '#64748B',
+                          margin: '4px 0 0',
+                          lineHeight: 1.4,
+                        }}
+                      >
                         {cat.description}
                       </p>
                     )}
@@ -153,84 +301,160 @@ export const HelpCenterSection: React.FC<HelpCenterSectionProps> = ({
       </div>
 
       {/* Articles Section */}
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="text-base font-bold text-gray-900">
-              {searchQuery
-                ? `Search Results for "${searchQuery}"`
-                : selectedCategory
-                  ? `${selectedCategory.name} Guides`
-                  : 'Popular Help Articles & Guides'}
-            </h3>
-            <p className="text-xs text-gray-500">
-              {articles.length} {articles.length === 1 ? 'article available' : 'articles available'}
-            </p>
-          </div>
+      <div>
+        <div style={{ marginBottom: '12px' }}>
+          <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#062E03', margin: 0 }}>
+            {searchQuery
+              ? `Search Results for "${searchQuery}"`
+              : selectedCategory
+                ? `${selectedCategory.name} Guides`
+                : 'Popular Help Articles & Guides'}
+          </h3>
+          <p style={{ fontSize: '12px', color: '#64748B', margin: '2px 0 0' }}>
+            {articles.length} {articles.length === 1 ? 'article available' : 'articles available'}
+          </p>
         </div>
 
         {isLoading ? (
-          <div className="space-y-3">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {[1, 2, 3].map((i) => (
               <div
                 key={i}
-                className="animate-pulse rounded-xl border border-gray-200 bg-white p-5 shadow-sm"
+                style={{
+                  borderRadius: '12px',
+                  border: '1px solid rgba(16, 185, 129, 0.18)',
+                  backgroundColor: '#FFFFFF',
+                  padding: '20px',
+                }}
               >
-                <div className="h-5 w-3/4 rounded bg-gray-200 mb-2" />
-                <div className="h-4 w-full rounded bg-gray-100 mb-2" />
-                <div className="h-3 w-1/4 rounded bg-gray-100" />
+                <div style={{ height: '18px', width: '60%', backgroundColor: '#F1F5F9', borderRadius: '4px', marginBottom: '8px' }} />
+                <div style={{ height: '14px', width: '90%', backgroundColor: '#F8FCF9', borderRadius: '4px' }} />
               </div>
             ))}
           </div>
         ) : articles.length === 0 ? (
-          <div className="rounded-xl border border-gray-200 bg-white p-8 text-center shadow-sm">
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-purple-50 text-purple-600 mb-3">
-              <FileTextIcon size={24} />
+          <div
+            style={{
+              borderRadius: '14px',
+              border: '1px dashed rgba(16, 185, 129, 0.25)',
+              backgroundColor: '#FFFFFF',
+              padding: '36px 20px',
+              textAlign: 'center',
+            }}
+          >
+            <div
+              style={{
+                width: '44px',
+                height: '44px',
+                borderRadius: '50%',
+                backgroundColor: '#EAF4ED',
+                color: '#10B981',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '10px',
+              }}
+            >
+              <FileTextIcon size={22} />
             </div>
-            <h4 className="text-base font-semibold text-gray-900">
+            <h4 style={{ fontSize: '15px', fontWeight: 600, color: '#062E03', margin: '0 0 4px' }}>
               No Articles Found
             </h4>
-            <p className="mt-1 text-xs text-gray-500 max-w-sm mx-auto">
+            <p style={{ fontSize: '13px', color: '#64748B', margin: '0 auto 16px', maxWidth: '380px' }}>
               We couldn't find any articles matching your search query. Try searching for different keywords or check out our FAQs.
             </p>
-            <div className="mt-4 flex justify-center gap-2">
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
               <button
                 type="button"
                 onClick={() => {
                   onSearchChange('');
                   onSelectCategory(undefined);
                 }}
-                className="rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs font-semibold text-gray-700 hover:bg-gray-50"
+                style={{
+                  backgroundColor: '#FFFFFF',
+                  color: '#062E03',
+                  border: '1px solid rgba(16, 185, 129, 0.35)',
+                  borderRadius: '8px',
+                  padding: '7px 14px',
+                  fontSize: '12.5px',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                }}
               >
                 Reset Search
               </button>
               <Link
                 to="/help/faqs"
-                className="rounded-lg bg-purple-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-purple-700"
+                style={{
+                  backgroundColor: '#10B981',
+                  color: '#FFFFFF',
+                  border: '1px solid #10B981',
+                  borderRadius: '8px',
+                  padding: '7px 14px',
+                  fontSize: '12.5px',
+                  fontWeight: 600,
+                  textDecoration: 'none',
+                }}
               >
                 Browse FAQs
               </Link>
             </div>
           </div>
         ) : (
-          <div className="space-y-3">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {articles.map((article) => (
               <div
                 key={article.id}
                 onClick={() => setActiveArticle(article)}
-                className="cursor-pointer rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:border-purple-300 hover:shadow-md"
+                style={{
+                  cursor: 'pointer',
+                  borderRadius: '12px',
+                  border: '1px solid rgba(16, 185, 129, 0.2)',
+                  backgroundColor: '#FFFFFF',
+                  padding: '18px 20px',
+                  boxShadow: '0 1px 3px rgba(6, 46, 3, 0.04)',
+                  transition: 'all 0.15s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = '#10B981';
+                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(16, 185, 129, 0.08)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.2)';
+                  e.currentTarget.style.boxShadow = '0 1px 3px rgba(6, 46, 3, 0.04)';
+                }}
               >
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                  <h4 className="text-base font-bold text-gray-900 hover:text-purple-600 transition flex items-center gap-2">
-                    <FileTextIcon size={16} className="text-purple-600 shrink-0" />
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', flexWrap: 'wrap' }}>
+                  <h4
+                    style={{
+                      fontSize: '15px',
+                      fontWeight: 700,
+                      color: '#062E03',
+                      margin: 0,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                    }}
+                  >
+                    <span style={{ color: '#10B981', display: 'flex' }}>
+                      <FileTextIcon size={16} />
+                    </span>
                     <span>{article.title}</span>
                   </h4>
-                  <div className="flex items-center gap-3 text-xs text-gray-400 shrink-0">
-                    <span className="flex items-center gap-1">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '14px', fontSize: '12px', color: '#64748B' }}>
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                       <ClockIcon size={13} />
                       <span>{article.views} views</span>
                     </span>
-                    <span className="text-purple-600 font-semibold inline-flex items-center gap-1">
+                    <span
+                      style={{
+                        color: '#10B981',
+                        fontWeight: 600,
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                      }}
+                    >
                       <span>Read guide</span>
                       <ArrowRightIcon size={12} />
                     </span>
@@ -238,17 +462,25 @@ export const HelpCenterSection: React.FC<HelpCenterSectionProps> = ({
                 </div>
 
                 {article.summary && (
-                  <p className="mt-2 text-xs text-gray-600 leading-relaxed">
+                  <p style={{ fontSize: '13px', color: '#64748B', margin: '8px 0 0', lineHeight: 1.45 }}>
                     {article.summary}
                   </p>
                 )}
 
                 {article.tags && article.tags.length > 0 && (
-                  <div className="mt-3 flex flex-wrap gap-1.5">
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '10px' }}>
                     {article.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="rounded-md bg-gray-100 px-2 py-0.5 text-[11px] font-medium text-gray-600"
+                        style={{
+                          backgroundColor: '#EAF4ED',
+                          color: '#10B981',
+                          border: '1px solid rgba(16, 185, 129, 0.25)',
+                          borderRadius: '6px',
+                          padding: '2px 8px',
+                          fontSize: '11px',
+                          fontWeight: 600,
+                        }}
                       >
                         #{tag}
                       </span>
@@ -262,55 +494,143 @@ export const HelpCenterSection: React.FC<HelpCenterSectionProps> = ({
       </div>
 
       {/* Quick Navigation Cards */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 pt-4 border-t border-gray-200">
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+          gap: '14px',
+          paddingTop: '1.5rem',
+          borderTop: '1px solid rgba(16, 185, 129, 0.15)',
+        }}
+      >
         <Link
           to="/help/docs"
-          className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm hover:border-purple-300 hover:shadow-md transition"
+          style={{
+            borderRadius: '14px',
+            border: '1px solid rgba(16, 185, 129, 0.2)',
+            backgroundColor: '#FFFFFF',
+            padding: '16px 18px',
+            textDecoration: 'none',
+            boxShadow: '0 1px 3px rgba(6, 46, 3, 0.04)',
+            transition: 'all 0.15s ease',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.borderColor = '#10B981';
+            e.currentTarget.style.transform = 'translateY(-2px)';
+            e.currentTarget.style.boxShadow = '0 6px 16px rgba(16, 185, 129, 0.1)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.2)';
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 1px 3px rgba(6, 46, 3, 0.04)';
+          }}
         >
-          <div className="flex items-center gap-2.5 mb-2 text-purple-700 font-semibold text-sm">
-            <BookOpenIcon size={18} />
-            <span>Documentation</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px', color: '#10B981', fontWeight: 700, fontSize: '13.5px' }}>
+            <span style={{ width: '28px', height: '28px', borderRadius: '6px', backgroundColor: '#EAF4ED', border: '1px solid rgba(16, 185, 129, 0.25)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+              <BookOpenIcon size={16} />
+            </span>
+            <span style={{ color: '#062E03' }}>Documentation</span>
           </div>
-          <p className="text-xs text-gray-500">
+          <p style={{ fontSize: '12px', color: '#64748B', margin: 0, lineHeight: 1.4 }}>
             Read technical references, data schemas, and pipeline rules.
           </p>
         </Link>
 
         <Link
           to="/help/faqs"
-          className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm hover:border-purple-300 hover:shadow-md transition"
+          style={{
+            borderRadius: '14px',
+            border: '1px solid rgba(16, 185, 129, 0.2)',
+            backgroundColor: '#FFFFFF',
+            padding: '16px 18px',
+            textDecoration: 'none',
+            boxShadow: '0 1px 3px rgba(6, 46, 3, 0.04)',
+            transition: 'all 0.15s ease',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.borderColor = '#10B981';
+            e.currentTarget.style.transform = 'translateY(-2px)';
+            e.currentTarget.style.boxShadow = '0 6px 16px rgba(16, 185, 129, 0.1)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.2)';
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 1px 3px rgba(6, 46, 3, 0.04)';
+          }}
         >
-          <div className="flex items-center gap-2.5 mb-2 text-blue-700 font-semibold text-sm">
-            <HelpCircleIcon size={18} />
-            <span>FAQs</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px', color: '#2563EB', fontWeight: 700, fontSize: '13.5px' }}>
+            <span style={{ width: '28px', height: '28px', borderRadius: '6px', backgroundColor: '#EFF6FF', border: '1px solid rgba(59, 130, 246, 0.25)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+              <HelpCircleIcon size={16} />
+            </span>
+            <span style={{ color: '#062E03' }}>FAQs</span>
           </div>
-          <p className="text-xs text-gray-500">
+          <p style={{ fontSize: '12px', color: '#64748B', margin: 0, lineHeight: 1.4 }}>
             Quick solutions to account, billing, and lead scoring questions.
           </p>
         </Link>
 
         <Link
           to="/help/support"
-          className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm hover:border-purple-300 hover:shadow-md transition"
+          style={{
+            borderRadius: '14px',
+            border: '1px solid rgba(16, 185, 129, 0.2)',
+            backgroundColor: '#FFFFFF',
+            padding: '16px 18px',
+            textDecoration: 'none',
+            boxShadow: '0 1px 3px rgba(6, 46, 3, 0.04)',
+            transition: 'all 0.15s ease',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.borderColor = '#10B981';
+            e.currentTarget.style.transform = 'translateY(-2px)';
+            e.currentTarget.style.boxShadow = '0 6px 16px rgba(16, 185, 129, 0.1)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.2)';
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 1px 3px rgba(6, 46, 3, 0.04)';
+          }}
         >
-          <div className="flex items-center gap-2.5 mb-2 text-emerald-700 font-semibold text-sm">
-            <LifeBuoyIcon size={18} />
-            <span>Contact Support</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px', color: '#10B981', fontWeight: 700, fontSize: '13.5px' }}>
+            <span style={{ width: '28px', height: '28px', borderRadius: '6px', backgroundColor: '#EAF4ED', border: '1px solid rgba(16, 185, 129, 0.25)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+              <LifeBuoyIcon size={16} />
+            </span>
+            <span style={{ color: '#062E03' }}>Contact Support</span>
           </div>
-          <p className="text-xs text-gray-500">
+          <p style={{ fontSize: '12px', color: '#64748B', margin: 0, lineHeight: 1.4 }}>
             Submit a ticket to our specialized technical assistance team.
           </p>
         </Link>
 
         <Link
           to="/help/feedback"
-          className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm hover:border-purple-300 hover:shadow-md transition"
+          style={{
+            borderRadius: '14px',
+            border: '1px solid rgba(16, 185, 129, 0.2)',
+            backgroundColor: '#FFFFFF',
+            padding: '16px 18px',
+            textDecoration: 'none',
+            boxShadow: '0 1px 3px rgba(6, 46, 3, 0.04)',
+            transition: 'all 0.15s ease',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.borderColor = '#10B981';
+            e.currentTarget.style.transform = 'translateY(-2px)';
+            e.currentTarget.style.boxShadow = '0 6px 16px rgba(16, 185, 129, 0.1)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.2)';
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 1px 3px rgba(6, 46, 3, 0.04)';
+          }}
         >
-          <div className="flex items-center gap-2.5 mb-2 text-amber-700 font-semibold text-sm">
-            <MessageSquareIcon size={18} />
-            <span>Feedback & Ideas</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px', color: '#D97706', fontWeight: 700, fontSize: '13.5px' }}>
+            <span style={{ width: '28px', height: '28px', borderRadius: '6px', backgroundColor: '#FEF3C7', border: '1px solid rgba(245, 158, 11, 0.25)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+              <MessageSquareIcon size={16} />
+            </span>
+            <span style={{ color: '#062E03' }}>Feedback & Ideas</span>
           </div>
-          <p className="text-xs text-gray-500">
+          <p style={{ fontSize: '12px', color: '#64748B', margin: 0, lineHeight: 1.4 }}>
             Suggest product features and vote on improvements.
           </p>
         </Link>
@@ -319,48 +639,124 @@ export const HelpCenterSection: React.FC<HelpCenterSectionProps> = ({
       {/* Article Detail Reader Modal */}
       {activeArticle && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/50 p-4 backdrop-blur-sm"
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 50,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'rgba(6, 46, 3, 0.4)',
+            padding: '1rem',
+            backdropFilter: 'blur(4px)',
+          }}
           role="dialog"
           aria-modal="true"
         >
-          <div className="relative w-full max-w-3xl rounded-2xl bg-white shadow-2xl border border-gray-200 overflow-hidden flex flex-col max-h-[90vh]">
+          <div
+            style={{
+              position: 'relative',
+              width: '100%',
+              maxWidth: '680px',
+              borderRadius: '16px',
+              backgroundColor: '#FFFFFF',
+              boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+              border: '1px solid rgba(16, 185, 129, 0.25)',
+              overflow: 'hidden',
+              display: 'flex',
+              flexDirection: 'column',
+              maxHeight: '90vh',
+            }}
+          >
             {/* Modal Header */}
-            <div className="flex items-start justify-between border-b border-gray-200 px-6 py-4 bg-gray-50">
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'flex-start',
+                justifyContent: 'space-between',
+                borderBottom: '1px solid rgba(16, 185, 129, 0.15)',
+                padding: '16px 20px',
+                backgroundColor: '#F8FCF9',
+              }}
+            >
               <div>
-                <span className="text-xs font-semibold uppercase tracking-wider text-purple-700">
+                <span
+                  style={{
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    color: '#10B981',
+                  }}
+                >
                   Help Guide
                 </span>
-                <h3 className="text-lg font-bold text-gray-900 mt-1">
+                <h3 style={{ fontSize: '17px', fontWeight: 700, color: '#062E03', margin: '4px 0 0' }}>
                   {activeArticle.title}
                 </h3>
               </div>
               <button
                 type="button"
                 onClick={() => setActiveArticle(null)}
-                className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-700"
+                style={{
+                  borderRadius: '8px',
+                  padding: '6px',
+                  color: '#64748B',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  display: 'flex',
+                }}
               >
                 <XIcon size={18} />
               </button>
             </div>
 
             {/* Modal Body */}
-            <div className="p-6 overflow-y-auto space-y-4 text-sm text-gray-800 leading-relaxed">
+            <div style={{ padding: '20px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '14px' }}>
               {activeArticle.summary && (
-                <div className="rounded-lg bg-purple-50/70 p-3.5 text-xs text-purple-900 border border-purple-100 font-medium">
+                <div
+                  style={{
+                    borderRadius: '8px',
+                    backgroundColor: '#EAF4ED',
+                    padding: '12px 14px',
+                    fontSize: '13px',
+                    color: '#062E03',
+                    border: '1px solid rgba(16, 185, 129, 0.25)',
+                    fontWeight: 500,
+                    lineHeight: 1.45,
+                  }}
+                >
                   {activeArticle.summary}
                 </div>
               )}
 
-              <div className="whitespace-pre-line text-sm text-gray-700 space-y-2">
+              <div style={{ whiteSpace: 'pre-line', fontSize: '13.5px', color: '#062E03', lineHeight: 1.6 }}>
                 {activeArticle.content}
               </div>
 
               {activeArticle.tags && activeArticle.tags.length > 0 && (
-                <div className="pt-4 border-t border-gray-100 flex flex-wrap gap-1.5">
+                <div
+                  style={{
+                    paddingTop: '12px',
+                    borderTop: '1px solid rgba(16, 185, 129, 0.12)',
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: '6px',
+                  }}
+                >
                   {activeArticle.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="rounded-md bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600"
+                      style={{
+                        borderRadius: '6px',
+                        backgroundColor: '#EAF4ED',
+                        padding: '2px 8px',
+                        fontSize: '11px',
+                        fontWeight: 600,
+                        color: '#10B981',
+                        border: '1px solid rgba(16, 185, 129, 0.25)',
+                      }}
                     >
                       #{tag}
                     </span>
@@ -370,31 +766,65 @@ export const HelpCenterSection: React.FC<HelpCenterSectionProps> = ({
             </div>
 
             {/* Helpfulness Vote Footer */}
-            <div className="flex items-center justify-between border-t border-gray-200 px-6 py-3.5 bg-gray-50 text-xs">
-              <div className="flex items-center gap-2">
-                <span className="font-semibold text-gray-700">
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                borderTop: '1px solid rgba(16, 185, 129, 0.15)',
+                padding: '12px 20px',
+                backgroundColor: '#F8FCF9',
+                fontSize: '12px',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ fontWeight: 600, color: '#64748B' }}>
                   Was this article helpful?
                 </span>
                 {votedArticles[activeArticle.id] ? (
-                  <span className="font-semibold text-emerald-600">
+                  <span style={{ fontWeight: 600, color: '#10B981' }}>
                     Thank you for your feedback!
                   </span>
                 ) : (
-                  <div className="flex items-center gap-1.5">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                     <button
                       type="button"
                       onClick={() => handleVote(activeArticle.id, true)}
-                      className="inline-flex items-center gap-1 rounded-md border border-gray-300 bg-white px-2.5 py-1 text-xs font-medium text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 hover:border-emerald-300"
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                        borderRadius: '6px',
+                        border: '1px solid rgba(16, 185, 129, 0.3)',
+                        backgroundColor: '#FFFFFF',
+                        padding: '4px 10px',
+                        fontSize: '12px',
+                        fontWeight: 600,
+                        color: '#10B981',
+                        cursor: 'pointer',
+                      }}
                     >
-                      <ThumbsUpIcon size={13} />
+                      <ThumbsUpIcon size={12} />
                       <span>Yes</span>
                     </button>
                     <button
                       type="button"
                       onClick={() => handleVote(activeArticle.id, false)}
-                      className="inline-flex items-center gap-1 rounded-md border border-gray-300 bg-white px-2.5 py-1 text-xs font-medium text-gray-700 hover:bg-rose-50 hover:text-rose-700 hover:border-rose-300"
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                        borderRadius: '6px',
+                        border: '1px solid rgba(239, 68, 68, 0.3)',
+                        backgroundColor: '#FFFFFF',
+                        padding: '4px 10px',
+                        fontSize: '12px',
+                        fontWeight: 600,
+                        color: '#EF4444',
+                        cursor: 'pointer',
+                      }}
                     >
-                      <ThumbsDownIcon size={13} />
+                      <ThumbsDownIcon size={12} />
                       <span>No</span>
                     </button>
                   </div>
@@ -404,7 +834,16 @@ export const HelpCenterSection: React.FC<HelpCenterSectionProps> = ({
               <button
                 type="button"
                 onClick={() => setActiveArticle(null)}
-                className="rounded-lg bg-white border border-gray-300 px-3 py-1 font-semibold text-gray-700 hover:bg-gray-100"
+                style={{
+                  borderRadius: '8px',
+                  backgroundColor: '#FFFFFF',
+                  border: '1px solid rgba(16, 185, 129, 0.35)',
+                  padding: '6px 14px',
+                  fontWeight: 600,
+                  fontSize: '12.5px',
+                  color: '#062E03',
+                  cursor: 'pointer',
+                }}
               >
                 Close
               </button>
@@ -415,4 +854,3 @@ export const HelpCenterSection: React.FC<HelpCenterSectionProps> = ({
     </div>
   );
 };
-
