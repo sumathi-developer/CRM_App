@@ -30,12 +30,52 @@ export const LayoutPreviewModal: React.FC<LayoutPreviewModalProps> = ({
   onClose,
 }) => {
   const [selectedEntity, setSelectedEntity] = useState<CustomFieldEntityType>(initialEntityType);
+  const [layoutCache, setLayoutCache] = useState<Partial<Record<CustomFieldEntityType, EntityLayoutResponse>>>({});
   const [layoutData, setLayoutData] = useState<EntityLayoutResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
 
+  // Sync selectedEntity when modal opens
+  useEffect(() => {
+    if (isOpen && initialEntityType) {
+      setSelectedEntity(initialEntityType);
+    }
+  }, [isOpen, initialEntityType]);
+
+  // Preload all entities in background when modal opens
   useEffect(() => {
     if (!isOpen) return;
+
+    let ignore = false;
+    ENTITY_LIST.forEach(async (entity) => {
+      try {
+        const data = await customFieldService.getEntityLayout(entity);
+        if (!ignore) {
+          setLayoutCache((prev) => ({ ...prev, [entity]: data }));
+          if (entity === selectedEntity) {
+            setLayoutData(data);
+            setIsLoading(false);
+          }
+        }
+      } catch {
+        // quiet background preload
+      }
+    });
+
+    return () => {
+      ignore = true;
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    // If already in local cache, use it immediately with zero delay
+    if (layoutCache[selectedEntity]) {
+      setLayoutData(layoutCache[selectedEntity]!);
+      setIsLoading(false);
+      return;
+    }
 
     let ignore = false;
     const fetchLayout = async () => {
@@ -45,6 +85,7 @@ export const LayoutPreviewModal: React.FC<LayoutPreviewModalProps> = ({
         const data = await customFieldService.getEntityLayout(selectedEntity);
         if (!ignore) {
           setLayoutData(data);
+          setLayoutCache((prev) => ({ ...prev, [selectedEntity]: data }));
         }
       } catch (err: any) {
         if (!ignore) {
@@ -62,6 +103,16 @@ export const LayoutPreviewModal: React.FC<LayoutPreviewModalProps> = ({
       ignore = true;
     };
   }, [isOpen, selectedEntity]);
+
+  const handleSelectEntity = (type: CustomFieldEntityType) => {
+    setSelectedEntity(type);
+    if (layoutCache[type]) {
+      setLayoutData(layoutCache[type]!);
+      setIsLoading(false);
+    } else {
+      setIsLoading(true);
+    }
+  };
 
   useEffect(() => {
     if (!isOpen) return;
@@ -141,7 +192,7 @@ export const LayoutPreviewModal: React.FC<LayoutPreviewModalProps> = ({
                 key={type}
                 type="button"
                 className={`entity-tab-btn ${selectedEntity === type ? 'is-active' : ''}`}
-                onClick={() => setSelectedEntity(type)}
+                onClick={() => handleSelectEntity(type)}
               >
                 <span>{type}</span>
               </button>
