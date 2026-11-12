@@ -18,7 +18,7 @@ export interface AuditScreenMeta {
 export const AUDIT_SCREENS_META: Record<AuditScreenSlug, AuditScreenMeta> = {
   all: {
     slug: 'all',
-    label: 'All Activity Logs',
+    label: 'All Audit Logs',
     shortLabel: 'All Logs',
     path: '/audit-logs/all',
     description:
