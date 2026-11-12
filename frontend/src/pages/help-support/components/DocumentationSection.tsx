@@ -32,11 +32,50 @@ export const DocumentationSection: React.FC<DocumentationSectionProps> = ({
   const selectedCategory = categories.find((c) => c.id === selectedCategoryId);
 
   return (
-    <div className="space-y-6">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+      <style>{`
+        .docs-section-grid {
+          display: grid;
+          grid-template-columns: 260px 1fr;
+          gap: 20px;
+          align-items: start;
+        }
+        @media (max-width: 900px) {
+          .docs-section-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+      `}</style>
+
       {/* Top Search & Filter Bar */}
-      <div className="flex flex-col sm:flex-row gap-3 items-center justify-between rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-        <div className="relative flex-1 w-full">
-          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '14px',
+          borderRadius: '14px',
+          border: '1px solid rgba(16, 185, 129, 0.22)',
+          backgroundColor: '#FFFFFF',
+          padding: '12px 18px',
+          boxShadow: '0 1px 3px rgba(6, 46, 3, 0.04)',
+          flexWrap: 'wrap',
+        }}
+      >
+        <div style={{ position: 'relative', flex: 1, minWidth: '240px' }}>
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              bottom: 0,
+              left: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              color: '#10B981',
+              pointerEvents: 'none',
+            }}
+          >
             <SearchIcon size={16} />
           </div>
           <input
@@ -44,13 +83,46 @@ export const DocumentationSection: React.FC<DocumentationSectionProps> = ({
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Search documentation (e.g. 'architecture', 'lead deduplication', 'webhooks')..."
-            className="w-full rounded-lg border border-gray-300 bg-white py-2 pl-9 pr-9 text-sm text-gray-900 placeholder-gray-400 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
+            style={{
+              width: '100%',
+              backgroundColor: '#F8FCF9',
+              border: '1px solid rgba(16, 185, 129, 0.3)',
+              borderRadius: '10px',
+              padding: '9px 34px 9px 36px',
+              fontSize: '13.5px',
+              color: '#062E03',
+              outline: 'none',
+              boxSizing: 'border-box',
+              transition: 'all 0.15s ease',
+            }}
+            onFocus={(e) => {
+              e.currentTarget.style.borderColor = '#10B981';
+              e.currentTarget.style.backgroundColor = '#FFFFFF';
+              e.currentTarget.style.boxShadow = '0 0 0 3px rgba(16, 185, 129, 0.15)';
+            }}
+            onBlur={(e) => {
+              e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+              e.currentTarget.style.backgroundColor = '#F8FCF9';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
           />
           {searchQuery && (
             <button
               type="button"
               onClick={() => onSearchChange('')}
-              className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600"
+              style={{
+                position: 'absolute',
+                top: 0,
+                bottom: 0,
+                right: '10px',
+                display: 'flex',
+                alignItems: 'center',
+                background: 'none',
+                border: 'none',
+                color: '#94A3B8',
+                cursor: 'pointer',
+                padding: 0,
+              }}
               aria-label="Clear search"
             >
               <XIcon size={14} />
@@ -63,56 +135,179 @@ export const DocumentationSection: React.FC<DocumentationSectionProps> = ({
           <button
             type="button"
             onClick={() => onSelectCategory(undefined)}
-            className="shrink-0 text-xs font-semibold text-purple-600 hover:text-purple-800"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              backgroundColor: '#EAF4ED',
+              border: '1px solid rgba(16, 185, 129, 0.3)',
+              borderRadius: '8px',
+              padding: '6px 12px',
+              fontSize: '12px',
+              fontWeight: 600,
+              color: '#10B981',
+              cursor: 'pointer',
+              flexShrink: 0,
+              transition: 'all 0.15s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = '#D1FAE5';
+              e.currentTarget.style.borderColor = '#10B981';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = '#EAF4ED';
+              e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+            }}
           >
-            Clear category filter ({selectedCategory?.name})
+            <span>Clear category filter ({selectedCategory?.name})</span>
+            <XIcon size={12} />
           </button>
         )}
       </div>
 
       {activePage ? (
         // Documentation Page Reader
-        <div className="rounded-2xl border border-gray-200 bg-white p-6 sm:p-8 shadow-sm space-y-6">
-          <div className="flex items-center justify-between border-b border-gray-200 pb-4">
+        <div
+          style={{
+            borderRadius: '16px',
+            border: '1px solid rgba(16, 185, 129, 0.22)',
+            backgroundColor: '#FFFFFF',
+            padding: '28px 32px',
+            boxShadow: '0 1px 3px rgba(6, 46, 3, 0.04)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '20px',
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              borderBottom: '1px solid rgba(16, 185, 129, 0.15)',
+              paddingBottom: '14px',
+            }}
+          >
             <button
               type="button"
               onClick={() => setActivePage(null)}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                borderRadius: '8px',
+                border: '1px solid rgba(16, 185, 129, 0.35)',
+                backgroundColor: '#FFFFFF',
+                padding: '7px 14px',
+                fontSize: '12.5px',
+                fontWeight: 600,
+                color: '#062E03',
+                cursor: 'pointer',
+                transition: 'all 0.15s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#EAF4ED';
+                e.currentTarget.style.borderColor = '#10B981';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#FFFFFF';
+                e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.35)';
+              }}
             >
-              <ArrowLeftIcon size={13} />
+              <ArrowLeftIcon size={14} />
               <span>Back to Documentation Index</span>
             </button>
 
-            <span className="rounded-full bg-purple-100 px-3 py-0.5 text-xs font-bold text-purple-700">
+            <span
+              style={{
+                borderRadius: '9999px',
+                backgroundColor: '#EAF4ED',
+                border: '1px solid rgba(16, 185, 129, 0.3)',
+                padding: '3px 10px',
+                fontSize: '11.5px',
+                fontWeight: 700,
+                color: '#10B981',
+              }}
+            >
               v2.0.0
             </span>
           </div>
 
-          <div className="space-y-3">
-            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-purple-600">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                fontSize: '12px',
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                color: '#10B981',
+              }}
+            >
               <BookOpenIcon size={14} />
               <span>Documentation Guide</span>
             </div>
-            <h2 className="text-2xl font-extrabold text-gray-900">
+            <h2
+              style={{
+                fontSize: '24px',
+                fontWeight: 800,
+                color: '#062E03',
+                margin: 0,
+              }}
+            >
               {activePage.title}
             </h2>
             {activePage.summary && (
-              <p className="text-sm text-gray-500 font-medium">
+              <p
+                style={{
+                  fontSize: '13.5px',
+                  color: '#64748B',
+                  margin: 0,
+                  lineHeight: 1.5,
+                }}
+              >
                 {activePage.summary}
               </p>
             )}
           </div>
 
-          <div className="prose max-w-none text-sm text-gray-800 leading-relaxed whitespace-pre-line border-t border-gray-100 pt-6">
+          <div
+            style={{
+              fontSize: '14px',
+              color: '#062E03',
+              lineHeight: 1.65,
+              whiteSpace: 'pre-line',
+              borderTop: '1px solid rgba(16, 185, 129, 0.12)',
+              paddingTop: '20px',
+            }}
+          >
             {activePage.content}
           </div>
 
           {activePage.tags && activePage.tags.length > 0 && (
-            <div className="pt-6 border-t border-gray-100 flex flex-wrap gap-2">
+            <div
+              style={{
+                paddingTop: '16px',
+                borderTop: '1px solid rgba(16, 185, 129, 0.12)',
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '8px',
+              }}
+            >
               {activePage.tags.map((t) => (
                 <span
                   key={t}
-                  className="rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600"
+                  style={{
+                    borderRadius: '6px',
+                    backgroundColor: '#EAF4ED',
+                    border: '1px solid rgba(16, 185, 129, 0.25)',
+                    padding: '3px 10px',
+                    fontSize: '11.5px',
+                    fontWeight: 600,
+                    color: '#10B981',
+                  }}
                 >
                   #{t}
                 </span>
@@ -122,23 +317,79 @@ export const DocumentationSection: React.FC<DocumentationSectionProps> = ({
         </div>
       ) : (
         // Documentation Categories & Pages List
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <div className="docs-section-grid">
           {/* Categories Sidebar */}
-          <div className="lg:col-span-1 space-y-2">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-2 px-1">
+          <div
+            style={{
+              backgroundColor: '#FFFFFF',
+              border: '1px solid rgba(16, 185, 129, 0.22)',
+              borderRadius: '14px',
+              padding: '16px',
+              boxShadow: '0 1px 3px rgba(6, 46, 3, 0.04)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '4px',
+            }}
+          >
+            <h4
+              style={{
+                fontSize: '11.5px',
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                color: '#062E03',
+                margin: '0 0 10px',
+                padding: '0 4px',
+              }}
+            >
               Manual Sections
             </h4>
-            <div className="space-y-1">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
               <button
                 type="button"
                 onClick={() => onSelectCategory(undefined)}
-                className={`w-full text-left rounded-lg px-3 py-2 text-xs font-semibold transition ${
-                  !selectedCategoryId
-                    ? 'bg-purple-600 text-white'
-                    : 'text-gray-700 hover:bg-gray-100'
-                }`}
+                style={{
+                  width: '100%',
+                  textAlign: 'left',
+                  borderRadius: '8px',
+                  padding: '8px 12px',
+                  fontSize: '13px',
+                  fontWeight: !selectedCategoryId ? 600 : 500,
+                  backgroundColor: !selectedCategoryId ? '#10B981' : 'transparent',
+                  color: !selectedCategoryId ? '#FFFFFF' : '#062E03',
+                  border: 'none',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  transition: 'all 0.15s ease',
+                }}
+                onMouseEnter={(e) => {
+                  if (selectedCategoryId) {
+                    e.currentTarget.style.backgroundColor = '#EAF4ED';
+                    e.currentTarget.style.color = '#10B981';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (selectedCategoryId) {
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                    e.currentTarget.style.color = '#062E03';
+                  }
+                }}
               >
-                All Sections ({pages.length})
+                <span>All Sections</span>
+                <span
+                  style={{
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    borderRadius: '9999px',
+                    padding: '2px 8px',
+                    backgroundColor: !selectedCategoryId ? '#059669' : '#EAF4ED',
+                    color: !selectedCategoryId ? '#FFFFFF' : '#10B981',
+                  }}
+                >
+                  {pages.length}
+                </span>
               </button>
               {categories.map((c) => {
                 const isSelected = selectedCategoryId === c.id;
@@ -148,19 +399,48 @@ export const DocumentationSection: React.FC<DocumentationSectionProps> = ({
                     key={c.id}
                     type="button"
                     onClick={() => onSelectCategory(c.id)}
-                    className={`w-full text-left rounded-lg px-3 py-2 text-xs font-semibold flex items-center justify-between transition ${
-                      isSelected
-                        ? 'bg-purple-600 text-white'
-                        : 'text-gray-700 hover:bg-gray-100'
-                    }`}
+                    style={{
+                      width: '100%',
+                      textAlign: 'left',
+                      borderRadius: '8px',
+                      padding: '8px 12px',
+                      fontSize: '13px',
+                      fontWeight: isSelected ? 600 : 500,
+                      backgroundColor: isSelected ? '#10B981' : 'transparent',
+                      color: isSelected ? '#FFFFFF' : '#062E03',
+                      border: 'none',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      transition: 'all 0.15s ease',
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isSelected) {
+                        e.currentTarget.style.backgroundColor = '#EAF4ED';
+                        e.currentTarget.style.color = '#10B981';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isSelected) {
+                        e.currentTarget.style.backgroundColor = 'transparent';
+                        e.currentTarget.style.color = '#062E03';
+                      }
+                    }}
                   >
-                    <span className="truncate mr-2">{c.name}</span>
+                    <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', marginRight: '8px' }}>
+                      {c.name}
+                    </span>
                     <span
-                      className={`text-[10px] rounded px-1.5 py-0.5 ${
-                        isSelected
-                          ? 'bg-purple-700 text-purple-100'
-                          : 'bg-gray-200 text-gray-700'
-                      }`}
+                      style={{
+                        fontSize: '11px',
+                        fontWeight: 600,
+                        borderRadius: '9999px',
+                        padding: '2px 8px',
+                        backgroundColor: isSelected ? '#059669' : '#EAF4ED',
+                        color: isSelected ? '#FFFFFF' : '#10B981',
+                        flexShrink: 0,
+                      }}
                     >
                       {count}
                     </span>
@@ -171,65 +451,181 @@ export const DocumentationSection: React.FC<DocumentationSectionProps> = ({
           </div>
 
           {/* Doc Pages List */}
-          <div className="lg:col-span-3 space-y-3">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {isLoading ? (
-              <div className="space-y-3">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 {[1, 2, 3].map((i) => (
                   <div
                     key={i}
-                    className="animate-pulse rounded-xl border border-gray-200 bg-white p-5 shadow-sm"
+                    style={{
+                      borderRadius: '12px',
+                      border: '1px solid rgba(16, 185, 129, 0.18)',
+                      backgroundColor: '#FFFFFF',
+                      padding: '20px',
+                    }}
                   >
-                    <div className="h-5 w-1/2 rounded bg-gray-200 mb-2" />
-                    <div className="h-4 w-full rounded bg-gray-100 mb-2" />
-                    <div className="h-3 w-1/4 rounded bg-gray-100" />
+                    <div style={{ height: '18px', width: '50%', backgroundColor: '#F1F5F9', borderRadius: '4px', marginBottom: '8px' }} />
+                    <div style={{ height: '14px', width: '80%', backgroundColor: '#F8FCF9', borderRadius: '4px' }} />
                   </div>
                 ))}
               </div>
             ) : pages.length === 0 ? (
-              <div className="rounded-xl border border-gray-200 bg-white p-8 text-center shadow-sm">
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-purple-50 text-purple-600 mb-3">
+              <div
+                style={{
+                  borderRadius: '14px',
+                  border: '1px dashed rgba(16, 185, 129, 0.3)',
+                  backgroundColor: '#FFFFFF',
+                  padding: '48px 24px',
+                  textAlign: 'center',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  boxShadow: '0 1px 3px rgba(6, 46, 3, 0.04)',
+                }}
+              >
+                <div
+                  style={{
+                    width: '48px',
+                    height: '48px',
+                    borderRadius: '50%',
+                    backgroundColor: '#EAF4ED',
+                    border: '1px solid rgba(16, 185, 129, 0.25)',
+                    color: '#10B981',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginBottom: '14px',
+                  }}
+                >
                   <BookOpenIcon size={24} />
                 </div>
-                <h4 className="text-base font-semibold text-gray-900">
+                <h4 style={{ fontSize: '16px', fontWeight: 700, color: '#062E03', margin: '0 0 6px' }}>
                   No Documentation Pages Found
                 </h4>
-                <p className="mt-1 text-xs text-gray-500 max-w-sm mx-auto">
-                  No pages match your current filters. Try resetting the search query or selecting a different section.
+                <p style={{ fontSize: '13px', color: '#64748B', maxWidth: '420px', margin: '0 0 16px', lineHeight: 1.5 }}>
+                  {searchQuery
+                    ? `No documentation pages match "${searchQuery}". Try a different keyword.`
+                    : selectedCategoryId
+                      ? `No pages found in ${selectedCategory?.name || 'this section'}. Try selecting a different section or viewing all.`
+                      : 'No documentation pages have been published yet.'}
                 </p>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  {searchQuery && (
+                    <button
+                      type="button"
+                      onClick={() => onSearchChange('')}
+                      style={{
+                        backgroundColor: '#FFFFFF',
+                        color: '#062E03',
+                        border: '1px solid rgba(16, 185, 129, 0.35)',
+                        borderRadius: '8px',
+                        padding: '7px 14px',
+                        fontSize: '12.5px',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                      }}
+                    >
+                      Clear Search
+                    </button>
+                  )}
+                  {selectedCategoryId && (
+                    <button
+                      type="button"
+                      onClick={() => onSelectCategory(undefined)}
+                      style={{
+                        backgroundColor: '#10B981',
+                        color: '#FFFFFF',
+                        border: '1px solid #10B981',
+                        borderRadius: '8px',
+                        padding: '7px 16px',
+                        fontSize: '12.5px',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                      }}
+                    >
+                      Show All Sections
+                    </button>
+                  )}
+                </div>
               </div>
             ) : (
               pages.map((page) => (
                 <div
                   key={page.id}
                   onClick={() => setActivePage(page)}
-                  className="cursor-pointer rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:border-purple-300 hover:shadow-md"
+                  style={{
+                    cursor: 'pointer',
+                    borderRadius: '12px',
+                    border: '1px solid rgba(16, 185, 129, 0.2)',
+                    backgroundColor: '#FFFFFF',
+                    padding: '18px 20px',
+                    boxShadow: '0 1px 3px rgba(6, 46, 3, 0.04)',
+                    transition: 'all 0.15s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = '#10B981';
+                    e.currentTarget.style.boxShadow = '0 4px 12px rgba(16, 185, 129, 0.08)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.2)';
+                    e.currentTarget.style.boxShadow = '0 1px 3px rgba(6, 46, 3, 0.04)';
+                  }}
                 >
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <FileTextIcon size={16} className="text-purple-600" />
-                        <h4 className="font-bold text-gray-900 text-base hover:text-purple-600 transition">
+                  <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '14px' }}>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <span style={{ color: '#10B981', display: 'flex' }}>
+                          <FileTextIcon size={16} />
+                        </span>
+                        <h4
+                          style={{
+                            fontSize: '15px',
+                            fontWeight: 700,
+                            color: '#062E03',
+                            margin: 0,
+                          }}
+                        >
                           {page.title}
                         </h4>
                       </div>
                       {page.summary && (
-                        <p className="mt-2 text-xs text-gray-600 leading-relaxed">
+                        <p style={{ fontSize: '13px', color: '#64748B', margin: '6px 0 0', lineHeight: 1.45 }}>
                           {page.summary}
                         </p>
                       )}
                     </div>
-                    <span className="text-purple-600 text-xs font-semibold inline-flex items-center gap-1 shrink-0">
+                    <span
+                      style={{
+                        color: '#10B981',
+                        fontSize: '12.5px',
+                        fontWeight: 600,
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                        flexShrink: 0,
+                        marginTop: '2px',
+                      }}
+                    >
                       <span>View</span>
                       <ArrowRightIcon size={12} />
                     </span>
                   </div>
 
                   {page.tags && page.tags.length > 0 && (
-                    <div className="mt-3 flex flex-wrap gap-1.5">
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '10px' }}>
                       {page.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="rounded-md bg-gray-100 px-2 py-0.5 text-[11px] font-medium text-gray-600"
+                          style={{
+                            backgroundColor: '#EAF4ED',
+                            color: '#10B981',
+                            border: '1px solid rgba(16, 185, 129, 0.25)',
+                            borderRadius: '6px',
+                            padding: '2px 8px',
+                            fontSize: '11px',
+                            fontWeight: 600,
+                          }}
                         >
                           #{tag}
                         </span>
@@ -245,4 +641,3 @@ export const DocumentationSection: React.FC<DocumentationSectionProps> = ({
     </div>
   );
 };
-
