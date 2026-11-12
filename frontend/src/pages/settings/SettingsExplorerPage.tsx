@@ -27,7 +27,6 @@ import {
   SecuritySettingsSection,
   WorkspaceSettingsSection,
 } from './components/SettingsSections';
-import { LoadingIndicator } from '../../components/auth/LoadingIndicator';
 
 interface SettingsExplorerPageProps {
   screen: SettingsScreenSlug;
@@ -48,44 +47,47 @@ export const SettingsExplorerPage: React.FC<SettingsExplorerPageProps> = ({
     user?.role?.name === 'MANAGER';
   const canEdit = meta.requiresAdminOrManager ? isAdminOrManager : true;
 
-  // Form State & Clean Reference State
+  // Form State & Clean Reference State (Instant synchronous load from cache/defaults)
   const [initialData, setInitialData] = useState<AllSettingsBundle[typeof screen]>(
-    () => DEFAULT_SETTINGS_BUNDLE[screen],
+    () => settingsService.getCachedSettings(screen),
   );
   const [formData, setFormData] = useState<AllSettingsBundle[typeof screen]>(
-    () => DEFAULT_SETTINGS_BUNDLE[screen],
+    () => settingsService.getCachedSettings(screen),
   );
 
   // UI Feedback State
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [error, setError] = useState<string | string[] | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
-  // Load screen data
-  const loadData = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
+  // Auto-Save Implementation
+  const isInitialMount = React.useRef(true);
 
+  // Instant switch data when changing screen without any loading delay
+  useEffect(() => {
+    const cached = settingsService.getCachedSettings(screen);
+    setInitialData(cached);
+    setFormData(cached);
+    isInitialMount.current = true;
+    setError(null);
+  }, [screen]);
+
+  // Load screen data in background without blocking UI
+  const loadData = useCallback(async () => {
     try {
       const data = await settingsService.loadScreenSettings(screen, {
         workspaceId: currentWorkspace?.id,
         user,
       });
       setInitialData(data);
-      setFormData(data);
-    } catch (err: unknown) {
-      const apiErr = err as {
-        response?: { data?: { message?: string | string[] } };
-      };
-      setError(
-        apiErr?.response?.data?.message ||
-          `Failed to load ${meta.label}. Please try refreshing.`,
-      );
-    } finally {
-      setIsLoading(false);
+      setFormData((prev: any) => {
+        const wasEdited = JSON.stringify(prev) !== JSON.stringify(settingsService.getCachedSettings(screen));
+        return wasEdited ? prev : data;
+      });
+    } catch {
+      // Silent background sync fallback: keep cached/default data without interrupting user
     }
-  }, [screen, currentWorkspace?.id, user, meta.label]);
+  }, [screen, currentWorkspace?.id, user]);
 
   useEffect(() => {
     void loadData();
@@ -102,52 +104,59 @@ export const SettingsExplorerPage: React.FC<SettingsExplorerPageProps> = ({
     }));
   };
 
-  // Save Settings Handler
-  const handleSave = async () => {
-    if (!canEdit) {
-      setError('You do not have permission to modify these settings.');
+  const performSave = useCallback(
+    async (dataToSave: any) => {
+      if (!canEdit) return;
+
+      setIsSaving(true);
+      setError(null);
+
+      try {
+        const saved = await settingsService.saveScreenSettings(screen, dataToSave, {
+          workspaceId: currentWorkspace?.id,
+          updateUserProfile: updateProfile,
+        });
+        setInitialData(saved);
+        setSuccess('Changes saved automatically');
+        const timer = setTimeout(() => setSuccess(null), 3000);
+        return () => clearTimeout(timer);
+      } catch (err: unknown) {
+        const apiErr = err as {
+          response?: { data?: { message?: string | string[] } };
+        };
+        setError(
+          apiErr?.response?.data?.message ||
+            `Failed to auto-save ${meta.label}. Please verify inputs.`,
+        );
+      } finally {
+        setIsSaving(false);
+      }
+    },
+    [canEdit, screen, currentWorkspace?.id, updateProfile, meta.label],
+  );
+
+  // Debounced auto-save effect whenever formData changes
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
       return;
     }
 
-    setIsSaving(true);
-    setError(null);
-    setSuccess(null);
+    if (JSON.stringify(formData) !== JSON.stringify(initialData)) {
+      const timer = setTimeout(() => {
+        void performSave(formData);
+      }, 600);
 
-    try {
-      const saved = await settingsService.saveScreenSettings(screen, formData, {
-        workspaceId: currentWorkspace?.id,
-        updateUserProfile: updateProfile,
-      });
-      setInitialData(saved);
-      setFormData(saved);
-      setSuccess(`${meta.label} saved successfully.`);
-      setTimeout(() => setSuccess(null), 4000);
-    } catch (err: unknown) {
-      const apiErr = err as {
-        response?: { data?: { message?: string | string[] } };
-      };
-      setError(
-        apiErr?.response?.data?.message ||
-          `Failed to save ${meta.label}. Please verify inputs and try again.`,
-      );
-    } finally {
-      setIsSaving(false);
+      return () => clearTimeout(timer);
     }
-  };
+  }, [formData, initialData, performSave]);
 
-  // Discard Changes
-  const handleDiscard = () => {
-    setFormData(initialData);
-    setError(null);
-  };
-
-  // Reset to Defaults
-  const handleResetDefaults = () => {
+  // Reset to Defaults with immediate auto-save
+  const handleResetDefaults = async () => {
     const defaultData = DEFAULT_SETTINGS_BUNDLE[screen];
     setFormData(defaultData);
-    setSuccess(
-      `Restored default ${meta.shortLabel} values. Click Save Changes to commit.`,
-    );
+    await performSave(defaultData);
+    setSuccess(`Restored default ${meta.shortLabel} settings and saved automatically.`);
   };
 
   return (
@@ -159,33 +168,24 @@ export const SettingsExplorerPage: React.FC<SettingsExplorerPageProps> = ({
       success={success}
       onDismissError={() => setError(null)}
       onDismissSuccess={() => setSuccess(null)}
-      onSave={handleSave}
-      onDiscard={handleDiscard}
+      onSave={() => performSave(formData)}
+      onDiscard={() => setFormData(initialData)}
       onResetDefaults={handleResetDefaults}
       isSaving={isSaving}
     >
-      {isLoading ? (
-        <div className="py-12 flex justify-center">
-          <LoadingIndicator
-            size="large"
-            message={`Loading ${meta.label}...`}
-          />
-        </div>
-      ) : (
-        <>
-          {screen === 'account' && (
-            <AccountSettingsSection
-              value={formData as AllSettingsBundle['account']}
-              onChange={patchFormData}
-            />
-          )}
+      {screen === 'account' && (
+        <AccountSettingsSection
+          value={formData as AllSettingsBundle['account']}
+          onChange={patchFormData}
+        />
+      )}
 
-          {screen === 'profile' && (
-            <ProfileSettingsSection
-              value={formData as AllSettingsBundle['profile']}
-              onChange={patchFormData}
-            />
-          )}
+      {screen === 'profile' && (
+        <ProfileSettingsSection
+          value={formData as AllSettingsBundle['profile']}
+          onChange={patchFormData}
+        />
+      )}
 
           {screen === 'workspace' && (
             <WorkspaceSettingsSection
@@ -270,8 +270,6 @@ export const SettingsExplorerPage: React.FC<SettingsExplorerPageProps> = ({
               onChange={patchFormData}
             />
           )}
-        </>
-      )}
     </SettingsLayout>
   );
 };

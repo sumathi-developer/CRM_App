@@ -53,6 +53,17 @@ function unwrap<T = any>(res: any): T {
 
 class SettingsApiService {
   /**
+   * Synchronously get cached settings for immediate zero-latency rendering.
+   */
+  getCachedSettings<K extends SettingsScreenSlug>(screen: K): AllSettingsBundle[K] {
+    const local = readLocalSettings();
+    return {
+      ...DEFAULT_SETTINGS_BUNDLE[screen],
+      ...(local[screen] || {}),
+    } as AllSettingsBundle[K];
+  }
+
+  /**
    * Load settings for a given screen from backend APIs + persisted settings.
    */
   async loadScreenSettings<K extends SettingsScreenSlug>(
@@ -62,15 +73,19 @@ class SettingsApiService {
       user?: User | null;
     },
   ): Promise<AllSettingsBundle[K]> {
-    const local = readLocalSettings();
-    const fallback = {
-      ...DEFAULT_SETTINGS_BUNDLE[screen],
-      ...(local[screen] || {}),
-    } as AllSettingsBundle[K];
+    const fallback = this.getCachedSettings(screen);
+
+    // Fast timeout helper so background sync never stalls
+    const withTimeout = <T>(promise: Promise<T>, ms = 1500): Promise<T | null> => {
+      return Promise.race([
+        promise,
+        new Promise<null>((resolve) => setTimeout(() => resolve(null), ms)),
+      ]);
+    };
 
     // 1. Try reading system key-value setting if available
     try {
-      const sysRes = await api.get<any>('/settings').catch(() => null);
+      const sysRes = await withTimeout(api.get<any>('/settings').catch(() => null), 1200);
       const list: SystemSettingRecord[] = Array.isArray(sysRes)
         ? sysRes
         : Array.isArray(sysRes?.data)
@@ -88,7 +103,7 @@ class SettingsApiService {
     // 2. Load screen-specific API data
     try {
       if (screen === 'account' && context?.user) {
-        return {
+        const result = {
           ...(fallback as AllSettingsBundle['account']),
           email: context.user.email || DEFAULT_SETTINGS_BUNDLE.account.email,
           roleName:
@@ -97,12 +112,14 @@ class SettingsApiService {
             context.user.organization?.name ||
             DEFAULT_SETTINGS_BUNDLE.account.organizationName,
         } as AllSettingsBundle[K];
+        writeLocalSettings(screen, result);
+        return result;
       }
 
       if (screen === 'profile') {
-        const profRes = await api.get<any>('/settings/profile').catch(() => null);
+        const profRes = await withTimeout(api.get<any>('/settings/profile').catch(() => null), 1500);
         const prof = unwrap<any>(profRes);
-        return {
+        const result = {
           ...(fallback as AllSettingsBundle['profile']),
           name: context?.user?.name || (fallback as AllSettingsBundle['profile']).name,
           phone:
@@ -114,14 +131,17 @@ class SettingsApiService {
           language: prof?.language || 'en',
           timezone: prof?.timezone || 'America/New_York',
         } as AllSettingsBundle[K];
+        writeLocalSettings(screen, result);
+        return result;
       }
 
       if (screen === 'notifications') {
-        const notifRes = await api
-          .get<any>('/settings/notifications')
-          .catch(() => null);
+        const notifRes = await withTimeout(
+          api.get<any>('/settings/notifications').catch(() => null),
+          1500,
+        );
         const notif = unwrap<any>(notifRes);
-        return {
+        const result = {
           ...(fallback as AllSettingsBundle['notifications']),
           emailNotifications:
             notif?.emailNotifications ??
@@ -130,6 +150,8 @@ class SettingsApiService {
             notif?.pushNotifications ??
             (fallback as AllSettingsBundle['notifications']).pushNotifications,
         } as AllSettingsBundle[K];
+        writeLocalSettings(screen, result);
+        return result;
       }
 
       if (screen === 'workspace' && context?.workspaceId) {

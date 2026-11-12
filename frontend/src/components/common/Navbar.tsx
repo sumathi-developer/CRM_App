@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useWorkspace } from '../../context/useWorkspace';
+import { api } from '../../services/api';
 import { Logo } from '../auth/Logo';
 import { WorkspaceSwitcher } from '../workspace/WorkspaceSwitcher';
 import { CreateWorkspaceModal } from '../workspace/CreateWorkspaceModal';
@@ -135,7 +136,7 @@ const SETTINGS_FLYOUT_GROUPS: NeatSettingsGroup[] = [
     title: 'System & Preferences',
     items: [
       { id: 'general-settings', label: 'General Settings', icon: <SettingsIcon size={16} />, path: '/settings' },
-      { id: 'notifications', label: 'Notifications', icon: <BellIcon size={16} />, path: '/settings/notifications', badge: '1' },
+      { id: 'notifications', label: 'Notifications', icon: <BellIcon size={16} />, path: '/settings/notifications' },
       { id: 'account', label: 'Profile & Security', icon: <UserIcon size={16} />, path: '/profile' },
       { id: 'help', label: 'Help & Support', icon: <LifeBuoyIcon size={16} />, path: '/help' },
     ],
@@ -386,6 +387,34 @@ export const Navbar: React.FC = () => {
   const searchInputRef = useRef<HTMLInputElement>(null);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [settingsSearchQuery, setSettingsSearchQuery] = useState('');
+  const [unreadNotificationsCount, setUnreadNotificationsCount] = useState<number>(0);
+
+  // Poll / fetch actual unread notifications count from backend
+  useEffect(() => {
+    if (!user) {
+      setUnreadNotificationsCount(0);
+      return;
+    }
+
+    let isMounted = true;
+    const fetchUnreadCount = async () => {
+      try {
+        const res = await api.get<any>('/notifications/unread');
+        if (!isMounted) return;
+        const list = Array.isArray(res) ? res : Array.isArray(res?.data) ? res.data : [];
+        setUnreadNotificationsCount(list.length);
+      } catch {
+        if (isMounted) setUnreadNotificationsCount(0);
+      }
+    };
+
+    fetchUnreadCount();
+    const interval = setInterval(fetchUnreadCount, 30000);
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
+  }, [user, location.pathname]);
 
   // Check if current route is part of settings
   const isCurrentRouteInSettings = (pathname: string): boolean => {
@@ -1155,11 +1184,11 @@ export const Navbar: React.FC = () => {
             </Link>
 
             <div className="sidebar-profile-actions">
-              {/* Notification Bell with Red Badge */}
+              {/* Notification Bell (Only shows red badge when there are actual unread notifications) */}
               <Link
                 to="/settings/notifications"
                 className="sidebar-action-btn notif-btn"
-                title="Notifications (1 new)"
+                title={unreadNotificationsCount > 0 ? `Notifications (${unreadNotificationsCount} new)` : 'Notifications'}
                 aria-label="Notifications"
                 onClick={() => {
                   setIsSettingsFlyoutOpen(false);
@@ -1167,7 +1196,11 @@ export const Navbar: React.FC = () => {
                 }}
               >
                 <BellIcon size={16} />
-                <span className="sidebar-notif-badge">1</span>
+                {unreadNotificationsCount > 0 && (
+                  <span className="sidebar-notif-badge">
+                    {unreadNotificationsCount > 99 ? '99+' : unreadNotificationsCount}
+                  </span>
+                )}
               </Link>
 
               {/* Sign Out Button */}
