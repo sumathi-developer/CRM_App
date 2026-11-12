@@ -84,6 +84,9 @@ export const CalendarExplorerPage: React.FC<CalendarExplorerPageProps> = ({
   );
   const [isDeleting, setIsDeleting] = useState(false);
 
+  // In-memory cache for instant transitions across views and dates
+  const eventsCacheRef = React.useRef<Map<string, CalendarEventItem[]>>(new Map());
+
   useEffect(() => {
     let active = true;
     calendarService
@@ -97,75 +100,90 @@ export const CalendarExplorerPage: React.FC<CalendarExplorerPageProps> = ({
     };
   }, []);
 
+  // Fetch KPI summary asynchronously in background without blocking calendar views
+  const loadSummaryData = useCallback(async () => {
+    try {
+      const res = await calendarService.getSummary(userFilter || undefined);
+      setSummary(res);
+    } catch {
+      // Non-fatal summary fallback
+    }
+  }, [userFilter]);
+
+  useEffect(() => {
+    loadSummaryData();
+  }, [loadSummaryData]);
+
   const focusYear = focusDate.getFullYear();
   const focusMonth = focusDate.getMonth() + 1;
   const focusDateIso = toDateInputString(focusDate);
 
-  const loadCalendarData = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const summaryPromise = calendarService
-        .getSummary(userFilter || undefined)
-        .catch(() => ({
-          todayCount: 0,
-          weekCount: 0,
-          overdueCount: 0,
-          upcomingMeetingsCount: 0,
-          todayEvents: [],
-        }));
+  const loadCalendarData = useCallback(
+    async (forceFresh = false) => {
+      const cacheKey = `${viewMode}:${focusYear}-${focusMonth}:${focusDateIso}:${userFilter}`;
+      const cached = !forceFresh ? eventsCacheRef.current.get(cacheKey) : undefined;
 
-      let eventsPromise: Promise<CalendarEventItem[]>;
-
-      if (viewMode === 'month') {
-        eventsPromise = calendarService
-          .getMonthView({
-            year: focusYear,
-            month: focusMonth,
-            userId: userFilter || undefined,
-          })
-          .then((r) => r.events);
-      } else if (viewMode === 'week') {
-        eventsPromise = calendarService
-          .getWeekView({
-            date: focusDateIso,
-            userId: userFilter || undefined,
-          })
-          .then((r) => r.events);
-      } else if (viewMode === 'day') {
-        eventsPromise = calendarService
-          .getDayView({
-            date: focusDateIso,
-            userId: userFilter || undefined,
-          })
-          .then((r) => r.events);
+      if (cached) {
+        // Instant render from cache (0ms perceived latency)
+        setEvents(cached);
+        setIsLoading(false);
       } else {
-        // Schedule view: 30-day window starting from beginning of current week
-        const weekDays = buildWeekDays(new Date(focusDateIso));
-        const start = weekDays[0];
-        const end = new Date(start);
-        end.setDate(start.getDate() + 30);
-        end.setHours(23, 59, 59, 999);
-        eventsPromise = calendarService.getEvents({
-          start: start.toISOString(),
-          end: end.toISOString(),
-          userId: userFilter || undefined,
-        });
+        setIsLoading(true);
       }
 
-      const [summaryRes, eventList] = await Promise.all([
-        summaryPromise,
-        eventsPromise,
-      ]);
+      setError(null);
+      try {
+        let eventsPromise: Promise<CalendarEventItem[]>;
 
-      setSummary(summaryRes);
-      setEvents(eventList);
-    } catch (err: any) {
-      setError(err?.message || 'Failed to load calendar events.');
-    } finally {
-      setIsLoading(false);
-    }
-  }, [viewMode, focusYear, focusMonth, focusDateIso, userFilter]);
+        if (viewMode === 'month') {
+          eventsPromise = calendarService
+            .getMonthView({
+              year: focusYear,
+              month: focusMonth,
+              userId: userFilter || undefined,
+            })
+            .then((r) => r.events);
+        } else if (viewMode === 'week') {
+          eventsPromise = calendarService
+            .getWeekView({
+              date: focusDateIso,
+              userId: userFilter || undefined,
+            })
+            .then((r) => r.events);
+        } else if (viewMode === 'day') {
+          eventsPromise = calendarService
+            .getDayView({
+              date: focusDateIso,
+              userId: userFilter || undefined,
+            })
+            .then((r) => r.events);
+        } else {
+          // Schedule view: 30-day window starting from beginning of current week
+          const weekDays = buildWeekDays(new Date(focusDateIso));
+          const start = weekDays[0];
+          const end = new Date(start);
+          end.setDate(start.getDate() + 30);
+          end.setHours(23, 59, 59, 999);
+          eventsPromise = calendarService.getEvents({
+            start: start.toISOString(),
+            end: end.toISOString(),
+            userId: userFilter || undefined,
+          });
+        }
+
+        const eventList = await eventsPromise;
+        eventsCacheRef.current.set(cacheKey, eventList);
+        setEvents(eventList);
+      } catch (err: any) {
+        if (!cached) {
+          setError(err?.message || 'Failed to load calendar events.');
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [viewMode, focusYear, focusMonth, focusDateIso, userFilter],
+  );
 
   useEffect(() => {
     loadCalendarData();
@@ -207,7 +225,8 @@ export const CalendarExplorerPage: React.FC<CalendarExplorerPageProps> = ({
           ? `Marked "${event.title}" as completed.`
           : `Reopened "${event.title}".`,
       );
-      await loadCalendarData();
+      eventsCacheRef.current.clear();
+      await Promise.all([loadCalendarData(true), loadSummaryData()]);
     } catch (err: any) {
       setError(err?.message || 'Failed to update event status.');
     }
@@ -236,7 +255,8 @@ export const CalendarExplorerPage: React.FC<CalendarExplorerPageProps> = ({
       );
       setBannerMessage(`Deleted event "${deletingEvent.title}".`);
       setDeletingEvent(null);
-      await loadCalendarData();
+      eventsCacheRef.current.clear();
+      await Promise.all([loadCalendarData(true), loadSummaryData()]);
     } catch (err: any) {
       setError(err?.message || 'Failed to delete event.');
     } finally {

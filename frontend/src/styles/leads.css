@@ -3309,3 +3309,90 @@ html.dark .ld-meeting-section-header,
   border-bottom-color: rgba(255, 255, 255, 0.12) !important;
   color: #E2E8F0 !important;
 }
+
+/* ==========================================================================
+   Calendar Reminders & Alerts Page Styles
+   ========================================================================== */
+.ld-reminder-card {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  gap: 0.75rem !important;
+  padding: 0.85rem 1.1rem !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(16, 185, 129, 0.2) !important;
+  background: #FFFFFF !important;
+  transition: all 150ms ease !important;
+}
+
+@media (min-width: 640px) {
+  .ld-reminder-card {
+    flex-direction: row !important;
+    align-items: center !important;
+  }
+}
+
+.ld-reminder-card:hover {
+  background: #F8FAF9 !important;
+  border-color: rgba(16, 185, 129, 0.4) !important;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.08) !important;
+}
+
+.ld-reminder-select {
+  height: 32px !important;
+  padding: 0 0.65rem !important;
+  border-radius: 8px !important;
+  border: 1px solid rgba(16, 185, 129, 0.28) !important;
+  background: #FFFFFF !important;
+  color: #062E03 !important;
+  font-size: 0.78rem !important;
+  font-weight: 500 !important;
+  outline: none !important;
+  cursor: pointer !important;
+}
+
+.ld-notif-card {
+  border-radius: 12px !important;
+  padding: 0.85rem 1rem !important;
+  font-size: 0.8125rem !important;
+  transition: all 150ms ease !important;
+  border: 1px solid #E2E8F0 !important;
+  background: #FFFFFF !important;
+}
+
+.ld-notif-card.is-unread {
+  border-color: rgba(16, 185, 129, 0.35) !important;
+  background: #F0FDF4 !important;
+}
+
+/* Dark mode overrides for reminders page */
+html.dark .ld-reminder-card,
+[data-theme="dark"] .ld-reminder-card {
+  background: rgba(15, 23, 42, 0.6) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+html.dark .ld-reminder-card:hover,
+[data-theme="dark"] .ld-reminder-card:hover {
+  background: rgba(16, 185, 129, 0.1) !important;
+  border-color: rgba(16, 185, 129, 0.35) !important;
+}
+
+html.dark .ld-reminder-select,
+[data-theme="dark"] .ld-reminder-select {
+  background: rgba(15, 23, 42, 0.6) !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
+  color: #E2E8F0 !important;
+}
+
+html.dark .ld-notif-card,
+[data-theme="dark"] .ld-notif-card {
+  background: rgba(15, 23, 42, 0.6) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+html.dark .ld-notif-card.is-unread,
+[data-theme="dark"] .ld-notif-card.is-unread {
+  background: rgba(16, 185, 129, 0.12) !important;
+  border-color: rgba(16, 185, 129, 0.35) !important;
+}

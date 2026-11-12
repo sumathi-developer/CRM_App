@@ -241,7 +241,7 @@ export const CalendarMonthGrid: React.FC<SharedCalendarViewProps> = ({
   const selectedKey = toDateInputString(selectedDay);
   const selectedDayEvents = eventsByDateKey[selectedKey] || [];
 
-  if (isLoading) {
+  if (isLoading && events.length === 0) {
     return (
       <div className="lg-card lg-state-box">
         <LoadingIndicator size="large" message="Loading monthly calendar..." />
@@ -451,7 +451,7 @@ export const CalendarWeekGrid: React.FC<SharedCalendarViewProps> = ({
   const weekDays = useMemo(() => buildWeekDays(focusDate), [focusDate]);
   const today = new Date();
 
-  if (isLoading) {
+  if (isLoading && events.length === 0) {
     return (
       <div className="lg-card lg-state-box">
         <LoadingIndicator size="large" message="Loading weekly calendar..." />
@@ -582,7 +582,7 @@ export const CalendarDayTimeline: React.FC<SharedCalendarViewProps> = ({
   const allDayEvents = dayEvents.filter((ev) => ev.allDay);
   const timedEvents = dayEvents.filter((ev) => !ev.allDay);
 
-  if (isLoading) {
+  if (isLoading && events.length === 0) {
     return (
       <div className="lg-card lg-state-box">
         <LoadingIndicator size="large" message="Loading daily timeline..." />
@@ -728,7 +728,7 @@ export const CalendarScheduleAgenda: React.FC<SharedCalendarViewProps> = ({
     return groups;
   }, [events]);
 
-  if (isLoading) {
+  if (isLoading && events.length === 0) {
     return (
       <div className="lg-card lg-state-box">
         <LoadingIndicator size="large" message="Loading schedule agenda..." />

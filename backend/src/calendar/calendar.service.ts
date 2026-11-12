@@ -107,6 +107,7 @@ export class CalendarService {
               assignedTo: { select: { id: true, name: true, email: true } },
             },
             orderBy: { scheduledAt: 'asc' },
+            take: 200,
           })
         : [],
       shouldIncludeTasks
@@ -119,6 +120,7 @@ export class CalendarService {
               assignedTo: { select: { id: true, name: true, email: true } },
             },
             orderBy: { dueDate: 'asc' },
+            take: 200,
           })
         : [],
       shouldIncludeDeals
@@ -129,6 +131,7 @@ export class CalendarService {
               owner: { select: { id: true, name: true, email: true } },
             },
             orderBy: { expectedCloseDate: 'asc' },
+            take: 200,
           })
         : [],
     ]);
@@ -318,7 +321,8 @@ export class CalendarService {
   /**
    * Returns a high-level summary of upcoming calendar metrics.
    */
-  async getSummary(userId?: string, currentUserId?: string) {
+  async getSummary(userId?: string, _currentUserId?: string) {
+    const targetUserId = userId || undefined;
     const now = new Date();
 
     const startOfToday = new Date(now);
@@ -335,22 +339,66 @@ export class CalendarService {
     endOfWeek.setDate(startOfWeek.getDate() + 6);
     endOfWeek.setHours(23, 59, 59, 999);
 
-    const [todayEvents, weekEvents, upcomingMeetings] = await Promise.all([
-      this.getEvents({ start: startOfToday.toISOString(), end: endOfToday.toISOString(), userId }, currentUserId),
-      this.getEvents({ start: startOfWeek.toISOString(), end: endOfWeek.toISOString(), userId }, currentUserId),
-      this.getEvents({ start: now.toISOString(), type: 'MEETING', userId }, currentUserId),
+    const thirtyDaysLater = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+
+    const userAct = targetUserId ? { assignedToId: targetUserId } : {};
+    const userTask = targetUserId ? { assignedToId: targetUserId } : {};
+    const userDeal = targetUserId ? { ownerId: targetUserId } : {};
+
+    const [
+      todayActCount,
+      todayTaskCount,
+      todayDealCount,
+      weekActCount,
+      weekTaskCount,
+      weekDealCount,
+      overdueActCount,
+      overdueTaskCount,
+      upcomingMeetingsCount,
+    ] = await Promise.all([
+      // Today counts
+      this.prisma.activity.count({
+        where: { scheduledAt: { gte: startOfToday, lte: endOfToday }, ...userAct },
+      }),
+      this.prisma.task.count({
+        where: { dueDate: { gte: startOfToday, lte: endOfToday }, ...userTask },
+      }),
+      this.prisma.deal.count({
+        where: { expectedCloseDate: { gte: startOfToday, lte: endOfToday }, ...userDeal },
+      }),
+      // Week counts
+      this.prisma.activity.count({
+        where: { scheduledAt: { gte: startOfWeek, lte: endOfWeek }, ...userAct },
+      }),
+      this.prisma.task.count({
+        where: { dueDate: { gte: startOfWeek, lte: endOfWeek }, ...userTask },
+      }),
+      this.prisma.deal.count({
+        where: { expectedCloseDate: { gte: startOfWeek, lte: endOfWeek }, ...userDeal },
+      }),
+      // Overdue counts (pending items scheduled in past)
+      this.prisma.activity.count({
+        where: { scheduledAt: { lt: now }, status: 'PENDING', ...userAct },
+      }),
+      this.prisma.task.count({
+        where: { dueDate: { lt: now }, status: 'PENDING', ...userTask },
+      }),
+      // Upcoming meetings (next 30 days)
+      this.prisma.activity.count({
+        where: {
+          type: 'MEETING',
+          scheduledAt: { gte: now, lte: thirtyDaysLater },
+          ...userAct,
+        },
+      }),
     ]);
 
-    const overdueCount = weekEvents.filter(
-      (e) => e.status === 'PENDING' && new Date(e.start).getTime() < now.getTime(),
-    ).length;
-
     return {
-      todayCount: todayEvents.length,
-      weekCount: weekEvents.length,
-      overdueCount,
-      upcomingMeetingsCount: upcomingMeetings.length,
-      todayEvents,
+      todayCount: todayActCount + todayTaskCount + todayDealCount,
+      weekCount: weekActCount + weekTaskCount + weekDealCount,
+      overdueCount: overdueActCount + overdueTaskCount,
+      upcomingMeetingsCount,
+      todayEvents: [],
     };
   }
 

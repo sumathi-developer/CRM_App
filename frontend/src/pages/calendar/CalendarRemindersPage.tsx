@@ -109,23 +109,23 @@ export const CalendarRemindersPage: React.FC = () => {
       title="Calendar Reminders & Alerts"
       subtitle="Manage lead-time reminders, snooze upcoming alerts, and review system notifications"
       actions={
-        <div className="flex items-center gap-2">
+        <>
           <button
             type="button"
             onClick={loadRemindersAndNotifications}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs font-medium text-gray-700 hover:bg-gray-50"
+            className="auth-btn btn-secondary btn-size-small"
           >
             <RefreshCwIcon size={14} />
             Refresh
           </button>
           <Link
             to="/calendar/create"
-            className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 px-3.5 py-2 text-xs font-medium text-white hover:bg-blue-700"
+            className="auth-btn btn-primary btn-size-small"
           >
             <PlusIcon size={14} />
             Create Event with Reminder
           </Link>
-        </div>
+        </>
       }
     >
       <ErrorMessage error={error} />
@@ -161,15 +161,38 @@ export const CalendarRemindersPage: React.FC = () => {
         />
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <div className="lg:col-span-2">
+      <div className="grid grid-cols-1 items-stretch gap-6 lg:grid-cols-3">
+        <div className="flex flex-col lg:col-span-2">
           <SectionCard
             title="Scheduled Event Reminders"
             subtitle="Adjust reminder lead time, snooze by 15 minutes, or dismiss alerts"
+            className="flex h-full flex-col"
           >
             {loading ? (
-              <div className="py-12 text-center text-sm text-gray-500">
-                Loading reminders...
+              <div
+                style={{
+                  padding: '3rem 1.5rem',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '0.75rem',
+                  color: '#64748B',
+                  fontSize: '0.85rem',
+                  margin: 'auto 0',
+                }}
+              >
+                <div
+                  className="animate-spin"
+                  style={{
+                    width: '28px',
+                    height: '28px',
+                    borderRadius: '50%',
+                    border: '3px solid rgba(16, 185, 129, 0.2)',
+                    borderTopColor: '#10B981',
+                  }}
+                />
+                <span>Loading active event reminders...</span>
               </div>
             ) : reminders.length === 0 ? (
               <EmptyState
@@ -178,7 +201,7 @@ export const CalendarRemindersPage: React.FC = () => {
                 action={
                   <Link
                     to="/calendar/create"
-                    className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-blue-700"
+                    className="auth-btn btn-primary btn-size-small"
                   >
                     <PlusIcon size={14} />
                     Schedule Event
@@ -186,14 +209,11 @@ export const CalendarRemindersPage: React.FC = () => {
                 }
               />
             ) : (
-              <div className="divide-y divide-gray-100">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
                 {reminders.map((rem) => {
                   const isOverdue = new Date(rem.eventStart).getTime() < nowMs;
                   return (
-                    <div
-                      key={rem.id}
-                      className="flex flex-col justify-between gap-3 py-3.5 sm:flex-row sm:items-center"
-                    >
+                    <div key={rem.id} className="ld-reminder-card">
                       <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-center gap-2">
                           <Badge tone={calendarEventTone(rem.eventType)}>
@@ -215,7 +235,7 @@ export const CalendarRemindersPage: React.FC = () => {
 
                         <Link
                           to={`/calendar/events/${rem.eventId}?category=${rem.eventCategory}`}
-                          className="mt-1.5 block truncate text-sm font-semibold text-gray-900 hover:text-blue-600"
+                          className="mt-1.5 block truncate text-sm font-semibold text-gray-900 hover:text-emerald-700"
                         >
                           {rem.eventTitle}
                         </Link>
@@ -236,7 +256,7 @@ export const CalendarRemindersPage: React.FC = () => {
                             )
                           }
                           aria-label="Reminder Offset"
-                          className="rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 text-xs text-gray-700 focus:border-blue-500 focus:outline-none"
+                          className="ld-reminder-select"
                         >
                           {REMINDER_OFFSET_OPTIONS.map((opt) => (
                             <option key={opt.value} value={opt.value}>
@@ -248,7 +268,15 @@ export const CalendarRemindersPage: React.FC = () => {
                         <button
                           type="button"
                           onClick={() => handleSnooze(rem.eventId, 15)}
-                          className="inline-flex items-center gap-1 rounded-lg border border-amber-200 bg-amber-50 px-2.5 py-1.5 text-xs font-medium text-amber-800 hover:bg-amber-100"
+                          className="auth-btn btn-secondary btn-size-small"
+                          style={{
+                            height: '32px',
+                            padding: '0 0.65rem',
+                            fontSize: '0.78rem',
+                            color: '#92400E',
+                            borderColor: 'rgba(245, 158, 11, 0.4)',
+                            background: '#FFFBEB',
+                          }}
                         >
                           <ClockIcon size={13} />
                           Snooze 15m
@@ -257,7 +285,12 @@ export const CalendarRemindersPage: React.FC = () => {
                         <button
                           type="button"
                           onClick={() => handleDismiss(rem.eventId)}
-                          className="inline-flex items-center gap-1 rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-100"
+                          className="auth-btn btn-secondary btn-size-small"
+                          style={{
+                            height: '32px',
+                            padding: '0 0.65rem',
+                            fontSize: '0.78rem',
+                          }}
                         >
                           Dismiss
                         </button>
@@ -270,16 +303,22 @@ export const CalendarRemindersPage: React.FC = () => {
           </SectionCard>
         </div>
 
-        <div>
+        <div className="flex flex-col">
           <SectionCard
             title="CRM System Notifications"
             subtitle="Recent alerts from the CRM notification feed"
+            className="flex h-full flex-col"
             actions={
               unreadNotifications > 0 ? (
                 <button
                   type="button"
                   onClick={handleMarkAllRead}
-                  className="inline-flex items-center gap-1 text-xs font-medium text-blue-600 hover:underline"
+                  className="auth-btn btn-secondary btn-size-small"
+                  style={{
+                    height: '28px',
+                    padding: '0 0.6rem',
+                    fontSize: '0.75rem',
+                  }}
                 >
                   <CheckIcon size={13} />
                   Mark all read
@@ -288,30 +327,41 @@ export const CalendarRemindersPage: React.FC = () => {
             }
           >
             {notifications.length === 0 ? (
-              <div className="py-8 text-center text-xs text-gray-500">
-                No system notifications found.
+              <div
+                style={{
+                  padding: '2.5rem 1rem',
+                  textAlign: 'center',
+                  background: '#F8FAFC',
+                  borderRadius: '10px',
+                  border: '1px dashed rgba(16, 185, 129, 0.25)',
+                  margin: 'auto 0',
+                }}
+              >
+                <ActivityIcon
+                  size={22}
+                  style={{ color: '#10B981', margin: '0 auto 0.4rem', opacity: 0.7 }}
+                />
+                <p style={{ fontSize: '0.8125rem', color: '#64748B', margin: 0 }}>
+                  No system notifications found.
+                </p>
               </div>
             ) : (
-              <div className="space-y-2.5">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
                 {notifications.slice(0, 10).map((n) => (
                   <div
                     key={n.id}
-                    className={`rounded-xl border p-3 text-xs transition-colors ${
-                      n.isRead
-                        ? 'border-gray-200 bg-white text-gray-600'
-                        : 'border-blue-200 bg-blue-50/50 text-gray-900'
-                    }`}
+                    className={`ld-notif-card ${!n.isRead ? 'is-unread' : ''}`}
                   >
                     <div className="flex items-start justify-between gap-2">
-                      <div className="flex items-center gap-1.5 font-semibold">
-                        <ClockIcon size={13} />
+                      <div className="flex items-center gap-1.5 font-semibold text-gray-900">
+                        <ClockIcon size={13} style={{ color: '#047857' }} />
                         <span>{n.title}</span>
                       </div>
                       {!n.isRead && (
                         <button
                           type="button"
                           onClick={() => handleMarkNotificationRead(n.id)}
-                          className="text-[11px] font-medium text-blue-600 hover:underline"
+                          className="text-[11px] font-semibold text-emerald-700 hover:underline"
                         >
                           Mark read
                         </button>
@@ -323,7 +373,7 @@ export const CalendarRemindersPage: React.FC = () => {
                       {n.link && (
                         <Link
                           to={n.link}
-                          className="inline-flex items-center gap-1 text-blue-600 hover:underline"
+                          className="inline-flex items-center gap-1 font-semibold text-emerald-700 hover:underline"
                         >
                           Open ↗
                         </Link>
