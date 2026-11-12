@@ -10,6 +10,7 @@ import {
   PhoneIcon,
   MailIcon,
   GlobeIcon,
+  TrophyIcon,
 } from '../../components/common/Icons';
 
 interface CustomFieldEntityBadgeProps {
@@ -34,7 +35,7 @@ export const CustomFieldEntityBadge: React.FC<CustomFieldEntityBadgeProps> = ({
     icon = <BuildingIcon size={12} />;
   } else if (norm === 'DEAL') {
     styleClass = 'entity-deal';
-    icon = <DollarSignIcon size={12} />;
+    icon = <TrophyIcon size={12} />;
   } else if (norm === 'ACTIVITY') {
     styleClass = 'entity-activity';
     icon = <CalendarIcon size={12} />;

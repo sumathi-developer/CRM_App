@@ -21,6 +21,7 @@ import {
   ArrowRightIcon,
   CheckCircleIcon,
   DollarSignIcon,
+  TrophyIcon,
   TargetIcon,
 } from '../../components/common/Icons';
 
@@ -202,7 +203,7 @@ export const LeadConversionPage: React.FC = () => {
             qualifiedReady.reduce((s, l) => s + Number(l.estimatedValue || 0), 0),
           )}
           hint="Ready to move to Sales Deals"
-          icon={<DollarSignIcon size={20} />}
+          icon={<TrophyIcon size={20} />}
           tone="blue"
         />
       </div>

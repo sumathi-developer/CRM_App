@@ -44,6 +44,7 @@ import {
   CalendarIcon,
   CheckCircleIcon,
   DollarSignIcon,
+  TrophyIcon,
   EditIcon,
   MailIcon,
   PhoneIcon,
@@ -256,7 +257,7 @@ export const LeadDetailsPage: React.FC = () => {
               label="Estimated Value"
               value={formatCurrency(lead.estimatedValue)}
               hint="Expected deal opportunity"
-              icon={<DollarSignIcon size={20} />}
+              icon={<TrophyIcon size={20} />}
               tone="green"
             />
             <StatCard

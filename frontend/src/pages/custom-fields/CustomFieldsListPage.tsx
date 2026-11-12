@@ -20,6 +20,8 @@ import { LoadingIndicator } from '../../components/auth/LoadingIndicator';
 import { ErrorMessage } from '../../components/auth/ErrorMessage';
 import { SuccessMessage } from '../../components/auth/SuccessMessage';
 import { EmptyState } from '../../components/common/EmptyState';
+import { StatCard } from '../lead-generation/components/Cards';
+import { FilterBar, SearchInput } from '../lead-generation/components/FilterBar';
 import {
   SlidersIcon,
   PlusIcon,
@@ -30,6 +32,7 @@ import {
   CheckCircleIcon,
   EyeIcon,
   CopyIcon,
+  LayersIcon,
 } from './CustomFieldIcons';
 
 const ENTITY_TABS: Array<{ label: string; value: CustomFieldEntityType | 'ALL' }> = [
@@ -154,6 +157,16 @@ export const CustomFieldsListPage: React.FC = () => {
   const activeFieldsCount = fields.filter((f) => f.isActive && !f.isArchived).length;
   const filterableCount = fields.filter((f) => f.isFilterable || f.isSearchable).length;
 
+  const hasActiveFilters = Boolean(
+    searchQuery.trim() || selectedFieldType || selectedEntityTab !== 'ALL'
+  );
+
+  const handleResetFilters = () => {
+    setSearchQuery('');
+    setSelectedFieldType('');
+    setSelectedEntityTab('ALL');
+  };
+
   return (
     <div className="crm-app-container">
       <Navbar />
@@ -184,14 +197,15 @@ export const CustomFieldsListPage: React.FC = () => {
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
               <div
                 style={{
-                  width: '36px',
-                  height: '36px',
-                  borderRadius: '8px',
-                  background: 'rgba(59, 130, 246, 0.15)',
-                  color: '#60a5fa',
+                  width: '38px',
+                  height: '38px',
+                  borderRadius: '10px',
+                  background: 'rgba(16, 185, 129, 0.15)',
+                  color: '#10b981',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
+                  flexShrink: 0,
                 }}
               >
                 <SlidersIcon size={20} />
@@ -207,6 +221,7 @@ export const CustomFieldsListPage: React.FC = () => {
             {/* Form Layout Preview Trigger */}
             <button
               type="button"
+              className="auth-btn btn-secondary btn-size-small"
               onClick={() => {
                 const targetEntity = selectedEntityTab === 'ALL' ? 'LEAD' : selectedEntityTab;
                 setPreviewEntityType(targetEntity);
@@ -216,15 +231,6 @@ export const CustomFieldsListPage: React.FC = () => {
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.5rem',
-                padding: '0.5rem 1rem',
-                borderRadius: '8px',
-                border: '1px solid var(--border-color, #334155)',
-                background: 'var(--bg-card, #0f172a)',
-                color: '#cbd5e1',
-                fontSize: '0.875rem',
-                fontWeight: 500,
-                cursor: 'pointer',
-                transition: 'all 0.15s ease',
               }}
             >
               <EyeIcon size={16} />
@@ -235,7 +241,7 @@ export const CustomFieldsListPage: React.FC = () => {
             {canManageFields && (
               <Link
                 to="/custom-fields/create"
-                className="btn-primary"
+                className="auth-btn btn-primary btn-size-small"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -254,51 +260,40 @@ export const CustomFieldsListPage: React.FC = () => {
         {apiError && <ErrorMessage error={apiError} />}
         {apiSuccess && <SuccessMessage message={apiSuccess} />}
 
-        {/* KPI Metrics Strip */}
-        <div className="custom-fields-metrics-strip">
-          <div className="workspace-info-card">
-            <span style={{ fontSize: '0.75rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              Total Schema Fields
-            </span>
-            <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#f8fafc', marginTop: '0.25rem' }}>
-              {totalCount}
-            </div>
-            <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Across all CRM modules</span>
-          </div>
-
-          <div className="workspace-info-card">
-            <span style={{ fontSize: '0.75rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              Active In Layouts
-            </span>
-            <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#34d399', marginTop: '0.25rem' }}>
-              {activeFieldsCount}
-            </div>
-            <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Rendered in forms & views</span>
-          </div>
-
-          <div className="workspace-info-card">
-            <span style={{ fontSize: '0.75rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              Entities Covered
-            </span>
-            <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#60a5fa', marginTop: '0.25rem' }}>
-              5
-            </div>
-            <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Lead, Contact, Company, Deal, Activity</span>
-          </div>
-
-          <div className="workspace-info-card">
-            <span style={{ fontSize: '0.75rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              Filterable / Searchable
-            </span>
-            <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#c084fc', marginTop: '0.25rem' }}>
-              {filterableCount}
-            </div>
-            <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Indexed for fast querying</span>
-          </div>
+        {/* KPI Metrics Grid */}
+        <div className="lg-stat-grid" style={{ marginBottom: '1.5rem' }}>
+          <StatCard
+            label="Total Schema Fields"
+            value={totalCount}
+            hint="Across all CRM modules"
+            tone="blue"
+            icon={<SlidersIcon size={18} />}
+          />
+          <StatCard
+            label="Active In Layouts"
+            value={activeFieldsCount}
+            hint="Rendered in forms & views"
+            tone="green"
+            icon={<EyeIcon size={18} />}
+          />
+          <StatCard
+            label="Entities Covered"
+            value={5}
+            hint="Lead, Contact, Company, Deal, Activity"
+            tone="cyan"
+            icon={<LayersIcon size={18} />}
+          />
+          <StatCard
+            label="Filterable / Searchable"
+            value={filterableCount}
+            hint="Indexed for fast querying"
+            tone="purple"
+            icon={<SearchIcon size={18} />}
+          />
         </div>
 
         {/* Entity Navigation Tabs */}
-        <div className="entity-tabs-bar" role="tablist">
+        <div className="entity-tabs-bar" role="tablist" aria-label="Filter by CRM entity">
           {ENTITY_TABS.map((tab) => {
             const countForTab =
               tab.value === 'ALL'
@@ -323,176 +318,121 @@ export const CustomFieldsListPage: React.FC = () => {
         </div>
 
         {/* Filter and Search Bar */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '1rem',
-            marginBottom: '1.25rem',
-            flexWrap: 'wrap',
-          }}
+        <FilterBar
+          onRefresh={() => setRefreshTrigger((prev) => prev + 1)}
+          onReset={hasActiveFilters ? handleResetFilters : undefined}
+          hasActiveFilters={hasActiveFilters}
+          title="Filter Schema Fields"
+          className="mb-6"
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: 1, minWidth: '280px' }}>
-            {/* Search Input */}
-            <div style={{ position: 'relative', width: '100%', maxWidth: '380px' }}>
-              <div
-                style={{
-                  position: 'absolute',
-                  left: '0.75rem',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  color: '#64748b',
-                  pointerEvents: 'none',
-                }}
+          <SearchInput
+            value={searchQuery}
+            onChange={(val: string) => setSearchQuery(val)}
+            placeholder="Search by field name, key, or section..."
+            label="Search Fields"
+            id="custom-field-search"
+          />
+
+          <div className="crm-filter-control lg-filter-control lg-filter-select-wrap">
+            <label className="crm-filter-label lg-filter-label" htmlFor="custom-field-type-select">
+              Data Type
+            </label>
+            <div className="crm-filter-select-wrap">
+              <select
+                id="custom-field-type-select"
+                className="crm-filter-select lg-select"
+                value={selectedFieldType}
+                onChange={(e) => setSelectedFieldType(e.target.value as CustomFieldType | '')}
               >
-                <SearchIcon size={16} />
-              </div>
-              <input
-                type="text"
-                placeholder="Search by field name, key, or section..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '0.5rem 0.75rem 0.5rem 2.25rem',
-                  borderRadius: '8px',
-                  background: 'var(--bg-card, #0f172a)',
-                  border: '1px solid var(--border-color, #1e293b)',
-                  color: '#f8fafc',
-                  fontSize: '0.875rem',
-                }}
-              />
+                {ALL_FIELD_TYPES.map((type) => (
+                  <option key={type.value} value={type.value}>
+                    {type.label}
+                  </option>
+                ))}
+              </select>
             </div>
-
-            {/* Field Type Filter */}
-            <select
-              value={selectedFieldType}
-              onChange={(e) => setSelectedFieldType(e.target.value as CustomFieldType | '')}
-              style={{
-                padding: '0.5rem 0.75rem',
-                borderRadius: '8px',
-                background: 'var(--bg-card, #0f172a)',
-                border: '1px solid var(--border-color, #1e293b)',
-                color: '#cbd5e1',
-                fontSize: '0.875rem',
-              }}
-            >
-              {ALL_FIELD_TYPES.map((type) => (
-                <option key={type.value} value={type.value}>
-                  {type.label}
-                </option>
-              ))}
-            </select>
           </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <button
-              type="button"
-              onClick={() => setRefreshTrigger((prev) => prev + 1)}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.35rem',
-                padding: '0.5rem 0.75rem',
-                borderRadius: '8px',
-                background: 'transparent',
-                border: '1px solid var(--border-color, #1e293b)',
-                color: '#94a3b8',
-                cursor: 'pointer',
-                fontSize: '0.825rem',
-              }}
-              title="Refresh list"
-            >
-              <RefreshCwIcon size={14} />
-              <span>Refresh</span>
-            </button>
-          </div>
-        </div>
+        </FilterBar>
 
         {/* Content Table or Loading */}
         {isLoading ? (
           <div
+            className="lg-card"
             style={{
-              padding: '3rem',
+              padding: '3.5rem 1.5rem',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              background: 'var(--bg-card, #0f172a)',
-              borderRadius: '12px',
-              border: '1px solid var(--border-color, #1e293b)',
+              borderRadius: '16px',
             }}
           >
             <LoadingIndicator size="large" />
-            <p style={{ marginTop: '1rem', color: '#94a3b8', fontSize: '0.875rem' }}>
+            <p style={{ marginTop: '1rem', color: '#64748b', fontSize: '0.875rem' }}>
               Loading custom fields definitions...
             </p>
           </div>
         ) : fields.length === 0 ? (
-          <EmptyState
-            title="No custom fields found"
-            description={
-              searchQuery || selectedFieldType
-                ? 'Try adjusting your filters or search keyword.'
-                : 'Get started by creating your first custom schema attribute for this workspace.'
-            }
-            action={
-              canManageFields ? (
-                <Link
-                  to="/custom-fields/create"
-                  className="btn-primary"
-                  style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
+          <div className="lg-card" style={{ padding: '3.5rem 1.5rem', borderRadius: '16px' }}>
+            <EmptyState
+              icon={
+                <div
+                  style={{
+                    width: '56px',
+                    height: '56px',
+                    borderRadius: '16px',
+                    background: 'rgba(16, 185, 129, 0.12)',
+                    color: '#10b981',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    margin: '0 auto 0.5rem',
+                  }}
                 >
-                  <PlusIcon size={16} />
-                  <span>Create Custom Field</span>
-                </Link>
-              ) : undefined
-            }
-          />
-        ) : (
-          <div
-            style={{
-              background: 'var(--bg-card, #0f172a)',
-              border: '1px solid var(--border-color, #1e293b)',
-              borderRadius: '12px',
-              overflow: 'hidden',
-            }}
-          >
-            <div style={{ overflowX: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.875rem' }}>
-                <thead>
-                  <tr
-                    style={{
-                      borderBottom: '1px solid var(--border-color, #1e293b)',
-                      background: 'rgba(30, 41, 59, 0.4)',
-                      color: '#94a3b8',
-                      fontSize: '0.75rem',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.05em',
-                    }}
+                  <SlidersIcon size={28} />
+                </div>
+              }
+              title="No custom fields found"
+              description={
+                searchQuery || selectedFieldType
+                  ? 'Try adjusting your filters or search keyword.'
+                  : 'Get started by creating your first custom schema attribute for this workspace.'
+              }
+              action={
+                canManageFields ? (
+                  <Link
+                    to="/custom-fields/create"
+                    className="auth-btn btn-primary btn-size-small"
+                    style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
                   >
-                    <th style={{ padding: '0.875rem 1rem' }}>Field Name & Key</th>
-                    <th style={{ padding: '0.875rem 1rem' }}>Entity</th>
-                    <th style={{ padding: '0.875rem 1rem' }}>Data Type</th>
-                    <th style={{ padding: '0.875rem 1rem' }}>Section & Width</th>
-                    <th style={{ padding: '0.875rem 1rem' }}>Flags</th>
-                    <th style={{ padding: '0.875rem 1rem' }}>Options</th>
-                    <th style={{ padding: '0.875rem 1rem', textAlign: 'right' }}>Actions</th>
+                    <PlusIcon size={16} />
+                    <span>Create Custom Field</span>
+                  </Link>
+                ) : undefined
+              }
+            />
+          </div>
+        ) : (
+          <div className="lg-card lg-table-card" style={{ padding: 0, overflow: 'hidden' }}>
+            <div className="lg-table-scroll">
+              <table className="lg-table ld-table">
+                <thead>
+                  <tr>
+                    <th>Field Name & Key</th>
+                    <th>Entity</th>
+                    <th>Data Type</th>
+                    <th>Section & Width</th>
+                    <th>Flags</th>
+                    <th>Options</th>
+                    <th className="align-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {fields.map((field) => (
-                    <tr
-                      key={field.id}
-                      style={{
-                        borderBottom: '1px solid rgba(30, 41, 59, 0.6)',
-                        transition: 'background 0.15s ease',
-                      }}
-                    >
+                    <tr key={field.id}>
                       {/* Name & Key */}
-                      <td style={{ padding: '0.875rem 1rem' }}>
-                        <div style={{ fontWeight: 600, color: '#f8fafc' }}>
+                      <td>
+                        <div style={{ fontWeight: 600, color: 'var(--text-primary, #0f172a)' }}>
                           <Link
                             to={`/custom-fields/${field.id}`}
                             style={{ color: 'inherit', textDecoration: 'none' }}
@@ -504,8 +444,8 @@ export const CustomFieldsListPage: React.FC = () => {
                           <code
                             style={{
                               fontSize: '0.75rem',
-                              color: '#94a3b8',
-                              background: 'rgba(255, 255, 255, 0.05)',
+                              color: '#065f46',
+                              background: 'rgba(16, 185, 129, 0.08)',
                               padding: '0.1rem 0.35rem',
                               borderRadius: '4px',
                             }}
@@ -519,7 +459,7 @@ export const CustomFieldsListPage: React.FC = () => {
                             style={{
                               background: 'transparent',
                               border: 'none',
-                              color: copiedKey === field.key ? '#34d399' : '#64748b',
+                              color: copiedKey === field.key ? '#10b981' : '#64748b',
                               cursor: 'pointer',
                               padding: '0.1rem',
                             }}
@@ -530,117 +470,121 @@ export const CustomFieldsListPage: React.FC = () => {
                       </td>
 
                       {/* Entity Badge */}
-                      <td style={{ padding: '0.875rem 1rem' }}>
+                      <td>
                         <CustomFieldEntityBadge entityType={field.entityType} />
                       </td>
 
                       {/* Data Type Badge */}
-                      <td style={{ padding: '0.875rem 1rem' }}>
+                      <td>
                         <CustomFieldTypeBadge type={field.fieldType} />
                       </td>
 
                       {/* Section & Width */}
-                      <td style={{ padding: '0.875rem 1rem' }}>
-                        <div style={{ color: '#e2e8f0', fontSize: '0.8rem', fontWeight: 500 }}>
+                      <td>
+                        <div style={{ color: 'var(--text-primary, #0f172a)', fontSize: '0.85rem', fontWeight: 600 }}>
                           {field.section || 'General'}
                         </div>
-                        <span style={{ fontSize: '0.75rem', color: '#64748b' }}>
+                        <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary, #64748b)' }}>
                           {field.gridWidth === 6 ? 'Half Width (6/12)' : 'Full Width (12/12)'}
                         </span>
                       </td>
 
                       {/* Behavior Flags */}
-                      <td style={{ padding: '0.875rem 1rem' }}>
-                        <div style={{ display: 'flex', gap: '0.25rem', flexWrap: 'wrap' }}>
+                      <td>
+                        <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
                           {field.isRequired && (
                             <span
                               style={{
                                 fontSize: '0.7rem',
-                                padding: '0.1rem 0.35rem',
+                                padding: '0.15rem 0.4rem',
                                 borderRadius: '4px',
-                                background: 'rgba(239, 68, 68, 0.15)',
-                                color: '#f87171',
+                                background: 'rgba(239, 68, 68, 0.12)',
+                                color: '#dc2626',
+                                fontWeight: 600,
                               }}
                             >
-                              Req
+                              Required
                             </span>
                           )}
                           {field.isUnique && (
                             <span
                               style={{
                                 fontSize: '0.7rem',
-                                padding: '0.1rem 0.35rem',
+                                padding: '0.15rem 0.4rem',
                                 borderRadius: '4px',
-                                background: 'rgba(245, 158, 11, 0.15)',
-                                color: '#fbbf24',
+                                background: 'rgba(245, 158, 11, 0.12)',
+                                color: '#d97706',
+                                fontWeight: 600,
                               }}
                             >
-                              Uniq
+                              Unique
                             </span>
                           )}
                           {field.isFilterable && (
                             <span
                               style={{
                                 fontSize: '0.7rem',
-                                padding: '0.1rem 0.35rem',
+                                padding: '0.15rem 0.4rem',
                                 borderRadius: '4px',
-                                background: 'rgba(59, 130, 246, 0.15)',
-                                color: '#60a5fa',
+                                background: 'rgba(59, 130, 246, 0.12)',
+                                color: '#2563eb',
+                                fontWeight: 600,
                               }}
                             >
-                              Filt
+                              Filterable
                             </span>
                           )}
                           {field.isSearchable && (
                             <span
                               style={{
                                 fontSize: '0.7rem',
-                                padding: '0.1rem 0.35rem',
+                                padding: '0.15rem 0.4rem',
                                 borderRadius: '4px',
-                                background: 'rgba(168, 85, 247, 0.15)',
-                                color: '#c084fc',
+                                background: 'rgba(168, 85, 247, 0.12)',
+                                color: '#7c3aed',
+                                fontWeight: 600,
                               }}
                             >
-                              Srch
+                              Searchable
                             </span>
                           )}
                         </div>
                       </td>
 
                       {/* Options Count */}
-                      <td style={{ padding: '0.875rem 1rem' }}>
+                      <td>
                         {['DROPDOWN', 'MULTI_SELECT', 'RADIO'].includes(field.fieldType) ? (
                           <span
                             style={{
                               fontSize: '0.75rem',
-                              color: '#cbd5e1',
-                              background: 'rgba(255, 255, 255, 0.06)',
-                              padding: '0.15rem 0.5rem',
+                              color: 'var(--text-primary, #1e293b)',
+                              background: 'rgba(16, 185, 129, 0.12)',
+                              padding: '0.2rem 0.55rem',
                               borderRadius: '9999px',
+                              fontWeight: 600,
                             }}
                           >
                             {field.options ? field.options.length : 0} options
                           </span>
                         ) : (
-                          <span style={{ fontSize: '0.75rem', color: '#64748b' }}>—</span>
+                          <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>—</span>
                         )}
                       </td>
 
                       {/* Actions */}
-                      <td style={{ padding: '0.875rem 1rem', textAlign: 'right' }}>
+                      <td className="align-right">
                         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
                           {/* Details View */}
                           <Link
                             to={`/custom-fields/${field.id}`}
+                            className="auth-btn btn-secondary btn-size-small"
                             style={{
-                              color: '#94a3b8',
-                              padding: '0.3rem',
-                              borderRadius: '6px',
+                              padding: '0.35rem 0.5rem',
                               display: 'inline-flex',
                             }}
                             title="View field details"
                           >
-                            <EyeIcon size={16} />
+                            <EyeIcon size={14} />
                           </Link>
 
                           {/* Safe Type Migration Modal Trigger */}
@@ -648,18 +592,15 @@ export const CustomFieldsListPage: React.FC = () => {
                             <button
                               type="button"
                               onClick={() => setMigrationField(field)}
+                              className="auth-btn btn-secondary btn-size-small"
                               style={{
-                                background: 'transparent',
-                                border: 'none',
-                                color: '#60a5fa',
-                                padding: '0.3rem',
-                                borderRadius: '6px',
-                                cursor: 'pointer',
+                                padding: '0.35rem 0.5rem',
+                                color: '#2563eb',
                                 display: 'inline-flex',
                               }}
                               title="Migrate field data type"
                             >
-                              <RefreshCwIcon size={16} />
+                              <RefreshCwIcon size={14} />
                             </button>
                           )}
 
@@ -667,15 +608,14 @@ export const CustomFieldsListPage: React.FC = () => {
                           {canManageFields && (
                             <Link
                               to={`/custom-fields/${field.id}/edit`}
+                              className="auth-btn btn-secondary btn-size-small"
                               style={{
-                                color: '#cbd5e1',
-                                padding: '0.3rem',
-                                borderRadius: '6px',
+                                padding: '0.35rem 0.5rem',
                                 display: 'inline-flex',
                               }}
                               title="Edit field settings"
                             >
-                              <EditIcon size={16} />
+                              <EditIcon size={14} />
                             </Link>
                           )}
 
@@ -684,18 +624,15 @@ export const CustomFieldsListPage: React.FC = () => {
                             <button
                               type="button"
                               onClick={() => setFieldToDelete(field)}
+                              className="auth-btn btn-secondary btn-size-small"
                               style={{
-                                background: 'transparent',
-                                border: 'none',
-                                color: '#f87171',
-                                padding: '0.3rem',
-                                borderRadius: '6px',
-                                cursor: 'pointer',
+                                padding: '0.35rem 0.5rem',
+                                color: '#dc2626',
                                 display: 'inline-flex',
                               }}
                               title="Delete or archive field"
                             >
-                              <TrashIcon size={16} />
+                              <TrashIcon size={14} />
                             </button>
                           )}
                         </div>

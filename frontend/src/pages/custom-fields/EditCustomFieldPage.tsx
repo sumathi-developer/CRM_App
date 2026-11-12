@@ -295,9 +295,10 @@ export const EditCustomFieldPage: React.FC = () => {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '0.4rem',
-              color: '#94a3b8',
+              color: '#059669',
               textDecoration: 'none',
               fontSize: '0.875rem',
+              fontWeight: 600,
             }}
           >
             <ArrowLeftIcon size={16} />
@@ -311,14 +312,15 @@ export const EditCustomFieldPage: React.FC = () => {
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
               <div
                 style={{
-                  width: '36px',
-                  height: '36px',
-                  borderRadius: '8px',
-                  background: 'rgba(59, 130, 246, 0.15)',
-                  color: '#60a5fa',
+                  width: '38px',
+                  height: '38px',
+                  borderRadius: '10px',
+                  background: 'rgba(16, 185, 129, 0.15)',
+                  color: '#10b981',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
+                  flexShrink: 0,
                 }}
               >
                 <SlidersIcon size={20} />
@@ -328,7 +330,7 @@ export const EditCustomFieldPage: React.FC = () => {
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.25rem' }}>
               <CustomFieldEntityBadge entityType={field.entityType} />
               <CustomFieldTypeBadge type={field.fieldType} />
-              <code style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{field.key}</code>
+              <code style={{ fontSize: '0.75rem', color: '#065f46', background: 'rgba(16, 185, 129, 0.1)', padding: '2px 6px', borderRadius: '4px' }}>{field.key}</code>
             </div>
           </div>
         </div>
@@ -341,15 +343,8 @@ export const EditCustomFieldPage: React.FC = () => {
             {/* Left 8 Cols: Edit attributes */}
             <div style={{ gridColumn: 'span 8', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
               {/* Field Attributes */}
-              <div
-                style={{
-                  background: 'var(--bg-card, #0f172a)',
-                  border: '1px solid var(--border-color, #1e293b)',
-                  borderRadius: '12px',
-                  padding: '1.5rem',
-                }}
-              >
-                <h2 style={{ fontSize: '1rem', fontWeight: 600, color: '#f8fafc', margin: '0 0 1rem 0' }}>
+              <div className="lg-card" style={{ padding: '1.5rem', borderRadius: '16px' }}>
+                <h2 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-primary, #0f172a)', margin: '0 0 1rem 0' }}>
                   Field Definition
                 </h2>
 
@@ -357,7 +352,7 @@ export const EditCustomFieldPage: React.FC = () => {
                   <div>
                     <label
                       htmlFor="editFieldName"
-                      style={{ display: 'block', fontSize: '0.825rem', fontWeight: 500, color: '#e2e8f0', marginBottom: '0.35rem' }}
+                      style={{ display: 'block', fontSize: '0.825rem', fontWeight: 600, color: 'var(--text-primary, #1e293b)', marginBottom: '0.35rem' }}
                     >
                       Field Label <span style={{ color: '#ef4444' }}>*</span>
                     </label>
@@ -369,12 +364,13 @@ export const EditCustomFieldPage: React.FC = () => {
                       required
                       style={{
                         width: '100%',
-                        padding: '0.55rem 0.75rem',
+                        padding: '0.6rem 0.85rem',
                         borderRadius: '8px',
-                        background: 'var(--bg-main, #0b1120)',
-                        border: '1px solid var(--border-color, #334155)',
-                        color: '#f8fafc',
+                        background: 'var(--bg-card, #ffffff)',
+                        border: '1px solid rgba(16, 185, 129, 0.25)',
+                        color: 'var(--text-primary, #0f172a)',
                         fontSize: '0.875rem',
+                        outline: 'none',
                       }}
                     />
                   </div>
@@ -382,7 +378,7 @@ export const EditCustomFieldPage: React.FC = () => {
                   <div>
                     <label
                       htmlFor="readOnlyKey"
-                      style={{ display: 'block', fontSize: '0.825rem', fontWeight: 500, color: '#94a3b8', marginBottom: '0.35rem' }}
+                      style={{ display: 'block', fontSize: '0.825rem', fontWeight: 600, color: 'var(--text-secondary, #64748b)', marginBottom: '0.35rem' }}
                     >
                       API Key (Immutable)
                     </label>
@@ -393,11 +389,11 @@ export const EditCustomFieldPage: React.FC = () => {
                       value={field.key}
                       style={{
                         width: '100%',
-                        padding: '0.55rem 0.75rem',
+                        padding: '0.6rem 0.85rem',
                         borderRadius: '8px',
-                        background: 'rgba(15, 23, 42, 0.5)',
-                        border: '1px solid var(--border-color, #1e293b)',
-                        color: '#64748b',
+                        background: 'rgba(16, 185, 129, 0.05)',
+                        border: '1px solid rgba(16, 185, 129, 0.2)',
+                        color: '#065f46',
                         fontFamily: 'monospace',
                         fontSize: '0.875rem',
                       }}
@@ -410,8 +406,8 @@ export const EditCustomFieldPage: React.FC = () => {
                   style={{
                     padding: '0.75rem 1rem',
                     borderRadius: '8px',
-                    background: 'rgba(30, 41, 59, 0.4)',
-                    border: '1px solid var(--border-color, #1e293b)',
+                    background: 'rgba(16, 185, 129, 0.06)',
+                    border: '1px solid rgba(16, 185, 129, 0.2)',
                     marginBottom: '1rem',
                     display: 'flex',
                     alignItems: 'center',
@@ -419,10 +415,10 @@ export const EditCustomFieldPage: React.FC = () => {
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span style={{ fontSize: '0.825rem', color: '#94a3b8' }}>Field Type:</span>
+                    <span style={{ fontSize: '0.825rem', color: '#065f46', fontWeight: 600 }}>Field Type:</span>
                     <CustomFieldTypeBadge type={field.fieldType} />
                   </div>
-                  <span style={{ fontSize: '0.75rem', color: '#64748b' }}>
+                  <span style={{ fontSize: '0.75rem', color: '#047857' }}>
                     Use "Migrate Type" to safely change data types
                   </span>
                 </div>
@@ -432,7 +428,7 @@ export const EditCustomFieldPage: React.FC = () => {
                   <div>
                     <label
                       htmlFor="editPlaceholder"
-                      style={{ display: 'block', fontSize: '0.825rem', fontWeight: 500, color: '#e2e8f0', marginBottom: '0.35rem' }}
+                      style={{ display: 'block', fontSize: '0.825rem', fontWeight: 600, color: 'var(--text-primary, #1e293b)', marginBottom: '0.35rem' }}
                     >
                       Placeholder Text
                     </label>
@@ -443,12 +439,13 @@ export const EditCustomFieldPage: React.FC = () => {
                       onChange={(e) => setPlaceholder(e.target.value)}
                       style={{
                         width: '100%',
-                        padding: '0.55rem 0.75rem',
+                        padding: '0.6rem 0.85rem',
                         borderRadius: '8px',
-                        background: 'var(--bg-main, #0b1120)',
-                        border: '1px solid var(--border-color, #334155)',
-                        color: '#f8fafc',
+                        background: 'var(--bg-card, #ffffff)',
+                        border: '1px solid rgba(16, 185, 129, 0.25)',
+                        color: 'var(--text-primary, #0f172a)',
                         fontSize: '0.875rem',
+                        outline: 'none',
                       }}
                     />
                   </div>
@@ -456,7 +453,7 @@ export const EditCustomFieldPage: React.FC = () => {
                   <div>
                     <label
                       htmlFor="editHelpText"
-                      style={{ display: 'block', fontSize: '0.825rem', fontWeight: 500, color: '#e2e8f0', marginBottom: '0.35rem' }}
+                      style={{ display: 'block', fontSize: '0.825rem', fontWeight: 600, color: 'var(--text-primary, #1e293b)', marginBottom: '0.35rem' }}
                     >
                       Helper / Hint Text
                     </label>
@@ -467,12 +464,13 @@ export const EditCustomFieldPage: React.FC = () => {
                       onChange={(e) => setHelpText(e.target.value)}
                       style={{
                         width: '100%',
-                        padding: '0.55rem 0.75rem',
+                        padding: '0.6rem 0.85rem',
                         borderRadius: '8px',
-                        background: 'var(--bg-main, #0b1120)',
-                        border: '1px solid var(--border-color, #334155)',
-                        color: '#f8fafc',
+                        background: 'var(--bg-card, #ffffff)',
+                        border: '1px solid rgba(16, 185, 129, 0.25)',
+                        color: 'var(--text-primary, #0f172a)',
                         fontSize: '0.875rem',
+                        outline: 'none',
                       }}
                     />
                   </div>
@@ -481,7 +479,7 @@ export const EditCustomFieldPage: React.FC = () => {
                 <div>
                   <label
                     htmlFor="editDescription"
-                    style={{ display: 'block', fontSize: '0.825rem', fontWeight: 500, color: '#e2e8f0', marginBottom: '0.35rem' }}
+                    style={{ display: 'block', fontSize: '0.825rem', fontWeight: 600, color: 'var(--text-primary, #1e293b)', marginBottom: '0.35rem' }}
                   >
                     Internal Description / Documentation
                   </label>
@@ -492,12 +490,13 @@ export const EditCustomFieldPage: React.FC = () => {
                     onChange={(e) => setDescription(e.target.value)}
                     style={{
                       width: '100%',
-                      padding: '0.55rem 0.75rem',
+                      padding: '0.6rem 0.85rem',
                       borderRadius: '8px',
-                      background: 'var(--bg-main, #0b1120)',
-                      border: '1px solid var(--border-color, #334155)',
-                      color: '#f8fafc',
+                      background: 'var(--bg-card, #ffffff)',
+                      border: '1px solid rgba(16, 185, 129, 0.25)',
+                      color: 'var(--text-primary, #0f172a)',
                       fontSize: '0.875rem',
+                      outline: 'none',
                     }}
                   />
                 </div>
@@ -505,20 +504,13 @@ export const EditCustomFieldPage: React.FC = () => {
 
               {/* Options Editor (if choice field) */}
               {isChoiceField && (
-                <div
-                  style={{
-                    background: 'var(--bg-card, #0f172a)',
-                    border: '1px solid var(--border-color, #1e293b)',
-                    borderRadius: '12px',
-                    padding: '1.5rem',
-                  }}
-                >
+                <div className="lg-card" style={{ padding: '1.5rem', borderRadius: '16px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
                     <div>
-                      <h2 style={{ fontSize: '1rem', fontWeight: 600, color: '#f8fafc', margin: 0 }}>
+                      <h2 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-primary, #0f172a)', margin: 0 }}>
                         Choice Options
                       </h2>
-                      <p style={{ fontSize: '0.8rem', color: '#94a3b8', margin: '0.2rem 0 0 0' }}>
+                      <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary, #64748b)', margin: '0.2rem 0 0 0' }}>
                         Modify labels, color tags, and default state
                       </p>
                     </div>
@@ -530,11 +522,11 @@ export const EditCustomFieldPage: React.FC = () => {
                         display: 'inline-flex',
                         alignItems: 'center',
                         gap: '0.4rem',
-                        padding: '0.4rem 0.75rem',
+                        padding: '0.45rem 0.85rem',
                         borderRadius: '6px',
-                        background: 'rgba(59, 130, 246, 0.15)',
-                        color: '#60a5fa',
-                        border: '1px solid rgba(59, 130, 246, 0.3)',
+                        background: 'rgba(16, 185, 129, 0.12)',
+                        color: '#059669',
+                        border: '1px solid rgba(16, 185, 129, 0.3)',
                         fontSize: '0.8rem',
                         fontWeight: 600,
                         cursor: 'pointer',
@@ -548,13 +540,13 @@ export const EditCustomFieldPage: React.FC = () => {
                   <div className="options-builder-container">
                     {options.map((opt, idx) => (
                       <div key={idx} className="option-builder-row">
-                        <span style={{ fontSize: '0.75rem', color: '#64748b', width: '20px' }}>
+                        <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary, #64748b)', width: '20px' }}>
                           #{idx + 1}
                         </span>
 
                         <input
                           type="color"
-                          value={opt.color || '#3b82f6'}
+                          value={opt.color || '#10b981'}
                           onChange={(e) => handleOptionChange(idx, 'color', e.target.value)}
                           className="option-color-swatch-input"
                           title="Choose option color badge"
@@ -568,12 +560,13 @@ export const EditCustomFieldPage: React.FC = () => {
                           style={{
                             flex: 1,
                             minWidth: '130px',
-                            padding: '0.4rem 0.6rem',
+                            padding: '0.45rem 0.65rem',
                             borderRadius: '6px',
-                            background: 'var(--bg-main, #0b1120)',
-                            border: '1px solid var(--border-color, #334155)',
-                            color: '#f8fafc',
+                            background: 'var(--bg-card, #ffffff)',
+                            border: '1px solid rgba(16, 185, 129, 0.25)',
+                            color: 'var(--text-primary, #0f172a)',
                             fontSize: '0.85rem',
+                            outline: 'none',
                           }}
                         />
 
@@ -584,13 +577,14 @@ export const EditCustomFieldPage: React.FC = () => {
                           onChange={(e) => handleOptionChange(idx, 'value', e.target.value)}
                           style={{
                             width: '130px',
-                            padding: '0.4rem 0.6rem',
+                            padding: '0.45rem 0.65rem',
                             borderRadius: '6px',
-                            background: 'var(--bg-main, #0b1120)',
-                            border: '1px solid var(--border-color, #334155)',
-                            color: '#94a3b8',
+                            background: 'rgba(16, 185, 129, 0.05)',
+                            border: '1px solid rgba(16, 185, 129, 0.25)',
+                            color: '#065f46',
                             fontFamily: 'monospace',
                             fontSize: '0.8rem',
+                            outline: 'none',
                           }}
                         />
 
@@ -600,7 +594,7 @@ export const EditCustomFieldPage: React.FC = () => {
                             alignItems: 'center',
                             gap: '0.35rem',
                             fontSize: '0.775rem',
-                            color: '#cbd5e1',
+                            color: 'var(--text-primary, #0f172a)',
                             cursor: 'pointer',
                           }}
                         >
@@ -608,7 +602,7 @@ export const EditCustomFieldPage: React.FC = () => {
                             type="checkbox"
                             checked={Boolean(opt.isDefault)}
                             onChange={(e) => handleOptionChange(idx, 'isDefault', e.target.checked)}
-                            style={{ accentColor: '#3b82f6' }}
+                            style={{ accentColor: '#10b981' }}
                           />
                           <span>Default</span>
                         </label>
@@ -620,7 +614,7 @@ export const EditCustomFieldPage: React.FC = () => {
                           style={{
                             background: 'transparent',
                             border: 'none',
-                            color: options.length <= 1 ? '#475569' : '#f87171',
+                            color: options.length <= 1 ? '#94a3b8' : '#ef4444',
                             cursor: options.length <= 1 ? 'not-allowed' : 'pointer',
                             padding: '0.35rem',
                           }}
@@ -638,22 +632,15 @@ export const EditCustomFieldPage: React.FC = () => {
             {/* Right 4 Cols: Layout & Rules */}
             <div style={{ gridColumn: 'span 4', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
               {/* Form Layout Card */}
-              <div
-                style={{
-                  background: 'var(--bg-card, #0f172a)',
-                  border: '1px solid var(--border-color, #1e293b)',
-                  borderRadius: '12px',
-                  padding: '1.25rem',
-                }}
-              >
-                <h3 style={{ fontSize: '0.9rem', fontWeight: 600, color: '#f8fafc', margin: '0 0 1rem 0' }}>
+              <div className="lg-card" style={{ padding: '1.5rem', borderRadius: '16px' }}>
+                <h3 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-primary, #0f172a)', margin: '0 0 1.25rem 0' }}>
                   Form Layout Settings
                 </h3>
 
                 <div style={{ marginBottom: '1rem' }}>
                   <label
                     htmlFor="editSectionName"
-                    style={{ display: 'block', fontSize: '0.8rem', fontWeight: 500, color: '#cbd5e1', marginBottom: '0.35rem' }}
+                    style={{ display: 'block', fontSize: '0.825rem', fontWeight: 600, color: 'var(--text-primary, #1e293b)', marginBottom: '0.35rem' }}
                   >
                     Form Section Name
                   </label>
@@ -664,12 +651,13 @@ export const EditCustomFieldPage: React.FC = () => {
                     onChange={(e) => setSection(e.target.value)}
                     style={{
                       width: '100%',
-                      padding: '0.5rem 0.75rem',
-                      borderRadius: '6px',
-                      background: 'var(--bg-main, #0b1120)',
-                      border: '1px solid var(--border-color, #334155)',
-                      color: '#f8fafc',
-                      fontSize: '0.85rem',
+                      padding: '0.6rem 0.85rem',
+                      borderRadius: '8px',
+                      background: 'var(--bg-card, #ffffff)',
+                      border: '1px solid rgba(16, 185, 129, 0.25)',
+                      color: 'var(--text-primary, #0f172a)',
+                      fontSize: '0.875rem',
+                      outline: 'none',
                     }}
                   />
                 </div>
@@ -677,7 +665,7 @@ export const EditCustomFieldPage: React.FC = () => {
                 <div style={{ marginBottom: '1rem' }}>
                   <label
                     htmlFor="editGridWidth"
-                    style={{ display: 'block', fontSize: '0.8rem', fontWeight: 500, color: '#cbd5e1', marginBottom: '0.35rem' }}
+                    style={{ display: 'block', fontSize: '0.825rem', fontWeight: 600, color: 'var(--text-primary, #1e293b)', marginBottom: '0.35rem' }}
                   >
                     Field Grid Column Width
                   </label>
@@ -687,12 +675,14 @@ export const EditCustomFieldPage: React.FC = () => {
                     onChange={(e) => setGridWidth(Number(e.target.value))}
                     style={{
                       width: '100%',
-                      padding: '0.5rem 0.75rem',
-                      borderRadius: '6px',
-                      background: 'var(--bg-main, #0b1120)',
-                      border: '1px solid var(--border-color, #334155)',
-                      color: '#f8fafc',
-                      fontSize: '0.85rem',
+                      padding: '0.6rem 0.85rem',
+                      borderRadius: '8px',
+                      background: 'var(--bg-card, #ffffff)',
+                      border: '1px solid rgba(16, 185, 129, 0.25)',
+                      color: 'var(--text-primary, #0f172a)',
+                      fontSize: '0.875rem',
+                      outline: 'none',
+                      cursor: 'pointer',
                     }}
                   >
                     <option value={6}>Half Width (6 of 12 cols)</option>
@@ -703,7 +693,7 @@ export const EditCustomFieldPage: React.FC = () => {
                 <div>
                   <label
                     htmlFor="editOrder"
-                    style={{ display: 'block', fontSize: '0.8rem', fontWeight: 500, color: '#cbd5e1', marginBottom: '0.35rem' }}
+                    style={{ display: 'block', fontSize: '0.825rem', fontWeight: 600, color: 'var(--text-primary, #1e293b)', marginBottom: '0.35rem' }}
                   >
                     Sort Order Priority
                   </label>
@@ -714,119 +704,113 @@ export const EditCustomFieldPage: React.FC = () => {
                     onChange={(e) => setOrder(Number(e.target.value))}
                     style={{
                       width: '100%',
-                      padding: '0.5rem 0.75rem',
-                      borderRadius: '6px',
-                      background: 'var(--bg-main, #0b1120)',
-                      border: '1px solid var(--border-color, #334155)',
-                      color: '#f8fafc',
-                      fontSize: '0.85rem',
+                      padding: '0.6rem 0.85rem',
+                      borderRadius: '8px',
+                      background: 'var(--bg-card, #ffffff)',
+                      border: '1px solid rgba(16, 185, 129, 0.25)',
+                      color: 'var(--text-primary, #0f172a)',
+                      fontSize: '0.875rem',
+                      outline: 'none',
                     }}
                   />
                 </div>
               </div>
 
               {/* Behavior & Rules Card */}
-              <div
-                style={{
-                  background: 'var(--bg-card, #0f172a)',
-                  border: '1px solid var(--border-color, #1e293b)',
-                  borderRadius: '12px',
-                  padding: '1.25rem',
-                }}
-              >
-                <h3 style={{ fontSize: '0.9rem', fontWeight: 600, color: '#f8fafc', margin: '0 0 1rem 0' }}>
+              <div className="lg-card" style={{ padding: '1.5rem', borderRadius: '16px' }}>
+                <h3 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-primary, #0f172a)', margin: '0 0 1.25rem 0' }}>
                   Behavior & Rules
                 </h3>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', fontSize: '0.85rem', color: '#cbd5e1', cursor: 'pointer' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  <label style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', fontSize: '0.875rem', cursor: 'pointer' }}>
                     <input
                       type="checkbox"
                       checked={isRequired}
                       onChange={(e) => setIsRequired(e.target.checked)}
-                      style={{ accentColor: '#3b82f6', width: '16px', height: '16px' }}
+                      style={{ accentColor: '#10b981', width: '18px', height: '18px', marginTop: '2px', cursor: 'pointer' }}
                     />
                     <div>
-                      <div style={{ fontWeight: 500, color: '#f8fafc' }}>Required Field</div>
-                      <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Must have a value when saving record</div>
+                      <div style={{ fontWeight: 600, color: 'var(--text-primary, #0f172a)' }}>Required Field</div>
+                      <div style={{ fontSize: '0.775rem', color: 'var(--text-secondary, #64748b)' }}>Must have a value when saving record</div>
                     </div>
                   </label>
 
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', fontSize: '0.85rem', color: '#cbd5e1', cursor: 'pointer' }}>
+                  <label style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', fontSize: '0.875rem', cursor: 'pointer' }}>
                     <input
                       type="checkbox"
                       checked={isUnique}
                       onChange={(e) => setIsUnique(e.target.checked)}
-                      style={{ accentColor: '#3b82f6', width: '16px', height: '16px' }}
+                      style={{ accentColor: '#10b981', width: '18px', height: '18px', marginTop: '2px', cursor: 'pointer' }}
                     />
                     <div>
-                      <div style={{ fontWeight: 500, color: '#f8fafc' }}>Unique Value</div>
-                      <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Enforce uniqueness across entity records</div>
+                      <div style={{ fontWeight: 600, color: 'var(--text-primary, #0f172a)' }}>Unique Value</div>
+                      <div style={{ fontSize: '0.775rem', color: 'var(--text-secondary, #64748b)' }}>Enforce uniqueness across entity records</div>
                     </div>
                   </label>
 
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', fontSize: '0.85rem', color: '#cbd5e1', cursor: 'pointer' }}>
+                  <label style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', fontSize: '0.875rem', cursor: 'pointer' }}>
                     <input
                       type="checkbox"
                       checked={isVisible}
                       onChange={(e) => setIsVisible(e.target.checked)}
-                      style={{ accentColor: '#3b82f6', width: '16px', height: '16px' }}
+                      style={{ accentColor: '#10b981', width: '18px', height: '18px', marginTop: '2px', cursor: 'pointer' }}
                     />
                     <div>
-                      <div style={{ fontWeight: 500, color: '#f8fafc' }}>Visible in UI</div>
-                      <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Show in form views and tables</div>
+                      <div style={{ fontWeight: 600, color: 'var(--text-primary, #0f172a)' }}>Visible in UI</div>
+                      <div style={{ fontSize: '0.775rem', color: 'var(--text-secondary, #64748b)' }}>Show in form views and tables</div>
                     </div>
                   </label>
 
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', fontSize: '0.85rem', color: '#cbd5e1', cursor: 'pointer' }}>
+                  <label style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', fontSize: '0.875rem', cursor: 'pointer' }}>
                     <input
                       type="checkbox"
                       checked={isSearchable}
                       onChange={(e) => setIsSearchable(e.target.checked)}
-                      style={{ accentColor: '#3b82f6', width: '16px', height: '16px' }}
+                      style={{ accentColor: '#10b981', width: '18px', height: '18px', marginTop: '2px', cursor: 'pointer' }}
                     />
                     <div>
-                      <div style={{ fontWeight: 500, color: '#f8fafc' }}>Searchable</div>
-                      <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Indexed for full-text search</div>
+                      <div style={{ fontWeight: 600, color: 'var(--text-primary, #0f172a)' }}>Searchable</div>
+                      <div style={{ fontSize: '0.775rem', color: 'var(--text-secondary, #64748b)' }}>Indexed for full-text search</div>
                     </div>
                   </label>
 
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', fontSize: '0.85rem', color: '#cbd5e1', cursor: 'pointer' }}>
+                  <label style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', fontSize: '0.875rem', cursor: 'pointer' }}>
                     <input
                       type="checkbox"
                       checked={isFilterable}
                       onChange={(e) => setIsFilterable(e.target.checked)}
-                      style={{ accentColor: '#3b82f6', width: '16px', height: '16px' }}
+                      style={{ accentColor: '#10b981', width: '18px', height: '18px', marginTop: '2px', cursor: 'pointer' }}
                     />
                     <div>
-                      <div style={{ fontWeight: 500, color: '#f8fafc' }}>Filterable</div>
-                      <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Available in filter dropdowns</div>
+                      <div style={{ fontWeight: 600, color: 'var(--text-primary, #0f172a)' }}>Filterable</div>
+                      <div style={{ fontSize: '0.775rem', color: 'var(--text-secondary, #64748b)' }}>Available in filter dropdowns</div>
                     </div>
                   </label>
 
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', fontSize: '0.85rem', color: '#cbd5e1', cursor: 'pointer' }}>
+                  <label style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', fontSize: '0.875rem', cursor: 'pointer' }}>
                     <input
                       type="checkbox"
                       checked={isEditable}
                       onChange={(e) => setIsEditable(e.target.checked)}
-                      style={{ accentColor: '#3b82f6', width: '16px', height: '16px' }}
+                      style={{ accentColor: '#10b981', width: '18px', height: '18px', marginTop: '2px', cursor: 'pointer' }}
                     />
                     <div>
-                      <div style={{ fontWeight: 500, color: '#f8fafc' }}>Editable</div>
-                      <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Allow users to modify value</div>
+                      <div style={{ fontWeight: 600, color: 'var(--text-primary, #0f172a)' }}>Editable</div>
+                      <div style={{ fontSize: '0.775rem', color: 'var(--text-secondary, #64748b)' }}>Allow users to modify value</div>
                     </div>
                   </label>
 
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', fontSize: '0.85rem', color: '#cbd5e1', cursor: 'pointer' }}>
+                  <label style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', fontSize: '0.875rem', cursor: 'pointer' }}>
                     <input
                       type="checkbox"
                       checked={isActive}
                       onChange={(e) => setIsActive(e.target.checked)}
-                      style={{ accentColor: '#3b82f6', width: '16px', height: '16px' }}
+                      style={{ accentColor: '#10b981', width: '18px', height: '18px', marginTop: '2px', cursor: 'pointer' }}
                     />
                     <div>
-                      <div style={{ fontWeight: 500, color: '#f8fafc' }}>Active Field Status</div>
-                      <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Enabled in forms & layouts</div>
+                      <div style={{ fontWeight: 600, color: 'var(--text-primary, #0f172a)' }}>Active Field Status</div>
+                      <div style={{ fontSize: '0.775rem', color: 'var(--text-secondary, #64748b)' }}>Enabled in forms & layouts</div>
                     </div>
                   </label>
                 </div>
@@ -836,17 +820,14 @@ export const EditCustomFieldPage: React.FC = () => {
               <div style={{ display: 'flex', gap: '0.75rem' }}>
                 <Link
                   to={`/custom-fields/${field.id}`}
+                  className="auth-btn btn-secondary"
                   style={{
                     flex: 1,
                     textAlign: 'center',
-                    padding: '0.65rem 1rem',
-                    borderRadius: '8px',
-                    border: '1px solid var(--border-color, #334155)',
-                    background: 'transparent',
-                    color: '#cbd5e1',
-                    fontSize: '0.875rem',
                     textDecoration: 'none',
-                    fontWeight: 500,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                   }}
                 >
                   Cancel
@@ -855,7 +836,7 @@ export const EditCustomFieldPage: React.FC = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="btn-primary"
+                  className="auth-btn btn-primary"
                   style={{
                     flex: 2,
                     display: 'inline-flex',

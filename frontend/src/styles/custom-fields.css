@@ -5,7 +5,35 @@
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   Top Metrics Strip
+   Workspace Page Header
+   -------------------------------------------------------------------------- */
+.workspace-page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.workspace-page-title {
+  font-size: 1.625rem;
+  font-weight: 700;
+  color: var(--text-primary, #0f172a);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.workspace-page-subtitle {
+  font-size: 0.875rem;
+  color: var(--text-secondary, #64748b);
+  margin-top: 0.25rem;
+  max-width: 680px;
+  line-height: 1.45;
+}
+
+/* --------------------------------------------------------------------------
+   Top Metrics Strip & Info Cards
    -------------------------------------------------------------------------- */
 .custom-fields-metrics-strip {
   display: grid;
@@ -14,8 +42,22 @@
   margin-bottom: 1.5rem;
 }
 
+.workspace-info-card {
+  background: var(--bg-card, #ffffff);
+  border: 1px solid rgba(16, 185, 129, 0.22);
+  border-radius: 16px;
+  padding: 1.25rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.workspace-info-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+}
+
 /* --------------------------------------------------------------------------
-   Entity Type Filter Tabs
+   Entity Type Filter Tabs (Pill Style)
    -------------------------------------------------------------------------- */
 .entity-tabs-bar {
   display: flex;
@@ -23,43 +65,202 @@
   gap: 0.5rem;
   margin-bottom: 1.25rem;
   overflow-x: auto;
-  padding-bottom: 0.25rem;
+  padding: 0.25rem 0.1rem;
+  -webkit-overflow-scrolling: touch;
 }
 
 .entity-tab-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  font-size: 0.875rem;
+  padding: 0.45rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.84rem;
   font-weight: 500;
-  color: var(--text-secondary, #cbd5e1);
-  background: var(--bg-card, #0f172a);
-  border: 1px solid var(--border-color, #1e293b);
+  color: #334155;
+  background: #ffffff;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
   cursor: pointer;
   transition: all 0.15s ease;
   white-space: nowrap;
 }
 
 .entity-tab-btn:hover {
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--text-primary, #f8fafc);
-  border-color: var(--border-hover, #334155);
+  background: rgba(16, 185, 129, 0.08);
+  color: #065f46;
+  border-color: #10b981;
 }
 
 .entity-tab-btn.is-active {
-  background: rgba(59, 130, 246, 0.15);
-  color: #60a5fa;
-  border-color: rgba(59, 130, 246, 0.35);
+  background: #10b981 !important;
+  color: #ffffff !important;
+  border-color: #10b981 !important;
   font-weight: 600;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3) !important;
 }
 
 .entity-tab-count {
-  font-size: 0.75rem;
-  background: rgba(255, 255, 255, 0.08);
-  padding: 0.1rem 0.45rem;
+  font-size: 0.725rem;
+  font-weight: 600;
+  background: rgba(16, 185, 129, 0.12);
+  color: #047857;
+  padding: 0.1rem 0.5rem;
   border-radius: 9999px;
+  transition: all 0.15s ease;
+}
+
+.entity-tab-btn.is-active .entity-tab-count {
+  background: rgba(255, 255, 255, 0.28) !important;
+  color: #ffffff !important;
+}
+
+/* Dark mode overrides */
+html.dark .workspace-page-title,
+[data-theme="dark"] .workspace-page-title {
+  color: #f8fafc;
+}
+
+html.dark .workspace-page-subtitle,
+[data-theme="dark"] .workspace-page-subtitle {
+  color: #94a3b8;
+}
+
+html.dark .workspace-info-card,
+[data-theme="dark"] .workspace-info-card {
+  background: rgba(15, 23, 42, 0.85);
+  border-color: rgba(16, 185, 129, 0.2);
+}
+
+html.dark .entity-tab-btn,
+[data-theme="dark"] .entity-tab-btn {
+  background: rgba(15, 23, 42, 0.85);
+  border-color: rgba(16, 185, 129, 0.2);
+  color: #94a3b8;
+}
+
+html.dark .entity-tab-btn:hover,
+[data-theme="dark"] .entity-tab-btn:hover {
+  background: rgba(16, 185, 129, 0.12);
+  color: #34d399;
+}
+
+html.dark .entity-tab-btn.is-active,
+[data-theme="dark"] .entity-tab-btn.is-active {
+  background: #10b981 !important;
+  color: #ffffff !important;
+}
+
+html.dark .entity-tab-count,
+[data-theme="dark"] .entity-tab-count {
+  background: rgba(16, 185, 129, 0.18);
+  color: #34d399;
+}
+
+/* --------------------------------------------------------------------------
+   Target Entity Selection Grid & Cards (Create / Edit Field)
+   -------------------------------------------------------------------------- */
+.entity-selection-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.875rem;
+}
+
+@media (max-width: 1024px) {
+  .entity-selection-grid {
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  }
+}
+
+.entity-select-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 1rem 0.875rem;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1.5px solid rgba(16, 185, 129, 0.22);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.18s ease;
+  width: 100%;
+}
+
+.entity-select-card:hover {
+  background: rgba(16, 185, 129, 0.04);
+  border-color: #10b981;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.08);
+}
+
+.entity-select-card.is-selected {
+  background: rgba(16, 185, 129, 0.08) !important;
+  border-color: #10b981 !important;
+  border-width: 2px !important;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.16), 0 4px 12px rgba(16, 185, 129, 0.12) !important;
+}
+
+.entity-select-card-title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--text-primary, #0f172a);
+  margin-top: 0.6rem;
+  line-height: 1.25;
+}
+
+.entity-select-card.is-selected .entity-select-card-title {
+  color: #065f46;
+}
+
+.entity-select-card-desc {
+  font-size: 0.725rem;
+  color: var(--text-secondary, #64748b);
+  margin-top: 0.25rem;
+  line-height: 1.35;
+}
+
+.entity-select-card.is-selected .entity-select-card-desc {
+  color: #047857;
+}
+
+/* Dark mode entity select cards */
+html.dark .entity-select-card,
+[data-theme="dark"] .entity-select-card {
+  background: rgba(15, 23, 42, 0.85);
+  border-color: rgba(16, 185, 129, 0.25);
+}
+
+html.dark .entity-select-card:hover,
+[data-theme="dark"] .entity-select-card:hover {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: #10b981;
+}
+
+html.dark .entity-select-card.is-selected,
+[data-theme="dark"] .entity-select-card.is-selected {
+  background: rgba(16, 185, 129, 0.18) !important;
+  border-color: #10b981 !important;
+}
+
+html.dark .entity-select-card-title,
+[data-theme="dark"] .entity-select-card-title {
+  color: #f8fafc;
+}
+
+html.dark .entity-select-card.is-selected .entity-select-card-title,
+[data-theme="dark"] .entity-select-card.is-selected .entity-select-card-title {
+  color: #34d399;
+}
+
+html.dark .entity-select-card-desc,
+[data-theme="dark"] .entity-select-card-desc {
+  color: #94a3b8;
+}
+
+html.dark .entity-select-card.is-selected .entity-select-card-desc,
+[data-theme="dark"] .entity-select-card.is-selected .entity-select-card-desc {
+  color: #a7f3d0;
 }
 
 /* --------------------------------------------------------------------------
@@ -153,8 +354,13 @@
 
 .entity-badge.entity-deal {
   background: rgba(16, 185, 129, 0.12);
-  color: #34d399;
+  color: #047857;
   border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+html.dark .entity-badge.entity-deal,
+[data-theme="dark"] .entity-badge.entity-deal {
+  color: #34d399;
 }
 
 .entity-badge.entity-activity {
@@ -178,10 +384,16 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.625rem;
-  background: rgba(15, 23, 42, 0.4);
-  border: 1px solid var(--border-color, #1e293b);
+  background: #ffffff;
+  border: 1px solid rgba(16, 185, 129, 0.22);
   border-radius: 8px;
   flex-wrap: wrap;
+}
+
+html.dark .option-builder-row,
+[data-theme="dark"] .option-builder-row {
+  background: rgba(15, 23, 42, 0.5);
+  border-color: rgba(16, 185, 129, 0.2);
 }
 
 .option-color-swatch-input {

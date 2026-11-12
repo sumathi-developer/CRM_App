@@ -22,6 +22,7 @@ import {
   ArrowLeftIcon,
   AwardIcon,
   DollarSignIcon,
+  TrophyIcon,
   SlidersIcon,
   TrendingUpIcon,
 } from '../../components/common/Icons';
@@ -247,7 +248,7 @@ export const StageProbabilityPage: React.FC = () => {
               value={formatCurrency(forecastSummary.totalUnweighted)}
               hint={`${deals.length} active deal(s)`}
               tone="blue"
-              icon={<DollarSignIcon size={18} />}
+              icon={<TrophyIcon size={18} />}
             />
             <StatCard
               label="Saved Weighted Forecast"

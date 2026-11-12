@@ -39,6 +39,7 @@ import { triggerFileDownload } from '../leads/leadConstants';
 import {
   BriefcaseIcon,
   CheckCircleIcon,
+  TrophyIcon,
   ExternalLinkIcon,
   PlusIcon,
   TargetIcon,
@@ -432,7 +433,7 @@ export const DealsExplorerPage: React.FC<DealsExplorerPageProps> = ({
           value={metrics.totalDeals}
           hint={`${metrics.openDealsCount} Open · ${metrics.wonDealsCount} Won · ${metrics.lostDealsCount} Lost`}
           tone="blue"
-          icon={<BriefcaseIcon size={18} />}
+          icon={<TrophyIcon size={18} />}
         />
         <StatCard
           label="Total Pipeline Value"

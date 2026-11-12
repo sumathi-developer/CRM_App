@@ -18,6 +18,7 @@ import {
   BuildingIcon,
   UserIcon,
   DollarSignIcon,
+  TrophyIcon,
   FilterIcon,
   RefreshCwIcon,
 } from '../../components/common/Icons';
@@ -383,7 +384,7 @@ export const TeamActivitiesPage: React.FC = () => {
                     {/* Deal Link */}
                     {act.deal && (
                       <span className="entity-chip-badge" title="Linked Deal">
-                        <DollarSignIcon size={13} />
+                        <TrophyIcon size={13} />
                         <span>{act.deal.title}</span>
                       </span>
                     )}

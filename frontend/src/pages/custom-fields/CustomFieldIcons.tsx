@@ -23,6 +23,8 @@ export {
   DollarSignIcon,
   ActivityIcon,
   ClockIcon,
+  TrophyIcon,
+  DealsIcon,
 } from '../../components/common/Icons';
 
 interface IconProps extends React.SVGProps<SVGSVGElement> {

@@ -42,6 +42,7 @@ import {
   CalendarIcon,
   CheckCircleIcon,
   DollarSignIcon,
+  TrophyIcon,
   EditIcon,
   MailIcon,
   PhoneIcon,
@@ -298,7 +299,7 @@ export const ContactDetailsPage: React.FC = () => {
               value={formatCurrency(totalDealValue)}
               hint={`${deals.length} linked deal(s)`}
               tone="green"
-              icon={<DollarSignIcon size={18} />}
+              icon={<TrophyIcon size={18} />}
             />
             <StatCard
               label="Logged Activities"

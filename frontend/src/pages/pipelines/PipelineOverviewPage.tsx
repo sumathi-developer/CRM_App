@@ -40,6 +40,7 @@ import {
   AwardIcon,
   CheckCircleIcon,
   DollarSignIcon,
+  TrophyIcon,
   EditIcon,
   PlusIcon,
   SlidersIcon,
@@ -364,7 +365,7 @@ export const PipelineOverviewPage: React.FC = () => {
               value={formatCurrency(metrics.totalValue)}
               hint={`${formatNumber(filteredDeals.length)} deal(s) in view`}
               tone="blue"
-              icon={<DollarSignIcon size={18} />}
+              icon={<TrophyIcon size={18} />}
             />
             <StatCard
               label="Weighted Revenue Forecast"
