@@ -11,6 +11,21 @@ import {
   RefreshCwIcon,
   SettingsIcon,
   XIcon,
+  UserIcon,
+  PaletteIcon,
+  BuildingIcon,
+  SlidersIcon,
+  TargetIcon,
+  UsersIcon,
+  TrophyIcon,
+  TrendingUpIcon,
+  CalendarIcon,
+  BellIcon,
+  MailIcon,
+  ZapIcon,
+  ShieldIcon,
+  ChevronRightIcon,
+  BriefcaseIcon,
 } from '../../../components/common/Icons';
 import {
   SETTINGS_NAV_LIST,
@@ -36,6 +51,35 @@ interface SettingsLayoutProps {
 const GROUPS: Array<
   'Personal & Workspace' | 'CRM Modules' | 'Communications & Security'
 > = ['Personal & Workspace', 'CRM Modules', 'Communications & Security'];
+
+const SETTINGS_ICONS: Record<
+  SettingsScreenSlug,
+  React.ComponentType<{ size?: number; className?: string }>
+> = {
+  account: UserIcon,
+  profile: PaletteIcon,
+  workspace: BuildingIcon,
+  general: SlidersIcon,
+  leads: TargetIcon,
+  contacts: UsersIcon,
+  companies: BuildingIcon,
+  deals: TrophyIcon, // CRITICAL: Trophy icon for Deals!
+  pipelines: TrendingUpIcon,
+  activities: CalendarIcon,
+  notifications: BellIcon,
+  email: MailIcon,
+  integrations: ZapIcon,
+  security: ShieldIcon,
+};
+
+const GROUP_ICONS: Record<
+  'Personal & Workspace' | 'CRM Modules' | 'Communications & Security',
+  React.ComponentType<{ size?: number; className?: string }>
+> = {
+  'Personal & Workspace': BuildingIcon,
+  'CRM Modules': BriefcaseIcon,
+  'Communications & Security': ShieldIcon,
+};
 
 export const SettingsLayout: React.FC<SettingsLayoutProps> = ({
   screen,
@@ -184,7 +228,7 @@ export const SettingsLayout: React.FC<SettingsLayoutProps> = ({
                 type="button"
                 onClick={onSave}
                 disabled={isSaving}
-                className="rounded-lg bg-blue-600 px-3 py-1.5 font-semibold text-white hover:bg-blue-700"
+                className="rounded-lg bg-emerald-600 px-3 py-1.5 font-semibold text-white hover:bg-emerald-700 transition"
               >
                 {isSaving ? 'Saving...' : 'Save Now'}
               </button>
@@ -203,34 +247,76 @@ export const SettingsLayout: React.FC<SettingsLayoutProps> = ({
               const groupItems = SETTINGS_NAV_LIST.filter(
                 (item) => item.group === groupName,
               );
+              const GroupIcon = GROUP_ICONS[groupName] || BuildingIcon;
+
               return (
-                <div
-                  key={groupName}
-                  className="rounded-xl border border-gray-200 bg-white p-3.5 shadow-xs"
-                >
-                  <h3 className="mb-2 px-2 text-[11px] font-bold tracking-wider text-gray-400 uppercase">
-                    {groupName}
-                  </h3>
-                  <div className="space-y-1">
+                <div key={groupName} className="settings-nav-card">
+                  <div className="settings-nav-group-header">
+                    <GroupIcon size={14} style={{ color: '#10b981' }} />
+                    <span>{groupName}</span>
+                    <span
+                      style={{
+                        marginLeft: 'auto',
+                        fontSize: '0.625rem',
+                        fontWeight: 700,
+                        color: '#065f46',
+                        background: 'rgba(16, 185, 129, 0.12)',
+                        padding: '1px 6px',
+                        borderRadius: '9999px',
+                      }}
+                    >
+                      {groupItems.length}
+                    </span>
+                  </div>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
                     {groupItems.map((item) => {
                       const isActiveItem = item.slug === screen;
+                      const ItemIcon = SETTINGS_ICONS[item.slug] || SettingsIcon;
+
                       return (
                         <NavLink
                           key={item.slug}
                           to={item.path}
-                          className={`flex items-center justify-between rounded-lg px-2.5 py-2 text-xs font-semibold transition ${
-                            isActiveItem
-                              ? 'bg-blue-600 text-white'
-                              : 'text-gray-700 hover:bg-gray-100'
-                          }`}
+                          className={`settings-nav-item-link ${isActiveItem ? 'is-active-setting' : ''}`}
                         >
-                          <span>{item.label}</span>
-                          {isActiveItem && isDirty && (
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', minWidth: 0, flex: 1 }}>
+                            <div className="settings-nav-icon-box">
+                              <ItemIcon size={14} />
+                            </div>
                             <span
-                              className="h-2 w-2 rounded-full bg-amber-300"
-                              title="Unsaved changes"
+                              style={{
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                whiteSpace: 'nowrap',
+                              }}
+                            >
+                              {item.label}
+                            </span>
+                          </div>
+
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                            {isActiveItem && isDirty && (
+                              <span
+                                style={{
+                                  width: '7px',
+                                  height: '7px',
+                                  borderRadius: '50%',
+                                  backgroundColor: '#fef08a',
+                                  boxShadow: '0 0 0 2px rgba(254, 240, 138, 0.4)',
+                                }}
+                                title="Unsaved changes"
+                              />
+                            )}
+                            <ChevronRightIcon
+                              size={14}
+                              style={{
+                                opacity: isActiveItem ? 0.95 : 0.35,
+                                color: isActiveItem ? '#ffffff' : '#9ca3af',
+                                transition: 'all 0.15s ease',
+                              }}
                             />
-                          )}
+                          </div>
                         </NavLink>
                       );
                     })}

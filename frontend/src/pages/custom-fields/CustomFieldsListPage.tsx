@@ -33,15 +33,23 @@ import {
   EyeIcon,
   CopyIcon,
   LayersIcon,
+  BuildingIcon,
+  UserIcon,
+  TrophyIcon,
+  CalendarIcon,
 } from './CustomFieldIcons';
 
-const ENTITY_TABS: Array<{ label: string; value: CustomFieldEntityType | 'ALL' }> = [
-  { label: 'All Entities', value: 'ALL' },
-  { label: 'Leads', value: 'LEAD' },
-  { label: 'Contacts', value: 'CONTACT' },
-  { label: 'Companies', value: 'COMPANY' },
-  { label: 'Deals', value: 'DEAL' },
-  { label: 'Activities', value: 'ACTIVITY' },
+const ENTITY_TABS: Array<{
+  label: string;
+  value: CustomFieldEntityType | 'ALL';
+  icon: React.ComponentType<{ size?: number; className?: string }>;
+}> = [
+  { label: 'All Entities', value: 'ALL', icon: LayersIcon },
+  { label: 'Leads', value: 'LEAD', icon: BuildingIcon },
+  { label: 'Contacts', value: 'CONTACT', icon: UserIcon },
+  { label: 'Companies', value: 'COMPANY', icon: BuildingIcon },
+  { label: 'Deals', value: 'DEAL', icon: TrophyIcon },
+  { label: 'Activities', value: 'ACTIVITY', icon: CalendarIcon },
 ];
 
 const ALL_FIELD_TYPES: Array<{ label: string; value: CustomFieldType | '' }> = [
@@ -330,6 +338,7 @@ export const CustomFieldsListPage: React.FC = () => {
                 ? allFields.length
                 : allFields.filter((f) => f.entityType === tab.value).length;
             const isActive = selectedEntityTab === tab.value;
+            const TabIcon = tab.icon;
 
             return (
               <button
@@ -340,6 +349,7 @@ export const CustomFieldsListPage: React.FC = () => {
                 className={`entity-tab-btn ${isActive ? 'is-active' : ''}`}
                 onClick={() => setSelectedEntityTab(tab.value)}
               >
+                <TabIcon size={14} />
                 <span>{tab.label}</span>
                 <span className="entity-tab-count">{countForTab}</span>
               </button>

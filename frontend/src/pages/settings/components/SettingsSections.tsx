@@ -1385,7 +1385,7 @@ export const IntegrationSettingsSection: React.FC<IntegrationSectionProps> = ({
             className={`rounded-lg px-3 py-1.5 text-xs font-semibold ${
               value.googleWorkspaceConnected
                 ? 'border border-red-200 bg-red-50 text-red-700 hover:bg-red-100'
-                : 'bg-blue-600 text-white hover:bg-blue-700'
+                : 'bg-emerald-600 text-white hover:bg-emerald-700 transition'
             }`}
           >
             {value.googleWorkspaceConnected ? 'Disconnect' : 'Connect Account'}
@@ -1411,7 +1411,7 @@ export const IntegrationSettingsSection: React.FC<IntegrationSectionProps> = ({
             className={`rounded-lg px-3 py-1.5 text-xs font-semibold ${
               value.microsoft365Connected
                 ? 'border border-red-200 bg-red-50 text-red-700 hover:bg-red-100'
-                : 'bg-blue-600 text-white hover:bg-blue-700'
+                : 'bg-emerald-600 text-white hover:bg-emerald-700 transition'
             }`}
           >
             {value.microsoft365Connected ? 'Disconnect' : 'Connect Account'}
