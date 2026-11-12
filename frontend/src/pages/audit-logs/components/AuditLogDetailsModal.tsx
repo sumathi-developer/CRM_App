@@ -66,25 +66,36 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/60 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 backdrop-blur-sm"
+      style={{
+        backgroundColor: 'rgba(0, 0, 0, 0.65)',
+        overflowY: 'auto',
+        boxSizing: 'border-box',
+        zIndex: 1000,
+      }}
       role="dialog"
       aria-modal="true"
       aria-labelledby="audit-log-details-title"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
     >
       <div
         style={{
           position: 'relative',
           width: '100%',
-          maxWidth: '780px',
+          maxWidth: '740px',
+          maxHeight: 'calc(100vh - 40px)',
           borderRadius: '16px',
           backgroundColor: '#FFFFFF',
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-          border: '1px solid rgba(16, 185, 129, 0.25)',
-          overflow: 'hidden',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(16, 185, 129, 0.25)',
           display: 'flex',
           flexDirection: 'column',
-          maxHeight: '90vh',
+          overflow: 'hidden',
+          margin: 'auto',
+          boxSizing: 'border-box',
         }}
+        onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
         <div
@@ -93,16 +104,17 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
             alignItems: 'center',
             justifyContent: 'space-between',
             borderBottom: '1px solid rgba(16, 185, 129, 0.18)',
-            padding: '16px 24px',
+            padding: '14px 20px',
             backgroundColor: '#F8FCF9',
+            flexShrink: 0,
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div
               style={{
                 display: 'flex',
-                height: '38px',
-                width: '38px',
+                height: '36px',
+                width: '36px',
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderRadius: '10px',
@@ -111,13 +123,13 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
                 flexShrink: 0,
               }}
             >
-              <ShieldIcon size={20} />
+              <ShieldIcon size={18} />
             </div>
             <div>
               <h2
                 id="audit-log-details-title"
                 style={{
-                  fontSize: '16px',
+                  fontSize: '15px',
                   fontWeight: 700,
                   color: '#062E03',
                   display: 'flex',
@@ -129,14 +141,14 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
               >
                 <span>Audit Log Details</span>
                 <span
-                  className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold ${getActionBadgeClass(
+                  className={`inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-semibold ${getActionBadgeClass(
                     log.action,
                   )}`}
                 >
                   {log.action}
                 </span>
                 <span
-                  className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-semibold ${statusMeta.badgeClass}`}
+                  className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-semibold ${statusMeta.badgeClass}`}
                 >
                   {log.status === 'SUCCESS' && <CheckCircleIcon size={11} />}
                   {log.status === 'FAILURE' && <AlertCircleIcon size={11} />}
@@ -144,7 +156,7 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
                   <span>{statusMeta.label}</span>
                 </span>
               </h2>
-              <p style={{ fontSize: '12px', color: '#64748B', margin: '3px 0 0 0' }}>
+              <p style={{ fontSize: '11px', color: '#64748B', margin: '2px 0 0 0' }}>
                 Recorded {formatAuditDateTime(log.createdAt)} ({formatRelativeTime(log.createdAt)})
               </p>
             </div>
@@ -185,16 +197,17 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
             display: 'flex',
             alignItems: 'center',
             borderBottom: '1px solid rgba(16, 185, 129, 0.16)',
-            padding: '0 24px',
+            padding: '0 20px',
             backgroundColor: '#FFFFFF',
             gap: '8px',
+            flexShrink: 0,
           }}
         >
           <button
             type="button"
             onClick={() => setActiveTab('overview')}
             style={{
-              padding: '12px 16px',
+              padding: '10px 14px',
               fontSize: '13px',
               fontWeight: 600,
               color: activeTab === 'overview' ? '#10B981' : '#64748B',
@@ -212,7 +225,7 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
               type="button"
               onClick={() => setActiveTab('changes')}
               style={{
-                padding: '12px 16px',
+                padding: '10px 14px',
                 fontSize: '13px',
                 fontWeight: 600,
                 color: activeTab === 'changes' ? '#10B981' : '#64748B',
@@ -230,7 +243,7 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
             type="button"
             onClick={() => setActiveTab('raw')}
             style={{
-              padding: '12px 16px',
+              padding: '10px 14px',
               fontSize: '13px',
               fontWeight: 600,
               color: activeTab === 'raw' ? '#10B981' : '#64748B',
@@ -251,12 +264,12 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '6px',
+                gap: '5px',
                 borderRadius: '8px',
                 border: '1px solid rgba(16, 185, 129, 0.28)',
                 backgroundColor: '#F1F8F3',
                 color: '#062E03',
-                padding: '5px 12px',
+                padding: '4px 10px',
                 fontSize: '12px',
                 fontWeight: 600,
                 cursor: 'pointer',
@@ -280,12 +293,15 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
         {/* Modal Scrollable Body */}
         <div
           style={{
-            padding: '20px 24px',
+            flex: '1 1 auto',
+            minHeight: 0,
             overflowY: 'auto',
+            padding: '16px 20px',
             display: 'flex',
             flexDirection: 'column',
-            gap: '18px',
+            gap: '14px',
             backgroundColor: '#FFFFFF',
+            boxSizing: 'border-box',
           }}
         >
           {activeTab === 'overview' && (
@@ -299,8 +315,9 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
                   borderRadius: '10px',
                   border: '1px solid rgba(16, 185, 129, 0.22)',
                   backgroundColor: '#F8FCF9',
-                  padding: '12px 16px',
+                  padding: '10px 14px',
                   gap: '12px',
+                  boxSizing: 'border-box',
                 }}
               >
                 <div>
@@ -312,7 +329,7 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
                       textTransform: 'uppercase',
                       letterSpacing: '0.06em',
                       color: '#475569',
-                      marginBottom: '3px',
+                      marginBottom: '2px',
                     }}
                   >
                     Log Entry UUID:
@@ -340,7 +357,7 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
                     border: '1px solid rgba(16, 185, 129, 0.28)',
                     backgroundColor: '#FFFFFF',
                     color: '#062E03',
-                    padding: '6px 14px',
+                    padding: '5px 12px',
                     fontSize: '12px',
                     fontWeight: 600,
                     cursor: 'pointer',
@@ -364,23 +381,24 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
               </div>
 
               {/* Grid with Actor, Target, and Network details */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                 {/* Actor Card */}
                 <div
                   style={{
                     borderRadius: '12px',
                     border: '1px solid rgba(16, 185, 129, 0.22)',
-                    padding: '16px 18px',
+                    padding: '14px 16px',
                     backgroundColor: '#FFFFFF',
                     boxShadow: '0 1px 3px rgba(0, 0, 0, 0.03)',
+                    boxSizing: 'border-box',
                   }}
                 >
                   <div
                     style={{
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '8px',
-                      marginBottom: '10px',
+                      gap: '7px',
+                      marginBottom: '8px',
                       fontSize: '11px',
                       fontWeight: 700,
                       textTransform: 'uppercase',
@@ -388,20 +406,20 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
                       color: '#062E03',
                     }}
                   >
-                    <UserIcon size={15} style={{ color: '#10B981' }} />
+                    <UserIcon size={14} style={{ color: '#10B981' }} />
                     <span>Responsible User</span>
                   </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                     <div>
                       <span style={{ fontSize: '11px', color: '#64748B', display: 'block' }}>Name:</span>
-                      <p style={{ fontWeight: 600, color: '#062E03', fontSize: '13px', margin: '2px 0 0 0' }}>
+                      <p style={{ fontWeight: 600, color: '#062E03', fontSize: '13px', margin: '1px 0 0 0' }}>
                         {log.userName || log.userEmail || 'System / Automated Routine'}
                       </p>
                     </div>
                     {log.userEmail && (
                       <div>
                         <span style={{ fontSize: '11px', color: '#64748B', display: 'block' }}>Email:</span>
-                        <p style={{ fontFamily: 'monospace', fontSize: '12px', color: '#062E03', margin: '2px 0 0 0' }}>
+                        <p style={{ fontFamily: 'monospace', fontSize: '12px', color: '#062E03', margin: '1px 0 0 0' }}>
                           {log.userEmail}
                         </p>
                       </div>
@@ -414,7 +432,7 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
                             fontFamily: 'monospace',
                             fontSize: '11px',
                             color: '#475569',
-                            margin: '2px 0 0 0',
+                            margin: '1px 0 0 0',
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
                             whiteSpace: 'nowrap',
@@ -433,17 +451,18 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
                   style={{
                     borderRadius: '12px',
                     border: '1px solid rgba(16, 185, 129, 0.22)',
-                    padding: '16px 18px',
+                    padding: '14px 16px',
                     backgroundColor: '#FFFFFF',
                     boxShadow: '0 1px 3px rgba(0, 0, 0, 0.03)',
+                    boxSizing: 'border-box',
                   }}
                 >
                   <div
                     style={{
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '8px',
-                      marginBottom: '10px',
+                      gap: '7px',
+                      marginBottom: '8px',
                       fontSize: '11px',
                       fontWeight: 700,
                       textTransform: 'uppercase',
@@ -451,13 +470,13 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
                       color: '#062E03',
                     }}
                   >
-                    <ShieldIcon size={15} style={{ color: '#10B981' }} />
+                    <ShieldIcon size={14} style={{ color: '#10B981' }} />
                     <span>Target Record</span>
                   </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                     <div>
                       <span style={{ fontSize: '11px', color: '#64748B', display: 'block' }}>Category:</span>
-                      <div style={{ marginTop: '3px' }}>
+                      <div style={{ marginTop: '2px' }}>
                         <span
                           className={`inline-flex items-center rounded border px-2 py-0.5 text-xs font-semibold ${getEntityBadgeClass(
                             log.entityType,
@@ -470,7 +489,7 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
                     {log.entityName && (
                       <div>
                         <span style={{ fontSize: '11px', color: '#64748B', display: 'block' }}>Entity Name:</span>
-                        <p style={{ fontWeight: 600, color: '#062E03', fontSize: '13px', margin: '2px 0 0 0' }}>
+                        <p style={{ fontWeight: 600, color: '#062E03', fontSize: '13px', margin: '1px 0 0 0' }}>
                           {log.entityName}
                         </p>
                       </div>
@@ -483,7 +502,7 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
                             fontFamily: 'monospace',
                             fontSize: '11px',
                             color: '#475569',
-                            margin: '2px 0 0 0',
+                            margin: '1px 0 0 0',
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
                             whiteSpace: 'nowrap',
@@ -502,17 +521,18 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
                   style={{
                     borderRadius: '12px',
                     border: '1px solid rgba(16, 185, 129, 0.22)',
-                    padding: '16px 18px',
+                    padding: '14px 16px',
                     backgroundColor: '#FFFFFF',
                     boxShadow: '0 1px 3px rgba(0, 0, 0, 0.03)',
+                    boxSizing: 'border-box',
                   }}
                 >
                   <div
                     style={{
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '8px',
-                      marginBottom: '10px',
+                      gap: '7px',
+                      marginBottom: '8px',
                       fontSize: '11px',
                       fontWeight: 700,
                       textTransform: 'uppercase',
@@ -520,25 +540,25 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
                       color: '#062E03',
                     }}
                   >
-                    <ClockIcon size={15} style={{ color: '#10B981' }} />
+                    <ClockIcon size={14} style={{ color: '#10B981' }} />
                     <span>Network & Client</span>
                   </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                     <div>
                       <span style={{ fontSize: '11px', color: '#64748B', display: 'block' }}>IP Address:</span>
-                      <p style={{ fontFamily: 'monospace', fontSize: '13px', fontWeight: 600, color: '#062E03', margin: '2px 0 0 0' }}>
+                      <p style={{ fontFamily: 'monospace', fontSize: '13px', fontWeight: 600, color: '#062E03', margin: '1px 0 0 0' }}>
                         {log.ipAddress || 'Internal Network'}
                       </p>
                     </div>
                     <div>
                       <span style={{ fontSize: '11px', color: '#64748B', display: 'block' }}>Browser / Platform:</span>
-                      <p style={{ fontSize: '13px', fontWeight: 500, color: '#062E03', margin: '2px 0 0 0' }}>
+                      <p style={{ fontSize: '13px', fontWeight: 500, color: '#062E03', margin: '1px 0 0 0' }}>
                         {browser} on {os}
                       </p>
                     </div>
                     {log.userAgent && (
                       <div>
-                        <span style={{ fontSize: '11px', color: '#64748B', display: 'block', marginBottom: '3px' }}>User Agent:</span>
+                        <span style={{ fontSize: '11px', color: '#64748B', display: 'block', marginBottom: '2px' }}>User Agent:</span>
                         <div
                           style={{
                             fontFamily: 'monospace',
@@ -547,9 +567,9 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
                             wordBreak: 'break-all',
                             backgroundColor: '#F1F8F3',
                             border: '1px solid rgba(16, 185, 129, 0.18)',
-                            padding: '6px 10px',
+                            padding: '5px 8px',
                             borderRadius: '6px',
-                            lineHeight: 1.4,
+                            lineHeight: 1.35,
                           }}
                           title={log.userAgent}
                         >
@@ -565,17 +585,18 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
                   style={{
                     borderRadius: '12px',
                     border: '1px solid rgba(16, 185, 129, 0.22)',
-                    padding: '16px 18px',
+                    padding: '14px 16px',
                     backgroundColor: '#FFFFFF',
                     boxShadow: '0 1px 3px rgba(0, 0, 0, 0.03)',
+                    boxSizing: 'border-box',
                   }}
                 >
                   <div
                     style={{
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '8px',
-                      marginBottom: '10px',
+                      gap: '7px',
+                      marginBottom: '8px',
                       fontSize: '11px',
                       fontWeight: 700,
                       textTransform: 'uppercase',
@@ -583,10 +604,10 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
                       color: '#062E03',
                     }}
                   >
-                    <LockIcon size={15} style={{ color: '#10B981' }} />
+                    <LockIcon size={14} style={{ color: '#10B981' }} />
                     <span>Security & Workspace</span>
                   </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                     <div>
                       <span style={{ fontSize: '11px', color: '#64748B', display: 'block' }}>Workspace ID:</span>
                       <p
@@ -594,7 +615,7 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
                           fontFamily: 'monospace',
                           fontSize: '11px',
                           color: '#475569',
-                          margin: '2px 0 0 0',
+                          margin: '1px 0 0 0',
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
                           whiteSpace: 'nowrap',
@@ -605,13 +626,13 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
                     </div>
                     <div>
                       <span style={{ fontSize: '11px', color: '#64748B', display: 'block' }}>Immutability:</span>
-                      <p style={{ fontSize: '13px', fontWeight: 600, color: '#10B981', margin: '2px 0 0 0' }}>
+                      <p style={{ fontSize: '13px', fontWeight: 600, color: '#10B981', margin: '1px 0 0 0' }}>
                         Cryptographically Sealed
                       </p>
                     </div>
                     <div>
                       <span style={{ fontSize: '11px', color: '#64748B', display: 'block' }}>Execution Status:</span>
-                      <p style={{ fontSize: '13px', fontWeight: 600, color: '#062E03', margin: '2px 0 0 0' }}>
+                      <p style={{ fontSize: '13px', fontWeight: 600, color: '#062E03', margin: '1px 0 0 0' }}>
                         {statusMeta.label} ({log.status})
                       </p>
                     </div>
@@ -623,7 +644,7 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
 
           {/* Changes / Diffs Tab */}
           {activeTab === 'changes' && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               <h3
                 style={{
                   fontSize: '11px',
@@ -648,9 +669,9 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
                   <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '12px' }}>
                     <thead style={{ backgroundColor: '#F4FAF6', borderBottom: '1px solid rgba(16, 185, 129, 0.18)', fontWeight: 600, color: '#062E03' }}>
                       <tr>
-                        <th style={{ padding: '10px 14px' }}>Field</th>
-                        <th style={{ padding: '10px 14px', backgroundColor: 'rgba(239, 68, 68, 0.08)', color: '#DC2626' }}>Previous Value</th>
-                        <th style={{ padding: '10px 14px', backgroundColor: 'rgba(16, 185, 129, 0.08)', color: '#047857' }}>Updated Value</th>
+                        <th style={{ padding: '8px 12px' }}>Field</th>
+                        <th style={{ padding: '8px 12px', backgroundColor: 'rgba(239, 68, 68, 0.08)', color: '#DC2626' }}>Previous Value</th>
+                        <th style={{ padding: '8px 12px', backgroundColor: 'rgba(16, 185, 129, 0.08)', color: '#047857' }}>Updated Value</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -659,13 +680,13 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
                         const newVal = newValues[key];
                         return (
                           <tr key={key} style={{ borderBottom: '1px solid #F1F5F2' }}>
-                            <td style={{ padding: '10px 14px', fontFamily: 'monospace', fontWeight: 600, color: '#062E03' }}>
+                            <td style={{ padding: '8px 12px', fontFamily: 'monospace', fontWeight: 600, color: '#062E03' }}>
                               {key}
                             </td>
-                            <td style={{ padding: '10px 14px', fontFamily: 'monospace', color: '#DC2626', backgroundColor: 'rgba(254, 242, 242, 0.6)' }}>
+                            <td style={{ padding: '8px 12px', fontFamily: 'monospace', color: '#DC2626', backgroundColor: 'rgba(254, 242, 242, 0.6)' }}>
                               {oldVal !== undefined ? JSON.stringify(oldVal) : '—'}
                             </td>
-                            <td style={{ padding: '10px 14px', fontFamily: 'monospace', color: '#047857', backgroundColor: 'rgba(236, 253, 245, 0.6)', fontWeight: 600 }}>
+                            <td style={{ padding: '8px 12px', fontFamily: 'monospace', color: '#047857', backgroundColor: 'rgba(236, 253, 245, 0.6)', fontWeight: 600 }}>
                               {newVal !== undefined ? JSON.stringify(newVal) : '—'}
                             </td>
                           </tr>
@@ -679,7 +700,7 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
                   style={{
                     borderRadius: '10px',
                     backgroundColor: '#0F172A',
-                    padding: '16px',
+                    padding: '14px',
                     fontSize: '12px',
                     fontFamily: 'monospace',
                     color: '#34D399',
@@ -710,12 +731,12 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
                 style={{
                   borderRadius: '10px',
                   backgroundColor: '#0F172A',
-                  padding: '16px',
+                  padding: '14px',
                   fontSize: '12px',
                   fontFamily: 'monospace',
                   color: '#E2E8F0',
                   overflowX: 'auto',
-                  maxHeight: '380px',
+                  maxHeight: '340px',
                   margin: 0,
                   border: '1px solid rgba(16, 185, 129, 0.2)',
                 }}
@@ -733,12 +754,13 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
             alignItems: 'center',
             justifyContent: 'space-between',
             borderTop: '1px solid rgba(16, 185, 129, 0.18)',
-            padding: '14px 24px',
+            padding: '12px 20px',
             backgroundColor: '#F8FCF9',
             fontSize: '12px',
+            flexShrink: 0,
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#062E03', fontWeight: 500 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '7px', color: '#062E03', fontWeight: 500 }}>
             <LockIcon size={14} style={{ color: '#10B981' }} />
             <span>Read-Only Compliance Record: Frontend edits are strictly disabled.</span>
           </div>
@@ -748,7 +770,7 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              padding: '7px 18px',
+              padding: '6px 16px',
               borderRadius: '8px',
               border: '1px solid rgba(16, 185, 129, 0.3)',
               backgroundColor: '#FFFFFF',
