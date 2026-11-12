@@ -23,9 +23,10 @@ export const CreateTagPage: React.FC = () => {
     setErrorMessage(null);
 
     try {
+      const workspaceId = currentWorkspace?.id?.trim() || undefined;
       await tagService.createTag({
         ...payload,
-        workspaceId: currentWorkspace?.id,
+        workspaceId,
       });
 
       navigate('/tags');

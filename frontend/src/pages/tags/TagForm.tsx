@@ -58,6 +58,9 @@ export const TagForm: React.FC<TagFormProps> = ({
     const trimmedName = name.trim();
     if (!trimmedName) {
       errors.name = 'Tag name is required.';
+      setTimeout(() => {
+        document.getElementById('tag-name-input')?.focus();
+      }, 0);
     } else if (trimmedName.length > 100) {
       errors.name = 'Tag name cannot exceed 100 characters.';
     }
@@ -109,6 +112,31 @@ export const TagForm: React.FC<TagFormProps> = ({
         .tag-form-card .tag-badge.is-archived {
           color: #64748b !important;
         }
+        .tag-form-card .form-input-custom,
+        .tag-form-card .form-textarea-custom,
+        .tag-form-card .form-select-custom {
+          background-color: #FFFFFF !important;
+          color: #062E03 !important;
+        }
+        .tag-form-card .form-input-custom:focus,
+        .tag-form-card .form-textarea-custom:focus,
+        .tag-form-card .form-select-custom:focus {
+          background-color: #FFFFFF !important;
+          color: #062E03 !important;
+          border-color: #10B981 !important;
+          box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15) !important;
+          outline: none !important;
+        }
+        .tag-form-card input::placeholder,
+        .tag-form-card textarea::placeholder {
+          color: #94A3B8 !important;
+          opacity: 1 !important;
+        }
+        .tag-form-card .form-input-custom.is-invalid,
+        .tag-form-card .form-textarea-custom.is-invalid {
+          border-color: #EF4444 !important;
+          box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+        }
       `}</style>
 
       {error && (
@@ -154,7 +182,7 @@ export const TagForm: React.FC<TagFormProps> = ({
                 id="tag-name-input"
                 type="text"
                 className={`form-input-custom has-icon ${validationErrors.name ? 'is-invalid' : ''}`}
-                placeholder="e.g. Enterprise Prospect, High Priority, Q4 Deal"
+                placeholder="Enter tag name (e.g. High Priority)..."
                 value={name}
                 maxLength={100}
                 onChange={(e) => {
@@ -180,6 +208,7 @@ export const TagForm: React.FC<TagFormProps> = ({
                   transition: 'border-color 0.15s ease',
                 }}
                 onFocus={(e) => {
+                  e.currentTarget.style.backgroundColor = '#FFFFFF';
                   if (!validationErrors.name) {
                     e.currentTarget.style.borderColor = '#10B981';
                     e.currentTarget.style.boxShadow = '0 0 0 3px rgba(16, 185, 129, 0.15)';
@@ -194,8 +223,9 @@ export const TagForm: React.FC<TagFormProps> = ({
               />
             </div>
             {validationErrors.name && (
-              <span className="field-error-msg" style={{ display: 'block', fontSize: '12px', color: '#EF4444', marginTop: '4px' }}>
-                {validationErrors.name}
+              <span className="field-error-msg" style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '12px', color: '#EF4444', marginTop: '6px', fontWeight: 500 }}>
+                <AlertCircleIcon size={13} style={{ color: '#EF4444', flexShrink: 0 }} />
+                <span>{validationErrors.name}</span>
               </span>
             )}
             <p className="field-hint-text" style={{ color: '#64748B', fontSize: '12px', marginTop: '6px', lineHeight: 1.4 }}>
