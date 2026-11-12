@@ -846,17 +846,19 @@ export const InternalCommentsPage: React.FC<InternalCommentsPageProps> = ({
 
               <button
                 type="submit"
-                disabled={submitting || !content.trim()}
+                disabled={submitting}
                 style={{
                   width: '100%',
-                  backgroundColor: submitting || !content.trim() ? '#94A3B8' : '#10B981',
+                  backgroundColor: '#10B981',
                   color: '#FFFFFF',
-                  border: 'none',
+                  border: '1px solid #10B981',
                   borderRadius: '8px',
                   padding: '10px 16px',
                   fontSize: '13px',
                   fontWeight: 600,
-                  cursor: submitting || !content.trim() ? 'not-allowed' : 'pointer',
+                  cursor: submitting ? 'not-allowed' : 'pointer',
+                  opacity: submitting ? 0.75 : 1,
+                  boxShadow: '0 2px 8px rgba(16, 185, 129, 0.25)',
                   transition: 'all 0.15s ease',
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -864,13 +866,15 @@ export const InternalCommentsPage: React.FC<InternalCommentsPageProps> = ({
                   gap: '6px',
                 }}
                 onMouseEnter={(e) => {
-                  if (!submitting && content.trim()) {
+                  if (!submitting) {
                     e.currentTarget.style.backgroundColor = '#059669';
+                    e.currentTarget.style.borderColor = '#059669';
                   }
                 }}
                 onMouseLeave={(e) => {
-                  if (!submitting && content.trim()) {
+                  if (!submitting) {
                     e.currentTarget.style.backgroundColor = '#10B981';
+                    e.currentTarget.style.borderColor = '#10B981';
                   }
                 }}
               >
