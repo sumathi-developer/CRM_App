@@ -220,27 +220,27 @@ export const MeetingSchedulingPage: React.FC = () => {
             title="1. Select Date, Duration & Available Time Slot"
             subtitle="Conflicts with existing calendar events are highlighted automatically"
           >
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div>
-                <label className="mb-1 block text-xs font-medium text-gray-700">
-                  Meeting Date
+            <div className="ld-meeting-field-grid">
+              <div className="lg-field">
+                <label className="lg-label">
+                  <CalendarIcon size={14} /> Meeting Date
                 </label>
                 <input
                   type="date"
+                  className="lg-input"
                   value={selectedDate}
                   onChange={(e) => setSelectedDate(e.target.value)}
-                  className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs text-gray-800 focus:border-blue-500 focus:outline-none"
                 />
               </div>
 
-              <div>
-                <label className="mb-1 block text-xs font-medium text-gray-700">
-                  Duration Preset
+              <div className="lg-field">
+                <label className="lg-label">
+                  <ClockIcon size={14} /> Duration Preset
                 </label>
                 <select
+                  className="lg-select"
                   value={durationMinutes}
                   onChange={(e) => setDurationMinutes(Number(e.target.value))}
-                  className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs text-gray-800 focus:border-blue-500 focus:outline-none"
                 >
                   {MEETING_DURATION_OPTIONS.map((opt) => (
                     <option key={opt.value} value={opt.value}>
@@ -251,20 +251,22 @@ export const MeetingSchedulingPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-4">
-              <div className="flex items-center gap-2 text-xs text-gray-600">
-                <ClockIcon size={15} />
+            <div className="ld-meeting-avail-banner">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <ClockIcon size={15} style={{ color: '#047857' }} />
                 <span>
                   <strong>{availableCount}</strong> conflict-free slots available on{' '}
                   <strong>{selectedDate}</strong>
                 </span>
               </div>
               {loadingDay && (
-                <span className="text-xs text-gray-400">Checking availability...</span>
+                <span style={{ fontSize: '0.75rem', color: '#64748B' }}>
+                  Checking availability...
+                </span>
               )}
             </div>
 
-            <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-4">
+            <div className="ld-meeting-slots-grid">
               {timeSlots.map((slot) => {
                 const isSelected = slot.startIso === activeSlotIso;
                 return (
@@ -272,43 +274,23 @@ export const MeetingSchedulingPage: React.FC = () => {
                     key={slot.startIso}
                     type="button"
                     onClick={() => setSelectedSlotIso(slot.startIso)}
-                    className={`flex flex-col items-start rounded-xl border p-2.5 text-left transition-all ${
+                    className={`ld-slot-card ${
                       isSelected
-                        ? 'border-blue-600 bg-blue-600 text-white shadow-sm'
+                        ? 'is-selected'
                         : slot.hasConflict
-                          ? 'border-amber-200 bg-amber-50/70 text-amber-900 hover:border-amber-300'
-                          : 'border-gray-200 bg-white text-gray-800 hover:border-blue-300 hover:bg-blue-50/40'
+                          ? 'is-conflict'
+                          : ''
                     }`}
                   >
-                    <div className="flex w-full items-center justify-between">
-                      <span className="text-xs font-bold">{slot.label}</span>
+                    <div className="ld-slot-card-top">
+                      <span className="ld-slot-time">{slot.label}</span>
                       {slot.hasConflict ? (
-                        <span
-                          className={`rounded px-1.5 py-0.5 text-[10px] font-semibold ${
-                            isSelected
-                              ? 'bg-white/20 text-white'
-                              : 'bg-amber-100 text-amber-800'
-                          }`}
-                        >
-                          Busy
-                        </span>
+                        <span className="ld-slot-badge-busy">Busy</span>
                       ) : (
-                        <span
-                          className={`rounded px-1.5 py-0.5 text-[10px] font-semibold ${
-                            isSelected
-                              ? 'bg-white/20 text-white'
-                              : 'bg-emerald-50 text-emerald-700'
-                          }`}
-                        >
-                          Open
-                        </span>
+                        <span className="ld-slot-badge-open">Open</span>
                       )}
                     </div>
-                    <span
-                      className={`mt-1 truncate text-[10px] ${
-                        isSelected ? 'text-blue-100' : 'text-gray-500'
-                      }`}
-                    >
+                    <span className="ld-slot-sub">
                       {slot.hasConflict
                         ? `Overlap: ${slot.conflictingTitles[0]}`
                         : `${durationMinutes} min slot`}
@@ -324,22 +306,45 @@ export const MeetingSchedulingPage: React.FC = () => {
             subtitle={`Events already booked on ${selectedDate}`}
           >
             {dayEvents.length === 0 ? (
-              <p className="text-xs text-gray-500">
-                No existing meetings or activities scheduled on this day.
-              </p>
+              <div
+                style={{
+                  padding: '1.25rem',
+                  textAlign: 'center',
+                  background: '#F8FAFC',
+                  borderRadius: '10px',
+                  border: '1px dashed rgba(16, 185, 129, 0.25)',
+                }}
+              >
+                <CalendarIcon
+                  size={20}
+                  style={{ color: '#10B981', margin: '0 auto 0.35rem', opacity: 0.8 }}
+                />
+                <p style={{ fontSize: '0.8125rem', color: '#64748B', margin: 0 }}>
+                  No existing meetings or activities scheduled on this day.
+                </p>
+              </div>
             ) : (
-              <div className="space-y-2">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                 {dayEvents.map((ev) => (
                   <div
                     key={ev.id}
-                    className="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-xs"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: '0.6rem 0.85rem',
+                      borderRadius: '8px',
+                      border: '1px solid rgba(16, 185, 129, 0.2)',
+                      background: '#FFFFFF',
+                      fontSize: '0.8125rem',
+                    }}
                   >
-                    <div className="flex items-center gap-2">
-                      <ClockIcon size={14} />
-                      <span className="font-semibold text-gray-800">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <ClockIcon size={14} style={{ color: '#047857' }} />
+                      <span style={{ fontWeight: 600, color: '#0F172A' }}>
                         {ev.allDay ? 'All Day' : formatTimeOnly(ev.start)}
                       </span>
-                      <span className="text-gray-900">{ev.title}</span>
+                      <span style={{ color: '#334155' }}>{ev.title}</span>
                     </div>
                     <Badge tone="blue">{ev.type}</Badge>
                   </div>
@@ -356,34 +361,32 @@ export const MeetingSchedulingPage: React.FC = () => {
               title="2. Meeting Details & CRM Stakeholders"
               subtitle="Configure agenda, host, and related CRM records"
             >
-              <div className="space-y-4">
-                <div>
-                  <label className="mb-1 block text-xs font-medium text-gray-700">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <div className="lg-field">
+                  <label className="lg-label">
                     Meeting Title <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
                     required
+                    className="lg-input"
                     value={meetingTitle}
                     onChange={(e) => setMeetingTitle(e.target.value)}
                     placeholder="e.g., Enterprise Architecture & Pricing Review"
-                    className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs text-gray-900 focus:border-blue-500 focus:outline-none"
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="mb-1 block text-xs font-medium text-gray-700">
-                      Session Format
-                    </label>
+                <div className="ld-meeting-field-grid">
+                  <div className="lg-field">
+                    <label className="lg-label">Session Format</label>
                     <select
+                      className="lg-select"
                       value={meetingType}
                       onChange={(e) =>
                         setMeetingType(
                           e.target.value as 'MEETING' | 'CALL' | 'FOLLOW_UP',
                         )
                       }
-                      className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs text-gray-800 focus:border-blue-500 focus:outline-none"
                     >
                       <option value="MEETING">Meeting</option>
                       <option value="CALL">Call</option>
@@ -391,18 +394,16 @@ export const MeetingSchedulingPage: React.FC = () => {
                     </select>
                   </div>
 
-                  <div>
-                    <label className="mb-1 block text-xs font-medium text-gray-700">
-                      Priority
-                    </label>
+                  <div className="lg-field">
+                    <label className="lg-label">Priority</label>
                     <select
+                      className="lg-select"
                       value={priority}
                       onChange={(e) =>
                         setPriority(
                           e.target.value as 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT',
                         )
                       }
-                      className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs text-gray-800 focus:border-blue-500 focus:outline-none"
                     >
                       <option value="LOW">Low</option>
                       <option value="MEDIUM">Medium</option>
@@ -412,15 +413,13 @@ export const MeetingSchedulingPage: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                  <div>
-                    <label className="mb-1 block text-xs font-medium text-gray-700">
-                      Host / Assignee
-                    </label>
+                <div className="ld-meeting-field-grid">
+                  <div className="lg-field">
+                    <label className="lg-label">Host / Assignee</label>
                     <select
+                      className="lg-select"
                       value={assignedToId}
                       onChange={(e) => setAssignedToId(e.target.value)}
-                      className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs text-gray-800 focus:border-blue-500 focus:outline-none"
                     >
                       <option value="">Current User</option>
                       {users.map((u) => (
@@ -431,18 +430,16 @@ export const MeetingSchedulingPage: React.FC = () => {
                     </select>
                   </div>
 
-                  <div>
-                    <label className="mb-1 block text-xs font-medium text-gray-700">
-                      Reminder Alert
-                    </label>
+                  <div className="lg-field">
+                    <label className="lg-label">Reminder Alert</label>
                     <select
+                      className="lg-select"
                       value={reminderMinutes}
                       onChange={(e) =>
                         setReminderMinutes(
                           Number(e.target.value) as ReminderOffsetMinutes,
                         )
                       }
-                      className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs text-gray-800 focus:border-blue-500 focus:outline-none"
                     >
                       {REMINDER_OFFSET_OPTIONS.map((opt) => (
                         <option key={opt.value} value={opt.value}>
@@ -453,107 +450,98 @@ export const MeetingSchedulingPage: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="border-t border-gray-100 pt-3">
-                  <div className="mb-2 flex items-center gap-1.5 text-xs font-semibold text-gray-700">
-                    <UsersIcon size={14} />
-                    <span>Link CRM Participant & Opportunity</span>
+                <div className="ld-meeting-section-header">
+                  <UsersIcon size={15} />
+                  <span>Link CRM Participant & Opportunity</span>
+                </div>
+
+                <div className="ld-meeting-field-grid">
+                  <div className="lg-field">
+                    <label className="lg-label">Contact Attendee</label>
+                    <select
+                      className="lg-select"
+                      value={contactId}
+                      onChange={(e) => setContactId(e.target.value)}
+                    >
+                      <option value="">No Contact Linked</option>
+                      {contacts.map((c) => (
+                        <option key={c.id} value={c.id}>
+                          {`${c.firstName || ''} ${c.lastName || ''}`.trim() ||
+                            c.email}
+                        </option>
+                      ))}
+                    </select>
                   </div>
 
-                  <div className="space-y-3">
-                    <div>
-                      <label className="mb-1 block text-[11px] font-medium text-gray-600">
-                        Contact Attendee
-                      </label>
-                      <select
-                        value={contactId}
-                        onChange={(e) => setContactId(e.target.value)}
-                        className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs text-gray-800 focus:border-blue-500 focus:outline-none"
-                      >
-                        <option value="">No Contact Linked</option>
-                        {contacts.map((c) => (
-                          <option key={c.id} value={c.id}>
-                            {`${c.firstName || ''} ${c.lastName || ''}`.trim() ||
-                              c.email}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="mb-1 block text-[11px] font-medium text-gray-600">
-                        Related Deal
-                      </label>
-                      <select
-                        value={dealId}
-                        onChange={(e) => setDealId(e.target.value)}
-                        className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs text-gray-800 focus:border-blue-500 focus:outline-none"
-                      >
-                        <option value="">No Deal Linked</option>
-                        {deals.map((d) => (
-                          <option key={d.id} value={d.id}>
-                            {d.title}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="mb-1 block text-[11px] font-medium text-gray-600">
-                        Related Lead
-                      </label>
-                      <select
-                        value={leadId}
-                        onChange={(e) => setLeadId(e.target.value)}
-                        className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs text-gray-800 focus:border-blue-500 focus:outline-none"
-                      >
-                        <option value="">No Lead Linked</option>
-                        {leads.map((l) => (
-                          <option key={l.id} value={l.id}>
-                            {l.title}
-                            {l.companyName ? ` (${l.companyName})` : ''}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                  <div className="lg-field">
+                    <label className="lg-label">Related Deal</label>
+                    <select
+                      className="lg-select"
+                      value={dealId}
+                      onChange={(e) => setDealId(e.target.value)}
+                    >
+                      <option value="">No Deal Linked</option>
+                      {deals.map((d) => (
+                        <option key={d.id} value={d.id}>
+                          {d.title}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
 
-                <div>
-                  <label className="mb-1 block text-xs font-medium text-gray-700">
-                    Meeting Agenda / Notes
-                  </label>
+                <div className="lg-field">
+                  <label className="lg-label">Related Lead</label>
+                  <select
+                    className="lg-select"
+                    value={leadId}
+                    onChange={(e) => setLeadId(e.target.value)}
+                  >
+                    <option value="">No Lead Linked</option>
+                    {leads.map((l) => (
+                      <option key={l.id} value={l.id}>
+                        {l.title}
+                        {l.companyName ? ` (${l.companyName})` : ''}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="lg-field">
+                  <label className="lg-label">Meeting Agenda / Notes</label>
                   <textarea
                     rows={3}
+                    className="lg-textarea"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     placeholder="Key discussion topics, call link, or preparation notes..."
-                    className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs text-gray-800 focus:border-blue-500 focus:outline-none"
                   />
                 </div>
 
                 {selectedSlot && (
-                  <div className="rounded-xl border border-blue-200 bg-blue-50/70 p-3 text-xs text-blue-900">
-                    <div className="flex items-center gap-1.5 font-semibold">
-                      <CalendarIcon size={14} />
-                      <span>
-                        Selected Slot: {selectedDate} at {selectedSlot.label} (
-                        {durationMinutes} mins)
-                      </span>
-                    </div>
+                  <div className="ld-slot-confirmed-banner">
+                    <CalendarIcon size={16} />
+                    <span>
+                      Selected Slot: <strong>{selectedDate}</strong> at{' '}
+                      <strong>{selectedSlot.label}</strong> ({durationMinutes} mins)
+                    </span>
                   </div>
                 )}
 
-                <div className="flex items-center justify-end gap-2 pt-2">
+                <div
+                  className="ld-form-actions"
+                  style={{ marginTop: '0.5rem', paddingTop: '1rem' }}
+                >
                   <Link
                     to="/calendar"
-                    className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-50"
+                    className="auth-btn btn-secondary btn-size-small"
                   >
                     Cancel
                   </Link>
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 px-4 py-2 text-xs font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+                    className="auth-btn btn-primary btn-size-small"
                   >
                     <CheckIcon size={14} />
                     {submitting ? 'Scheduling...' : 'Confirm & Schedule Meeting'}

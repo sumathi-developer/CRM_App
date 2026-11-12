@@ -374,50 +374,43 @@ export const CalendarExplorerPage: React.FC<CalendarExplorerPageProps> = ({
       </div>
 
       {/* Date Navigation Bar */}
-      <div
-        className="lg-card"
-        style={{
-          padding: '0.85rem 1.1rem',
-          display: 'flex',
-          flexWrap: 'wrap',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          gap: '0.75rem',
-        }}
-      >
-        <div className="lg-badge-row">
+      <div className="lg-card ld-cal-nav-toolbar">
+        {/* Left: Nav Buttons & Jump to Date */}
+        <div className="ld-cal-nav-left">
           <button
             type="button"
-            className="auth-btn btn-secondary btn-size-small"
+            className="ld-cal-nav-btn"
             onClick={() =>
               setFocusDate((prev) => stepCalendarDate(prev, viewMode, -1))
             }
             aria-label="Previous period"
           >
-            <ArrowLeftIcon size={15} /> Prev
+            <ArrowLeftIcon size={14} /> Prev
           </button>
           <button
             type="button"
-            className="auth-btn btn-secondary btn-size-small"
+            className="ld-cal-nav-btn"
             onClick={() => setFocusDate(new Date())}
+            aria-label="Jump to today"
           >
             Today
           </button>
           <button
             type="button"
-            className="auth-btn btn-secondary btn-size-small"
+            className="ld-cal-nav-btn"
             onClick={() =>
               setFocusDate((prev) => stepCalendarDate(prev, viewMode, 1))
             }
             aria-label="Next period"
           >
-            Next <ArrowRightIcon size={15} />
+            Next <ArrowRightIcon size={14} />
           </button>
+
+          <div className="ld-cal-nav-divider" />
 
           <input
             type="date"
-            className="lg-input"
-            style={{ maxWidth: '165px' }}
+            className="ld-cal-nav-date-input"
             value={focusDateIso}
             onChange={(e) => {
               if (e.target.value) {
@@ -428,12 +421,18 @@ export const CalendarExplorerPage: React.FC<CalendarExplorerPageProps> = ({
           />
         </div>
 
-        <strong style={{ fontSize: '1.08rem', color: '#0f172a' }}>
-          {formatCalendarHeaderRange(focusDate, viewMode)}
-        </strong>
+        {/* Center: Period Range Title */}
+        <div className="ld-cal-nav-center">
+          <CalendarIcon size={18} style={{ color: '#059669', flexShrink: 0 }} />
+          <strong className="ld-cal-nav-title">
+            {formatCalendarHeaderRange(focusDate, viewMode)}
+          </strong>
+        </div>
 
-        <div className="lg-badge-row">
-          <span className="lg-muted">
+        {/* Right: Scheduled Events Badge */}
+        <div className="ld-cal-nav-right">
+          <span className="ld-cal-nav-badge">
+            <span className="ld-cal-nav-dot" />
             Showing {filteredEvents.length} scheduled{' '}
             {filteredEvents.length === 1 ? 'event' : 'events'}
           </span>

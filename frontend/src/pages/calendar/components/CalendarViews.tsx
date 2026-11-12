@@ -250,7 +250,10 @@ export const CalendarMonthGrid: React.FC<SharedCalendarViewProps> = ({
   }
 
   return (
-    <div className="ld-cards-stack">
+    <div
+      className="ld-cards-stack"
+      style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
+    >
       <div className="lg-card" style={{ padding: '1rem' }}>
         {/* Weekday header row */}
         <div
@@ -590,7 +593,10 @@ export const CalendarDayTimeline: React.FC<SharedCalendarViewProps> = ({
   const dateKey = toDateInputString(focusDate);
 
   return (
-    <div className="ld-cards-stack">
+    <div
+      className="ld-cards-stack"
+      style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
+    >
       <SectionCard
         title={`All-Day Tasks & Milestones (${allDayEvents.length})`}
         subtitle="Tasks and deal closing dates scheduled for this day."
@@ -747,7 +753,10 @@ export const CalendarScheduleAgenda: React.FC<SharedCalendarViewProps> = ({
   }
 
   return (
-    <div className="ld-cards-stack">
+    <div
+      className="ld-cards-stack"
+      style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
+    >
       {groupedByDate.map((group) => (
         <SectionCard
           key={group.dateKey}
