@@ -144,7 +144,6 @@ export const HelpLayout: React.FC<HelpLayoutProps> = ({
           aria-label="Help and Support navigation tabs"
         >
           <div className="lg-subnav-group">
-            <span className="lg-subnav-label">Help & Support</span>
             <div className="lg-subnav-links">
               {HELP_NAV_ITEMS.map((item) => {
                 const isRootCenter =
