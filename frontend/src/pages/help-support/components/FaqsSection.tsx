@@ -41,12 +41,34 @@ export const FaqsSection: React.FC<FaqsSectionProps> = ({
   };
 
   return (
-    <div className="space-y-6">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
       {/* Top Search & Category Filters */}
-      <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm space-y-4">
+      <div
+        style={{
+          borderRadius: '16px',
+          border: '1px solid rgba(16, 185, 129, 0.22)',
+          backgroundColor: '#FFFFFF',
+          padding: '20px 24px',
+          boxShadow: '0 1px 3px rgba(6, 46, 3, 0.04)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '14px',
+        }}
+      >
         {/* Search Input */}
-        <div className="relative">
-          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400">
+        <div style={{ position: 'relative' }}>
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              bottom: 0,
+              left: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              color: '#10B981',
+              pointerEvents: 'none',
+            }}
+          >
             <SearchIcon size={16} />
           </div>
           <input
@@ -54,13 +76,46 @@ export const FaqsSection: React.FC<FaqsSectionProps> = ({
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Search questions (e.g. 'invite team', 'export data', 'audit logs')..."
-            className="w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-10 pr-9 text-sm text-gray-900 placeholder-gray-400 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
+            style={{
+              width: '100%',
+              backgroundColor: '#F8FCF9',
+              border: '1px solid rgba(16, 185, 129, 0.3)',
+              borderRadius: '10px',
+              padding: '10px 36px 10px 38px',
+              fontSize: '13.5px',
+              color: '#062E03',
+              outline: 'none',
+              boxSizing: 'border-box',
+              transition: 'all 0.15s ease',
+            }}
+            onFocus={(e) => {
+              e.currentTarget.style.borderColor = '#10B981';
+              e.currentTarget.style.backgroundColor = '#FFFFFF';
+              e.currentTarget.style.boxShadow = '0 0 0 3px rgba(16, 185, 129, 0.15)';
+            }}
+            onBlur={(e) => {
+              e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+              e.currentTarget.style.backgroundColor = '#F8FCF9';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
           />
           {searchQuery && (
             <button
               type="button"
               onClick={() => onSearchChange('')}
-              className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600"
+              style={{
+                position: 'absolute',
+                top: 0,
+                bottom: 0,
+                right: '12px',
+                display: 'flex',
+                alignItems: 'center',
+                background: 'none',
+                border: 'none',
+                color: '#94A3B8',
+                cursor: 'pointer',
+                padding: 0,
+              }}
               aria-label="Clear search"
             >
               <XIcon size={14} />
@@ -69,7 +124,7 @@ export const FaqsSection: React.FC<FaqsSectionProps> = ({
         </div>
 
         {/* Category Pills */}
-        <div className="flex flex-wrap items-center gap-2">
+        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '8px' }}>
           {FAQ_CATEGORIES.map((cat) => {
             const isSelected = selectedCategory === cat.value;
             return (
@@ -77,11 +132,34 @@ export const FaqsSection: React.FC<FaqsSectionProps> = ({
                 key={cat.value}
                 type="button"
                 onClick={() => onSelectCategory(cat.value)}
-                className={`rounded-full px-3 py-1.5 text-xs font-semibold transition ${
-                  isSelected
-                    ? 'bg-purple-600 text-white shadow-sm'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
+                style={{
+                  borderRadius: '9999px',
+                  padding: '6px 14px',
+                  fontSize: '12.5px',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  border: isSelected
+                    ? '1px solid #10B981'
+                    : '1px solid rgba(16, 185, 129, 0.25)',
+                  backgroundColor: isSelected ? '#10B981' : '#FFFFFF',
+                  color: isSelected ? '#FFFFFF' : '#062E03',
+                  boxShadow: isSelected ? '0 2px 6px rgba(16, 185, 129, 0.25)' : 'none',
+                  transition: 'all 0.15s ease',
+                }}
+                onMouseEnter={(e) => {
+                  if (!isSelected) {
+                    e.currentTarget.style.backgroundColor = '#EAF4ED';
+                    e.currentTarget.style.borderColor = '#10B981';
+                    e.currentTarget.style.color = '#10B981';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isSelected) {
+                    e.currentTarget.style.backgroundColor = '#FFFFFF';
+                    e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.25)';
+                    e.currentTarget.style.color = '#062E03';
+                  }
+                }}
               >
                 {cat.label}
               </button>
@@ -91,43 +169,92 @@ export const FaqsSection: React.FC<FaqsSectionProps> = ({
       </div>
 
       {/* FAQ Accordion List */}
-      <div className="space-y-3">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
         {isLoading ? (
-          <div className="space-y-3">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {[1, 2, 3, 4].map((i) => (
               <div
                 key={i}
-                className="animate-pulse rounded-xl border border-gray-200 bg-white p-4 shadow-sm"
+                style={{
+                  borderRadius: '12px',
+                  border: '1px solid rgba(16, 185, 129, 0.18)',
+                  backgroundColor: '#FFFFFF',
+                  padding: '16px 20px',
+                }}
               >
-                <div className="h-5 w-2/3 rounded bg-gray-200" />
+                <div style={{ height: '18px', width: '65%', backgroundColor: '#F1F5F9', borderRadius: '4px' }} />
               </div>
             ))}
           </div>
         ) : faqs.length === 0 ? (
-          <div className="rounded-xl border border-gray-200 bg-white p-8 text-center shadow-sm">
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-purple-50 text-purple-600 mb-3">
+          <div
+            style={{
+              borderRadius: '16px',
+              border: '1px dashed rgba(16, 185, 129, 0.3)',
+              backgroundColor: '#FFFFFF',
+              padding: '48px 24px',
+              textAlign: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 1px 3px rgba(6, 46, 3, 0.04)',
+            }}
+          >
+            <div
+              style={{
+                width: '48px',
+                height: '48px',
+                borderRadius: '50%',
+                backgroundColor: '#EAF4ED',
+                border: '1px solid rgba(16, 185, 129, 0.25)',
+                color: '#10B981',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '14px',
+              }}
+            >
               <HelpCircleIcon size={24} />
             </div>
-            <h4 className="text-base font-semibold text-gray-900">
+            <h4 style={{ fontSize: '16px', fontWeight: 700, color: '#062E03', margin: '0 0 6px' }}>
               No Questions Found
             </h4>
-            <p className="mt-1 text-xs text-gray-500 max-w-sm mx-auto">
+            <p style={{ fontSize: '13px', color: '#64748B', maxWidth: '420px', margin: '0 0 16px', lineHeight: 1.5 }}>
               We couldn't find any FAQs matching your query. Check out our documentation or contact our customer support team.
             </p>
-            <div className="mt-4 flex justify-center gap-2">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
               <button
                 type="button"
                 onClick={() => {
                   onSearchChange('');
                   onSelectCategory('ALL');
                 }}
-                className="rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs font-semibold text-gray-700 hover:bg-gray-50"
+                style={{
+                  backgroundColor: '#FFFFFF',
+                  color: '#062E03',
+                  border: '1px solid rgba(16, 185, 129, 0.35)',
+                  borderRadius: '8px',
+                  padding: '7px 16px',
+                  fontSize: '12.5px',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                }}
               >
                 Reset Filters
               </button>
               <Link
                 to="/help/support"
-                className="rounded-lg bg-purple-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-purple-700"
+                style={{
+                  backgroundColor: '#10B981',
+                  color: '#FFFFFF',
+                  border: '1px solid #10B981',
+                  borderRadius: '8px',
+                  padding: '7px 16px',
+                  fontSize: '12.5px',
+                  fontWeight: 600,
+                  textDecoration: 'none',
+                }}
               >
                 Contact Support
               </Link>
@@ -139,43 +266,144 @@ export const FaqsSection: React.FC<FaqsSectionProps> = ({
             return (
               <div
                 key={faq.id}
-                className="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden transition"
+                style={{
+                  borderRadius: '12px',
+                  border: isExpanded
+                    ? '1px solid rgba(16, 185, 129, 0.35)'
+                    : '1px solid rgba(16, 185, 129, 0.2)',
+                  backgroundColor: '#FFFFFF',
+                  boxShadow: '0 1px 3px rgba(6, 46, 3, 0.04)',
+                  overflow: 'hidden',
+                  transition: 'all 0.15s ease',
+                }}
               >
                 {/* Accordion Question Header */}
                 <button
                   type="button"
                   onClick={() => toggleFaq(faq.id)}
-                  className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50/75 transition gap-3"
+                  style={{
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '16px 20px',
+                    textAlign: 'left',
+                    backgroundColor: isExpanded ? '#F8FCF9' : '#FFFFFF',
+                    border: 'none',
+                    cursor: 'pointer',
+                    gap: '12px',
+                    transition: 'background-color 0.15s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isExpanded) {
+                      e.currentTarget.style.backgroundColor = '#F8FCF9';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isExpanded) {
+                      e.currentTarget.style.backgroundColor = '#FFFFFF';
+                    }
+                  }}
                   aria-expanded={isExpanded}
                 >
-                  <div className="flex items-center gap-2.5">
-                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-purple-100 text-purple-700 text-xs font-bold">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <span
+                      style={{
+                        width: '26px',
+                        height: '26px',
+                        borderRadius: '50%',
+                        backgroundColor: '#EAF4ED',
+                        border: '1px solid rgba(16, 185, 129, 0.3)',
+                        color: '#10B981',
+                        fontSize: '12px',
+                        fontWeight: 700,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0,
+                      }}
+                    >
                       Q
                     </span>
-                    <span className="font-semibold text-gray-900 text-sm">
+                    <span
+                      style={{
+                        fontSize: '14.5px',
+                        fontWeight: 600,
+                        color: '#062E03',
+                        lineHeight: 1.4,
+                      }}
+                    >
                       {faq.question}
                     </span>
                   </div>
-                  <span className="text-gray-400 shrink-0">
+                  <span style={{ color: isExpanded ? '#10B981' : '#94A3B8', display: 'flex', flexShrink: 0 }}>
                     {isExpanded ? (
-                      <ChevronDownIcon size={16} />
+                      <ChevronDownIcon size={18} />
                     ) : (
-                      <ChevronRightIcon size={16} />
+                      <ChevronRightIcon size={18} />
                     )}
                   </span>
                 </button>
 
                 {/* Accordion Answer Content */}
                 {isExpanded && (
-                  <div className="border-t border-gray-100 bg-gray-50/50 p-4 text-xs sm:text-sm text-gray-700 leading-relaxed space-y-3">
-                    <div className="whitespace-pre-line">{faq.answer}</div>
+                  <div
+                    style={{
+                      borderTop: '1px solid rgba(16, 185, 129, 0.15)',
+                      backgroundColor: '#FFFFFF',
+                      padding: '18px 20px 18px 58px',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '14px',
+                    }}
+                  >
+                    <div
+                      style={{
+                        whiteSpace: 'pre-line',
+                        fontSize: '13.5px',
+                        color: '#062E03',
+                        lineHeight: 1.6,
+                      }}
+                    >
+                      {faq.answer}
+                    </div>
 
-                    <div className="flex items-center justify-between pt-2 border-t border-gray-100 text-xs text-gray-400">
-                      <span className="rounded bg-gray-200/80 px-2 py-0.5 font-medium text-gray-700 text-[10px]">
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        paddingTop: '12px',
+                        borderTop: '1px solid rgba(16, 185, 129, 0.12)',
+                        fontSize: '12px',
+                        color: '#64748B',
+                        flexWrap: 'wrap',
+                        gap: '8px',
+                      }}
+                    >
+                      <span
+                        style={{
+                          backgroundColor: '#EAF4ED',
+                          color: '#10B981',
+                          border: '1px solid rgba(16, 185, 129, 0.25)',
+                          borderRadius: '6px',
+                          padding: '2px 8px',
+                          fontSize: '11px',
+                          fontWeight: 600,
+                        }}
+                      >
                         Category: {faq.category}
                       </span>
-                      <span className="flex items-center gap-1 text-[11px] text-gray-500">
-                        <ThumbsUpIcon size={12} className="text-emerald-600" />
+                      <span
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '5px',
+                          fontSize: '12px',
+                          color: '#64748B',
+                        }}
+                      >
+                        <ThumbsUpIcon size={13} style={{ color: '#10B981' }} />
                         <span>{faq.helpfulCount} people found this helpful</span>
                       </span>
                     </div>
@@ -188,20 +416,87 @@ export const FaqsSection: React.FC<FaqsSectionProps> = ({
       </div>
 
       {/* Still Have Questions CTA Banner */}
-      <div className="rounded-2xl border border-purple-200 bg-gradient-to-r from-purple-50 to-indigo-50 p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="space-y-1 text-center sm:text-left">
-          <h4 className="text-base font-bold text-gray-900 flex items-center gap-2 justify-center sm:justify-start">
-            <LifeBuoyIcon size={18} className="text-purple-600" />
-            <span>Still haven't found what you're looking for?</span>
-          </h4>
-          <p className="text-xs text-gray-600">
-            Our specialized support team is here to assist you with any questions or technical challenges.
-          </p>
+      <div
+        style={{
+          background: 'linear-gradient(135deg, #FFFFFF 0%, #F4FBF7 100%)',
+          border: '1px solid rgba(16, 185, 129, 0.25)',
+          borderRadius: '16px',
+          padding: '24px 28px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '16px',
+          boxShadow: '0 2px 8px rgba(6, 46, 3, 0.04)',
+          flexWrap: 'wrap',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          <div
+            style={{
+              width: '40px',
+              height: '40px',
+              borderRadius: '10px',
+              backgroundColor: '#EAF4ED',
+              border: '1px solid rgba(16, 185, 129, 0.25)',
+              color: '#10B981',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+            }}
+          >
+            <LifeBuoyIcon size={20} />
+          </div>
+          <div>
+            <h4
+              style={{
+                fontSize: '15.5px',
+                fontWeight: 700,
+                color: '#062E03',
+                margin: 0,
+              }}
+            >
+              Still haven't found what you're looking for?
+            </h4>
+            <p
+              style={{
+                fontSize: '13px',
+                color: '#64748B',
+                margin: '3px 0 0',
+                lineHeight: 1.4,
+              }}
+            >
+              Our specialized support team is here to assist you with any questions or technical challenges.
+            </p>
+          </div>
         </div>
 
         <Link
           to="/help/support"
-          className="shrink-0 rounded-xl bg-purple-600 px-5 py-2.5 text-xs font-bold text-white shadow-sm hover:bg-purple-700 transition"
+          style={{
+            backgroundColor: '#10B981',
+            color: '#FFFFFF',
+            border: '1px solid #10B981',
+            borderRadius: '8px',
+            padding: '9px 18px',
+            fontSize: '13px',
+            fontWeight: 600,
+            textDecoration: 'none',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            boxShadow: '0 2px 6px rgba(16, 185, 129, 0.25)',
+            transition: 'all 0.15s ease',
+            flexShrink: 0,
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = '#059669';
+            e.currentTarget.style.borderColor = '#059669';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = '#10B981';
+            e.currentTarget.style.borderColor = '#10B981';
+          }}
         >
           Contact Customer Support
         </Link>
@@ -209,4 +504,3 @@ export const FaqsSection: React.FC<FaqsSectionProps> = ({
     </div>
   );
 };
-
