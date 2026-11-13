@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { Navbar } from '../../../components/common/Navbar';
 import { ErrorMessage } from '../../../components/auth/ErrorMessage';
 import { SuccessMessage } from '../../../components/auth/SuccessMessage';
@@ -94,7 +94,46 @@ export const SettingsLayout: React.FC<SettingsLayoutProps> = ({
   isSaving = false,
   children,
 }) => {
+  const location = useLocation();
   const meta = SETTINGS_SCREEN_META[screen] || SETTINGS_SCREEN_META.account;
+
+  // Ensure the page always opens cleanly at the very top of the page
+  useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+
+    const resetScroll = () => {
+      try {
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+      } catch {
+        window.scrollTo(0, 0);
+      }
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      const shellEl = document.getElementById('settings-module-shell');
+      if (shellEl) {
+        shellEl.scrollTop = 0;
+      }
+      const mainEl = document.querySelector('.app-main-content');
+      if (mainEl) {
+        mainEl.scrollTop = 0;
+      }
+    };
+
+    resetScroll();
+    const rafId = requestAnimationFrame(resetScroll);
+    const t1 = setTimeout(resetScroll, 50);
+    const t2 = setTimeout(resetScroll, 150);
+    const t3 = setTimeout(resetScroll, 300);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+    };
+  }, [location.pathname, screen]);
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [drawerSearch, setDrawerSearch] = useState('');
@@ -161,6 +200,11 @@ export const SettingsLayout: React.FC<SettingsLayoutProps> = ({
 
   return (
     <div className="app-layout" id="settings-module-shell">
+      <style>{`
+        #settings-module-shell .app-main-content {
+          justify-content: flex-start !important;
+        }
+      `}</style>
       <Navbar />
 
       <main className="app-main-content lg-page ld-page">
