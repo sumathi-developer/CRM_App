@@ -116,290 +116,770 @@ export const ContactSupportSection: React.FC<ContactSupportSectionProps> = ({
     }
   };
 
+  const getStatusBadgeStyle = (status: string) => {
+    switch (status) {
+      case 'RESOLVED':
+      case 'CLOSED':
+        return {
+          backgroundColor: '#F1F5F9',
+          color: '#64748B',
+          border: '1px solid #CBD5E1',
+        };
+      case 'IN_PROGRESS':
+        return {
+          backgroundColor: '#EFF6FF',
+          color: '#2563EB',
+          border: '1px solid rgba(59, 130, 246, 0.3)',
+        };
+      case 'WAITING_ON_CUSTOMER':
+        return {
+          backgroundColor: '#FEF3C7',
+          color: '#D97706',
+          border: '1px solid rgba(245, 158, 11, 0.3)',
+        };
+      case 'OPEN':
+      default:
+        return {
+          backgroundColor: '#EAF4ED',
+          color: '#10B981',
+          border: '1px solid rgba(16, 185, 129, 0.3)',
+        };
+    }
+  };
+
+  const getPriorityBadgeStyle = (p: string) => {
+    switch (p) {
+      case 'URGENT':
+      case 'HIGH':
+        return {
+          backgroundColor: '#FEF2F2',
+          color: '#DC2626',
+          border: '1px solid rgba(239, 68, 68, 0.3)',
+        };
+      case 'MEDIUM':
+        return {
+          backgroundColor: '#EFF6FF',
+          color: '#2563EB',
+          border: '1px solid rgba(59, 130, 246, 0.3)',
+        };
+      case 'LOW':
+      default:
+        return {
+          backgroundColor: '#F8FCF9',
+          color: '#64748B',
+          border: '1px solid rgba(16, 185, 129, 0.2)',
+        };
+    }
+  };
+
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-      {/* Support Ticket Submission Form */}
-      <div className="lg:col-span-7 rounded-2xl border border-gray-200 bg-white p-6 sm:p-7 shadow-sm space-y-6">
-        <div>
-          <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-purple-700">
-            <LifeBuoyIcon size={14} />
-            <span>Submit a Ticket</span>
-          </span>
-          <h3 className="text-xl font-bold text-gray-900 mt-1">
-            Need Help from Our Team?
-          </h3>
-          <p className="text-xs text-gray-500 mt-1">
-            Fill out the form below and our technical engineers will investigate your request.
-          </p>
-        </div>
+    <div>
+      <style>{`
+        .contact-support-grid {
+          display: grid;
+          grid-template-columns: 1.3fr 1fr;
+          gap: 24px;
+          align-items: start;
+        }
+        @media (max-width: 960px) {
+          .contact-support-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+      `}</style>
 
-        {formSuccess && (
-          <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-xs font-semibold text-emerald-800 flex items-center gap-2">
-            <CheckCircleIcon size={16} className="text-emerald-600 shrink-0" />
-            <span>{formSuccess}</span>
-          </div>
-        )}
-
-        {formError && (
-          <div className="rounded-xl border border-rose-200 bg-rose-50 p-4 text-xs font-semibold text-rose-800">
-            {formError}
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-4 text-sm">
-          {/* Subject */}
+      <div className="contact-support-grid">
+        {/* Support Ticket Submission Form Card */}
+        <div
+          style={{
+            backgroundColor: '#FFFFFF',
+            border: '1px solid rgba(16, 185, 129, 0.22)',
+            borderRadius: '16px',
+            padding: '24px 28px',
+            boxShadow: '0 1px 3px rgba(6, 46, 3, 0.04)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '20px',
+          }}
+        >
           <div>
-            <label
-              htmlFor="ticket-subject"
-              className="block text-xs font-bold uppercase text-gray-600 mb-1"
+            <span
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                backgroundColor: '#EAF4ED',
+                border: '1px solid rgba(16, 185, 129, 0.3)',
+                color: '#10B981',
+                padding: '3px 10px',
+                borderRadius: '9999px',
+                fontSize: '11.5px',
+                fontWeight: 600,
+                marginBottom: '8px',
+              }}
             >
-              Ticket Subject <span className="text-rose-500">*</span>
-            </label>
-            <input
-              id="ticket-subject"
-              type="text"
-              value={subject}
-              onChange={(e) => setSubject(e.target.value)}
-              placeholder="e.g. Cannot connect IMAP inbox or export deals"
-              required
-              className="w-full rounded-lg border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
-            />
-          </div>
-
-          {/* Category & Priority Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label
-                htmlFor="ticket-category"
-                className="block text-xs font-bold uppercase text-gray-600 mb-1"
-              >
-                Category
-              </label>
-              <select
-                id="ticket-category"
-                value={category}
-                onChange={(e) =>
-                  setCategory(e.target.value as TicketCategory)
-                }
-                className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs font-medium text-gray-800 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
-              >
-                {TICKET_CATEGORY_OPTIONS.map((c) => (
-                  <option key={c.value} value={c.value}>
-                    {c.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label
-                htmlFor="ticket-priority"
-                className="block text-xs font-bold uppercase text-gray-600 mb-1"
-              >
-                Urgency / Priority
-              </label>
-              <select
-                id="ticket-priority"
-                value={priority}
-                onChange={(e) =>
-                  setPriority(e.target.value as TicketPriority)
-                }
-                className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs font-medium text-gray-800 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
-              >
-                {TICKET_PRIORITY_OPTIONS.map((p) => (
-                  <option key={p.value} value={p.value}>
-                    {p.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          {/* Description */}
-          <div>
-            <label
-              htmlFor="ticket-description"
-              className="block text-xs font-bold uppercase text-gray-600 mb-1"
+              <LifeBuoyIcon size={13} />
+              <span>Submit a Ticket</span>
+            </span>
+            <h3
+              style={{
+                fontSize: '18px',
+                fontWeight: 700,
+                color: '#062E03',
+                margin: '0 0 4px',
+              }}
             >
-              Detailed Description <span className="text-rose-500">*</span>
-            </label>
-            <textarea
-              id="ticket-description"
-              rows={5}
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Describe the issue, steps to reproduce, or any relevant details..."
-              required
-              className="w-full rounded-lg border border-gray-300 bg-white p-3 text-sm text-gray-900 placeholder-gray-400 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500 leading-relaxed"
-            />
-          </div>
-
-          {/* Submit Button */}
-          <div className="pt-2">
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-purple-600 px-6 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-purple-700 disabled:opacity-50 transition"
+              Need Help from Our Team?
+            </h3>
+            <p
+              style={{
+                fontSize: '13px',
+                color: '#64748B',
+                margin: 0,
+                lineHeight: 1.45,
+              }}
             >
-              <SendIcon size={15} />
-              <span>{isSubmitting ? 'Submitting Ticket...' : 'Submit Support Ticket'}</span>
-            </button>
-          </div>
-        </form>
-      </div>
-
-      {/* Your Submitted Tickets Sidebar */}
-      <div className="lg:col-span-5 space-y-4">
-        <div className="flex items-center justify-between">
-          <h3 className="text-base font-bold text-gray-900 flex items-center gap-2">
-            <MessageSquareIcon size={16} className="text-purple-600" />
-            <span>Your Support Tickets</span>
-          </h3>
-          <span className="text-xs text-gray-400">
-            {tickets.length} {tickets.length === 1 ? 'ticket' : 'tickets'}
-          </span>
-        </div>
-
-        {isLoadingTickets ? (
-          <div className="space-y-3">
-            {[1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className="animate-pulse rounded-xl border border-gray-200 bg-white p-4 shadow-sm"
-              >
-                <div className="h-4 w-28 bg-gray-200 rounded mb-2" />
-                <div className="h-5 w-full bg-gray-100 rounded" />
-              </div>
-            ))}
-          </div>
-        ) : tickets.length === 0 ? (
-          <div className="rounded-xl border border-gray-200 bg-white p-6 text-center shadow-sm">
-            <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 text-gray-400 mb-2">
-              <LifeBuoyIcon size={20} />
-            </div>
-            <h4 className="text-sm font-semibold text-gray-800">
-              No Active Tickets
-            </h4>
-            <p className="mt-1 text-xs text-gray-500">
-              You haven't submitted any support tickets yet.
+              Fill out the form below and our technical engineers will investigate your request.
             </p>
           </div>
-        ) : (
-          <div className="space-y-3 max-h-[560px] overflow-y-auto pr-1">
-            {tickets.map((t) => {
-              const statusMeta =
-                TICKET_STATUS_OPTIONS[t.status] || TICKET_STATUS_OPTIONS.OPEN;
-              const priorityMeta =
-                TICKET_PRIORITY_OPTIONS.find((p) => p.value === t.priority) ||
-                TICKET_PRIORITY_OPTIONS[1];
 
-              return (
-                <div
-                  key={t.id}
-                  onClick={() => setSelectedTicket(t)}
-                  className="cursor-pointer rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition hover:border-purple-300 hover:shadow-md"
+          {formSuccess && (
+            <div
+              style={{
+                borderRadius: '10px',
+                border: '1px solid rgba(16, 185, 129, 0.3)',
+                backgroundColor: '#EAF4ED',
+                padding: '12px 16px',
+                fontSize: '13px',
+                fontWeight: 500,
+                color: '#062E03',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+              }}
+            >
+              <CheckCircleIcon size={16} style={{ color: '#10B981', flexShrink: 0 }} />
+              <span>{formSuccess}</span>
+            </div>
+          )}
+
+          {formError && (
+            <div
+              style={{
+                borderRadius: '10px',
+                border: '1px solid rgba(239, 68, 68, 0.3)',
+                backgroundColor: '#FEF2F2',
+                padding: '12px 16px',
+                fontSize: '13px',
+                fontWeight: 500,
+                color: '#DC2626',
+              }}
+            >
+              {formError}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            {/* Subject */}
+            <div>
+              <label
+                htmlFor="ticket-subject"
+                style={{
+                  display: 'block',
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  color: '#062E03',
+                  marginBottom: '6px',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.04em',
+                }}
+              >
+                Ticket Subject <span style={{ color: '#EF4444' }}>*</span>
+              </label>
+              <input
+                id="ticket-subject"
+                type="text"
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
+                placeholder="e.g. Cannot connect IMAP inbox or export deals"
+                required
+                style={{
+                  width: '100%',
+                  backgroundColor: '#F8FCF9',
+                  border: '1px solid rgba(16, 185, 129, 0.3)',
+                  borderRadius: '8px',
+                  padding: '10px 14px',
+                  fontSize: '13.5px',
+                  color: '#062E03',
+                  outline: 'none',
+                  boxSizing: 'border-box',
+                  transition: 'all 0.15s ease',
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.borderColor = '#10B981';
+                  e.currentTarget.style.backgroundColor = '#FFFFFF';
+                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(16, 185, 129, 0.15)';
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+                  e.currentTarget.style.backgroundColor = '#F8FCF9';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
+              />
+            </div>
+
+            {/* Category & Priority Grid */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '14px' }}>
+              <div>
+                <label
+                  htmlFor="ticket-category"
+                  style={{
+                    display: 'block',
+                    fontSize: '12px',
+                    fontWeight: 600,
+                    color: '#062E03',
+                    marginBottom: '6px',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.04em',
+                  }}
                 >
-                  <div className="flex items-center justify-between text-xs text-gray-400 mb-1.5">
-                    <span className="font-mono font-semibold text-purple-700">
-                      {t.ticketNumber || `TICK-${t.id.slice(0, 6)}`}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <ClockIcon size={12} />
-                      <span>{new Date(t.createdAt).toLocaleDateString()}</span>
-                    </span>
-                  </div>
+                  Category
+                </label>
+                <select
+                  id="ticket-category"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value as TicketCategory)}
+                  style={{
+                    width: '100%',
+                    backgroundColor: '#F8FCF9',
+                    border: '1px solid rgba(16, 185, 129, 0.3)',
+                    borderRadius: '8px',
+                    padding: '9px 12px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#062E03',
+                    outline: 'none',
+                    cursor: 'pointer',
+                    boxSizing: 'border-box',
+                  }}
+                  onFocus={(e) => {
+                    e.currentTarget.style.borderColor = '#10B981';
+                    e.currentTarget.style.backgroundColor = '#FFFFFF';
+                  }}
+                  onBlur={(e) => {
+                    e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+                    e.currentTarget.style.backgroundColor = '#F8FCF9';
+                  }}
+                >
+                  {TICKET_CATEGORY_OPTIONS.map((c) => (
+                    <option key={c.value} value={c.value}>
+                      {c.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-                  <h4 className="font-bold text-gray-900 text-sm truncate">
-                    {t.subject}
-                  </h4>
+              <div>
+                <label
+                  htmlFor="ticket-priority"
+                  style={{
+                    display: 'block',
+                    fontSize: '12px',
+                    fontWeight: 600,
+                    color: '#062E03',
+                    marginBottom: '6px',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.04em',
+                  }}
+                >
+                  Urgency / Priority
+                </label>
+                <select
+                  id="ticket-priority"
+                  value={priority}
+                  onChange={(e) => setPriority(e.target.value as TicketPriority)}
+                  style={{
+                    width: '100%',
+                    backgroundColor: '#F8FCF9',
+                    border: '1px solid rgba(16, 185, 129, 0.3)',
+                    borderRadius: '8px',
+                    padding: '9px 12px',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#062E03',
+                    outline: 'none',
+                    cursor: 'pointer',
+                    boxSizing: 'border-box',
+                  }}
+                  onFocus={(e) => {
+                    e.currentTarget.style.borderColor = '#10B981';
+                    e.currentTarget.style.backgroundColor = '#FFFFFF';
+                  }}
+                  onBlur={(e) => {
+                    e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+                    e.currentTarget.style.backgroundColor = '#F8FCF9';
+                  }}
+                >
+                  {TICKET_PRIORITY_OPTIONS.map((p) => (
+                    <option key={p.value} value={p.value}>
+                      {p.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
 
-                  <div className="mt-2.5 flex items-center justify-between text-xs">
-                    <span
-                      className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[11px] font-semibold ${statusMeta.badgeClass}`}
-                    >
-                      {statusMeta.label}
-                    </span>
-                    <span
-                      className={`inline-flex items-center rounded border px-1.5 py-0.5 text-[10px] font-medium ${priorityMeta.badgeClass}`}
-                    >
-                      {priorityMeta.label} Priority
-                    </span>
-                  </div>
-                </div>
-              );
-            })}
+            {/* Description */}
+            <div>
+              <label
+                htmlFor="ticket-description"
+                style={{
+                  display: 'block',
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  color: '#062E03',
+                  marginBottom: '6px',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.04em',
+                }}
+              >
+                Detailed Description <span style={{ color: '#EF4444' }}>*</span>
+              </label>
+              <textarea
+                id="ticket-description"
+                rows={5}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Describe the issue, steps to reproduce, or any relevant details..."
+                required
+                style={{
+                  width: '100%',
+                  backgroundColor: '#F8FCF9',
+                  border: '1px solid rgba(16, 185, 129, 0.3)',
+                  borderRadius: '8px',
+                  padding: '12px 14px',
+                  fontSize: '13.5px',
+                  color: '#062E03',
+                  outline: 'none',
+                  boxSizing: 'border-box',
+                  lineHeight: 1.5,
+                  fontFamily: 'inherit',
+                  resize: 'vertical',
+                  transition: 'all 0.15s ease',
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.borderColor = '#10B981';
+                  e.currentTarget.style.backgroundColor = '#FFFFFF';
+                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(16, 185, 129, 0.15)';
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+                  e.currentTarget.style.backgroundColor = '#F8FCF9';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
+              />
+            </div>
+
+            {/* Submit Button */}
+            <div style={{ paddingTop: '6px' }}>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                style={{
+                  backgroundColor: '#10B981',
+                  color: '#FFFFFF',
+                  border: '1px solid #10B981',
+                  borderRadius: '8px',
+                  padding: '10px 22px',
+                  fontSize: '13px',
+                  fontWeight: 600,
+                  cursor: isSubmitting ? 'not-allowed' : 'pointer',
+                  opacity: isSubmitting ? 0.75 : 1,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  boxShadow: '0 2px 6px rgba(16, 185, 129, 0.25)',
+                  transition: 'all 0.15s ease',
+                }}
+                onMouseEnter={(e) => {
+                  if (!isSubmitting) {
+                    e.currentTarget.style.backgroundColor = '#059669';
+                    e.currentTarget.style.borderColor = '#059669';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isSubmitting) {
+                    e.currentTarget.style.backgroundColor = '#10B981';
+                    e.currentTarget.style.borderColor = '#10B981';
+                  }
+                }}
+              >
+                <SendIcon size={14} />
+                <span>{isSubmitting ? 'Submitting Ticket...' : 'Submit Support Ticket'}</span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        {/* Your Submitted Tickets Sidebar Card */}
+        <div
+          style={{
+            backgroundColor: '#FFFFFF',
+            border: '1px solid rgba(16, 185, 129, 0.22)',
+            borderRadius: '16px',
+            padding: '24px 28px',
+            boxShadow: '0 1px 3px rgba(6, 46, 3, 0.04)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '16px',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <h3
+              style={{
+                fontSize: '16px',
+                fontWeight: 700,
+                color: '#062E03',
+                margin: 0,
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+              }}
+            >
+              <span
+                style={{
+                  width: '28px',
+                  height: '28px',
+                  borderRadius: '6px',
+                  backgroundColor: '#EAF4ED',
+                  border: '1px solid rgba(16, 185, 129, 0.25)',
+                  color: '#10B981',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <MessageSquareIcon size={15} />
+              </span>
+              <span>Your Support Tickets</span>
+            </h3>
+            <span
+              style={{
+                fontSize: '11.5px',
+                fontWeight: 600,
+                color: '#10B981',
+                backgroundColor: '#EAF4ED',
+                border: '1px solid rgba(16, 185, 129, 0.25)',
+                borderRadius: '9999px',
+                padding: '2px 9px',
+              }}
+            >
+              {tickets.length} {tickets.length === 1 ? 'ticket' : 'tickets'}
+            </span>
           </div>
-        )}
+
+          {isLoadingTickets ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {[1, 2, 3].map((i) => (
+                <div
+                  key={i}
+                  style={{
+                    borderRadius: '12px',
+                    border: '1px solid rgba(16, 185, 129, 0.18)',
+                    backgroundColor: '#FFFFFF',
+                    padding: '16px',
+                  }}
+                >
+                  <div style={{ height: '14px', width: '35%', backgroundColor: '#F1F5F9', borderRadius: '4px', marginBottom: '8px' }} />
+                  <div style={{ height: '16px', width: '80%', backgroundColor: '#F8FCF9', borderRadius: '4px' }} />
+                </div>
+              ))}
+            </div>
+          ) : tickets.length === 0 ? (
+            <div
+              style={{
+                borderRadius: '12px',
+                border: '1px dashed rgba(16, 185, 129, 0.25)',
+                backgroundColor: '#F8FCF9',
+                padding: '36px 20px',
+                textAlign: 'center',
+              }}
+            >
+              <div
+                style={{
+                  width: '42px',
+                  height: '42px',
+                  borderRadius: '50%',
+                  backgroundColor: '#EAF4ED',
+                  color: '#10B981',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '10px',
+                }}
+              >
+                <LifeBuoyIcon size={20} />
+              </div>
+              <h4 style={{ fontSize: '14.5px', fontWeight: 600, color: '#062E03', margin: '0 0 4px' }}>
+                No Active Tickets
+              </h4>
+              <p style={{ fontSize: '12.5px', color: '#64748B', margin: 0 }}>
+                You haven't submitted any support tickets yet.
+              </p>
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxHeight: '560px', overflowY: 'auto', paddingRight: '2px' }}>
+              {tickets.map((t) => {
+                const statusMeta =
+                  TICKET_STATUS_OPTIONS[t.status] || TICKET_STATUS_OPTIONS.OPEN;
+                const priorityMeta =
+                  TICKET_PRIORITY_OPTIONS.find((p) => p.value === t.priority) ||
+                  TICKET_PRIORITY_OPTIONS[1];
+
+                const statusStyle = getStatusBadgeStyle(t.status);
+                const priorityStyle = getPriorityBadgeStyle(t.priority);
+
+                return (
+                  <div
+                    key={t.id}
+                    onClick={() => setSelectedTicket(t)}
+                    style={{
+                      cursor: 'pointer',
+                      borderRadius: '12px',
+                      border: '1px solid rgba(16, 185, 129, 0.2)',
+                      backgroundColor: '#FFFFFF',
+                      padding: '14px 16px',
+                      boxShadow: '0 1px 3px rgba(6, 46, 3, 0.04)',
+                      transition: 'all 0.15s ease',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = '#10B981';
+                      e.currentTarget.style.boxShadow = '0 4px 12px rgba(16, 185, 129, 0.08)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.2)';
+                      e.currentTarget.style.boxShadow = '0 1px 3px rgba(6, 46, 3, 0.04)';
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '12px', color: '#64748B', marginBottom: '6px' }}>
+                      <span
+                        style={{
+                          fontFamily: 'monospace',
+                          fontWeight: 700,
+                          color: '#10B981',
+                          backgroundColor: '#EAF4ED',
+                          border: '1px solid rgba(16, 185, 129, 0.25)',
+                          borderRadius: '4px',
+                          padding: '1px 6px',
+                          fontSize: '11px',
+                        }}
+                      >
+                        {t.ticketNumber || `TIK-${t.id.slice(0, 6)}`}
+                      </span>
+                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '11.5px' }}>
+                        <ClockIcon size={12} />
+                        <span>{new Date(t.createdAt).toLocaleDateString()}</span>
+                      </span>
+                    </div>
+
+                    <h4
+                      style={{
+                        fontSize: '14px',
+                        fontWeight: 600,
+                        color: '#062E03',
+                        margin: '0 0 10px',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {t.subject}
+                    </h4>
+
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', flexWrap: 'wrap' }}>
+                      <span
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          borderRadius: '9999px',
+                          padding: '2px 8px',
+                          fontSize: '11px',
+                          fontWeight: 600,
+                          ...statusStyle,
+                        }}
+                      >
+                        {statusMeta.label}
+                      </span>
+                      <span
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          borderRadius: '6px',
+                          padding: '2px 8px',
+                          fontSize: '10.5px',
+                          fontWeight: 600,
+                          ...priorityStyle,
+                        }}
+                      >
+                        {priorityMeta.label} Priority
+                      </span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Ticket Details & Thread Modal */}
       {selectedTicket && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/50 p-4 backdrop-blur-sm"
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 50,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'rgba(6, 46, 3, 0.4)',
+            padding: '1rem',
+            backdropFilter: 'blur(4px)',
+          }}
           role="dialog"
           aria-modal="true"
         >
-          <div className="relative w-full max-w-2xl rounded-2xl bg-white shadow-2xl border border-gray-200 overflow-hidden flex flex-col max-h-[90vh]">
+          <div
+            style={{
+              position: 'relative',
+              width: '100%',
+              maxWidth: '640px',
+              borderRadius: '16px',
+              backgroundColor: '#FFFFFF',
+              boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+              border: '1px solid rgba(16, 185, 129, 0.25)',
+              overflow: 'hidden',
+              display: 'flex',
+              flexDirection: 'column',
+              maxHeight: '90vh',
+            }}
+          >
             {/* Header */}
-            <div className="flex items-start justify-between border-b border-gray-200 px-6 py-4 bg-gray-50">
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'flex-start',
+                justifyContent: 'space-between',
+                borderBottom: '1px solid rgba(16, 185, 129, 0.15)',
+                padding: '16px 20px',
+                backgroundColor: '#F8FCF9',
+              }}
+            >
               <div>
-                <span className="font-mono text-xs font-bold text-purple-700">
-                  {selectedTicket.ticketNumber || `TICK-${selectedTicket.id.slice(0, 6)}`}
+                <span
+                  style={{
+                    fontFamily: 'monospace',
+                    fontSize: '11.5px',
+                    fontWeight: 700,
+                    color: '#10B981',
+                    backgroundColor: '#EAF4ED',
+                    border: '1px solid rgba(16, 185, 129, 0.25)',
+                    borderRadius: '4px',
+                    padding: '2px 6px',
+                  }}
+                >
+                  {selectedTicket.ticketNumber || `TIK-${selectedTicket.id.slice(0, 6)}`}
                 </span>
-                <h3 className="text-base font-bold text-gray-900 mt-1">
+                <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#062E03', margin: '6px 0 0' }}>
                   {selectedTicket.subject}
                 </h3>
               </div>
               <button
                 type="button"
                 onClick={() => setSelectedTicket(null)}
-                className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-700"
+                style={{
+                  borderRadius: '8px',
+                  padding: '6px',
+                  color: '#64748B',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  display: 'flex',
+                }}
               >
                 <XIcon size={18} />
               </button>
             </div>
 
             {/* Conversation Thread */}
-            <div className="p-6 overflow-y-auto space-y-4 text-xs sm:text-sm">
+            <div style={{ padding: '20px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '14px' }}>
               {/* Original Ticket Description */}
-              <div className="rounded-xl border border-gray-200 bg-gray-50 p-4 space-y-1.5">
-                <div className="flex items-center justify-between text-xs text-gray-500 font-semibold">
+              <div
+                style={{
+                  borderRadius: '10px',
+                  border: '1px solid rgba(16, 185, 129, 0.2)',
+                  backgroundColor: '#F8FCF9',
+                  padding: '14px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '6px',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '11.5px', color: '#64748B', fontWeight: 600 }}>
                   <span>Initial Request Details</span>
                   <span>{new Date(selectedTicket.createdAt).toLocaleString()}</span>
                 </div>
-                <p className="text-gray-800 leading-relaxed whitespace-pre-line">
+                <p style={{ fontSize: '13px', color: '#062E03', lineHeight: 1.5, whiteSpace: 'pre-line', margin: 0 }}>
                   {selectedTicket.description}
                 </p>
               </div>
 
               {/* Messages Thread */}
               {selectedTicket.messages && selectedTicket.messages.length > 0 && (
-                <div className="space-y-3 pt-2">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-gray-500">
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', paddingTop: '8px' }}>
+                  <h4 style={{ fontSize: '11.5px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em', color: '#062E03', margin: 0 }}>
                     Discussion Thread
                   </h4>
-                  {selectedTicket.messages.map((m) => (
-                    <div
-                      key={m.id}
-                      className={`rounded-xl p-3.5 ${
-                        m.senderName === 'You' || m.senderId === 'current-user'
-                          ? 'ml-6 bg-purple-50 text-purple-900 border border-purple-200'
-                          : 'mr-6 bg-white text-gray-800 border border-gray-200'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between text-[11px] font-semibold mb-1 opacity-75">
-                        <span>{m.senderName}</span>
-                        <span>{new Date(m.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                  {selectedTicket.messages.map((m) => {
+                    const isSelf = m.senderName === 'You' || m.senderId === 'current-user';
+                    return (
+                      <div
+                        key={m.id}
+                        style={{
+                          borderRadius: '10px',
+                          padding: '12px 14px',
+                          marginLeft: isSelf ? '24px' : '0',
+                          marginRight: isSelf ? '0' : '24px',
+                          backgroundColor: isSelf ? '#EAF4ED' : '#F8FCF9',
+                          border: isSelf ? '1px solid rgba(16, 185, 129, 0.3)' : '1px solid rgba(16, 185, 129, 0.18)',
+                          color: '#062E03',
+                        }}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '11px', fontWeight: 600, color: '#64748B', marginBottom: '4px' }}>
+                          <span>{m.senderName}</span>
+                          <span>{new Date(m.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                        </div>
+                        <p style={{ fontSize: '13px', lineHeight: 1.45, whiteSpace: 'pre-line', margin: 0 }}>
+                          {m.message}
+                        </p>
                       </div>
-                      <p className="leading-relaxed whitespace-pre-line">{m.message}</p>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>
 
             {/* Reply Input Box */}
-            <div className="border-t border-gray-200 p-4 bg-gray-50 flex items-center gap-2">
+            <div
+              style={{
+                borderTop: '1px solid rgba(16, 185, 129, 0.15)',
+                padding: '14px 18px',
+                backgroundColor: '#F8FCF9',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+              }}
+            >
               <input
                 type="text"
                 value={replyMessage}
@@ -408,13 +888,35 @@ export const ContactSupportSection: React.FC<ContactSupportSectionProps> = ({
                   if (e.key === 'Enter') void handleReply();
                 }}
                 placeholder="Type your reply message to support..."
-                className="flex-1 rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs text-gray-900 placeholder-gray-400 focus:border-purple-500 focus:outline-none"
+                style={{
+                  flex: 1,
+                  borderRadius: '8px',
+                  border: '1px solid rgba(16, 185, 129, 0.3)',
+                  backgroundColor: '#FFFFFF',
+                  padding: '9px 12px',
+                  fontSize: '13px',
+                  color: '#062E03',
+                  outline: 'none',
+                }}
               />
               <button
                 type="button"
                 onClick={() => void handleReply()}
                 disabled={isSendingReply || !replyMessage.trim()}
-                className="inline-flex items-center gap-1.5 rounded-lg bg-purple-600 px-4 py-2 text-xs font-bold text-white hover:bg-purple-700 disabled:opacity-50"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  borderRadius: '8px',
+                  backgroundColor: '#10B981',
+                  padding: '9px 16px',
+                  fontSize: '12.5px',
+                  fontWeight: 600,
+                  color: '#FFFFFF',
+                  border: '1px solid #10B981',
+                  cursor: isSendingReply || !replyMessage.trim() ? 'not-allowed' : 'pointer',
+                  opacity: isSendingReply || !replyMessage.trim() ? 0.6 : 1,
+                }}
               >
                 <SendIcon size={13} />
                 <span>{isSendingReply ? 'Sending...' : 'Reply'}</span>
@@ -426,4 +928,3 @@ export const ContactSupportSection: React.FC<ContactSupportSectionProps> = ({
     </div>
   );
 };
-
