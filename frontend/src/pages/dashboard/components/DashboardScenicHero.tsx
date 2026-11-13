@@ -93,14 +93,7 @@ export const DashboardScenicHero: React.FC<DashboardScenicHeroProps> = ({
 
         <h1 className="crm-hero-title">
           {title}{' '}
-          <span
-            className="crm-hero-highlight"
-            style={{
-              color: '#000000',
-              WebkitTextFillColor: '#000000',
-              background: 'none',
-            }}
-          >
+          <span className="crm-hero-highlight">
             {highlight}
           </span>
         </h1>
@@ -150,7 +143,7 @@ export const DashboardScenicHero: React.FC<DashboardScenicHeroProps> = ({
                 alignItems: 'center',
                 gap: '0.45rem',
                 fontSize: '0.8rem',
-                color: '#000000',
+                color: 'inherit',
                 fontWeight: 600,
               }}
             >
@@ -163,7 +156,7 @@ export const DashboardScenicHero: React.FC<DashboardScenicHeroProps> = ({
                 }}
               />
               <span>{item.label}</span>
-              <strong style={{ color: '#000000', fontWeight: 800 }}>{item.value}</strong>
+              <strong style={{ color: 'inherit', fontWeight: 800 }}>{item.value}</strong>
             </div>
           ))}
         </div>

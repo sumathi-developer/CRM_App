@@ -103,14 +103,16 @@
 }
 
 .crm-btn-gradient {
-  background: linear-gradient(135deg, #062e03 0%, #10b981 55%, #7c3aed 100%);
-  color: #ffffff;
-  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid #059669 !important;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35) !important;
 }
 
 .crm-btn-gradient:hover:not(:disabled) {
-  background: linear-gradient(135deg, #041f02 0%, #059669 55%, #6d28d9 100%);
-  box-shadow: 0 6px 22px rgba(124, 58, 237, 0.4);
+  background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 6px 22px rgba(16, 185, 129, 0.45) !important;
   transform: translateY(-1px);
 }
 
@@ -501,21 +503,21 @@
 }
 
 .crm-badge-primary {
-  background: rgba(6, 46, 3, 0.8);
-  color: #a7f0a3;
-  border: 1px solid rgba(16, 185, 129, 0.35);
+  background: #10b981 !important;
+  color: #ffffff !important;
+  border: 1px solid #059669 !important;
 }
 
 .crm-badge-secondary {
-  background: rgba(16, 185, 129, 0.14);
-  color: #10b981;
-  border: 1px solid rgba(16, 185, 129, 0.3);
+  background: #eaf4ed !important;
+  color: #047857 !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
 }
 
 .crm-badge-accent {
-  background: rgba(124, 58, 237, 0.16);
-  color: #c4b5fd;
-  border: 1px solid rgba(124, 58, 237, 0.35);
+  background: #eaf4ed !important;
+  color: #065f46 !important;
+  border: 1px solid rgba(16, 185, 129, 0.28) !important;
 }
 
 .crm-badge-neutral {
@@ -893,7 +895,7 @@
 
 .crm-progress-fill-violet {
   height: 100%;
-  background: linear-gradient(90deg, #7c3aed 0%, #a78bfa 100%);
+  background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
   border-radius: var(--radius-full, 9999px);
 }
 
@@ -2823,132 +2825,144 @@ textarea:focus {
    - Tables, Badges, Pills, KPI cards, Rails, Dashboards, Widgets
    ========================================================================== */
 
-/* Universal Core Elements */
-html,
-body,
-#root,
-.app-layout,
-.app-main-content,
-p,
-span,
-h1, h2, h3, h4, h5, h6,
-label,
-a,
-li,
-ul,
-ol,
-th,
-td,
-b,
-strong,
-small,
-em,
-sub,
-sup,
-legend,
-caption {
+/* Universal Core Elements in Light Mode */
+html:not(.dark):not([data-theme="dark"]),
+html:not(.dark):not([data-theme="dark"]) body,
+html:not(.dark):not([data-theme="dark"]) #root,
+html:not(.dark):not([data-theme="dark"]) .app-layout,
+html:not(.dark):not([data-theme="dark"]) .app-main-content,
+html:not(.dark):not([data-theme="dark"]) p,
+html:not(.dark):not([data-theme="dark"]) span:not(.crm-btn-gradient *):not(.sidebar-notif-badge):not(.notif-counter-badge):not(.badge-count):not(.crm-badge-primary *),
+html:not(.dark):not([data-theme="dark"]) h1,
+html:not(.dark):not([data-theme="dark"]) h2,
+html:not(.dark):not([data-theme="dark"]) h3,
+html:not(.dark):not([data-theme="dark"]) h4,
+html:not(.dark):not([data-theme="dark"]) h5,
+html:not(.dark):not([data-theme="dark"]) h6,
+html:not(.dark):not([data-theme="dark"]) label,
+html:not(.dark):not([data-theme="dark"]) a:not(.crm-btn-gradient),
+html:not(.dark):not([data-theme="dark"]) li,
+html:not(.dark):not([data-theme="dark"]) ul,
+html:not(.dark):not([data-theme="dark"]) ol,
+html:not(.dark):not([data-theme="dark"]) th,
+html:not(.dark):not([data-theme="dark"]) td,
+html:not(.dark):not([data-theme="dark"]) b,
+html:not(.dark):not([data-theme="dark"]) strong:not(.crm-btn-gradient *),
+html:not(.dark):not([data-theme="dark"]) small,
+html:not(.dark):not([data-theme="dark"]) em,
+html:not(.dark):not([data-theme="dark"]) sub,
+html:not(.dark):not([data-theme="dark"]) sup,
+html:not(.dark):not([data-theme="dark"]) legend,
+html:not(.dark):not([data-theme="dark"]) caption {
   color: #000000 !important;
 }
 
 /* Universal Form Controls, Placeholders & Selects */
-input,
-select,
-textarea,
-option,
-optgroup {
+html:not(.dark):not([data-theme="dark"]) input,
+html:not(.dark):not([data-theme="dark"]) select,
+html:not(.dark):not([data-theme="dark"]) textarea,
+html:not(.dark):not([data-theme="dark"]) option,
+html:not(.dark):not([data-theme="dark"]) optgroup {
   color: #000000 !important;
   font-weight: 600 !important;
 }
 
-input::placeholder,
-textarea::placeholder {
+html:not(.dark):not([data-theme="dark"]) input::placeholder,
+html:not(.dark):not([data-theme="dark"]) textarea::placeholder {
   color: #000000 !important;
   opacity: 0.6 !important;
 }
 
 /* Universal Button Typography & High-Contrast Light Backgrounds */
-button,
-[role="button"],
-.crm-btn,
-.lg-btn,
-.btn {
+html:not(.dark):not([data-theme="dark"]) button:not(.crm-btn-gradient),
+html:not(.dark):not([data-theme="dark"]) [role="button"]:not(.crm-btn-gradient),
+html:not(.dark):not([data-theme="dark"]) .crm-btn:not(.crm-btn-gradient),
+html:not(.dark):not([data-theme="dark"]) .lg-btn:not(.crm-btn-gradient),
+html:not(.dark):not([data-theme="dark"]) .btn:not(.crm-btn-gradient) {
   color: #000000 !important;
   font-weight: 700 !important;
 }
 
-.crm-btn-primary {
+html:not(.dark):not([data-theme="dark"]) .crm-btn-primary {
   background: #10B981 !important;
   color: #000000 !important;
   border: 1px solid #059669 !important;
   box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25) !important;
 }
 
-.crm-btn-primary:hover:not(:disabled) {
+.crm-btn-gradient,
+.crm-btn-gradient *,
+.crm-btn-gradient span,
+.crm-btn-gradient svg {
+  color: #FFFFFF !important;
+}
+
+html:not(.dark):not([data-theme="dark"]) .crm-btn-primary:hover:not(:disabled) {
   background: #34D399 !important;
   color: #000000 !important;
 }
 
-.crm-btn-secondary {
+html:not(.dark):not([data-theme="dark"]) .crm-btn-secondary {
   background: #EAF4ED !important;
   color: #000000 !important;
   border: 1.5px solid #10B981 !important;
 }
 
-.crm-btn-secondary:hover:not(:disabled) {
+html:not(.dark):not([data-theme="dark"]) .crm-btn-secondary:hover:not(:disabled) {
   background: #D1FAE5 !important;
   color: #000000 !important;
 }
 
-.crm-btn-outline {
+html:not(.dark):not([data-theme="dark"]) .crm-btn-outline {
   background: #FFFFFF !important;
   color: #000000 !important;
   border: 1.5px solid rgba(0, 0, 0, 0.28) !important;
 }
 
-.crm-btn-outline:hover:not(:disabled) {
+html:not(.dark):not([data-theme="dark"]) .crm-btn-outline:hover:not(:disabled) {
   background: #F1F5F9 !important;
   color: #000000 !important;
 }
 
-.crm-btn-accent {
+html:not(.dark):not([data-theme="dark"]) .crm-btn-accent {
   background: #DDD6FE !important;
   color: #000000 !important;
   border: 1.5px solid #8B5CF6 !important;
 }
 
-.crm-btn-accent:hover:not(:disabled) {
+html:not(.dark):not([data-theme="dark"]) .crm-btn-accent:hover:not(:disabled) {
   background: #C4B5FD !important;
   color: #000000 !important;
 }
 
-.crm-btn-danger {
+html:not(.dark):not([data-theme="dark"]) .crm-btn-danger {
   background: #FEE2E2 !important;
   color: #000000 !important;
   border: 1.5px solid #EF4444 !important;
 }
 
-.crm-btn-danger:hover:not(:disabled) {
+html:not(.dark):not([data-theme="dark"]) .crm-btn-danger:hover:not(:disabled) {
   background: #FECDD3 !important;
   color: #000000 !important;
 }
 
-.crm-btn-ghost {
+html:not(.dark):not([data-theme="dark"]) .crm-btn-ghost {
   background: transparent !important;
   color: #000000 !important;
 }
 
-.crm-btn-ghost:hover:not(:disabled) {
+html:not(.dark):not([data-theme="dark"]) .crm-btn-ghost:hover:not(:disabled) {
   background: rgba(0, 0, 0, 0.06) !important;
   color: #000000 !important;
 }
 
-.crm-btn-soft {
+html:not(.dark):not([data-theme="dark"]) .crm-btn-soft {
   background: #EAF4ED !important;
   color: #000000 !important;
   border: 1px solid rgba(16, 185, 129, 0.35) !important;
 }
 
-.crm-btn-soft:hover:not(:disabled) {
+html:not(.dark):not([data-theme="dark"]) .crm-btn-soft:hover:not(:disabled) {
   background: #D1FAE5 !important;
   color: #000000 !important;
 }
@@ -2961,170 +2975,170 @@ button,
   background: rgba(0, 0, 0, 0.45) !important;
 }
 
-.modal-content,
-.modal-card,
-.dialog-content,
-.dialog-card,
-.modal-container,
-.modal-wide,
-.switcher-modal,
-.modal-body,
-.modal-header,
-.modal-footer,
-.drawer-content,
-.popup-container,
-.popover-content,
-.tooltip,
-.dropdown-menu,
-.sidebar-module-dropdown,
-.workspace-switcher-menu,
-[role="dialog"],
-[role="alertdialog"],
-[role="menu"] {
+html:not(.dark):not([data-theme="dark"]) .modal-content,
+html:not(.dark):not([data-theme="dark"]) .modal-card,
+html:not(.dark):not([data-theme="dark"]) .dialog-content,
+html:not(.dark):not([data-theme="dark"]) .dialog-card,
+html:not(.dark):not([data-theme="dark"]) .modal-container,
+html:not(.dark):not([data-theme="dark"]) .modal-wide,
+html:not(.dark):not([data-theme="dark"]) .switcher-modal,
+html:not(.dark):not([data-theme="dark"]) .modal-body,
+html:not(.dark):not([data-theme="dark"]) .modal-header,
+html:not(.dark):not([data-theme="dark"]) .modal-footer,
+html:not(.dark):not([data-theme="dark"]) .drawer-content,
+html:not(.dark):not([data-theme="dark"]) .popup-container,
+html:not(.dark):not([data-theme="dark"]) .popover-content,
+html:not(.dark):not([data-theme="dark"]) .tooltip,
+html:not(.dark):not([data-theme="dark"]) .dropdown-menu,
+html:not(.dark):not([data-theme="dark"]) .sidebar-module-dropdown,
+html:not(.dark):not([data-theme="dark"]) .workspace-switcher-menu,
+html:not(.dark):not([data-theme="dark"]) [role="dialog"],
+html:not(.dark):not([data-theme="dark"]) [role="alertdialog"],
+html:not(.dark):not([data-theme="dark"]) [role="menu"] {
   background-color: #FFFFFF !important;
   color: #000000 !important;
 }
 
-.modal-title,
-.dialog-title,
-.modal-subtitle,
-.modal-header-text,
-.modal-close-btn,
-.modal-tab-btn,
-.modal-tab-btn.is-active,
-.dropdown-item,
-.dropdown-link,
-.popup-title,
-.popup-text,
-.popup-message,
-.toast-title,
-.toast-message,
-.tooltip-text,
-.workspace-option-name,
-.workspace-option-badge {
+html:not(.dark):not([data-theme="dark"]) .modal-title,
+html:not(.dark):not([data-theme="dark"]) .dialog-title,
+html:not(.dark):not([data-theme="dark"]) .modal-subtitle,
+html:not(.dark):not([data-theme="dark"]) .modal-header-text,
+html:not(.dark):not([data-theme="dark"]) .modal-close-btn,
+html:not(.dark):not([data-theme="dark"]) .modal-tab-btn,
+html:not(.dark):not([data-theme="dark"]) .modal-tab-btn.is-active,
+html:not(.dark):not([data-theme="dark"]) .dropdown-item,
+html:not(.dark):not([data-theme="dark"]) .dropdown-link,
+html:not(.dark):not([data-theme="dark"]) .popup-title,
+html:not(.dark):not([data-theme="dark"]) .popup-text,
+html:not(.dark):not([data-theme="dark"]) .popup-message,
+html:not(.dark):not([data-theme="dark"]) .toast-title,
+html:not(.dark):not([data-theme="dark"]) .toast-message,
+html:not(.dark):not([data-theme="dark"]) .tooltip-text,
+html:not(.dark):not([data-theme="dark"]) .workspace-option-name,
+html:not(.dark):not([data-theme="dark"]) .workspace-option-badge {
   color: #000000 !important;
   font-weight: 700 !important;
 }
 
 /* Universal Error Messages, Alert Banners & Validation Texts */
-.auth-alert-banner,
-.auth-alert-banner.alert-error,
-.auth-alert-banner.alert-success,
-.auth-alert-banner.alert-warning,
-.auth-alert-banner.alert-info,
-.alert-title,
-.alert-text,
-.alert-body,
-.alert-list,
-.alert-list li,
-.alert-dismiss-btn,
-.form-validation-msg,
-.form-validation-msg.type-error,
-.form-validation-msg.type-success,
-.field-error,
-.error-message,
-.error-text,
-.text-error,
-.text-danger,
-.tag-modal-alert,
-.tag-modal-alert-danger,
-.tag-modal-alert-warning {
+html:not(.dark):not([data-theme="dark"]) .auth-alert-banner,
+html:not(.dark):not([data-theme="dark"]) .auth-alert-banner.alert-error,
+html:not(.dark):not([data-theme="dark"]) .auth-alert-banner.alert-success,
+html:not(.dark):not([data-theme="dark"]) .auth-alert-banner.alert-warning,
+html:not(.dark):not([data-theme="dark"]) .auth-alert-banner.alert-info,
+html:not(.dark):not([data-theme="dark"]) .alert-title,
+html:not(.dark):not([data-theme="dark"]) .alert-text,
+html:not(.dark):not([data-theme="dark"]) .alert-body,
+html:not(.dark):not([data-theme="dark"]) .alert-list,
+html:not(.dark):not([data-theme="dark"]) .alert-list li,
+html:not(.dark):not([data-theme="dark"]) .alert-dismiss-btn,
+html:not(.dark):not([data-theme="dark"]) .form-validation-msg,
+html:not(.dark):not([data-theme="dark"]) .form-validation-msg.type-error,
+html:not(.dark):not([data-theme="dark"]) .form-validation-msg.type-success,
+html:not(.dark):not([data-theme="dark"]) .field-error,
+html:not(.dark):not([data-theme="dark"]) .error-message,
+html:not(.dark):not([data-theme="dark"]) .error-text,
+html:not(.dark):not([data-theme="dark"]) .text-error,
+html:not(.dark):not([data-theme="dark"]) .text-danger,
+html:not(.dark):not([data-theme="dark"]) .tag-modal-alert,
+html:not(.dark):not([data-theme="dark"]) .tag-modal-alert-danger,
+html:not(.dark):not([data-theme="dark"]) .tag-modal-alert-warning {
   color: #000000 !important;
   font-weight: 600 !important;
 }
 
-.auth-alert-banner.alert-error {
+html:not(.dark):not([data-theme="dark"]) .auth-alert-banner.alert-error {
   background-color: #FEE2E2 !important;
   border: 1.5px solid rgba(239, 68, 68, 0.45) !important;
 }
 
-.auth-alert-banner.alert-success {
+html:not(.dark):not([data-theme="dark"]) .auth-alert-banner.alert-success {
   background-color: #E6F5EC !important;
   border: 1.5px solid rgba(16, 185, 129, 0.45) !important;
 }
 
-.auth-alert-banner.alert-warning {
+html:not(.dark):not([data-theme="dark"]) .auth-alert-banner.alert-warning {
   background-color: #FEF3C7 !important;
   border: 1.5px solid rgba(245, 158, 11, 0.45) !important;
 }
 
-.auth-alert-banner.alert-info {
+html:not(.dark):not([data-theme="dark"]) .auth-alert-banner.alert-info {
   background-color: #E0F2FE !important;
   border: 1.5px solid rgba(14, 165, 233, 0.45) !important;
 }
 
 /* Universal Header, Navbar, Sidebar & Navigation */
-.app-top-navbar,
-.navbar-container,
-.navbar-brand-section,
-.navbar-user-section,
-.navbar-workspace-pill,
-.ws-pill-details,
-.ws-pill-label,
-.ws-pill-name,
-.ws-pill-chevron,
-.brand-name,
-.brand-badge,
-.auth-logo-title,
-.auth-logo-tagline,
-.user-profile-badge,
-.user-meta-info,
-.user-display-name,
-.user-role-badge,
-.user-org-badge,
-.navbar-logout-btn,
-.logout-btn-text,
-.app-sidebar,
-.sidebar-header-label,
-.sidebar-header-label span,
-.sidebar-modules-list,
-.sidebar-module-title,
-.sidebar-nav-link,
-.lg-subnav,
-.ld-subnav,
-.lg-subnav-group,
-.lg-subnav-label,
-.lg-subnav-links,
-.lg-subnav-link,
-.lg-header,
-.lg-title,
-.lg-subtitle {
+html:not(.dark):not([data-theme="dark"]) .app-top-navbar,
+html:not(.dark):not([data-theme="dark"]) .navbar-container,
+html:not(.dark):not([data-theme="dark"]) .navbar-brand-section,
+html:not(.dark):not([data-theme="dark"]) .navbar-user-section,
+html:not(.dark):not([data-theme="dark"]) .navbar-workspace-pill,
+html:not(.dark):not([data-theme="dark"]) .ws-pill-details,
+html:not(.dark):not([data-theme="dark"]) .ws-pill-label,
+html:not(.dark):not([data-theme="dark"]) .ws-pill-name,
+html:not(.dark):not([data-theme="dark"]) .ws-pill-chevron,
+html:not(.dark):not([data-theme="dark"]) .brand-name,
+html:not(.dark):not([data-theme="dark"]) .brand-badge,
+html:not(.dark):not([data-theme="dark"]) .auth-logo-title,
+html:not(.dark):not([data-theme="dark"]) .auth-logo-tagline,
+html:not(.dark):not([data-theme="dark"]) .user-profile-badge,
+html:not(.dark):not([data-theme="dark"]) .user-meta-info,
+html:not(.dark):not([data-theme="dark"]) .user-display-name,
+html:not(.dark):not([data-theme="dark"]) .user-role-badge,
+html:not(.dark):not([data-theme="dark"]) .user-org-badge,
+html:not(.dark):not([data-theme="dark"]) .navbar-logout-btn,
+html:not(.dark):not([data-theme="dark"]) .logout-btn-text,
+html:not(.dark):not([data-theme="dark"]) .app-sidebar,
+html:not(.dark):not([data-theme="dark"]) .sidebar-header-label,
+html:not(.dark):not([data-theme="dark"]) .sidebar-header-label span,
+html:not(.dark):not([data-theme="dark"]) .sidebar-modules-list,
+html:not(.dark):not([data-theme="dark"]) .sidebar-module-title,
+html:not(.dark):not([data-theme="dark"]) .sidebar-nav-link,
+html:not(.dark):not([data-theme="dark"]) .lg-subnav,
+html:not(.dark):not([data-theme="dark"]) .ld-subnav,
+html:not(.dark):not([data-theme="dark"]) .lg-subnav-group,
+html:not(.dark):not([data-theme="dark"]) .lg-subnav-label,
+html:not(.dark):not([data-theme="dark"]) .lg-subnav-links,
+html:not(.dark):not([data-theme="dark"]) .lg-subnav-link,
+html:not(.dark):not([data-theme="dark"]) .lg-header,
+html:not(.dark):not([data-theme="dark"]) .lg-title,
+html:not(.dark):not([data-theme="dark"]) .lg-subtitle {
   color: #000000 !important;
 }
 
-.navbar-workspace-pill {
+html:not(.dark):not([data-theme="dark"]) .navbar-workspace-pill {
   background: #F1F5F9 !important;
   border: 1px solid rgba(16, 185, 129, 0.35) !important;
 }
 
-.ws-pill-label {
+html:not(.dark):not([data-theme="dark"]) .ws-pill-label {
   color: #000000 !important;
   font-weight: 700 !important;
 }
 
-.ws-pill-name {
+html:not(.dark):not([data-theme="dark"]) .ws-pill-name {
   color: #000000 !important;
   font-weight: 800 !important;
 }
 
-.user-display-name {
+html:not(.dark):not([data-theme="dark"]) .user-display-name {
   color: #000000 !important;
   font-weight: 800 !important;
 }
 
-.user-role-badge {
+html:not(.dark):not([data-theme="dark"]) .user-role-badge {
   background: #E0E7FF !important;
   border: 1px solid rgba(99, 102, 241, 0.4) !important;
   color: #000000 !important;
   font-weight: 800 !important;
 }
 
-.user-org-badge {
+html:not(.dark):not([data-theme="dark"]) .user-org-badge {
   color: #000000 !important;
   font-weight: 600 !important;
 }
 
-.navbar-logout-btn {
+html:not(.dark):not([data-theme="dark"]) .navbar-logout-btn {
   background-color: #FEE2E2 !important;
   border: 1px solid rgba(239, 68, 68, 0.35) !important;
   color: #000000 !important;
@@ -3132,134 +3146,155 @@ button,
 }
 
 /* Universal Dashboard Components & Cards */
-.crm-card,
-.crm-kpi-card,
-.crm-stat-card,
-.lg-card,
-.lg-section-card,
-.crm-revenue-widget-card,
-.crm-pipeline-widget-card,
-.crm-funnel-card,
-.crm-lead-sources-card,
-.crm-recent-widget-card,
-.crm-filter-bar,
-.crm-left-rail,
-.crm-right-rail,
-.empty-state-card {
+html:not(.dark):not([data-theme="dark"]) .crm-card,
+html:not(.dark):not([data-theme="dark"]) .crm-kpi-card,
+html:not(.dark):not([data-theme="dark"]) .crm-stat-card,
+html:not(.dark):not([data-theme="dark"]) .lg-card,
+html:not(.dark):not([data-theme="dark"]) .lg-section-card,
+html:not(.dark):not([data-theme="dark"]) .crm-revenue-widget-card,
+html:not(.dark):not([data-theme="dark"]) .crm-pipeline-widget-card,
+html:not(.dark):not([data-theme="dark"]) .crm-funnel-card,
+html:not(.dark):not([data-theme="dark"]) .crm-lead-sources-card,
+html:not(.dark):not([data-theme="dark"]) .crm-recent-widget-card,
+html:not(.dark):not([data-theme="dark"]) .crm-filter-bar,
+html:not(.dark):not([data-theme="dark"]) .crm-left-rail,
+html:not(.dark):not([data-theme="dark"]) .crm-right-rail,
+html:not(.dark):not([data-theme="dark"]) .empty-state-card {
   color: #000000 !important;
 }
 
-.lg-title,
-.lg-section-title,
-.crm-card-title,
-.crm-rail-section-title,
-.crm-calendar-header,
-.crm-filter-title,
-.crm-hero-title,
-.crm-hero-highlight,
-.crm-hero-subtitle,
-.crm-hero-ticker-label,
-.crm-hero-ticker-val,
-.crm-kpi-label,
-.crm-kpi-value,
-.crm-kpi-subtext,
-.crm-filter-label,
-.crm-filter-subtitle,
-.crm-filter-select,
-.crm-revenue-kpi-label,
-.crm-revenue-kpi-value,
-.crm-revenue-kpi-sub,
-.crm-revenue-projection-title,
-.crm-revenue-projection-hint,
-.crm-pipeline-stage-name,
-.crm-pipeline-stage-value,
-.crm-pipeline-stage-weighted,
-.crm-calendar-day-header,
-.crm-calendar-day-num,
-.crm-agenda-title,
-.crm-agenda-time,
-.crm-agenda-desc,
-.empty-state-title,
-.empty-state-desc {
+html:not(.dark):not([data-theme="dark"]) .lg-title,
+html:not(.dark):not([data-theme="dark"]) .lg-section-title,
+html:not(.dark):not([data-theme="dark"]) .crm-card-title,
+html:not(.dark):not([data-theme="dark"]) .crm-rail-section-title,
+html:not(.dark):not([data-theme="dark"]) .crm-calendar-header,
+html:not(.dark):not([data-theme="dark"]) .crm-filter-title,
+html:not(.dark):not([data-theme="dark"]) .crm-hero-title,
+html:not(.dark):not([data-theme="dark"]) .crm-hero-highlight,
+html:not(.dark):not([data-theme="dark"]) .crm-hero-subtitle,
+html:not(.dark):not([data-theme="dark"]) .crm-hero-ticker-label,
+html:not(.dark):not([data-theme="dark"]) .crm-hero-ticker-val,
+html:not(.dark):not([data-theme="dark"]) .crm-kpi-label,
+html:not(.dark):not([data-theme="dark"]) .crm-kpi-value,
+html:not(.dark):not([data-theme="dark"]) .crm-kpi-subtext,
+html:not(.dark):not([data-theme="dark"]) .crm-filter-label,
+html:not(.dark):not([data-theme="dark"]) .crm-filter-subtitle,
+html:not(.dark):not([data-theme="dark"]) .crm-filter-select,
+html:not(.dark):not([data-theme="dark"]) .crm-revenue-kpi-label,
+html:not(.dark):not([data-theme="dark"]) .crm-revenue-kpi-value,
+html:not(.dark):not([data-theme="dark"]) .crm-revenue-kpi-sub,
+html:not(.dark):not([data-theme="dark"]) .crm-revenue-projection-title,
+html:not(.dark):not([data-theme="dark"]) .crm-revenue-projection-hint,
+html:not(.dark):not([data-theme="dark"]) .crm-pipeline-stage-name,
+html:not(.dark):not([data-theme="dark"]) .crm-pipeline-stage-value,
+html:not(.dark):not([data-theme="dark"]) .crm-pipeline-stage-weighted,
+html:not(.dark):not([data-theme="dark"]) .crm-calendar-day-header,
+html:not(.dark):not([data-theme="dark"]) .crm-calendar-day-num,
+html:not(.dark):not([data-theme="dark"]) .crm-agenda-title,
+html:not(.dark):not([data-theme="dark"]) .crm-agenda-time,
+html:not(.dark):not([data-theme="dark"]) .crm-agenda-desc,
+html:not(.dark):not([data-theme="dark"]) .empty-state-title,
+html:not(.dark):not([data-theme="dark"]) .empty-state-desc {
   color: #000000 !important;
 }
 
-.crm-kpi-label,
-.crm-kpi-subtext,
-.crm-filter-label,
-.crm-filter-subtitle,
-.crm-hero-subtitle,
-.lg-section-subtitle,
-.crm-card-description {
+html:not(.dark):not([data-theme="dark"]) .crm-kpi-label,
+html:not(.dark):not([data-theme="dark"]) .crm-kpi-subtext,
+html:not(.dark):not([data-theme="dark"]) .crm-filter-label,
+html:not(.dark):not([data-theme="dark"]) .crm-filter-subtitle,
+html:not(.dark):not([data-theme="dark"]) .crm-hero-subtitle,
+html:not(.dark):not([data-theme="dark"]) .lg-section-subtitle,
+html:not(.dark):not([data-theme="dark"]) .crm-card-description {
   font-weight: 600 !important;
 }
 
-.crm-kpi-value,
-.crm-revenue-kpi-value,
-.crm-pipeline-stage-value,
-.crm-hero-title,
-.crm-hero-highlight,
-.lg-title,
-.lg-section-title {
+html:not(.dark):not([data-theme="dark"]) .crm-kpi-value,
+html:not(.dark):not([data-theme="dark"]) .crm-revenue-kpi-value,
+html:not(.dark):not([data-theme="dark"]) .crm-pipeline-stage-value,
+html:not(.dark):not([data-theme="dark"]) .crm-hero-title,
+html:not(.dark):not([data-theme="dark"]) .crm-hero-highlight,
+html:not(.dark):not([data-theme="dark"]) .lg-title,
+html:not(.dark):not([data-theme="dark"]) .lg-section-title {
   font-weight: 800 !important;
 }
 
 /* Universal Badges, Pills & Chips */
-.crm-badge,
-.lg-badge,
-.score-pill,
-.field-type-badge,
-.tag-pill,
-.status-badge,
-.role-pill,
-.crm-widget-opt-badge,
-.crm-widget-span-fixed,
-.crm-widget-span-btn {
+html:not(.dark):not([data-theme="dark"]) .crm-badge,
+html:not(.dark):not([data-theme="dark"]) .lg-badge,
+html:not(.dark):not([data-theme="dark"]) .score-pill,
+html:not(.dark):not([data-theme="dark"]) .field-type-badge,
+html:not(.dark):not([data-theme="dark"]) .tag-pill,
+html:not(.dark):not([data-theme="dark"]) .status-badge,
+html:not(.dark):not([data-theme="dark"]) .role-pill,
+html:not(.dark):not([data-theme="dark"]) .crm-widget-opt-badge,
+html:not(.dark):not([data-theme="dark"]) .crm-widget-span-fixed,
+html:not(.dark):not([data-theme="dark"]) .crm-widget-span-btn {
   color: #000000 !important;
   font-weight: 700 !important;
 }
 
+.crm-badge-primary,
+.crm-badge-primary * {
+  background: #10B981 !important;
+  color: #FFFFFF !important;
+  border: 1px solid #059669 !important;
+}
+
+html:not(.dark):not([data-theme="dark"]) .crm-badge-secondary,
+html:not(.dark):not([data-theme="dark"]) .crm-badge-secondary * {
+  background: #EAF4ED !important;
+  color: #047857 !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+}
+
+html:not(.dark):not([data-theme="dark"]) .crm-badge-accent,
+html:not(.dark):not([data-theme="dark"]) .crm-badge-accent * {
+  background: #EAF4ED !important;
+  color: #065F46 !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+}
+
 /* Universal Tables & Lists */
-table,
-thead,
-tbody,
-tr,
-th,
-td,
-.leads-th,
-.leads-td,
-.deals-th,
-.deals-td,
-.users-th,
-.users-td,
-.roles-th,
-.roles-td {
+html:not(.dark):not([data-theme="dark"]) table,
+html:not(.dark):not([data-theme="dark"]) thead,
+html:not(.dark):not([data-theme="dark"]) tbody,
+html:not(.dark):not([data-theme="dark"]) tr,
+html:not(.dark):not([data-theme="dark"]) th,
+html:not(.dark):not([data-theme="dark"]) td,
+html:not(.dark):not([data-theme="dark"]) .leads-th,
+html:not(.dark):not([data-theme="dark"]) .leads-td,
+html:not(.dark):not([data-theme="dark"]) .deals-th,
+html:not(.dark):not([data-theme="dark"]) .deals-td,
+html:not(.dark):not([data-theme="dark"]) .users-th,
+html:not(.dark):not([data-theme="dark"]) .users-td,
+html:not(.dark):not([data-theme="dark"]) .roles-th,
+html:not(.dark):not([data-theme="dark"]) .roles-td {
   color: #000000 !important;
 }
 
-th,
-.leads-th,
-.deals-th,
-.users-th,
-.roles-th {
+html:not(.dark):not([data-theme="dark"]) th,
+html:not(.dark):not([data-theme="dark"]) .leads-th,
+html:not(.dark):not([data-theme="dark"]) .deals-th,
+html:not(.dark):not([data-theme="dark"]) .users-th,
+html:not(.dark):not([data-theme="dark"]) .roles-th {
   font-weight: 800 !important;
 }
 
-td,
-.leads-td,
-.deals-td,
-.users-td,
-.roles-td {
+html:not(.dark):not([data-theme="dark"]) td,
+html:not(.dark):not([data-theme="dark"]) .leads-td,
+html:not(.dark):not([data-theme="dark"]) .deals-td,
+html:not(.dark):not([data-theme="dark"]) .users-td,
+html:not(.dark):not([data-theme="dark"]) .roles-td {
   font-weight: 600 !important;
 }
 
 /* Universal Customizer Drawer Typography */
-.crm-widget-opt-title,
-.crm-widget-opt-desc,
-.crm-widget-opt-badge,
-.crm-widget-opt-footer-label,
-.crm-widget-span-btn,
-.crm-widget-span-fixed {
+html:not(.dark):not([data-theme="dark"]) .crm-widget-opt-title,
+html:not(.dark):not([data-theme="dark"]) .crm-widget-opt-desc,
+html:not(.dark):not([data-theme="dark"]) .crm-widget-opt-badge,
+html:not(.dark):not([data-theme="dark"]) .crm-widget-opt-footer-label,
+html:not(.dark):not([data-theme="dark"]) .crm-widget-span-btn,
+html:not(.dark):not([data-theme="dark"]) .crm-widget-span-fixed {
   color: #000000 !important;
 }
 
@@ -3272,55 +3307,55 @@ td,
 }
 
 /* Tailwind Text Color Utilities Override */
-.text-gray-900,
-.text-gray-800,
-.text-gray-700,
-.text-gray-600,
-.text-gray-500,
-.text-gray-400,
-.text-gray-300,
-.text-slate-900,
-.text-slate-800,
-.text-slate-700,
-.text-slate-600,
-.text-slate-500,
-.text-slate-400,
-.text-zinc-900,
-.text-zinc-800,
-.text-zinc-700,
-.text-zinc-600,
-.text-zinc-500,
-.text-zinc-400,
-.text-emerald-900,
-.text-emerald-800,
-.text-emerald-700,
-.text-emerald-600,
-.text-emerald-500,
-.text-green-900,
-.text-green-800,
-.text-green-700,
-.text-green-600,
-.text-blue-900,
-.text-blue-800,
-.text-blue-700,
-.text-blue-600,
-.text-red-900,
-.text-red-800,
-.text-red-700,
-.text-red-600,
-.text-purple-900,
-.text-purple-800,
-.text-purple-700,
-.text-purple-600,
-.text-white {
+html:not(.dark):not([data-theme="dark"]) .text-gray-900,
+html:not(.dark):not([data-theme="dark"]) .text-gray-800,
+html:not(.dark):not([data-theme="dark"]) .text-gray-700,
+html:not(.dark):not([data-theme="dark"]) .text-gray-600,
+html:not(.dark):not([data-theme="dark"]) .text-gray-500,
+html:not(.dark):not([data-theme="dark"]) .text-gray-400,
+html:not(.dark):not([data-theme="dark"]) .text-gray-300,
+html:not(.dark):not([data-theme="dark"]) .text-slate-900,
+html:not(.dark):not([data-theme="dark"]) .text-slate-800,
+html:not(.dark):not([data-theme="dark"]) .text-slate-700,
+html:not(.dark):not([data-theme="dark"]) .text-slate-600,
+html:not(.dark):not([data-theme="dark"]) .text-slate-500,
+html:not(.dark):not([data-theme="dark"]) .text-slate-400,
+html:not(.dark):not([data-theme="dark"]) .text-zinc-900,
+html:not(.dark):not([data-theme="dark"]) .text-zinc-800,
+html:not(.dark):not([data-theme="dark"]) .text-zinc-700,
+html:not(.dark):not([data-theme="dark"]) .text-zinc-600,
+html:not(.dark):not([data-theme="dark"]) .text-zinc-500,
+html:not(.dark):not([data-theme="dark"]) .text-zinc-400,
+html:not(.dark):not([data-theme="dark"]) .text-emerald-900,
+html:not(.dark):not([data-theme="dark"]) .text-emerald-800,
+html:not(.dark):not([data-theme="dark"]) .text-emerald-700,
+html:not(.dark):not([data-theme="dark"]) .text-emerald-600,
+html:not(.dark):not([data-theme="dark"]) .text-emerald-500,
+html:not(.dark):not([data-theme="dark"]) .text-green-900,
+html:not(.dark):not([data-theme="dark"]) .text-green-800,
+html:not(.dark):not([data-theme="dark"]) .text-green-700,
+html:not(.dark):not([data-theme="dark"]) .text-green-600,
+html:not(.dark):not([data-theme="dark"]) .text-blue-900,
+html:not(.dark):not([data-theme="dark"]) .text-blue-800,
+html:not(.dark):not([data-theme="dark"]) .text-blue-700,
+html:not(.dark):not([data-theme="dark"]) .text-blue-600,
+html:not(.dark):not([data-theme="dark"]) .text-red-900,
+html:not(.dark):not([data-theme="dark"]) .text-red-800,
+html:not(.dark):not([data-theme="dark"]) .text-red-700,
+html:not(.dark):not([data-theme="dark"]) .text-red-600,
+html:not(.dark):not([data-theme="dark"]) .text-purple-900,
+html:not(.dark):not([data-theme="dark"]) .text-purple-800,
+html:not(.dark):not([data-theme="dark"]) .text-purple-700,
+html:not(.dark):not([data-theme="dark"]) .text-purple-600,
+html:not(.dark):not([data-theme="dark"]) .text-white {
   color: #000000 !important;
 }
 
 
 /* ---------- 19. DEFINITIVE HIGHLIGHT TEXT & CARD BORDER NORMALIZATION ---------- */
-.crm-hero-title,
-.crm-hero-title span,
-.crm-hero-highlight {
+html:not(.dark):not([data-theme="dark"]) .crm-hero-title,
+html:not(.dark):not([data-theme="dark"]) .crm-hero-title span,
+html:not(.dark):not([data-theme="dark"]) .crm-hero-highlight {
   background: none !important;
   background-image: none !important;
   -webkit-background-clip: initial !important;
@@ -3356,21 +3391,21 @@ td,
    20. UNIVERSAL LIGHT DROPDOWNS, SELECTS & POPUP OPTIONS SYSTEM
    Ensures 100% visibility, crisp solid black text, white background,
    and clean alignment across all dropdowns, native selects,
-   and option lists throughout the entire CRM platform.
+   and option lists throughout the entire CRM platform in Light Mode.
    ========================================================================== */
 
 /* 1. All Native Select Elements across the CRM */
-select,
-.crm-select,
-.crm-filter-select,
-.lg-select,
-.filter-select,
-.form-select,
-.form-select-custom,
-.preference-select-control,
-.ld-board-stage-select,
-.ld-compact-select,
-.ld-lead-picker-select {
+html:not(.dark):not([data-theme="dark"]) select,
+html:not(.dark):not([data-theme="dark"]) .crm-select,
+html:not(.dark):not([data-theme="dark"]) .crm-filter-select,
+html:not(.dark):not([data-theme="dark"]) .lg-select,
+html:not(.dark):not([data-theme="dark"]) .filter-select,
+html:not(.dark):not([data-theme="dark"]) .form-select,
+html:not(.dark):not([data-theme="dark"]) .form-select-custom,
+html:not(.dark):not([data-theme="dark"]) .preference-select-control,
+html:not(.dark):not([data-theme="dark"]) .ld-board-stage-select,
+html:not(.dark):not([data-theme="dark"]) .ld-compact-select,
+html:not(.dark):not([data-theme="dark"]) .ld-lead-picker-select {
   background-color: #FFFFFF !important;
   background: #FFFFFF !important;
   color: #000000 !important;
@@ -3399,38 +3434,38 @@ select,
   padding-right: 2rem !important;
 }
 
-select:hover:not(:disabled),
-input:hover:not(:disabled),
-textarea:hover:not(:disabled),
-.crm-select:hover:not(:disabled),
-.crm-input:hover:not(:disabled),
-.crm-filter-select:hover:not(:disabled),
-.lg-select:hover:not(:disabled),
-.lg-input:hover:not(:disabled),
-.lg-textarea:hover:not(:disabled),
-.filter-select:hover:not(:disabled),
-.form-select:hover:not(:disabled),
-.form-input:hover:not(:disabled),
-.preference-select-control:hover:not(:disabled) {
+html:not(.dark):not([data-theme="dark"]) select:hover:not(:disabled),
+html:not(.dark):not([data-theme="dark"]) input:hover:not(:disabled),
+html:not(.dark):not([data-theme="dark"]) textarea:hover:not(:disabled),
+html:not(.dark):not([data-theme="dark"]) .crm-select:hover:not(:disabled),
+html:not(.dark):not([data-theme="dark"]) .crm-input:hover:not(:disabled),
+html:not(.dark):not([data-theme="dark"]) .crm-filter-select:hover:not(:disabled),
+html:not(.dark):not([data-theme="dark"]) .lg-select:hover:not(:disabled),
+html:not(.dark):not([data-theme="dark"]) .lg-input:hover:not(:disabled),
+html:not(.dark):not([data-theme="dark"]) .lg-textarea:hover:not(:disabled),
+html:not(.dark):not([data-theme="dark"]) .filter-select:hover:not(:disabled),
+html:not(.dark):not([data-theme="dark"]) .form-select:hover:not(:disabled),
+html:not(.dark):not([data-theme="dark"]) .form-input:hover:not(:disabled),
+html:not(.dark):not([data-theme="dark"]) .preference-select-control:hover:not(:disabled) {
   border-color: rgba(16, 185, 129, 0.65) !important;
   background-color: #FFFFFF !important;
   background: #FFFFFF !important;
   color: #000000 !important;
 }
 
-select:focus,
-input:focus,
-textarea:focus,
-.crm-select:focus,
-.crm-input:focus,
-.crm-filter-select:focus,
-.lg-select:focus,
-.lg-input:focus,
-.lg-textarea:focus,
-.filter-select:focus,
-.form-select:focus,
-.form-input:focus,
-.preference-select-control:focus {
+html:not(.dark):not([data-theme="dark"]) select:focus,
+html:not(.dark):not([data-theme="dark"]) input:focus,
+html:not(.dark):not([data-theme="dark"]) textarea:focus,
+html:not(.dark):not([data-theme="dark"]) .crm-select:focus,
+html:not(.dark):not([data-theme="dark"]) .crm-input:focus,
+html:not(.dark):not([data-theme="dark"]) .crm-filter-select:focus,
+html:not(.dark):not([data-theme="dark"]) .lg-select:focus,
+html:not(.dark):not([data-theme="dark"]) .lg-input:focus,
+html:not(.dark):not([data-theme="dark"]) .lg-textarea:focus,
+html:not(.dark):not([data-theme="dark"]) .filter-select:focus,
+html:not(.dark):not([data-theme="dark"]) .form-select:focus,
+html:not(.dark):not([data-theme="dark"]) .form-input:focus,
+html:not(.dark):not([data-theme="dark"]) .preference-select-control:focus {
   border-color: #10B981 !important;
   background-color: #FFFFFF !important;
   background: #FFFFFF !important;
@@ -3495,21 +3530,21 @@ select:disabled,
   opacity: 0.7 !important;
 }
 
-/* 2. All Dropdown Options & Optgroups (Browser Native Popup Menu) */
-option,
-optgroup,
-select option,
-select optgroup,
-.crm-filter-select option,
-.crm-select option,
-.lg-select option,
-.preference-select-control option,
-.filter-select option,
-.form-select option,
-.form-select-custom option,
-.ld-board-stage-select option,
-.ld-compact-select option,
-.ld-lead-picker-select option {
+/* 2. All Dropdown Options & Optgroups in Light Mode */
+html:not(.dark):not([data-theme="dark"]) option,
+html:not(.dark):not([data-theme="dark"]) optgroup,
+html:not(.dark):not([data-theme="dark"]) select option,
+html:not(.dark):not([data-theme="dark"]) select optgroup,
+html:not(.dark):not([data-theme="dark"]) .crm-filter-select option,
+html:not(.dark):not([data-theme="dark"]) .crm-select option,
+html:not(.dark):not([data-theme="dark"]) .lg-select option,
+html:not(.dark):not([data-theme="dark"]) .preference-select-control option,
+html:not(.dark):not([data-theme="dark"]) .filter-select option,
+html:not(.dark):not([data-theme="dark"]) .form-select option,
+html:not(.dark):not([data-theme="dark"]) .form-select-custom option,
+html:not(.dark):not([data-theme="dark"]) .ld-board-stage-select option,
+html:not(.dark):not([data-theme="dark"]) .ld-compact-select option,
+html:not(.dark):not([data-theme="dark"]) .ld-lead-picker-select option {
   background-color: #FFFFFF !important;
   background: #FFFFFF !important;
   color: #000000 !important;
@@ -3522,17 +3557,17 @@ select optgroup,
   border-bottom: 1px solid #F1F5F9 !important;
 }
 
-option:hover,
-option:focus,
-option:active,
-option:checked {
+html:not(.dark):not([data-theme="dark"]) option:hover,
+html:not(.dark):not([data-theme="dark"]) option:focus,
+html:not(.dark):not([data-theme="dark"]) option:active,
+html:not(.dark):not([data-theme="dark"]) option:checked {
   background-color: #EAF4ED !important;
   background: #EAF4ED !important;
   color: #000000 !important;
   font-weight: 700 !important;
 }
 
-optgroup {
+html:not(.dark):not([data-theme="dark"]) optgroup {
   font-weight: 800 !important;
   color: #000000 !important;
   background-color: #F4FAF6 !important;
@@ -3543,12 +3578,12 @@ optgroup {
   font-size: 0.72rem !important;
 }
 
-/* 3. Custom Dropdown Containers, Popovers & Menus */
-.dropdown-menu,
-.sidebar-module-dropdown,
-.workspace-switcher-menu,
-.custom-dropdown-panel,
-[role="menu"] {
+/* 3. Custom Dropdown Containers, Popovers & Menus in Light Mode */
+html:not(.dark):not([data-theme="dark"]) .dropdown-menu,
+html:not(.dark):not([data-theme="dark"]) .sidebar-module-dropdown,
+html:not(.dark):not([data-theme="dark"]) .workspace-switcher-menu,
+html:not(.dark):not([data-theme="dark"]) .custom-dropdown-panel,
+html:not(.dark):not([data-theme="dark"]) [role="menu"] {
   background-color: #FFFFFF !important;
   background: #FFFFFF !important;
   color: #000000 !important;
@@ -3559,9 +3594,9 @@ optgroup {
   z-index: 100 !important;
 }
 
-.dropdown-item,
-.dropdown-link,
-[role="menuitem"] {
+html:not(.dark):not([data-theme="dark"]) .dropdown-item,
+html:not(.dark):not([data-theme="dark"]) .dropdown-link,
+html:not(.dark):not([data-theme="dark"]) [role="menuitem"] {
   color: #000000 !important;
   font-weight: 600 !important;
   font-size: 0.8125rem !important;
@@ -3573,21 +3608,21 @@ optgroup {
   align-items: center !important;
 }
 
-.dropdown-item:hover,
-.dropdown-link:hover,
-[role="menuitem"]:hover,
-.dropdown-item:focus,
-.dropdown-link:focus,
-[role="menuitem"]:focus {
+html:not(.dark):not([data-theme="dark"]) .dropdown-item:hover,
+html:not(.dark):not([data-theme="dark"]) .dropdown-link:hover,
+html:not(.dark):not([data-theme="dark"]) [role="menuitem"]:hover,
+html:not(.dark):not([data-theme="dark"]) .dropdown-item:focus,
+html:not(.dark):not([data-theme="dark"]) .dropdown-link:focus,
+html:not(.dark):not([data-theme="dark"]) [role="menuitem"]:focus {
   background-color: #EAF4ED !important;
   background: #EAF4ED !important;
   color: #000000 !important;
 }
 
 /* 4. Filter Chevron Icons */
-.crm-filter-chevron,
-.filter-chevron,
-.select-chevron {
+html:not(.dark):not([data-theme="dark"]) .crm-filter-chevron,
+html:not(.dark):not([data-theme="dark"]) .filter-chevron,
+html:not(.dark):not([data-theme="dark"]) .select-chevron {
   color: #000000 !important;
   pointer-events: none !important;
 }
@@ -3659,10 +3694,10 @@ main.ld-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
 }
 
 /* Module Sub-Navigation Bar */
-.lg-subnav,
-.ld-subnav,
-.user-subnav-tabs,
-.team-nav-tabs-bar {
+html:not(.dark):not([data-theme="dark"]) .lg-subnav,
+html:not(.dark):not([data-theme="dark"]) .ld-subnav,
+html:not(.dark):not([data-theme="dark"]) .user-subnav-tabs,
+html:not(.dark):not([data-theme="dark"]) .team-nav-tabs-bar {
   margin-top: 0 !important;
   position: relative !important;
   top: 0 !important;
@@ -3706,7 +3741,7 @@ main.ld-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
   gap: 0.65rem !important;
 }
 
-.lg-subnav-label {
+html:not(.dark):not([data-theme="dark"]) .lg-subnav-label {
   font-size: 0.72rem !important;
   font-weight: 800 !important;
   text-transform: uppercase !important;
@@ -3723,7 +3758,7 @@ main.ld-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
   gap: 0.35rem !important;
 }
 
-.lg-subnav-link {
+html:not(.dark):not([data-theme="dark"]) .lg-subnav-link {
   font-size: 0.8125rem !important;
   font-weight: 600 !important;
   color: #000000 !important;
@@ -3735,7 +3770,7 @@ main.ld-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
   background: transparent !important;
 }
 
-.lg-subnav-link:hover {
+html:not(.dark):not([data-theme="dark"]) .lg-subnav-link:hover {
   background: #EAF4ED !important;
   color: #000000 !important;
 }
@@ -3765,7 +3800,7 @@ main.ld-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
   max-width: 800px !important;
 }
 
-.lg-title {
+html:not(.dark):not([data-theme="dark"]) .lg-title {
   display: flex !important;
   align-items: center !important;
   gap: 0.85rem !important;
@@ -3790,7 +3825,7 @@ main.ld-page > *:not(.modal-backdrop):not(.modal-overlay):not(.dialog-overlay),
   flex-shrink: 0 !important;
 }
 
-.lg-subtitle {
+html:not(.dark):not([data-theme="dark"]) .lg-subtitle {
   font-size: 0.9rem !important;
   color: #000000 !important;
   opacity: 0.82 !important;

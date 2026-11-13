@@ -89,7 +89,7 @@ export const DashboardLeftRail: React.FC<DashboardLeftRailProps> = ({
               <strong>{progress2Value}</strong>
             </div>
             <div className="crm-progress-track">
-              <div className="crm-progress-fill-violet" style={{ width: progress2Width }} />
+              <div className="crm-progress-fill-emerald" style={{ width: progress2Width }} />
             </div>
           </div>
 
@@ -109,21 +109,21 @@ export const DashboardLeftRail: React.FC<DashboardLeftRailProps> = ({
       <div style={{ borderTop: '1px solid rgba(16, 185, 129, 0.12)', paddingTop: '0.75rem' }}>
         <div className="crm-rail-section-title">
           <span>{talliesTitle}</span>
-          <span style={{ fontSize: '0.72rem', color: '#000000', fontWeight: 700 }}>Live</span>
+          <span style={{ fontSize: '0.72rem', color: 'inherit', fontWeight: 700 }}>Live</span>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.55rem', marginTop: '0.55rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontSize: '0.8125rem', color: '#000000' }}>{tally1Label}</span>
-            <Badge variant="primary">{tally1Value}</Badge>
+            <span style={{ fontSize: '0.8125rem', color: 'inherit', fontWeight: 600 }}>{tally1Label}</span>
+            <Badge variant="secondary" style={{ minWidth: '26px', textAlign: 'center', justifyContent: 'center' }}>{tally1Value}</Badge>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontSize: '0.8125rem', color: '#000000' }}>{tally2Label}</span>
-            <Badge variant="secondary">{tally2Value}</Badge>
+            <span style={{ fontSize: '0.8125rem', color: 'inherit', fontWeight: 600 }}>{tally2Label}</span>
+            <Badge variant="secondary" style={{ minWidth: '26px', textAlign: 'center', justifyContent: 'center' }}>{tally2Value}</Badge>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontSize: '0.8125rem', color: '#000000' }}>{tally3Label}</span>
-            <Badge variant="accent">{tally3Value}</Badge>
+            <span style={{ fontSize: '0.8125rem', color: 'inherit', fontWeight: 600 }}>{tally3Label}</span>
+            <Badge variant="secondary" style={{ minWidth: '26px', textAlign: 'center', justifyContent: 'center' }}>{tally3Value}</Badge>
           </div>
         </div>
       </div>
@@ -131,7 +131,7 @@ export const DashboardLeftRail: React.FC<DashboardLeftRailProps> = ({
       {/* 3. Conversion Efficiency Pill Metric */}
       <div
         style={{
-          background: '#F4FAF6',
+          background: 'var(--bg-card-soft, rgba(16, 185, 129, 0.08))',
           border: '1px solid rgba(16, 185, 129, 0.28)',
           borderRadius: '12px',
           padding: '0.55rem 0.75rem',
@@ -140,15 +140,15 @@ export const DashboardLeftRail: React.FC<DashboardLeftRailProps> = ({
           justifyContent: 'space-between',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', color: '#059669', flexShrink: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', color: '#10b981', flexShrink: 0 }}>
           <AwardIcon size={16} />
-          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#000000' }}>{efficiencyLabel}</span>
+          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'inherit' }}>{efficiencyLabel}</span>
         </div>
         <span
           style={{
             fontSize: '0.85rem',
             fontWeight: 800,
-            color: '#000000',
+            color: 'inherit',
             textAlign: 'right',
             maxWidth: '60%',
             overflowWrap: 'break-word',
@@ -208,7 +208,7 @@ export const DashboardRightRail: React.FC<DashboardRightRailProps> = ({
       {/* 1. Performance Visual Pulse */}
       <div
         style={{
-          background: '#F4FAF6',
+          background: 'var(--bg-card-soft, rgba(16, 185, 129, 0.08))',
           border: '1px solid rgba(16, 185, 129, 0.22)',
           borderRadius: '14px',
           padding: '0.5rem 0.75rem',
@@ -216,10 +216,10 @@ export const DashboardRightRail: React.FC<DashboardRightRailProps> = ({
       >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div>
-            <span style={{ fontSize: '0.68rem', textTransform: 'uppercase', color: '#000000', fontWeight: 700 }}>
+            <span style={{ fontSize: '0.68rem', textTransform: 'uppercase', color: 'inherit', fontWeight: 700 }}>
               {pulseTitle}
             </span>
-            <h4 style={{ fontSize: '0.95rem', fontWeight: 800, color: '#000000', margin: '0.1rem 0 0' }}>
+            <h4 style={{ fontSize: '0.95rem', fontWeight: 800, color: 'inherit', margin: '0.1rem 0 0' }}>
               {pulseSubtitle}
             </h4>
           </div>
@@ -234,7 +234,7 @@ export const DashboardRightRail: React.FC<DashboardRightRailProps> = ({
               style={{
                 flex: 1,
                 height: `${val}%`,
-                background: idx === 6 ? '#10b981' : idx === 4 ? '#7c3aed' : '#CBD5E1',
+                background: idx === 6 ? '#10b981' : idx === 4 ? '#059669' : '#CBD5E1',
                 borderRadius: '3px 3px 1px 1px',
                 transition: 'height 0.3s ease',
               }}
@@ -300,7 +300,7 @@ export const DashboardRightRail: React.FC<DashboardRightRailProps> = ({
       <div>
         <div className="crm-rail-section-title" style={{ fontSize: '0.72rem' }}>
           <span>Upcoming Agenda</span>
-          <span style={{ fontSize: '0.68rem', color: '#000000', fontWeight: 700 }}>Day {selectedDay}</span>
+          <span style={{ fontSize: '0.68rem', color: 'inherit', fontWeight: 700 }}>Day {selectedDay}</span>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', marginTop: '0.4rem' }}>
@@ -311,7 +311,7 @@ export const DashboardRightRail: React.FC<DashboardRightRailProps> = ({
           <div className="crm-agenda-item" style={{ padding: '0.35rem 0.6rem' }}>
             <span
               className="crm-agenda-time"
-              style={{ color: '#000000', background: 'rgba(124, 58, 237, 0.12)', fontSize: '0.68rem', padding: '0.15rem 0.4rem', fontWeight: 700 }}
+              style={{ color: '#047857', background: 'rgba(16, 185, 129, 0.14)', fontSize: '0.68rem', padding: '0.15rem 0.4rem', fontWeight: 700, borderRadius: '4px' }}
             >
               02:00 PM
             </span>
@@ -327,10 +327,18 @@ export const DashboardRightRail: React.FC<DashboardRightRailProps> = ({
             variant="gradient"
             pill
             size="sm"
-            style={{ width: '100%', height: '36px', fontWeight: 700, boxShadow: '0 4px 12px rgba(16, 185, 129, 0.35)' }}
-            icon={<PlusIcon size={14} />}
+            style={{
+              width: '100%',
+              height: '38px',
+              fontWeight: 700,
+              background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+              color: '#ffffff',
+              border: 'none',
+              boxShadow: '0 4px 14px rgba(16, 185, 129, 0.35)',
+            }}
+            icon={<PlusIcon size={14} style={{ color: '#ffffff' }} />}
           >
-            {actionLabel}
+            <span style={{ color: '#ffffff', fontWeight: 700 }}>{actionLabel}</span>
           </Button>
         </Link>
       </div>

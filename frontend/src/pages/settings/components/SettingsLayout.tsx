@@ -288,6 +288,7 @@ export const SettingsLayout: React.FC<SettingsLayoutProps> = ({
             <button
               ref={threeDotsBtnRef}
               type="button"
+              className="settings-drawer-toggle-btn"
               onClick={() => {
                 updateDropdownPosition();
                 setIsSidebarOpen((prev) => !prev);
@@ -302,9 +303,9 @@ export const SettingsLayout: React.FC<SettingsLayoutProps> = ({
                 width: '38px',
                 height: '38px',
                 borderRadius: '10px',
-                background: isSidebarOpen ? 'rgba(16, 185, 129, 0.18)' : '#ffffff',
+                background: isSidebarOpen ? 'rgba(16, 185, 129, 0.18)' : 'var(--bg-input, #ffffff)',
                 border: isSidebarOpen ? '1px solid #10b981' : '1px solid rgba(16, 185, 129, 0.28)',
-                color: isSidebarOpen ? '#059669' : '#062e03',
+                color: isSidebarOpen ? '#10b981' : 'var(--text-main, #062e03)',
                 cursor: 'pointer',
                 boxShadow: '0 2px 6px rgba(0, 0, 0, 0.04)',
                 transition: 'all 0.15s ease',
@@ -360,6 +361,7 @@ export const SettingsLayout: React.FC<SettingsLayoutProps> = ({
             {/* Reusable Form Action Footer */}
             {canEdit && (
               <div
+                className="settings-action-footer"
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -367,7 +369,7 @@ export const SettingsLayout: React.FC<SettingsLayoutProps> = ({
                   flexWrap: 'wrap',
                   gap: '0.75rem',
                   padding: '1rem 1.25rem',
-                  background: '#ffffff',
+                  background: 'var(--bg-card, #ffffff)',
                   border: '1px solid rgba(16, 185, 129, 0.22)',
                   borderRadius: '14px',
                   boxShadow: '0 1px 3px rgba(0, 0, 0, 0.04)',
@@ -523,7 +525,7 @@ export const SettingsLayout: React.FC<SettingsLayoutProps> = ({
                             marginLeft: 'auto',
                             fontSize: '0.625rem',
                             fontWeight: 700,
-                            color: '#065f46',
+                            color: 'var(--text-primary-accent, #065f46)',
                             background: 'rgba(16, 185, 129, 0.12)',
                             padding: '1px 6px',
                             borderRadius: '9999px',

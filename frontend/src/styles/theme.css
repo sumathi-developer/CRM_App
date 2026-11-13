@@ -1638,3 +1638,635 @@ html.dark .switch-toggle-label input:checked + .switch-toggle-slider,
   background-color: #10B981 !important;
 }
 
+/* ==========================================================================
+   22. MASTER PLATFORM-WIDE DARK MODE TEXT & SURFACE VISIBILITY SYSTEM
+   Guarantees 100% crisp readability across every text element, heading,
+   paragraph, span, label, table, card, modal, drawer, input, button,
+   badge, and widget when CRM mode is switched from Light to Dark.
+   ========================================================================== */
+
+/* 1. Universal Typography & Core Text Elements in Dark Mode */
+html.dark p,
+html.dark span:not(.sidebar-notif-badge):not(.notif-counter-badge):not(.badge-count):not(.avatar-text):not(.crm-btn-primary *),
+html.dark label,
+html.dark a:not(.crm-btn-primary),
+html.dark li,
+html.dark ul,
+html.dark ol,
+html.dark th,
+html.dark td,
+html.dark b,
+html.dark strong:not(.crm-btn-primary *),
+html.dark small,
+html.dark em,
+html.dark sub,
+html.dark sup,
+html.dark legend,
+html.dark caption,
+[data-theme="dark"] p,
+[data-theme="dark"] span:not(.sidebar-notif-badge):not(.notif-counter-badge):not(.badge-count):not(.avatar-text):not(.crm-btn-primary *),
+[data-theme="dark"] label,
+[data-theme="dark"] a:not(.crm-btn-primary),
+[data-theme="dark"] li,
+[data-theme="dark"] ul,
+[data-theme="dark"] ol,
+[data-theme="dark"] th,
+[data-theme="dark"] td,
+[data-theme="dark"] b,
+[data-theme="dark"] strong:not(.crm-btn-primary *),
+[data-theme="dark"] small,
+[data-theme="dark"] em,
+[data-theme="dark"] sub,
+[data-theme="dark"] sup,
+[data-theme="dark"] legend,
+[data-theme="dark"] caption,
+body.dark p,
+body.dark span:not(.sidebar-notif-badge):not(.notif-counter-badge):not(.badge-count):not(.avatar-text):not(.crm-btn-primary *),
+body.dark label,
+body.dark li,
+body.dark th,
+body.dark td,
+body.dark strong:not(.crm-btn-primary *),
+body.dark small {
+  color: #F8FAFC !important;
+}
+
+/* 2. Headings, Titles & Section Headers - High Luminosity Pure White */
+html.dark h1, html.dark h2, html.dark h3, html.dark h4, html.dark h5, html.dark h6,
+[data-theme="dark"] h1, [data-theme="dark"] h2, [data-theme="dark"] h3,
+[data-theme="dark"] h4, [data-theme="dark"] h5, [data-theme="dark"] h6,
+body.dark h1, body.dark h2, body.dark h3, body.dark h4, body.dark h5, body.dark h6,
+html.dark .page-title, html.dark .section-title, html.dark .card-title,
+html.dark .modal-title, html.dark .dialog-title, html.dark .popup-title,
+html.dark .toast-title, html.dark .lg-title, html.dark .lg-section-title,
+html.dark .crm-card-title, html.dark .crm-hero-title, html.dark .crm-rail-section-title,
+html.dark .empty-state-title, html.dark .settings-drawer-title,
+[data-theme="dark"] .page-title, [data-theme="dark"] .section-title, [data-theme="dark"] .card-title,
+[data-theme="dark"] .modal-title, [data-theme="dark"] .dialog-title, [data-theme="dark"] .popup-title,
+[data-theme="dark"] .toast-title, [data-theme="dark"] .lg-title, [data-theme="dark"] .lg-section-title,
+[data-theme="dark"] .crm-card-title, [data-theme="dark"] .crm-hero-title, [data-theme="dark"] .crm-rail-section-title,
+[data-theme="dark"] .empty-state-title, [data-theme="dark"] .settings-drawer-title {
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+  font-weight: 700 !important;
+}
+
+/* Hero Highlight Text in Dark Mode */
+html.dark .crm-hero-highlight,
+[data-theme="dark"] .crm-hero-highlight,
+body.dark .crm-hero-highlight {
+  color: #34D399 !important;
+  -webkit-text-fill-color: #34D399 !important;
+  background: none !important;
+}
+
+/* 3. Subtitles, Descriptions, Meta & Hints */
+html.dark .page-subtitle, html.dark .section-desc, html.dark .card-desc,
+html.dark .lg-subtitle, html.dark .lg-section-subtitle, html.dark .crm-card-description,
+html.dark .crm-filter-subtitle, html.dark .crm-hero-subtitle,
+html.dark .empty-state-desc, html.dark .popup-text, html.dark .toast-message,
+html.dark .settings-drawer-subtitle, html.dark .crm-kpi-subtext, html.dark .crm-kpi-prev,
+[data-theme="dark"] .page-subtitle, [data-theme="dark"] .section-desc, [data-theme="dark"] .card-desc,
+[data-theme="dark"] .lg-subtitle, [data-theme="dark"] .lg-section-subtitle,
+[data-theme="dark"] .crm-card-description, [data-theme="dark"] .crm-filter-subtitle,
+[data-theme="dark"] .crm-hero-subtitle, [data-theme="dark"] .empty-state-desc,
+[data-theme="dark"] .settings-drawer-subtitle, [data-theme="dark"] .crm-kpi-subtext,
+[data-theme="dark"] .crm-kpi-prev,
+body.dark .page-subtitle, body.dark .section-desc, body.dark .card-desc,
+body.dark .lg-subtitle, body.dark .crm-hero-subtitle {
+  color: #94A3B8 !important;
+}
+
+/* 4. Form Controls, Inputs, Textareas & Selects in Dark Mode */
+html.dark input,
+html.dark select,
+html.dark textarea,
+html.dark .crm-select,
+html.dark .crm-input,
+html.dark .crm-filter-select,
+html.dark .lg-select,
+html.dark .lg-input,
+html.dark .lg-textarea,
+html.dark .filter-select,
+html.dark .form-select,
+html.dark .form-input,
+html.dark .form-select-custom,
+html.dark .preference-select-control,
+html.dark .ld-board-stage-select,
+html.dark .ld-compact-select,
+html.dark .ld-lead-picker-select,
+html.dark .settings-drawer-search-input,
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea,
+[data-theme="dark"] .crm-select,
+[data-theme="dark"] .crm-input,
+[data-theme="dark"] .crm-filter-select,
+[data-theme="dark"] .lg-select,
+[data-theme="dark"] .lg-input,
+[data-theme="dark"] .lg-textarea,
+[data-theme="dark"] .filter-select,
+[data-theme="dark"] .form-select,
+[data-theme="dark"] .form-input,
+[data-theme="dark"] .preference-select-control,
+[data-theme="dark"] .settings-drawer-search-input,
+body.dark input,
+body.dark select,
+body.dark textarea {
+  background-color: #122217 !important;
+  background: #122217 !important;
+  color: #FFFFFF !important;
+  border: 1.5px solid rgba(16, 185, 129, 0.35) !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder,
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder,
+body.dark input::placeholder,
+body.dark textarea::placeholder {
+  color: #64748B !important;
+  opacity: 1 !important;
+}
+
+html.dark option,
+html.dark optgroup,
+html.dark select option,
+html.dark select optgroup,
+[data-theme="dark"] option,
+[data-theme="dark"] optgroup,
+[data-theme="dark"] select option,
+[data-theme="dark"] select optgroup,
+body.dark option,
+body.dark optgroup {
+  background-color: #0E1A12 !important;
+  background: #0E1A12 !important;
+  color: #FFFFFF !important;
+  border-bottom: 1px solid rgba(16, 185, 129, 0.15) !important;
+}
+
+html.dark option:hover,
+html.dark option:focus,
+html.dark option:checked,
+[data-theme="dark"] option:hover,
+[data-theme="dark"] option:focus,
+[data-theme="dark"] option:checked,
+body.dark option:hover,
+body.dark option:focus,
+body.dark option:checked {
+  background-color: #162B1D !important;
+  background: #162B1D !important;
+  color: #34D399 !important;
+}
+
+/* 5. Modals, Drawers, Dialogs, Dropdowns & Popovers in Dark Mode */
+html.dark .modal-content,
+html.dark .modal-card,
+html.dark .dialog-content,
+html.dark .dialog-card,
+html.dark .modal-container,
+html.dark .modal-wide,
+html.dark .switcher-modal,
+html.dark .modal-body,
+html.dark .modal-header,
+html.dark .modal-footer,
+html.dark .drawer-content,
+html.dark .popup-container,
+html.dark .popover-content,
+html.dark .dropdown-menu,
+html.dark .sidebar-module-dropdown,
+html.dark .workspace-switcher-menu,
+html.dark .custom-dropdown-panel,
+html.dark .settings-drawer-panel,
+html.dark [role="dialog"],
+html.dark [role="alertdialog"],
+html.dark [role="menu"],
+[data-theme="dark"] .modal-content,
+[data-theme="dark"] .modal-card,
+[data-theme="dark"] .dialog-content,
+[data-theme="dark"] .dialog-card,
+[data-theme="dark"] .modal-container,
+[data-theme="dark"] .drawer-content,
+[data-theme="dark"] .dropdown-menu,
+[data-theme="dark"] .sidebar-module-dropdown,
+[data-theme="dark"] .workspace-switcher-menu,
+[data-theme="dark"] .settings-drawer-panel,
+[data-theme="dark"] [role="dialog"],
+[data-theme="dark"] [role="menu"],
+body.dark .modal-content,
+body.dark .dropdown-menu,
+body.dark [role="dialog"] {
+  background-color: #0D1A10 !important;
+  background: #0D1A10 !important;
+  color: #F8FAFC !important;
+  border: 1.5px solid rgba(16, 185, 129, 0.3) !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75) !important;
+}
+
+html.dark .settings-drawer-header,
+html.dark .settings-drawer-footer,
+[data-theme="dark"] .settings-drawer-header,
+[data-theme="dark"] .settings-drawer-footer {
+  background: #0D1A10 !important;
+  border-color: rgba(16, 185, 129, 0.2) !important;
+}
+
+html.dark .settings-drawer-search,
+[data-theme="dark"] .settings-drawer-search {
+  background: #102115 !important;
+  border-color: rgba(16, 185, 129, 0.2) !important;
+}
+
+html.dark .dropdown-item,
+html.dark .dropdown-link,
+html.dark [role="menuitem"],
+[data-theme="dark"] .dropdown-item,
+[data-theme="dark"] .dropdown-link,
+[data-theme="dark"] [role="menuitem"] {
+  color: #E2E8F0 !important;
+  background: transparent !important;
+}
+
+html.dark .dropdown-item:hover,
+html.dark .dropdown-link:hover,
+html.dark [role="menuitem"]:hover,
+[data-theme="dark"] .dropdown-item:hover,
+[data-theme="dark"] .dropdown-link:hover,
+[data-theme="dark"] [role="menuitem"]:hover {
+  background-color: #162B1D !important;
+  background: #162B1D !important;
+  color: #34D399 !important;
+}
+
+html.dark .crm-filter-chevron,
+html.dark .filter-chevron,
+html.dark .select-chevron,
+[data-theme="dark"] .crm-filter-chevron,
+[data-theme="dark"] .filter-chevron,
+[data-theme="dark"] .select-chevron {
+  color: #34D399 !important;
+}
+
+/* 6. Cards, KPI Cards, Dashboard Rails & Widgets in Dark Mode */
+html.dark .crm-card,
+html.dark .crm-kpi-card,
+html.dark .crm-stat-card,
+html.dark .lg-card,
+html.dark .lg-section-card,
+html.dark .crm-revenue-widget-card,
+html.dark .crm-pipeline-widget-card,
+html.dark .crm-funnel-card,
+html.dark .crm-lead-sources-card,
+html.dark .crm-recent-widget-card,
+html.dark .crm-filter-bar,
+html.dark .crm-left-rail,
+html.dark .crm-right-rail,
+html.dark .empty-state-card,
+html.dark .rounded-xl.bg-white,
+html.dark .rounded-2xl.bg-white,
+html.dark .rounded-lg.bg-white,
+[data-theme="dark"] .crm-card,
+[data-theme="dark"] .crm-kpi-card,
+[data-theme="dark"] .crm-stat-card,
+[data-theme="dark"] .lg-card,
+[data-theme="dark"] .lg-section-card,
+[data-theme="dark"] .crm-revenue-widget-card,
+[data-theme="dark"] .crm-pipeline-widget-card,
+[data-theme="dark"] .crm-left-rail,
+[data-theme="dark"] .crm-right-rail,
+[data-theme="dark"] .rounded-xl.bg-white,
+[data-theme="dark"] .rounded-2xl.bg-white,
+body.dark .crm-card,
+body.dark .crm-left-rail,
+body.dark .crm-right-rail {
+  background: #0D1A10 !important;
+  background-color: #0D1A10 !important;
+  color: #F8FAFC !important;
+  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35) !important;
+}
+
+/* KPI numbers and values in Dark Mode */
+html.dark .crm-kpi-value,
+html.dark .crm-revenue-kpi-value,
+html.dark .crm-pipeline-stage-value,
+html.dark .crm-agenda-title,
+html.dark .crm-agenda-desc,
+html.dark .crm-agenda-time,
+html.dark .crm-hero-ticker-val,
+[data-theme="dark"] .crm-kpi-value,
+[data-theme="dark"] .crm-revenue-kpi-value,
+[data-theme="dark"] .crm-pipeline-stage-value,
+[data-theme="dark"] .crm-agenda-title,
+[data-theme="dark"] .crm-agenda-desc,
+[data-theme="dark"] .crm-agenda-time,
+[data-theme="dark"] .crm-hero-ticker-val {
+  color: #FFFFFF !important;
+}
+
+html.dark .crm-kpi-label,
+html.dark .crm-revenue-kpi-label,
+html.dark .crm-pipeline-stage-name,
+html.dark .crm-filter-label,
+html.dark .crm-hero-ticker-label,
+[data-theme="dark"] .crm-kpi-label,
+[data-theme="dark"] .crm-revenue-kpi-label,
+[data-theme="dark"] .crm-pipeline-stage-name,
+[data-theme="dark"] .crm-filter-label,
+[data-theme="dark"] .crm-hero-ticker-label {
+  color: #94A3B8 !important;
+}
+
+/* 7. Sub-Navigation Bars in Dark Mode */
+html.dark .lg-subnav,
+html.dark .ld-subnav,
+html.dark .user-subnav-tabs,
+html.dark .team-nav-tabs-bar,
+[data-theme="dark"] .lg-subnav,
+[data-theme="dark"] .ld-subnav,
+[data-theme="dark"] .user-subnav-tabs,
+[data-theme="dark"] .team-nav-tabs-bar {
+  background: #0D1A10 !important;
+  background-color: #0D1A10 !important;
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+}
+
+html.dark .lg-subnav-label,
+html.dark .ld-subnav-label,
+[data-theme="dark"] .lg-subnav-label,
+[data-theme="dark"] .ld-subnav-label {
+  color: #34D399 !important;
+  font-weight: 700 !important;
+}
+
+html.dark .lg-subnav-link,
+html.dark .ld-subnav-link,
+[data-theme="dark"] .lg-subnav-link,
+[data-theme="dark"] .ld-subnav-link {
+  color: #CBD5E1 !important;
+}
+
+html.dark .lg-subnav-link:hover,
+html.dark .ld-subnav-link:hover,
+[data-theme="dark"] .lg-subnav-link:hover,
+[data-theme="dark"] .ld-subnav-link:hover {
+  color: #FFFFFF !important;
+  background: rgba(16, 185, 129, 0.16) !important;
+}
+
+html.dark .lg-subnav-link.is-active,
+html.dark .ld-subnav-link.is-active,
+[data-theme="dark"] .lg-subnav-link.is-active,
+[data-theme="dark"] .ld-subnav-link.is-active {
+  background: #10B981 !important;
+  color: #042102 !important;
+  font-weight: 800 !important;
+}
+
+/* 8. Tables & Data Grids in Dark Mode */
+html.dark table,
+html.dark thead,
+html.dark tbody,
+html.dark tr,
+html.dark th,
+html.dark td,
+[data-theme="dark"] table,
+[data-theme="dark"] thead,
+[data-theme="dark"] tbody,
+[data-theme="dark"] tr,
+[data-theme="dark"] th,
+[data-theme="dark"] td {
+  color: #F8FAFC !important;
+}
+
+html.dark th,
+html.dark thead.bg-gray-50,
+[data-theme="dark"] th,
+[data-theme="dark"] thead.bg-gray-50 {
+  background-color: #122217 !important;
+  background: #122217 !important;
+  color: #34D399 !important;
+  border-bottom: 1.5px solid rgba(16, 185, 129, 0.25) !important;
+  font-weight: 700 !important;
+}
+
+html.dark td,
+[data-theme="dark"] td {
+  background-color: transparent !important;
+  border-bottom: 1px solid rgba(16, 185, 129, 0.12) !important;
+  color: #F8FAFC !important;
+}
+
+html.dark tr:hover td,
+[data-theme="dark"] tr:hover td {
+  background-color: rgba(16, 185, 129, 0.08) !important;
+}
+
+/* 9. Buttons & Interactive Controls in Dark Mode */
+html.dark button:not(.crm-btn-primary):not(.auth-btn.btn-primary),
+html.dark [role="button"]:not(.crm-btn-primary),
+html.dark .crm-btn:not(.crm-btn-primary),
+html.dark .lg-btn:not(.crm-btn-primary),
+html.dark .btn:not(.crm-btn-primary),
+[data-theme="dark"] button:not(.crm-btn-primary):not(.auth-btn.btn-primary),
+[data-theme="dark"] [role="button"]:not(.crm-btn-primary),
+[data-theme="dark"] .crm-btn:not(.crm-btn-primary),
+[data-theme="dark"] .lg-btn:not(.crm-btn-primary),
+[data-theme="dark"] .btn:not(.crm-btn-primary) {
+  color: #FFFFFF !important;
+}
+
+html.dark .crm-btn-primary,
+html.dark .crm-btn-primary *,
+[data-theme="dark"] .crm-btn-primary,
+[data-theme="dark"] .crm-btn-primary * {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%) !important;
+  color: #FFFFFF !important;
+  border: 1px solid #34D399 !important;
+}
+
+html.dark .crm-btn-secondary,
+[data-theme="dark"] .crm-btn-secondary {
+  background: #122217 !important;
+  border: 1.5px solid rgba(52, 211, 153, 0.45) !important;
+  color: #34D399 !important;
+}
+
+html.dark .crm-btn-outline,
+html.dark .crm-btn-ghost,
+[data-theme="dark"] .crm-btn-outline,
+[data-theme="dark"] .crm-btn-ghost {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(148, 163, 184, 0.35) !important;
+  color: #E2E8F0 !important;
+}
+
+/* 10. Badges & Pills in Dark Mode */
+html.dark .crm-badge,
+html.dark .lg-badge,
+html.dark .score-pill,
+html.dark .field-type-badge,
+html.dark .tag-pill,
+html.dark .status-badge,
+html.dark .role-pill,
+html.dark .crm-widget-opt-badge,
+html.dark .count-pill,
+[data-theme="dark"] .crm-badge,
+[data-theme="dark"] .lg-badge,
+[data-theme="dark"] .score-pill,
+[data-theme="dark"] .field-type-badge,
+[data-theme="dark"] .tag-pill,
+[data-theme="dark"] .status-badge,
+[data-theme="dark"] .role-pill,
+[data-theme="dark"] .crm-widget-opt-badge,
+[data-theme="dark"] .count-pill {
+  background: #122217 !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+  color: #34D399 !important;
+}
+
+html.dark .crm-badge-secondary,
+html.dark .crm-badge-secondary *,
+[data-theme="dark"] .crm-badge-secondary,
+[data-theme="dark"] .crm-badge-secondary * {
+  background: rgba(16, 185, 129, 0.18) !important;
+  color: #34D399 !important;
+  border: 1px solid rgba(16, 185, 129, 0.4) !important;
+}
+
+/* 11. Tailwind Text Colors in Dark Mode */
+html.dark .text-gray-900,
+html.dark .text-gray-800,
+html.dark .text-slate-900,
+html.dark .text-slate-800,
+html.dark .text-zinc-900,
+html.dark .text-zinc-800,
+html.dark .text-white,
+[data-theme="dark"] .text-gray-900,
+[data-theme="dark"] .text-gray-800,
+[data-theme="dark"] .text-slate-900,
+[data-theme="dark"] .text-slate-800,
+[data-theme="dark"] .text-zinc-900,
+[data-theme="dark"] .text-zinc-800,
+[data-theme="dark"] .text-white {
+  color: #FFFFFF !important;
+}
+
+html.dark .text-gray-700,
+html.dark .text-gray-600,
+html.dark .text-gray-500,
+html.dark .text-gray-400,
+html.dark .text-slate-700,
+html.dark .text-slate-600,
+html.dark .text-slate-500,
+html.dark .text-slate-400,
+html.dark .text-zinc-700,
+html.dark .text-zinc-600,
+html.dark .text-zinc-500,
+html.dark .text-zinc-400,
+[data-theme="dark"] .text-gray-700,
+[data-theme="dark"] .text-gray-600,
+[data-theme="dark"] .text-gray-500,
+[data-theme="dark"] .text-gray-400,
+[data-theme="dark"] .text-slate-700,
+[data-theme="dark"] .text-slate-600,
+[data-theme="dark"] .text-slate-500,
+[data-theme="dark"] .text-slate-400 {
+  color: #CBD5E1 !important;
+}
+
+/* 12. Settings Directory & Action Footers in Dark Mode */
+html.dark .settings-nav-card,
+[data-theme="dark"] .settings-nav-card {
+  background: #09120C !important;
+  border-color: rgba(16, 185, 129, 0.2) !important;
+}
+
+html.dark .settings-nav-group-header,
+[data-theme="dark"] .settings-nav-group-header {
+  color: #34D399 !important;
+  border-bottom-color: rgba(16, 185, 129, 0.15) !important;
+}
+
+html.dark .settings-nav-item-link,
+[data-theme="dark"] .settings-nav-item-link {
+  color: #E2E8F0 !important;
+}
+
+html.dark .settings-nav-item-link:hover,
+[data-theme="dark"] .settings-nav-item-link:hover {
+  background: rgba(16, 185, 129, 0.16) !important;
+  color: #FFFFFF !important;
+}
+
+html.dark .settings-nav-icon-box,
+[data-theme="dark"] .settings-nav-icon-box {
+  background: rgba(16, 185, 129, 0.16) !important;
+  color: #34D399 !important;
+}
+
+html.dark .settings-action-footer,
+[data-theme="dark"] .settings-action-footer {
+  background: #0D1A10 !important;
+  border-color: rgba(16, 185, 129, 0.22) !important;
+}
+
+html.dark .settings-drawer-toggle-btn,
+[data-theme="dark"] .settings-drawer-toggle-btn {
+  background: #122217 !important;
+  border-color: rgba(16, 185, 129, 0.3) !important;
+  color: #34D399 !important;
+}
+
+/* 13. Comprehensive Inline Style Normalization in Dark Mode */
+html.dark [style*="rgb(6, 46, 3)"],
+html.dark [style*="rgb(0, 0, 0)"],
+html.dark [style*="#062e03"],
+html.dark [style*="#062E03"],
+html.dark [style*="#000000"],
+html.dark [style*="#000;"],
+[data-theme="dark"] [style*="rgb(6, 46, 3)"],
+[data-theme="dark"] [style*="rgb(0, 0, 0)"],
+[data-theme="dark"] [style*="#062e03"],
+[data-theme="dark"] [style*="#062E03"],
+[data-theme="dark"] [style*="#000000"],
+[data-theme="dark"] [style*="#000;"] {
+  color: #F8FAFC !important;
+}
+
+html.dark [role="dialog"] [style*="background: #ffffff"],
+html.dark [role="dialog"] [style*="background: #FFFFFF"],
+html.dark [role="dialog"] [style*="background-color: #ffffff"],
+html.dark [role="dialog"] [style*="background-color: #FFFFFF"],
+html.dark [role="dialog"] [style*="background: rgb(255, 255, 255)"],
+html.dark [role="dialog"] [style*="background-color: rgb(255, 255, 255)"],
+html.dark [role="dialog"] [style*="background: #f1f8f3"],
+html.dark [role="dialog"] [style*="background: #F1F8F3"],
+html.dark [role="dialog"] [style*="background-color: #f1f8f3"],
+html.dark [role="dialog"] [style*="background-color: #F1F8F3"],
+html.dark [role="dialog"] [style*="background: #f4faf6"],
+html.dark [role="dialog"] [style*="background: #F4FAF6"],
+html.dark [role="dialog"] [style*="background-color: #f4faf6"],
+html.dark [role="dialog"] [style*="background-color: #F4FAF6"],
+[data-theme="dark"] [role="dialog"] [style*="background: #ffffff"],
+[data-theme="dark"] [role="dialog"] [style*="background: #FFFFFF"],
+[data-theme="dark"] [role="dialog"] [style*="background-color: #ffffff"],
+[data-theme="dark"] [role="dialog"] [style*="background-color: #FFFFFF"],
+[data-theme="dark"] [role="dialog"] [style*="background: rgb(255, 255, 255)"],
+[data-theme="dark"] [role="dialog"] [style*="background-color: rgb(255, 255, 255)"],
+[data-theme="dark"] [role="dialog"] [style*="background: #f1f8f3"],
+[data-theme="dark"] [role="dialog"] [style*="background: #F1F8F3"],
+[data-theme="dark"] [role="dialog"] [style*="background-color: #f1f8f3"],
+[data-theme="dark"] [role="dialog"] [style*="background-color: #F1F8F3"],
+[data-theme="dark"] [role="dialog"] [style*="background: #f4faf6"],
+[data-theme="dark"] [role="dialog"] [style*="background: #F4FAF6"],
+[data-theme="dark"] [role="dialog"] [style*="background-color: #f4faf6"],
+[data-theme="dark"] [role="dialog"] [style*="background-color: #F4FAF6"] {
+  background: #122217 !important;
+  background-color: #122217 !important;
+  color: #F8FAFC !important;
+  border-color: rgba(16, 185, 129, 0.28) !important;
+}
+
